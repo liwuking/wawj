@@ -7,14 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046F8B714A89A30A52DCFB42 /* libPods-wawjUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE8DCA98A6ACE026C78D1C6 /* libPods-wawjUITests.a */; };
+		430530EECFA3E9435E2049CE /* libPods-wawj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F144179D9045BE5BA2E4D2 /* libPods-wawj.a */; };
+		771F95761F0DD4DF00B4D016 /* startPage in Resources */ = {isa = PBXBuildFile; fileRef = 771F95751F0DD4DF00B4D016 /* startPage */; };
+		771F95791F0DD75D00B4D016 /* WARegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95781F0DD75D00B4D016 /* WARegisterViewController.m */; };
 		77832DE31F0CB3600009F004 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE21F0CB3600009F004 /* main.m */; };
 		77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE51F0CB3600009F004 /* AppDelegate.m */; };
-		77832DE91F0CB3600009F004 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE81F0CB3600009F004 /* ViewController.m */; };
 		77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEA1F0CB3600009F004 /* Main.storyboard */; };
 		77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77832DED1F0CB3600009F004 /* Assets.xcassets */; };
 		77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEF1F0CB3600009F004 /* LaunchScreen.storyboard */; };
 		77832DFC1F0CB3600009F004 /* wawjTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DFB1F0CB3600009F004 /* wawjTests.m */; };
 		77832E071F0CB3600009F004 /* wawjUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832E061F0CB3600009F004 /* wawjUITests.m */; };
+		8FBFB470A8D2ADA23A1F6624 /* libPods-wawjTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7164936E998887AF1573CC2E /* libPods-wawjTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,12 +39,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		491A08007405ED99B37CAC45 /* Pods-wawjTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawjTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-wawjTests/Pods-wawjTests.release.xcconfig"; sourceTree = "<group>"; };
+		7164936E998887AF1573CC2E /* libPods-wawjTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawjTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		771F95751F0DD4DF00B4D016 /* startPage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = startPage; sourceTree = "<group>"; };
+		771F95771F0DD75D00B4D016 /* WARegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterViewController.h; sourceTree = "<group>"; };
+		771F95781F0DD75D00B4D016 /* WARegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterViewController.m; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		77832DE51F0CB3600009F004 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		77832DE71F0CB3600009F004 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		77832DE81F0CB3600009F004 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		77832DEB1F0CB3600009F004 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		77832DED1F0CB3600009F004 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77832DF01F0CB3600009F004 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +58,13 @@
 		77832E021F0CB3600009F004 /* wawjUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wawjUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832E061F0CB3600009F004 /* wawjUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wawjUITests.m; sourceTree = "<group>"; };
 		77832E081F0CB3600009F004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B21D00EF72FB7B38D7B26B0 /* Pods-wawj.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawj.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wawj/Pods-wawj.debug.xcconfig"; sourceTree = "<group>"; };
+		9FE8DCA98A6ACE026C78D1C6 /* libPods-wawjUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawjUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0F144179D9045BE5BA2E4D2 /* libPods-wawj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawj.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFA43CEA23B85C594B7FA94D /* Pods-wawj.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawj.release.xcconfig"; path = "Pods/Target Support Files/Pods-wawj/Pods-wawj.release.xcconfig"; sourceTree = "<group>"; };
+		DF84A151F2BDB576F4E0B027 /* Pods-wawjUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawjUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wawjUITests/Pods-wawjUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		E07A4DA50E1B93552860701F /* Pods-wawjUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawjUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-wawjUITests/Pods-wawjUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F94C0FFCB4E73951FC2B9DE5 /* Pods-wawjTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawjTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wawjTests/Pods-wawjTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430530EECFA3E9435E2049CE /* libPods-wawj.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FBFB470A8D2ADA23A1F6624 /* libPods-wawjTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +88,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046F8B714A89A30A52DCFB42 /* libPods-wawjUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		331F84371C63D0D6A47D198A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8B21D00EF72FB7B38D7B26B0 /* Pods-wawj.debug.xcconfig */,
+				BFA43CEA23B85C594B7FA94D /* Pods-wawj.release.xcconfig */,
+				F94C0FFCB4E73951FC2B9DE5 /* Pods-wawjTests.debug.xcconfig */,
+				491A08007405ED99B37CAC45 /* Pods-wawjTests.release.xcconfig */,
+				DF84A151F2BDB576F4E0B027 /* Pods-wawjUITests.debug.xcconfig */,
+				E07A4DA50E1B93552860701F /* Pods-wawjUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		5F45177397006B593D2354B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A0F144179D9045BE5BA2E4D2 /* libPods-wawj.a */,
+				7164936E998887AF1573CC2E /* libPods-wawjTests.a */,
+				9FE8DCA98A6ACE026C78D1C6 /* libPods-wawjUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		77832DD51F0CB3600009F004 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +125,8 @@
 				77832DFA1F0CB3600009F004 /* wawjTests */,
 				77832E051F0CB3600009F004 /* wawjUITests */,
 				77832DDF1F0CB3600009F004 /* Products */,
+				331F84371C63D0D6A47D198A /* Pods */,
+				5F45177397006B593D2354B9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,8 +145,9 @@
 			children = (
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
-				77832DE71F0CB3600009F004 /* ViewController.h */,
-				77832DE81F0CB3600009F004 /* ViewController.m */,
+				771F95771F0DD75D00B4D016 /* WARegisterViewController.h */,
+				771F95781F0DD75D00B4D016 /* WARegisterViewController.m */,
+				771F95751F0DD4DF00B4D016 /* startPage */,
 				77832DEA1F0CB3600009F004 /* Main.storyboard */,
 				77832DED1F0CB3600009F004 /* Assets.xcassets */,
 				77832DEF1F0CB3600009F004 /* LaunchScreen.storyboard */,
@@ -147,9 +190,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77832E0B1F0CB3600009F004 /* Build configuration list for PBXNativeTarget "wawj" */;
 			buildPhases = (
+				9CEFE3A3177815D878908889 /* [CP] Check Pods Manifest.lock */,
 				77832DDA1F0CB3600009F004 /* Sources */,
 				77832DDB1F0CB3600009F004 /* Frameworks */,
 				77832DDC1F0CB3600009F004 /* Resources */,
+				BBFC5557C2E263D1BC73F4C7 /* [CP] Embed Pods Frameworks */,
+				6F0A4B3A6F317DD5A76EE3C5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -164,9 +210,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77832E0E1F0CB3600009F004 /* Build configuration list for PBXNativeTarget "wawjTests" */;
 			buildPhases = (
+				626B672C9CE8A596DD4B4F1B /* [CP] Check Pods Manifest.lock */,
 				77832DF31F0CB3600009F004 /* Sources */,
 				77832DF41F0CB3600009F004 /* Frameworks */,
 				77832DF51F0CB3600009F004 /* Resources */,
+				3E1CD020A0C3F31E6453B31A /* [CP] Embed Pods Frameworks */,
+				9355C0A98C9AB2198B965B5A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -182,9 +231,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77832E111F0CB3600009F004 /* Build configuration list for PBXNativeTarget "wawjUITests" */;
 			buildPhases = (
+				644E6D16D847E535C8A44EB2 /* [CP] Check Pods Manifest.lock */,
 				77832DFE1F0CB3600009F004 /* Sources */,
 				77832DFF1F0CB3600009F004 /* Frameworks */,
 				77832E001F0CB3600009F004 /* Resources */,
+				F32BCE9E9BB49260AF8FE99A /* [CP] Embed Pods Frameworks */,
+				32143035A0C0E78ADA48B33F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				771F95761F0DD4DF00B4D016 /* startPage in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
 				77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */,
@@ -271,12 +324,150 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		32143035A0C0E78ADA48B33F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawjUITests/Pods-wawjUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3E1CD020A0C3F31E6453B31A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawjTests/Pods-wawjTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		626B672C9CE8A596DD4B4F1B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		644E6D16D847E535C8A44EB2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6F0A4B3A6F317DD5A76EE3C5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawj/Pods-wawj-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9355C0A98C9AB2198B965B5A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawjTests/Pods-wawjTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9CEFE3A3177815D878908889 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BBFC5557C2E263D1BC73F4C7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawj/Pods-wawj-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F32BCE9E9BB49260AF8FE99A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawjUITests/Pods-wawjUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		77832DDA1F0CB3600009F004 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77832DE91F0CB3600009F004 /* ViewController.m in Sources */,
+				771F95791F0DD75D00B4D016 /* WARegisterViewController.m in Sources */,
 				77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */,
 				77832DE31F0CB3600009F004 /* main.m in Sources */,
 			);
@@ -425,6 +616,7 @@
 		};
 		77832E0C1F0CB3600009F004 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B21D00EF72FB7B38D7B26B0 /* Pods-wawj.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T693A8J42H;
@@ -433,11 +625,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = liwuyang.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		77832E0D1F0CB3600009F004 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFA43CEA23B85C594B7FA94D /* Pods-wawj.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T693A8J42H;
@@ -446,11 +640,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = liwuyang.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		77832E0F1F0CB3600009F004 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F94C0FFCB4E73951FC2B9DE5 /* Pods-wawjTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = T693A8J42H;
@@ -464,6 +660,7 @@
 		};
 		77832E101F0CB3600009F004 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 491A08007405ED99B37CAC45 /* Pods-wawjTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = T693A8J42H;
@@ -477,6 +674,7 @@
 		};
 		77832E121F0CB3600009F004 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF84A151F2BDB576F4E0B027 /* Pods-wawjUITests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = T693A8J42H;
 				INFOPLIST_FILE = wawjUITests/Info.plist;
@@ -489,6 +687,7 @@
 		};
 		77832E131F0CB3600009F004 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E07A4DA50E1B93552860701F /* Pods-wawjUITests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = T693A8J42H;
 				INFOPLIST_FILE = wawjUITests/Info.plist;
@@ -518,6 +717,7 @@
 				77832E0D1F0CB3600009F004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		77832E0E1F0CB3600009F004 /* Build configuration list for PBXNativeTarget "wawjTests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +726,7 @@
 				77832E101F0CB3600009F004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		77832E111F0CB3600009F004 /* Build configuration list for PBXNativeTarget "wawjUITests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +735,7 @@
 				77832E131F0CB3600009F004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

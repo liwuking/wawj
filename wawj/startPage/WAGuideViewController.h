@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  WAGuideViewController.h
 //  wawj
 //
 //  Created by ruiyou on 2017/7/5.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface WAGuideViewController : UIViewController
 
 @end
-
