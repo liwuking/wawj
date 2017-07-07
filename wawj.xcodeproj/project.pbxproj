@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		046F8B714A89A30A52DCFB42 /* libPods-wawjUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE8DCA98A6ACE026C78D1C6 /* libPods-wawjUITests.a */; };
 		430530EECFA3E9435E2049CE /* libPods-wawj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F144179D9045BE5BA2E4D2 /* libPods-wawj.a */; };
-		771F95761F0DD4DF00B4D016 /* startPage in Resources */ = {isa = PBXBuildFile; fileRef = 771F95751F0DD4DF00B4D016 /* startPage */; };
 		771F95791F0DD75D00B4D016 /* WARegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95781F0DD75D00B4D016 /* WARegisterViewController.m */; };
+		771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95861F0F276300B4D016 /* WABindIphoneViewController.m */; };
+		771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95881F0F276300B4D016 /* WAGuideViewController.m */; };
 		77832DE31F0CB3600009F004 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE21F0CB3600009F004 /* main.m */; };
 		77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE51F0CB3600009F004 /* AppDelegate.m */; };
 		77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEA1F0CB3600009F004 /* Main.storyboard */; };
@@ -18,6 +19,11 @@
 		77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEF1F0CB3600009F004 /* LaunchScreen.storyboard */; };
 		77832DFC1F0CB3600009F004 /* wawjTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DFB1F0CB3600009F004 /* wawjTests.m */; };
 		77832E071F0CB3600009F004 /* wawjUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832E061F0CB3600009F004 /* wawjUITests.m */; };
+		77D75DDD1F0F2E3200E46D15 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DDC1F0F2E3200E46D15 /* Utility.m */; };
+		77D75DE21F0F31B900E46D15 /* UIViewController+AlertUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DE11F0F31B900E46D15 /* UIViewController+AlertUtil.m */; };
+		77D75DEA1F0F6CBE00E46D15 /* WANetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DE91F0F6CBE00E46D15 /* WANetViewController.m */; };
+		77D75DED1F0F6CD200E46D15 /* WAOldInterfaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */; };
+		77D75DF01F0F6D8E00E46D15 /* WAInternetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DEF1F0F6D8E00E46D15 /* WAInternetViewController.m */; };
 		8FBFB470A8D2ADA23A1F6624 /* libPods-wawjTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7164936E998887AF1573CC2E /* libPods-wawjTests.a */; };
 /* End PBXBuildFile section */
 
@@ -41,9 +47,12 @@
 /* Begin PBXFileReference section */
 		491A08007405ED99B37CAC45 /* Pods-wawjTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawjTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-wawjTests/Pods-wawjTests.release.xcconfig"; sourceTree = "<group>"; };
 		7164936E998887AF1573CC2E /* libPods-wawjTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawjTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		771F95751F0DD4DF00B4D016 /* startPage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = startPage; sourceTree = "<group>"; };
 		771F95771F0DD75D00B4D016 /* WARegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterViewController.h; sourceTree = "<group>"; };
 		771F95781F0DD75D00B4D016 /* WARegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterViewController.m; sourceTree = "<group>"; };
+		771F95851F0F276300B4D016 /* WABindIphoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABindIphoneViewController.h; sourceTree = "<group>"; };
+		771F95861F0F276300B4D016 /* WABindIphoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABindIphoneViewController.m; sourceTree = "<group>"; };
+		771F95871F0F276300B4D016 /* WAGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGuideViewController.h; sourceTree = "<group>"; };
+		771F95881F0F276300B4D016 /* WAGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGuideViewController.m; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -58,6 +67,18 @@
 		77832E021F0CB3600009F004 /* wawjUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wawjUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832E061F0CB3600009F004 /* wawjUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wawjUITests.m; sourceTree = "<group>"; };
 		77832E081F0CB3600009F004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77D75DDB1F0F2E3200E46D15 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		77D75DDC1F0F2E3200E46D15 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		77D75DDE1F0F2EA200E46D15 /* WACommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WACommon.h; sourceTree = "<group>"; };
+		77D75DDF1F0F2ED700E46D15 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		77D75DE01F0F31B900E46D15 /* UIViewController+AlertUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AlertUtil.h"; sourceTree = "<group>"; };
+		77D75DE11F0F31B900E46D15 /* UIViewController+AlertUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AlertUtil.m"; sourceTree = "<group>"; };
+		77D75DE81F0F6CBE00E46D15 /* WANetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANetViewController.h; sourceTree = "<group>"; };
+		77D75DE91F0F6CBE00E46D15 /* WANetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANetViewController.m; sourceTree = "<group>"; };
+		77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOldInterfaceViewController.h; sourceTree = "<group>"; };
+		77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOldInterfaceViewController.m; sourceTree = "<group>"; };
+		77D75DEE1F0F6D8E00E46D15 /* WAInternetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAInternetViewController.h; sourceTree = "<group>"; };
+		77D75DEF1F0F6D8E00E46D15 /* WAInternetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAInternetViewController.m; sourceTree = "<group>"; };
 		8B21D00EF72FB7B38D7B26B0 /* Pods-wawj.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wawj.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wawj/Pods-wawj.debug.xcconfig"; sourceTree = "<group>"; };
 		9FE8DCA98A6ACE026C78D1C6 /* libPods-wawjUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawjUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0F144179D9045BE5BA2E4D2 /* libPods-wawj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wawj.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +139,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		771F957E1F0F270100B4D016 /* StartPage */ = {
+			isa = PBXGroup;
+			children = (
+				771F95871F0F276300B4D016 /* WAGuideViewController.h */,
+				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
+				771F95771F0DD75D00B4D016 /* WARegisterViewController.h */,
+				771F95781F0DD75D00B4D016 /* WARegisterViewController.m */,
+				771F95851F0F276300B4D016 /* WABindIphoneViewController.h */,
+				771F95861F0F276300B4D016 /* WABindIphoneViewController.m */,
+				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
+				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
+			);
+			name = StartPage;
+			sourceTree = "<group>";
+		};
 		77832DD51F0CB3600009F004 = {
 			isa = PBXGroup;
 			children = (
@@ -145,9 +181,9 @@
 			children = (
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
-				771F95771F0DD75D00B4D016 /* WARegisterViewController.h */,
-				771F95781F0DD75D00B4D016 /* WARegisterViewController.m */,
-				771F95751F0DD4DF00B4D016 /* startPage */,
+				77D75DE71F0F6AAF00E46D15 /* functionUI */,
+				77D75DDA1F0F2DFC00E46D15 /* Utility */,
+				771F957E1F0F270100B4D016 /* StartPage */,
 				77832DEA1F0CB3600009F004 /* Main.storyboard */,
 				77832DED1F0CB3600009F004 /* Assets.xcassets */,
 				77832DEF1F0CB3600009F004 /* LaunchScreen.storyboard */,
@@ -161,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				77832DE21F0CB3600009F004 /* main.m */,
+				77D75DDF1F0F2ED700E46D15 /* PrefixHeader.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -181,6 +218,29 @@
 				77832E081F0CB3600009F004 /* Info.plist */,
 			);
 			path = wawjUITests;
+			sourceTree = "<group>";
+		};
+		77D75DDA1F0F2DFC00E46D15 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				77D75DDE1F0F2EA200E46D15 /* WACommon.h */,
+				77D75DDB1F0F2E3200E46D15 /* Utility.h */,
+				77D75DDC1F0F2E3200E46D15 /* Utility.m */,
+				77D75DE01F0F31B900E46D15 /* UIViewController+AlertUtil.h */,
+				77D75DE11F0F31B900E46D15 /* UIViewController+AlertUtil.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		77D75DE71F0F6AAF00E46D15 /* functionUI */ = {
+			isa = PBXGroup;
+			children = (
+				77D75DE81F0F6CBE00E46D15 /* WANetViewController.h */,
+				77D75DE91F0F6CBE00E46D15 /* WANetViewController.m */,
+				77D75DEE1F0F6D8E00E46D15 /* WAInternetViewController.h */,
+				77D75DEF1F0F6D8E00E46D15 /* WAInternetViewController.m */,
+			);
+			name = functionUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,7 +361,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				771F95761F0DD4DF00B4D016 /* startPage in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
 				77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */,
@@ -467,8 +526,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77D75DEA1F0F6CBE00E46D15 /* WANetViewController.m in Sources */,
+				771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */,
+				77D75DE21F0F31B900E46D15 /* UIViewController+AlertUtil.m in Sources */,
+				77D75DF01F0F6D8E00E46D15 /* WAInternetViewController.m in Sources */,
 				771F95791F0DD75D00B4D016 /* WARegisterViewController.m in Sources */,
+				771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */,
+				77D75DED1F0F6CD200E46D15 /* WAOldInterfaceViewController.m in Sources */,
 				77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */,
+				77D75DDD1F0F2E3200E46D15 /* Utility.m in Sources */,
 				77832DE31F0CB3600009F004 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +686,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T693A8J42H;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/wawj/PrefixHeader.pch";
 				INFOPLIST_FILE = wawj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -635,6 +702,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T693A8J42H;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/wawj/PrefixHeader.pch";
 				INFOPLIST_FILE = wawj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

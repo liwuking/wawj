@@ -9,6 +9,7 @@
 #import "WAGuideViewController.h"
 
 @interface WAGuideViewController ()
+
     @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
@@ -19,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
+    [self performSegueWithIdentifier:@"WARegisterViewController" sender:nil];
     
 }
 

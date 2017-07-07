@@ -7,6 +7,8 @@ target 'wawj' do
 
   # Pods for wawj
   pod 'AFNetworking', '~> 3.0'
+  pod 'MBProgressHUD', '~> 1.0.0'
+  
   target 'wawjTests' do
     inherit! :search_paths
     # Pods for testing
