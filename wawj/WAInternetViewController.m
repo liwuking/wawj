@@ -9,6 +9,7 @@
 #import "WAInternetViewController.h"
 
 @interface WAInternetViewController ()
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
@@ -17,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+}
+- (IBAction)clickBack:(UIButton *)sender {
 }
 
 - (void)didReceiveMemoryWarning {

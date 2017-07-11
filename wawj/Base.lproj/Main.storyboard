@@ -578,10 +578,10 @@
             </objects>
             <point key="canvasLocation" x="2996" y="176.76161919040482"/>
         </scene>
-        <!--View Controller-->
+        <!--Internet View Controller-->
         <scene sceneID="cxE-qn-C0Q">
             <objects>
-                <viewController id="NiY-8R-LQL" sceneMemberID="viewController">
+                <viewController id="NiY-8R-LQL" customClass="WAInternetViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ia3-0C-fCx"/>
                         <viewControllerLayoutGuide type="bottom" id="RJh-Hf-zTk"/>
@@ -594,19 +594,42 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3s-jw-UWj">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8s-GZ-iPJ">
+                                        <rect key="frame" x="105" y="8" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="返回"/>
+                                        <connections>
+                                            <action selector="clickBack:" destination="NiY-8R-LQL" eventType="touchUpInside" id="2Cj-PE-pdi"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="yrr-f2-zKW"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="d3s-jw-UWj" secondAttribute="trailing" id="17Z-vT-Pmo"/>
                             <constraint firstAttribute="trailing" secondItem="Tr8-ik-kmE" secondAttribute="trailing" id="O3M-ch-1Wa"/>
+                            <constraint firstItem="RJh-Hf-zTk" firstAttribute="top" secondItem="d3s-jw-UWj" secondAttribute="bottom" id="e81-NX-9JD"/>
+                            <constraint firstItem="d3s-jw-UWj" firstAttribute="leading" secondItem="8mm-N7-F0B" secondAttribute="leading" id="ike-oI-ffX"/>
                             <constraint firstItem="RJh-Hf-zTk" firstAttribute="top" secondItem="Tr8-ik-kmE" secondAttribute="bottom" constant="44" id="lVk-cL-hzf"/>
                             <constraint firstItem="Tr8-ik-kmE" firstAttribute="top" secondItem="8mm-N7-F0B" secondAttribute="top" id="p0M-q0-4fC"/>
                             <constraint firstItem="Tr8-ik-kmE" firstAttribute="leading" secondItem="8mm-N7-F0B" secondAttribute="leading" id="sdq-dN-FPm"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="Tr8-ik-kmE" id="z6L-Tl-DDJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bzd-CI-D5q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3629.5999999999999" y="176.76161919040482"/>
+            <point key="canvasLocation" x="3743" y="177"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LUC-kc-SqT">
