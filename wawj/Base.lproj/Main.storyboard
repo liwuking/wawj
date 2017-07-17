@@ -462,10 +462,10 @@
             </objects>
             <point key="canvasLocation" x="2280.8000000000002" y="176.76161919040482"/>
         </scene>
-        <!--View Controller-->
+        <!--Net View Controller-->
         <scene sceneID="syg-Mh-wMu">
             <objects>
-                <viewController id="31F-aP-Vmd" sceneMemberID="viewController">
+                <viewController id="31F-aP-Vmd" customClass="WANetViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WeS-5w-hgd"/>
                         <viewControllerLayoutGuide type="bottom" id="ymx-44-ANO"/>
@@ -475,21 +475,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="手机流量（选）" translatesAutoresizingMaskIntoConstraints="NO" id="Exr-lf-iMe">
-                                <rect key="frame" x="24" y="114" width="160" height="160"/>
+                                <rect key="frame" x="24" y="158" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="CKk-Re-b6j"/>
                                     <constraint firstAttribute="width" constant="160" id="kTu-wc-Ej6"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WIFI（未）" translatesAutoresizingMaskIntoConstraints="NO" id="m3Q-P9-eJr">
-                                <rect key="frame" x="196" y="114" width="160" height="160"/>
+                                <rect key="frame" x="196" y="158" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="9W3-nl-6RZ"/>
                                     <constraint firstAttribute="width" constant="160" id="Blh-v1-bA5"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手机流量" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rD-7L-ZnP">
-                                <rect key="frame" x="43" y="288" width="122" height="29"/>
+                                <rect key="frame" x="43" y="332" width="122" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="fX9-QF-2pW"/>
                                     <constraint firstAttribute="height" constant="29" id="sac-tv-RxE"/>
@@ -499,7 +499,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jLb-lK-PsT">
-                                <rect key="frame" x="86" y="342" width="35" height="35"/>
+                                <rect key="frame" x="86" y="386" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="jiN-eU-cnw"/>
                                     <constraint firstAttribute="width" constant="35" id="p0h-f9-Njf"/>
@@ -507,7 +507,7 @@
                                 <state key="normal" image="图层21"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WIFI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfT-P9-ah3">
-                                <rect key="frame" x="215" y="288" width="122" height="29"/>
+                                <rect key="frame" x="215" y="332" width="122" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="4ps-Cf-2dw"/>
                                     <constraint firstAttribute="height" constant="29" id="CpB-Vu-pTn"/>
@@ -517,7 +517,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前使用手机流量" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f0P-rr-YMs">
-                                <rect key="frame" x="64" y="430" width="147" height="20"/>
+                                <rect key="frame" x="64" y="474" width="147" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Ebf-My-VCb"/>
                                     <constraint firstAttribute="width" constant="147" id="O8Z-Oi-M2t"/>
@@ -527,7 +527,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoP-1n-rXV">
-                                <rect key="frame" x="216" y="423" width="35" height="35"/>
+                                <rect key="frame" x="216" y="467" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="73F-8p-GhB"/>
                                     <constraint firstAttribute="width" constant="35" id="L50-pw-gUz"/>
@@ -535,7 +535,7 @@
                                 <state key="normal" image="图层26"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbi-6f-PJC">
-                                <rect key="frame" x="57" y="495" width="260" height="47"/>
+                                <rect key="frame" x="57" y="539" width="260" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
                                 <constraints>
@@ -548,6 +548,9 @@
                                 <state key="normal" title="继续上网" image="图层22">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickContinueNet:" destination="31F-aP-Vmd" eventType="touchUpInside" id="IZl-Ei-nNb"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.92549019607843142" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
@@ -623,6 +626,8 @@
                             <constraint firstItem="Tr8-ik-kmE" firstAttribute="leading" secondItem="8mm-N7-F0B" secondAttribute="leading" id="sdq-dN-FPm"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="webView" destination="Tr8-ik-kmE" id="z6L-Tl-DDJ"/>
                     </connections>

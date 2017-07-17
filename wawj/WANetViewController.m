@@ -8,6 +8,8 @@
 
 #import "WANetViewController.h"
 
+#import "WAInternetViewController.h"
+
 @interface WANetViewController ()
 
 @end
@@ -17,6 +19,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+}
+- (IBAction)clickContinueNet:(UIButton *)sender {
+    
+    [self performSegueWithIdentifier:@"WAInternetViewController" sender:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {

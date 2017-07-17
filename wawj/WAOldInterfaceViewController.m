@@ -8,6 +8,8 @@
 
 #import "WAOldInterfaceViewController.h"
 
+#import "WANetViewController.h"
+
 @interface WAOldInterfaceViewController ()
 
 @end
@@ -19,6 +21,12 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    [self performSegueWithIdentifier:@"WANetViewController" sender:nil];
     
 }
 

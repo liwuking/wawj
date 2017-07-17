@@ -18,8 +18,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    //[self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
+    [self.webView loadRequest:request];
+    
+    
 }
 - (IBAction)clickBack:(UIButton *)sender {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {
