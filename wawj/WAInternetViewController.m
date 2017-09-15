@@ -7,25 +7,56 @@
 //
 
 #import "WAInternetViewController.h"
-
+#import <WebKit/WebKit.h>
 @interface WAInternetViewController ()
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+
+@property (strong, nonatomic)WKWebView   *webView;
 
 @end
 
 @implementation WAInternetViewController
 
+- (BOOL)prefersStatusBarHidden{
+    return YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    //[self.navigationController setNavigationBarHidden:YES animated:NO];
-    
+    // 创建配置
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    // 创建UserContentController（提供JavaScript向webView发送消息的方法）
+    WKUserContentController* userContent = [[WKUserContentController alloc] init];
+    // 添加消息处理，注意：self指代的对象需要遵守WKScriptMessageHandler协议，结束时需要移除
+//    [userContent addScriptMessageHandler:self name:@"NativeMethod"];
+    // 将UserConttentController设置到配置文件
+    config.userContentController = userContent;
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-44) configuration:config];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
     [self.webView loadRequest:request];
     
+    [self.view addSubview:self.webView];
     
 }
+
+//- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+//    // 判断是否是调用原生的
+//    if ([@"NativeMethod" isEqualToString:message.name]) {
+//        // 判断message的内容，然后做相应的操作
+//        if ([@"close" isEqualToString:message.body]) {
+//            
+//    　　}
+//    }
+//}
+
+- (IBAction)clickGoBack:(UIButton *)sender {
+    
+    if (self.webView.canGoBack) {
+        [self.webView goBack];
+    }
+    
+}
+
 - (IBAction)clickBack:(UIButton *)sender {
     
     [self.navigationController popViewControllerAnimated:YES];

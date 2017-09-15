@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WACommonlyAPPViewController">
+            <connections>
+                <outlet property="collectionView" destination="p1c-Jx-2tt" id="rH0-Xd-pEg"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="p1c-Jx-2tt">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="501"/>
+                    <color key="backgroundColor" red="0.92549019607843142" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ycF-al-QzU">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="YPR-YB-TEi"/>
+                        <outlet property="delegate" destination="-1" id="Pes-iu-If5"/>
+                    </connections>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ym9-sP-bjf">
+                    <rect key="frame" x="0.0" y="501" width="320" height="67"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Usz-t9-3BB">
+                            <rect key="frame" x="0.0" y="0.0" width="219" height="67"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="219" id="XxQ-1b-xfO"/>
+                            </constraints>
+                            <state key="normal" title="添加常用APP"/>
+                            <connections>
+                                <action selector="clickCommonAppBtn:" destination="-1" eventType="touchUpInside" id="ykG-Lb-kVU"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yj6-MN-sRL">
+                            <rect key="frame" x="220" y="0.0" width="100" height="67"/>
+                            <state key="normal" image="phoneApp"/>
+                            <connections>
+                                <action selector="clickPhoneBtn:" destination="-1" eventType="touchUpInside" id="Eh4-71-H5M"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C2D-nq-OL6">
+                            <rect key="frame" x="219" y="0.0" width="1" height="67"/>
+                            <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="E2h-Gj-zqK"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Usz-t9-3BB" firstAttribute="leading" secondItem="Ym9-sP-bjf" secondAttribute="leading" id="5X1-lh-7KK"/>
+                        <constraint firstAttribute="bottom" secondItem="C2D-nq-OL6" secondAttribute="bottom" id="8g3-6x-ChI"/>
+                        <constraint firstAttribute="trailing" secondItem="Yj6-MN-sRL" secondAttribute="trailing" id="BPH-ny-a9L"/>
+                        <constraint firstItem="Yj6-MN-sRL" firstAttribute="top" secondItem="Ym9-sP-bjf" secondAttribute="top" id="Thg-Lm-YRm"/>
+                        <constraint firstItem="C2D-nq-OL6" firstAttribute="top" secondItem="Ym9-sP-bjf" secondAttribute="top" id="ZqP-tc-fqi"/>
+                        <constraint firstAttribute="bottom" secondItem="Yj6-MN-sRL" secondAttribute="bottom" id="at8-HZ-DeH"/>
+                        <constraint firstAttribute="bottom" secondItem="Usz-t9-3BB" secondAttribute="bottom" id="cJm-9k-uVK"/>
+                        <constraint firstItem="Yj6-MN-sRL" firstAttribute="leading" secondItem="C2D-nq-OL6" secondAttribute="trailing" id="gXq-xh-1h9"/>
+                        <constraint firstItem="Usz-t9-3BB" firstAttribute="top" secondItem="Ym9-sP-bjf" secondAttribute="top" id="nfP-Ha-eCx"/>
+                        <constraint firstItem="C2D-nq-OL6" firstAttribute="leading" secondItem="Usz-t9-3BB" secondAttribute="trailing" id="oXJ-JJ-Ep1"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Ym9-sP-bjf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2ht-RC-cDO"/>
+                <constraint firstAttribute="bottom" secondItem="p1c-Jx-2tt" secondAttribute="bottom" constant="67" id="9Vt-qg-f4G"/>
+                <constraint firstAttribute="bottom" secondItem="Ym9-sP-bjf" secondAttribute="bottom" id="Fg6-f3-aMx"/>
+                <constraint firstAttribute="trailing" secondItem="p1c-Jx-2tt" secondAttribute="trailing" id="LEn-vn-yti"/>
+                <constraint firstItem="p1c-Jx-2tt" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NBz-lN-Ggs"/>
+                <constraint firstAttribute="trailing" secondItem="Ym9-sP-bjf" secondAttribute="trailing" id="NR1-rN-puP"/>
+                <constraint firstItem="p1c-Jx-2tt" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dl0-dx-BS4"/>
+                <constraint firstItem="Ym9-sP-bjf" firstAttribute="top" secondItem="p1c-Jx-2tt" secondAttribute="bottom" id="hYI-H7-SXl"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="phoneApp" width="82" height="40"/>
+    </resources>
+</document>

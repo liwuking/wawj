@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemindViewController">
+            <connections>
+                <outlet property="_microphoneBGView" destination="IgU-b1-kaS" id="G9d-7o-g9m"/>
+                <outlet property="_remindTableView" destination="F0B-Kq-p2g" id="SFE-ho-tfj"/>
+                <outlet property="_voiceSearchView" destination="Nb1-yj-K1b" id="WmU-2C-rio"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="95" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="F0B-Kq-p2g">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
+                    <color key="backgroundColor" red="0.90196078430000004" green="0.96078431369999995" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="U1g-QC-ypP"/>
+                        <outlet property="delegate" destination="-1" id="ul5-b2-F23"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nb1-yj-K1b" userLabel="View - bg">
+                    <rect key="frame" x="0.0" y="557" width="375" height="110"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KaC-Fo-ZwT" userLabel="View - 话筒">
+                            <rect key="frame" x="130" y="36" width="60" height="60"/>
+                            <subviews>
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-b1-kaS">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                    <gestureRecognizers/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="OoR-z3-dd0"/>
+                                        <constraint firstAttribute="height" constant="60" id="ZC4-D6-Mqy"/>
+                                    </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="jdH-C2-Bnx" appends="YES" id="Lgn-gp-dL8"/>
+                                    </connections>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="48K-tJ-7nB"/>
+                                <constraint firstAttribute="bottom" secondItem="IgU-b1-kaS" secondAttribute="bottom" id="DF9-6r-wcn"/>
+                                <constraint firstAttribute="width" constant="60" id="O0u-vw-qSa"/>
+                                <constraint firstItem="IgU-b1-kaS" firstAttribute="centerX" secondItem="KaC-Fo-ZwT" secondAttribute="centerX" id="njJ-AU-cER"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按住说话" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-BI-COX">
+                            <rect key="frame" x="120" y="10" width="80" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="QiZ-Gd-Ti6"/>
+                                <constraint firstAttribute="width" constant="80" id="SEy-Iv-yZu"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="d14-ql-2dw"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.1960784314" green="0.1960784314" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="pIK-BI-COX" firstAttribute="top" secondItem="Nb1-yj-K1b" secondAttribute="top" constant="10" id="5ZU-15-tu4"/>
+                        <constraint firstItem="pIK-BI-COX" firstAttribute="centerX" secondItem="Nb1-yj-K1b" secondAttribute="centerX" constant="-27.5" id="5j1-vX-auD"/>
+                        <constraint firstItem="KaC-Fo-ZwT" firstAttribute="centerX" secondItem="pIK-BI-COX" secondAttribute="centerX" id="Cc7-2e-98O"/>
+                        <constraint firstItem="KaC-Fo-ZwT" firstAttribute="top" secondItem="pIK-BI-COX" secondAttribute="bottom" constant="10" id="PF4-7e-UCV"/>
+                        <constraint firstAttribute="height" constant="110" id="hqS-QQ-L4b"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Nb1-yj-K1b" secondAttribute="trailing" id="8dM-lS-0JA"/>
+                <constraint firstAttribute="trailing" secondItem="F0B-Kq-p2g" secondAttribute="trailing" id="9He-Vu-kC7"/>
+                <constraint firstItem="Nb1-yj-K1b" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ker-On-ECn"/>
+                <constraint firstAttribute="bottom" secondItem="Nb1-yj-K1b" secondAttribute="bottom" id="om4-RV-6wP"/>
+                <constraint firstItem="F0B-Kq-p2g" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ooi-UH-Ar6"/>
+                <constraint firstItem="Nb1-yj-K1b" firstAttribute="top" secondItem="F0B-Kq-p2g" secondAttribute="bottom" id="ouj-3Z-SaL"/>
+                <constraint firstItem="F0B-Kq-p2g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="y6I-sh-81o"/>
+            </constraints>
+            <point key="canvasLocation" x="-103" y="188"/>
+        </view>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="jdH-C2-Bnx">
+            <connections>
+                <action selector="beginRecording:" destination="-1" id="u7f-PV-fIn"/>
+            </connections>
+        </pongPressGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="语音" width="162" height="162"/>
+    </resources>
+</document>

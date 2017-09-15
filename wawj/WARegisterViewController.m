@@ -46,18 +46,18 @@
 
 - (IBAction)clickNextBtn:(UIButton *)sender {
     
-    if (![Utility isValidatePhone:self.textFiled.text]) {
-        
-        [self showAlertViewWithTitle:@"提示" message:@"手机号输入有误" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-    
-    } else {
-        
-        [self performSegueWithIdentifier:@"WABindIphoneViewController" sender:nil];
-        
-    }
-    
+//    if (![Utility isValidatePhone:self.textFiled.text]) {
+//        
+//        [self showAlertViewWithTitle:@"提示" message:@"手机号输入有误" buttonTitle:@"确定" clickBtn:^{
+//            
+//        }];
+//    
+//    } else {
+//        
+//        [self performSegueWithIdentifier:@"WABindIphoneViewController" sender:nil];
+//        
+//    }
+    [self performSegueWithIdentifier:@"WABindIphoneViewController" sender:nil];
 }
     
     

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SpeakingView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nM-nS-gb4" userLabel="View - bg">
+                    <rect key="frame" x="107" y="253" width="160" height="160"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingBkg.png" translatesAutoresizingMaskIntoConstraints="NO" id="X6j-8g-nDy" userLabel="话题">
+                            <rect key="frame" x="26" y="22" width="62" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="100" id="hg9-w0-6IT"/>
+                                <constraint firstAttribute="width" constant="62" id="sWP-r1-cmq"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingSignal004.png" translatesAutoresizingMaskIntoConstraints="NO" id="iU8-zK-eaZ" userLabel="音量">
+                            <rect key="frame" x="100" y="22" width="38" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="38" id="6G5-5C-J6e"/>
+                                <constraint firstAttribute="height" constant="100" id="cM8-te-sOn"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在录音..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xo9-vP-uTX">
+                            <rect key="frame" x="8" y="125" width="144" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="I2G-LE-jbX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="X6j-8g-nDy" firstAttribute="leading" secondItem="7nM-nS-gb4" secondAttribute="leading" constant="26" id="35l-Ss-ocD"/>
+                        <constraint firstAttribute="height" constant="160" id="A35-dw-S65"/>
+                        <constraint firstAttribute="bottom" secondItem="xo9-vP-uTX" secondAttribute="bottom" constant="15" id="BYX-i9-jbx"/>
+                        <constraint firstAttribute="trailing" secondItem="xo9-vP-uTX" secondAttribute="trailing" constant="8" id="CQe-ev-9Nt"/>
+                        <constraint firstItem="iU8-zK-eaZ" firstAttribute="top" secondItem="7nM-nS-gb4" secondAttribute="top" constant="22" id="Eyc-oa-Dui"/>
+                        <constraint firstItem="xo9-vP-uTX" firstAttribute="leading" secondItem="7nM-nS-gb4" secondAttribute="leading" constant="8" id="NDg-L3-AYu"/>
+                        <constraint firstItem="X6j-8g-nDy" firstAttribute="top" secondItem="7nM-nS-gb4" secondAttribute="top" constant="22" id="YYf-ta-e0M"/>
+                        <constraint firstAttribute="width" constant="160" id="pGT-6X-7h7"/>
+                        <constraint firstAttribute="trailing" secondItem="iU8-zK-eaZ" secondAttribute="trailing" constant="22" id="wvy-kQ-jZK"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="7nM-nS-gb4" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Kh7-NE-jeh"/>
+                <constraint firstItem="7nM-nS-gb4" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TKX-NA-Oit"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="_bgView" destination="7nM-nS-gb4" id="zyC-vF-5kF"/>
+                <outlet property="_volumeImageView" destination="iU8-zK-eaZ" id="Hux-dX-sQb"/>
+                <outlet property="statusLabel" destination="xo9-vP-uTX" id="Wo2-nj-YNI"/>
+            </connections>
+            <point key="canvasLocation" x="52.5" y="54.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="RecordingBkg.png" width="62" height="100"/>
+        <image name="RecordingSignal004.png" width="38" height="100"/>
+    </resources>
+</document>

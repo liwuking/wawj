@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="95" id="YSU-sb-7vX" customClass="ExpiredRemindCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="95"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YSU-sb-7vX" id="Yiy-wl-Os1">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="94.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oA2-yB-MNh" userLabel="View - bg">
+                        <rect key="frame" x="10" y="10" width="300" height="85"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12月12日 下午" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enb-kI-rLx" userLabel="上午／下午">
+                                <rect key="frame" x="15" y="15" width="165" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="165" id="Hlg-s2-BUT"/>
+                                    <constraint firstAttribute="height" constant="14" id="xFU-Ib-1tF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃饭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ugi-gb-VnU" userLabel="event">
+                                <rect key="frame" x="100" y="53" width="120" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="GuH-xq-huA"/>
+                                    <constraint firstAttribute="height" constant="18" id="Yyz-zl-lXd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <color key="textColor" red="0.3921568627" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23:59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r08-dk-64k" userLabel="time">
+                                <rect key="frame" x="15" y="44" width="101" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="101" id="1nf-Fb-9gd"/>
+                                    <constraint firstAttribute="height" constant="30" id="jfw-zu-EQG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccC-4j-aPo">
+                                <rect key="frame" x="245" y="22" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="mKm-Bu-Of8"/>
+                                    <constraint firstAttribute="height" constant="40" id="xOI-hx-1da"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="delete.png"/>
+                                <connections>
+                                    <action selector="deleteAction:" destination="YSU-sb-7vX" eventType="touchUpInside" id="XOV-Sr-EIu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="85" id="Edw-rY-2Cl"/>
+                            <constraint firstItem="enb-kI-rLx" firstAttribute="top" secondItem="oA2-yB-MNh" secondAttribute="top" constant="15" id="KHV-j4-edk"/>
+                            <constraint firstItem="r08-dk-64k" firstAttribute="top" secondItem="enb-kI-rLx" secondAttribute="bottom" constant="15" id="QhF-R2-i0F"/>
+                            <constraint firstItem="ccC-4j-aPo" firstAttribute="centerY" secondItem="oA2-yB-MNh" secondAttribute="centerY" id="Rxh-Yz-4Sw"/>
+                            <constraint firstItem="Ugi-gb-VnU" firstAttribute="leading" secondItem="r08-dk-64k" secondAttribute="trailing" constant="-16" id="Taz-Pw-Trd"/>
+                            <constraint firstItem="r08-dk-64k" firstAttribute="leading" secondItem="oA2-yB-MNh" secondAttribute="leading" constant="15" id="cNJ-Tp-CQ4"/>
+                            <constraint firstAttribute="bottom" secondItem="Ugi-gb-VnU" secondAttribute="bottom" constant="14" id="hE3-Su-31b"/>
+                            <constraint firstItem="enb-kI-rLx" firstAttribute="leading" secondItem="oA2-yB-MNh" secondAttribute="leading" constant="15" id="leh-rC-PIO"/>
+                            <constraint firstAttribute="trailing" secondItem="ccC-4j-aPo" secondAttribute="trailing" constant="15" id="zCx-me-pK4"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.90196078430000004" green="0.96078431369999995" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="oA2-yB-MNh" secondAttribute="trailing" constant="10" id="4PK-gp-zjt"/>
+                    <constraint firstItem="oA2-yB-MNh" firstAttribute="top" secondItem="Yiy-wl-Os1" secondAttribute="top" constant="10" id="AXo-4m-9ek"/>
+                    <constraint firstItem="oA2-yB-MNh" firstAttribute="leading" secondItem="Yiy-wl-Os1" secondAttribute="leading" constant="10" id="W7V-iE-vYe"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="_cellBgView" destination="oA2-yB-MNh" id="j4I-6H-tgN"/>
+                <outlet property="_deleteButton" destination="ccC-4j-aPo" id="1HJ-em-Jpn"/>
+                <outlet property="dateLabel" destination="enb-kI-rLx" id="edN-ou-1mT"/>
+                <outlet property="eventLabel" destination="Ugi-gb-VnU" id="3Nr-N1-aeH"/>
+                <outlet property="timeLabel" destination="r08-dk-64k" id="cjd-5e-Yio"/>
+            </connections>
+            <point key="canvasLocation" x="49" y="103.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="delete.png" width="30" height="30"/>
+    </resources>
+</document>

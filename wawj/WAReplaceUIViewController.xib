@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAReplaceUIViewController">
+            <connections>
+                <outlet property="gouX" destination="rDw-4v-kX2" id="fHf-Mr-tfK"/>
+                <outlet property="replaceBtn" destination="81O-UI-MDi" id="v4H-jw-dbA"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="77G-81-Afb">
+                    <rect key="frame" x="20" y="96" width="280" height="284"/>
+                    <subviews>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="desktopLeft" translatesAutoresizingMaskIntoConstraints="NO" id="SFV-jn-Oqt">
+                            <rect key="frame" x="0.0" y="0.0" width="132.5" height="284"/>
+                            <gestureRecognizers/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="akb-NP-Q0Z" appends="YES" id="haz-Un-Rzc"/>
+                            </connections>
+                        </imageView>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="desktopRight" translatesAutoresizingMaskIntoConstraints="NO" id="Gef-Us-Ac5">
+                            <rect key="frame" x="147.5" y="0.0" width="132.5" height="284"/>
+                            <gestureRecognizers/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="IIw-bJ-OFd" appends="YES" id="fxA-2T-x7l"/>
+                            </connections>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="284" id="O82-Kr-Zr0"/>
+                    </constraints>
+                </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGJ-T5-iyc">
+                    <rect key="frame" x="69" y="398" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="6M1-w4-ylq"/>
+                        <constraint firstAttribute="height" constant="35" id="ujt-rv-7C0"/>
+                    </constraints>
+                    <state key="normal" image="图层21"/>
+                </button>
+                <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81O-UI-MDi">
+                    <rect key="frame" x="30" y="461" width="260" height="47"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="47" id="OBc-Uv-Wbg"/>
+                        <constraint firstAttribute="width" constant="260" id="j72-dL-Gly"/>
+                    </constraints>
+                    <state key="normal" image="huanDesktop"/>
+                    <connections>
+                        <action selector="clickReplaceBtn:" destination="-1" eventType="touchUpInside" id="Yur-eX-xKR"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="81O-UI-MDi" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4Ub-Jf-d4k"/>
+                <constraint firstItem="BGJ-T5-iyc" firstAttribute="top" secondItem="77G-81-Afb" secondAttribute="bottom" constant="18" id="5PM-dH-pXu"/>
+                <constraint firstItem="81O-UI-MDi" firstAttribute="top" secondItem="BGJ-T5-iyc" secondAttribute="bottom" constant="28" id="QED-Jv-nXz"/>
+                <constraint firstItem="77G-81-Afb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="96" id="YUL-S5-m8I"/>
+                <constraint firstAttribute="trailing" secondItem="77G-81-Afb" secondAttribute="trailing" constant="20" id="hD4-UN-Ldn"/>
+                <constraint firstItem="BGJ-T5-iyc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="69" id="rDw-4v-kX2"/>
+                <constraint firstItem="77G-81-Afb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="wkT-bD-MCN"/>
+            </constraints>
+        </view>
+        <tapGestureRecognizer id="akb-NP-Q0Z" userLabel="leftGes">
+            <connections>
+                <action selector="clickLeftGes:" destination="-1" id="ciz-QC-Uwa"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="IIw-bJ-OFd" userLabel="rightGes">
+            <connections>
+                <action selector="clickRightGes:" destination="-1" id="UNg-YW-TKZ"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="desktopLeft" width="159" height="284"/>
+        <image name="desktopRight" width="159" height="284"/>
+        <image name="huanDesktop" width="260" height="47"/>
+        <image name="图层21" width="35" height="35"/>
+    </resources>
+</document>

@@ -7,10 +7,11 @@
 //
 
 #import "WAGuideViewController.h"
+#import "WABindIphoneViewController.h"
 
 @interface WAGuideViewController ()
 
-    @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -20,7 +21,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self performSegueWithIdentifier:@"WARegisterViewController" sender:nil];
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
     
 }
 

@@ -155,7 +155,7 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 }
 
 - (void)hideAnimated:(BOOL)animated {
-    MBMainThreadAssert();
+    //MBMainThreadAssert();
     [self.graceTimer invalidate];
     self.useAnimation = animated;
     self.finished = YES;

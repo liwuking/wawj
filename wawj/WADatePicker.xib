@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view alpha="0.40000000000000002" contentMode="scaleToFill" id="edd-kR-WcG" customClass="WADatePicker">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QcL-75-UbH">
+                    <rect key="frame" x="310" y="296" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Cra-Za-eBN"/>
+                        <constraint firstAttribute="width" constant="50" id="cPc-Ot-BLs"/>
+                    </constraints>
+                    <state key="normal" image="duigou"/>
+                    <connections>
+                        <action selector="clickSureBtn:" destination="edd-kR-WcG" eventType="touchUpInside" id="iDm-e9-rxm"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z22-IX-cMA">
+                    <rect key="frame" x="15" y="301" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cle-Y6-Vzy"/>
+                        <constraint firstAttribute="width" constant="50" id="vK6-gy-0Q2"/>
+                    </constraints>
+                    <state key="normal" image="chacha"/>
+                    <connections>
+                        <action selector="clickCancelBtn:" destination="edd-kR-WcG" eventType="touchUpInside" id="ZoU-qg-R4G"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65g-gU-7lG">
+                    <rect key="frame" x="0.0" y="361" width="375" height="306"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VJc-6H-P5d">
+                            <rect key="frame" x="0.0" y="69" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="0FU-J1-ptS"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z5W-lO-CM7">
+                            <rect key="frame" x="37.5" y="25" width="300" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="300" id="XB0-Hn-bqT"/>
+                                <constraint firstAttribute="height" constant="25" id="vVC-I2-vrv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="eqC-wa-1Rh">
+                            <rect key="frame" x="0.0" y="119" width="375" height="187"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="187" id="eIW-ds-pMs"/>
+                            </constraints>
+                            <date key="date" timeIntervalSinceReferenceDate="524046517.96311802">
+                                <!--2017-08-10 08:28:37 +0000-->
+                            </date>
+                            <locale key="locale" localeIdentifier="zh-Hans"/>
+                        </datePicker>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="eqC-wa-1Rh" secondAttribute="bottom" id="3mw-Lr-KtT"/>
+                        <constraint firstItem="Z5W-lO-CM7" firstAttribute="top" secondItem="65g-gU-7lG" secondAttribute="top" constant="25" id="5Nu-Vc-MdG"/>
+                        <constraint firstAttribute="trailing" secondItem="VJc-6H-P5d" secondAttribute="trailing" id="FEl-le-IrT"/>
+                        <constraint firstItem="eqC-wa-1Rh" firstAttribute="leading" secondItem="65g-gU-7lG" secondAttribute="leading" id="Hzm-Lb-M7f"/>
+                        <constraint firstItem="eqC-wa-1Rh" firstAttribute="top" secondItem="VJc-6H-P5d" secondAttribute="bottom" constant="49" id="YRg-tY-yX2"/>
+                        <constraint firstAttribute="height" constant="306" id="eZ7-7a-leg"/>
+                        <constraint firstItem="VJc-6H-P5d" firstAttribute="leading" secondItem="65g-gU-7lG" secondAttribute="leading" id="rHR-Ka-jah"/>
+                        <constraint firstAttribute="trailing" secondItem="eqC-wa-1Rh" secondAttribute="trailing" id="tzn-bY-VHB"/>
+                        <constraint firstItem="Z5W-lO-CM7" firstAttribute="centerX" secondItem="65g-gU-7lG" secondAttribute="centerX" id="zIS-uQ-YCC"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="65g-gU-7lG" firstAttribute="top" secondItem="Z22-IX-cMA" secondAttribute="bottom" constant="10" id="FpZ-v9-XtT"/>
+                <constraint firstItem="Z22-IX-cMA" firstAttribute="leading" secondItem="edd-kR-WcG" secondAttribute="leading" constant="15" id="HyB-ma-lHY"/>
+                <constraint firstItem="65g-gU-7lG" firstAttribute="top" secondItem="QcL-75-UbH" secondAttribute="bottom" constant="15" id="TUN-mt-LWD"/>
+                <constraint firstAttribute="trailing" secondItem="QcL-75-UbH" secondAttribute="trailing" constant="15" id="WqU-iV-qYS"/>
+                <constraint firstAttribute="trailing" secondItem="65g-gU-7lG" secondAttribute="trailing" id="blz-cl-4WE"/>
+                <constraint firstAttribute="bottom" secondItem="65g-gU-7lG" secondAttribute="bottom" id="e1z-HJ-64p"/>
+                <constraint firstItem="65g-gU-7lG" firstAttribute="leading" secondItem="edd-kR-WcG" secondAttribute="leading" id="sbc-eE-U2f"/>
+            </constraints>
+            <connections>
+                <outlet property="clickChacha" destination="Z22-IX-cMA" id="9nP-P0-Bqw"/>
+                <outlet property="clickDuigou" destination="QcL-75-UbH" id="OqF-IU-Xzi"/>
+                <outlet property="datePicker" destination="eqC-wa-1Rh" id="rRt-wc-VAB"/>
+                <outlet property="timeText" destination="Z5W-lO-CM7" id="hpr-HV-xNx"/>
+            </connections>
+            <point key="canvasLocation" x="265.5" y="215.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="chacha" width="46" height="46"/>
+        <image name="duigou" width="46" height="46"/>
+    </resources>
+</document>

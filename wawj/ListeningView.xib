@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ListeningView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkO-m7-EWE">
+                    <rect key="frame" x="122" y="268" width="130" height="130"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在播放" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiP-6w-Eoi">
+                            <rect key="frame" x="17" y="74" width="96" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGb-Yn-5s7">
+                            <rect key="frame" x="34" y="42" width="61" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="jZJ-XR-XTw"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.39215686274509803" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="RGb-Yn-5s7" secondAttribute="trailing" constant="35" id="0d0-YG-t7V"/>
+                        <constraint firstAttribute="bottom" secondItem="BiP-6w-Eoi" secondAttribute="bottom" constant="35" id="8cG-Q6-LaQ"/>
+                        <constraint firstAttribute="trailing" secondItem="BiP-6w-Eoi" secondAttribute="trailing" constant="17" id="RsN-zw-tYd"/>
+                        <constraint firstItem="RGb-Yn-5s7" firstAttribute="top" secondItem="pkO-m7-EWE" secondAttribute="top" constant="42" id="XHG-hE-xLu"/>
+                        <constraint firstAttribute="width" constant="130" id="hi9-R2-zZq"/>
+                        <constraint firstItem="BiP-6w-Eoi" firstAttribute="leading" secondItem="pkO-m7-EWE" secondAttribute="leading" constant="17" id="rR2-xw-Mgi"/>
+                        <constraint firstAttribute="height" constant="130" id="w28-fo-Ec0"/>
+                        <constraint firstItem="BiP-6w-Eoi" firstAttribute="top" secondItem="pkO-m7-EWE" secondAttribute="top" constant="74" id="y9U-Ry-PIJ"/>
+                        <constraint firstItem="RGb-Yn-5s7" firstAttribute="leading" secondItem="pkO-m7-EWE" secondAttribute="leading" constant="34" id="ztT-T6-OdZ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="pkO-m7-EWE" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="77i-Kb-QTk"/>
+                <constraint firstItem="pkO-m7-EWE" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="jZ2-Mw-6Hn"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="_bgView" destination="pkO-m7-EWE" id="lz3-DM-43P"/>
+                <outlet property="progressLabel" destination="RGb-Yn-5s7" id="ZcI-cH-CXj"/>
+            </connections>
+            <point key="canvasLocation" x="49.5" y="54.5"/>
+        </view>
+    </objects>
+</document>
