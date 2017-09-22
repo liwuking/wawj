@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CloseFamilyItem.h"
+
+@protocol WAAddFamilyViewControllerDelegate <NSObject>
+
+-(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item;
+
+@end
+
 @interface WAAddFamilyViewController : UIViewController
 
-
+@property(nonatomic, weak)id<WAAddFamilyViewControllerDelegate> delegate;
 
 @end

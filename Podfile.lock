@@ -16,6 +16,7 @@ PODS:
     - AFNetworking/NSURLSession
   - LJContactManager (0.0.5)
   - MBProgressHUD (1.0.0)
+  - MJRefresh (3.1.12)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
@@ -26,22 +27,27 @@ PODS:
     - UMengUShare/Core
   - UMengUShare/Social/ReducedWeChat (6.4.5):
     - UMengUShare/Core
+  - ZLPhotoBrowser (2.2.5)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - LJContactManager
   - MBProgressHUD (~> 1.0.0)
+  - MJRefresh (~> 3.1.12)
   - SDWebImage (~> 4.0.0)
   - UMengUShare/Social/ReducedQQ
   - UMengUShare/Social/ReducedWeChat
+  - ZLPhotoBrowser
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   LJContactManager: d4af72e8cfc92728143d073fdb3c49eea722cb8d
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   UMengUShare: a5711c54e640b04e3048e931d2b88d50f9cfa55c
+  ZLPhotoBrowser: e3b90e4ab9ec5d19ba2ed2ef7c9ded654e1b1c8e
 
-PODFILE CHECKSUM: b332079dbc40f1e6b47e1808964d64afe344842b
+PODFILE CHECKSUM: be9482b1fcdf42a52d77ca8e6932ed0c2a94487e
 
 COCOAPODS: 1.2.0

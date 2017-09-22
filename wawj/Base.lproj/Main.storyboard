@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pad-lY-fFj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pad-lY-fFj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -72,7 +73,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="13520382752" placeholder="请输入本机号码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MYp-kd-wzx">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入本机号码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MYp-kd-wzx">
                                 <rect key="frame" x="48" y="84" width="317" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="DVv-v6-kri"/>
@@ -484,12 +485,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="koi-xD-I4a" firstAttribute="top" secondItem="9Jp-b5-SdG" secondAttribute="bottom" id="8x3-4h-gCO"/>
+                            <constraint firstItem="9Jp-b5-SdG" firstAttribute="top" secondItem="hWy-Ix-ZWs" secondAttribute="top" id="ExB-AT-Yac"/>
                             <constraint firstItem="uIs-Ri-6vO" firstAttribute="top" secondItem="eGc-ZY-t2t" secondAttribute="bottom" id="URb-f8-Tc7"/>
                             <constraint firstItem="eGc-ZY-t2t" firstAttribute="top" secondItem="koi-xD-I4a" secondAttribute="bottom" id="asp-Ew-KfX"/>
                             <constraint firstAttribute="trailing" secondItem="koi-xD-I4a" secondAttribute="trailing" id="buC-PA-HeO"/>
                             <constraint firstItem="9Jp-b5-SdG" firstAttribute="leading" secondItem="koi-xD-I4a" secondAttribute="leading" id="dqw-uk-0Fs"/>
-                            <constraint firstItem="9Jp-b5-SdG" firstAttribute="top" secondItem="HCI-Kk-onn" secondAttribute="bottom" id="hCR-M8-nvk"/>
                             <constraint firstItem="eGc-ZY-t2t" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="hO8-3q-l9d"/>
+                            <constraint firstAttribute="trailing" secondItem="9Jp-b5-SdG" secondAttribute="trailing" id="skq-yI-TFH"/>
                             <constraint firstAttribute="trailing" secondItem="eGc-ZY-t2t" secondAttribute="trailing" id="tcs-3D-JwZ"/>
                             <constraint firstItem="koi-xD-I4a" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="vWt-4S-CUH"/>
                         </constraints>
@@ -522,21 +524,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mselected" translatesAutoresizingMaskIntoConstraints="NO" id="Exr-lf-iMe">
-                                <rect key="frame" x="24" y="94" width="160" height="160"/>
+                                <rect key="frame" x="24" y="114" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="CKk-Re-b6j"/>
                                     <constraint firstAttribute="width" constant="160" id="kTu-wc-Ej6"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WIFIUnselect" translatesAutoresizingMaskIntoConstraints="NO" id="m3Q-P9-eJr">
-                                <rect key="frame" x="196" y="94" width="160" height="160"/>
+                                <rect key="frame" x="196" y="114" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="9W3-nl-6RZ"/>
                                     <constraint firstAttribute="width" constant="160" id="Blh-v1-bA5"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手机流量" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rD-7L-ZnP">
-                                <rect key="frame" x="43" y="268" width="122" height="29"/>
+                                <rect key="frame" x="43" y="288" width="122" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="fX9-QF-2pW"/>
                                     <constraint firstAttribute="height" constant="29" id="sac-tv-RxE"/>
@@ -546,7 +548,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jLb-lK-PsT">
-                                <rect key="frame" x="86" y="322" width="35" height="35"/>
+                                <rect key="frame" x="86" y="342" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="jiN-eU-cnw"/>
                                     <constraint firstAttribute="width" constant="35" id="p0h-f9-Njf"/>
@@ -554,7 +556,7 @@
                                 <state key="normal" image="图层21"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WIFI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfT-P9-ah3">
-                                <rect key="frame" x="215" y="268" width="122" height="29"/>
+                                <rect key="frame" x="215" y="288" width="122" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="4ps-Cf-2dw"/>
                                     <constraint firstAttribute="height" constant="29" id="CpB-Vu-pTn"/>
@@ -564,7 +566,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前使用手机流量" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f0P-rr-YMs">
-                                <rect key="frame" x="64" y="410" width="147" height="20"/>
+                                <rect key="frame" x="64" y="430" width="147" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Ebf-My-VCb"/>
                                     <constraint firstAttribute="width" constant="147" id="O8Z-Oi-M2t"/>
@@ -574,7 +576,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoP-1n-rXV">
-                                <rect key="frame" x="216" y="403" width="35" height="35"/>
+                                <rect key="frame" x="216" y="423" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="73F-8p-GhB"/>
                                     <constraint firstAttribute="width" constant="35" id="L50-pw-gUz"/>
@@ -582,7 +584,7 @@
                                 <state key="normal" image="图层26"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbi-6f-PJC">
-                                <rect key="frame" x="57.5" y="475" width="260" height="47"/>
+                                <rect key="frame" x="57.5" y="495" width="260" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
                                 <constraints>
@@ -716,7 +718,7 @@
             <objects>
                 <navigationController id="pad-lY-fFj" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9UX-Y5-Rmf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

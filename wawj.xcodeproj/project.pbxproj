@@ -77,6 +77,25 @@
 		779CF4571F6A27C000DBEE44 /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4491F6A27C000DBEE44 /* UpYun.m */; };
 		779CF4581F6A27C000DBEE44 /* UPYUNConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF44B1F6A27C000DBEE44 /* UPYUNConfig.m */; };
 		779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF45A1F6B65AA00DBEE44 /* NSDictionary+Util.m */; };
+		779CF4641F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4621F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m */; };
+		779CF4651F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4631F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib */; };
+		779CF4691F6FA93C00DBEE44 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4671F6FA93C00DBEE44 /* PhotoCollectionViewCell.m */; };
+		779CF46A1F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4681F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib */; };
+		779CF46E1F6FAC4B00DBEE44 /* WANewPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF46C1F6FAC4B00DBEE44 /* WANewPhotosViewController.m */; };
+		779CF46F1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF46D1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib */; };
+		779CF4721F70B19B00DBEE44 /* ApplyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4711F70B19B00DBEE44 /* ApplyItem.m */; };
+		779CF4751F70B87E00DBEE44 /* CloseFamilyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4741F70B87E00DBEE44 /* CloseFamilyItem.m */; };
+		779CF4791F71108F00DBEE44 /* WACloseFamilyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4771F71108F00DBEE44 /* WACloseFamilyDetailViewController.m */; };
+		779CF47A1F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4781F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib */; };
+		779CF47C1F7127CD00DBEE44 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779CF47B1F7127CD00DBEE44 /* CoreLocation.framework */; };
+		779CF4801F7238C800DBEE44 /* PhotosItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF47F1F7238C800DBEE44 /* PhotosItem.m */; };
+		779CF4841F72468900DBEE44 /* WAPhotosUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4821F72468900DBEE44 /* WAPhotosUploadViewController.m */; };
+		779CF4851F72468900DBEE44 /* WAPhotosUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4831F72468900DBEE44 /* WAPhotosUploadViewController.xib */; };
+		779CF4891F724D1000DBEE44 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF4871F724D1000DBEE44 /* PhotoCell.m */; };
+		779CF48A1F724D1000DBEE44 /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4881F724D1000DBEE44 /* PhotoCell.xib */; };
+		779CF48D1F724E1600DBEE44 /* PhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF48C1F724E1600DBEE44 /* PhotoItem.m */; };
+		779CF4911F72571400DBEE44 /* WAPhotosShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */; };
+		779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */; };
 		77A67CEB1F399329000DFD88 /* WAReplaceUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */; };
 		77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */; };
 		77A67CF01F3C3190000DFD88 /* WAPersonSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CEE1F3C3190000DFD88 /* WAPersonSetViewController.m */; };
@@ -369,6 +388,36 @@
 		779CF44B1F6A27C000DBEE44 /* UPYUNConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPYUNConfig.m; sourceTree = "<group>"; };
 		779CF4591F6B65AA00DBEE44 /* NSDictionary+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Util.h"; sourceTree = "<group>"; };
 		779CF45A1F6B65AA00DBEE44 /* NSDictionary+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Util.m"; sourceTree = "<group>"; };
+		779CF4611F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAMyFamilyPhotosViewController.h; sourceTree = "<group>"; };
+		779CF4621F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAMyFamilyPhotosViewController.m; sourceTree = "<group>"; };
+		779CF4631F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAMyFamilyPhotosViewController.xib; sourceTree = "<group>"; };
+		779CF4661F6FA93C00DBEE44 /* PhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		779CF4671F6FA93C00DBEE44 /* PhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		779CF4681F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
+		779CF46B1F6FAC4B00DBEE44 /* WANewPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANewPhotosViewController.h; sourceTree = "<group>"; };
+		779CF46C1F6FAC4B00DBEE44 /* WANewPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANewPhotosViewController.m; sourceTree = "<group>"; };
+		779CF46D1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WANewPhotosViewController.xib; sourceTree = "<group>"; };
+		779CF4701F70B19B00DBEE44 /* ApplyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyItem.h; sourceTree = "<group>"; };
+		779CF4711F70B19B00DBEE44 /* ApplyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyItem.m; sourceTree = "<group>"; };
+		779CF4731F70B87E00DBEE44 /* CloseFamilyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseFamilyItem.h; sourceTree = "<group>"; };
+		779CF4741F70B87E00DBEE44 /* CloseFamilyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseFamilyItem.m; sourceTree = "<group>"; };
+		779CF4761F71108F00DBEE44 /* WACloseFamilyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACloseFamilyDetailViewController.h; sourceTree = "<group>"; };
+		779CF4771F71108F00DBEE44 /* WACloseFamilyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACloseFamilyDetailViewController.m; sourceTree = "<group>"; };
+		779CF4781F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACloseFamilyDetailViewController.xib; sourceTree = "<group>"; };
+		779CF47B1F7127CD00DBEE44 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		779CF47E1F7238C800DBEE44 /* PhotosItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosItem.h; sourceTree = "<group>"; };
+		779CF47F1F7238C800DBEE44 /* PhotosItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosItem.m; sourceTree = "<group>"; };
+		779CF4811F72468900DBEE44 /* WAPhotosUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotosUploadViewController.h; sourceTree = "<group>"; };
+		779CF4821F72468900DBEE44 /* WAPhotosUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotosUploadViewController.m; sourceTree = "<group>"; };
+		779CF4831F72468900DBEE44 /* WAPhotosUploadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotosUploadViewController.xib; sourceTree = "<group>"; };
+		779CF4861F724D1000DBEE44 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		779CF4871F724D1000DBEE44 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
+		779CF4881F724D1000DBEE44 /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
+		779CF48B1F724E1600DBEE44 /* PhotoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoItem.h; sourceTree = "<group>"; };
+		779CF48C1F724E1600DBEE44 /* PhotoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoItem.m; sourceTree = "<group>"; };
+		779CF48E1F72571400DBEE44 /* WAPhotosShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotosShowViewController.h; sourceTree = "<group>"; };
+		779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotosShowViewController.m; sourceTree = "<group>"; };
+		779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotosShowViewController.xib; sourceTree = "<group>"; };
 		77A67CE81F399329000DFD88 /* WAReplaceUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReplaceUIViewController.h; sourceTree = "<group>"; };
 		77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReplaceUIViewController.m; sourceTree = "<group>"; };
 		77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAReplaceUIViewController.xib; sourceTree = "<group>"; };
@@ -661,6 +710,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779CF47C1F7127CD00DBEE44 /* CoreLocation.framework in Frameworks */,
 				77A67F2F1F564FBE000DFD88 /* libstdc++.6.0.9.tbd in Frameworks */,
 				77A67F2D1F564F58000DFD88 /* AddressBook.framework in Frameworks */,
 				77A67F2B1F564F30000DFD88 /* AudioToolbox.framework in Frameworks */,
@@ -710,6 +760,7 @@
 		5F45177397006B593D2354B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				779CF47B1F7127CD00DBEE44 /* CoreLocation.framework */,
 				77A67F2E1F564FBE000DFD88 /* libstdc++.6.0.9.tbd */,
 				77A67F2C1F564F58000DFD88 /* AddressBook.framework */,
 				77A67F2A1F564F30000DFD88 /* AudioToolbox.framework */,
@@ -794,6 +845,9 @@
 		771F957E1F0F270100B4D016 /* StartPage */ = {
 			isa = PBXGroup;
 			children = (
+				77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */,
+				77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */,
+				77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */,
 				77A67D371F4C0614000DFD88 /* ListeningView.h */,
 				77A67D381F4C0614000DFD88 /* ListeningView.m */,
 				77A67D391F4C0614000DFD88 /* ListeningView.xib */,
@@ -811,9 +865,6 @@
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
 				77A67D091F429500000DFD88 /* WANewInterfaceViewController.m */,
 				77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */,
-				770104441F2F15A200F723A2 /* WAHomeViewController.h */,
-				770104451F2F15A200F723A2 /* WAHomeViewController.m */,
-				770104461F2F15A200F723A2 /* WAHomeViewController.xib */,
 				779CF41F1F68FDD100DBEE44 /* HomeCell.h */,
 				779CF4201F68FDD100DBEE44 /* HomeCell.m */,
 				779CF4211F68FDD100DBEE44 /* HomeCell.xib */,
@@ -823,12 +874,6 @@
 				779CF4181F67C21500DBEE44 /* contactView.h */,
 				779CF4191F67C21500DBEE44 /* contactView.m */,
 				779CF41D1F67C43600DBEE44 /* contactView.xib */,
-				779CF4041F612B8300DBEE44 /* WAAddFamilyViewController.h */,
-				779CF4051F612B8300DBEE44 /* WAAddFamilyViewController.m */,
-				779CF4061F612B8300DBEE44 /* WAAddFamilyViewController.xib */,
-				779CF40E1F626F2600DBEE44 /* WAContactViewController.h */,
-				779CF40F1F626F2600DBEE44 /* WAContactViewController.m */,
-				779CF4101F626F2600DBEE44 /* WAContactViewController.xib */,
 				77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */,
 				77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */,
 				77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */,
@@ -882,8 +927,8 @@
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
 				77A67D121F452EF4000DFD88 /* Thunder Song.m4r */,
+				779CF45F1F6F658700DBEE44 /* AccountMainPage */,
 				779CF45E1F6B7D3000DBEE44 /* LoginAndRegister */,
-				779CF45D1F6B6D6400DBEE44 /* PersonalSet */,
 				7701046E1F34102C00F723A2 /* Model */,
 				77D75DE71F0F6AAF00E46D15 /* functionUI */,
 				77D75DDA1F0F2DFC00E46D15 /* Utility */,
@@ -1070,9 +1115,6 @@
 				77A67F1F1F551319000DFD88 /* WAShareViewController.h */,
 				77A67F201F551319000DFD88 /* WAShareViewController.m */,
 				77A67F211F551319000DFD88 /* WAShareViewController.xib */,
-				77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */,
-				77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */,
-				77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */,
 			);
 			name = PersonalSet;
 			sourceTree = "<group>";
@@ -1086,6 +1128,68 @@
 				771F95861F0F276300B4D016 /* WABindIphoneViewController.m */,
 			);
 			name = LoginAndRegister;
+			sourceTree = "<group>";
+		};
+		779CF45F1F6F658700DBEE44 /* AccountMainPage */ = {
+			isa = PBXGroup;
+			children = (
+				770104441F2F15A200F723A2 /* WAHomeViewController.h */,
+				770104451F2F15A200F723A2 /* WAHomeViewController.m */,
+				770104461F2F15A200F723A2 /* WAHomeViewController.xib */,
+				779CF4731F70B87E00DBEE44 /* CloseFamilyItem.h */,
+				779CF4741F70B87E00DBEE44 /* CloseFamilyItem.m */,
+				779CF47D1F71FEE400DBEE44 /* FamilyPhotos */,
+				779CF4601F6F966200DBEE44 /* CloseFamily */,
+				779CF45D1F6B6D6400DBEE44 /* PersonalSet */,
+			);
+			name = AccountMainPage;
+			sourceTree = "<group>";
+		};
+		779CF4601F6F966200DBEE44 /* CloseFamily */ = {
+			isa = PBXGroup;
+			children = (
+				779CF4041F612B8300DBEE44 /* WAAddFamilyViewController.h */,
+				779CF4051F612B8300DBEE44 /* WAAddFamilyViewController.m */,
+				779CF4061F612B8300DBEE44 /* WAAddFamilyViewController.xib */,
+				779CF4701F70B19B00DBEE44 /* ApplyItem.h */,
+				779CF4711F70B19B00DBEE44 /* ApplyItem.m */,
+				779CF40E1F626F2600DBEE44 /* WAContactViewController.h */,
+				779CF40F1F626F2600DBEE44 /* WAContactViewController.m */,
+				779CF4101F626F2600DBEE44 /* WAContactViewController.xib */,
+				779CF4761F71108F00DBEE44 /* WACloseFamilyDetailViewController.h */,
+				779CF4771F71108F00DBEE44 /* WACloseFamilyDetailViewController.m */,
+				779CF4781F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib */,
+			);
+			name = CloseFamily;
+			sourceTree = "<group>";
+		};
+		779CF47D1F71FEE400DBEE44 /* FamilyPhotos */ = {
+			isa = PBXGroup;
+			children = (
+				779CF47E1F7238C800DBEE44 /* PhotosItem.h */,
+				779CF47F1F7238C800DBEE44 /* PhotosItem.m */,
+				779CF4611F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.h */,
+				779CF4621F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m */,
+				779CF4631F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib */,
+				779CF4661F6FA93C00DBEE44 /* PhotoCollectionViewCell.h */,
+				779CF4671F6FA93C00DBEE44 /* PhotoCollectionViewCell.m */,
+				779CF4681F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib */,
+				779CF46B1F6FAC4B00DBEE44 /* WANewPhotosViewController.h */,
+				779CF46C1F6FAC4B00DBEE44 /* WANewPhotosViewController.m */,
+				779CF46D1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib */,
+				779CF4811F72468900DBEE44 /* WAPhotosUploadViewController.h */,
+				779CF4821F72468900DBEE44 /* WAPhotosUploadViewController.m */,
+				779CF4831F72468900DBEE44 /* WAPhotosUploadViewController.xib */,
+				779CF4861F724D1000DBEE44 /* PhotoCell.h */,
+				779CF4871F724D1000DBEE44 /* PhotoCell.m */,
+				779CF4881F724D1000DBEE44 /* PhotoCell.xib */,
+				779CF48B1F724E1600DBEE44 /* PhotoItem.h */,
+				779CF48C1F724E1600DBEE44 /* PhotoItem.m */,
+				779CF48E1F72571400DBEE44 /* WAPhotosShowViewController.h */,
+				779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */,
+				779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */,
+			);
+			name = FamilyPhotos;
 			sourceTree = "<group>";
 		};
 		77A67D3C1F4C0D97000DFD88 /* Database */ = {
@@ -1607,7 +1711,7 @@
 				77832DDB1F0CB3600009F004 /* Frameworks */,
 				77832DDC1F0CB3600009F004 /* Resources */,
 				BBFC5557C2E263D1BC73F4C7 /* [CP] Embed Pods Frameworks */,
-				6F0A4B3A6F317DD5A76EE3C5 /* [CP] Copy Pods Resources */,
+				3A28074E9412BED648A3DDB6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1666,7 +1770,7 @@
 		77832DD61F0CB3600009F004 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = technology;
 				TargetAttributes = {
 					77832DDD1F0CB3600009F004 = {
@@ -1732,7 +1836,9 @@
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
 				770104631F31AAA000F723A2 /* WACommonlyPhoneViewController.xib in Resources */,
 				77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */,
+				779CF46F1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib in Resources */,
 				77A67F1E1F54069F000DFD88 /* UserCenterViewController.xib in Resources */,
+				779CF47A1F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib in Resources */,
 				77A67F231F551319000DFD88 /* WAShareViewController.xib in Resources */,
 				779CF41E1F67C43600DBEE44 /* contactView.xib in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
@@ -1748,12 +1854,15 @@
 				77A67E451F4C0EE1000DFD88 /* userwords in Resources */,
 				77A67E551F4C0EE1000DFD88 /* MJRefresh.bundle in Resources */,
 				77A67E471F4C0EE1000DFD88 /* tts.strings in Resources */,
+				779CF4651F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib in Resources */,
 				770104761F34143F00F723A2 /* WACommonAddCell.xib in Resources */,
 				77A67EA41F4C15AB000DFD88 /* ZQCycleCell.xib in Resources */,
 				7701046D1F32F14E00F723A2 /* ContactTableViewCell.xib in Resources */,
 				770104591F307ACA00F723A2 /* WASetTwoCell.xib in Resources */,
+				779CF4851F72468900DBEE44 /* WAPhotosUploadViewController.xib in Resources */,
 				779CF4121F626F2600DBEE44 /* WAContactViewController.xib in Resources */,
 				77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */,
+				779CF48A1F724D1000DBEE44 /* PhotoCell.xib in Resources */,
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
@@ -1761,7 +1870,9 @@
 				7701045E1F307AE400F723A2 /* WASetThreeCell.xib in Resources */,
 				770104851F38509F00F723A2 /* WACommonlyAppCell2.xib in Resources */,
 				77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */,
+				779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */,
 				779CF4081F612B8300DBEE44 /* WAAddFamilyViewController.xib in Resources */,
+				779CF46A1F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib in Resources */,
 				779CF40D1F622F3300DBEE44 /* ContactPersonView.xib in Resources */,
 				77A67D511F4C0D97000DFD88 /* Info.plist in Resources */,
 			);
@@ -1797,6 +1908,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawjUITests/Pods-wawjUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3A28074E9412BED648A3DDB6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawj/Pods-wawj-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3E1CD020A0C3F31E6453B31A /* [CP] Embed Pods Frameworks */ = {
@@ -1842,21 +1968,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		6F0A4B3A6F317DD5A76EE3C5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-wawj/Pods-wawj-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9355C0A98C9AB2198B965B5A /* [CP] Copy Pods Resources */ = {
@@ -1949,6 +2060,7 @@
 				77A67E421F4C0EE1000DFD88 /* TTSUIController.m in Sources */,
 				77A67E401F4C0EE1000DFD88 /* TTSConfig.m in Sources */,
 				771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */,
+				779CF4641F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m in Sources */,
 				779CF4521F6A27C000DBEE44 /* UPHTTPClient.m in Sources */,
 				770104751F34143F00F723A2 /* WACommonAddCell.m in Sources */,
 				77A67E2F1F4C0EE1000DFD88 /* ISEViewController.m in Sources */,
@@ -1962,6 +2074,7 @@
 				77A67CF01F3C3190000DFD88 /* WAPersonSetViewController.m in Sources */,
 				77A67D031F3C4E5D000DFD88 /* WADatePicker.m in Sources */,
 				77A67EA01F4C15AB000DFD88 /* UIViewExt.m in Sources */,
+				779CF4691F6FA93C00DBEE44 /* PhotoCollectionViewCell.m in Sources */,
 				770104671F32B68B00F723A2 /* WACommonCell.m in Sources */,
 				77A67E601F4C0EE1000DFD88 /* ITTPullTableView.m in Sources */,
 				779CF44F1F6A27C000DBEE44 /* UpApiUtils.m in Sources */,
@@ -1973,6 +2086,7 @@
 				77A67E3C1F4C0EE1000DFD88 /* IATConfigViewController.m in Sources */,
 				77A67E3A1F4C0EE1000DFD88 /* ISEResultXmlParser.m in Sources */,
 				77A67E261F4C0EE1000DFD88 /* UIView+Extension.m in Sources */,
+				779CF4891F724D1000DBEE44 /* PhotoCell.m in Sources */,
 				77A67E221F4C0EE1000DFD88 /* EWPhotoViewer.m in Sources */,
 				77A67E4E1F4C0EE1000DFD88 /* SBJson4Parser.m in Sources */,
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
@@ -1981,8 +2095,10 @@
 				77A67EA31F4C15AB000DFD88 /* ZQCycleCell.m in Sources */,
 				77A67E311F4C0EE1000DFD88 /* ISEResultFinal.m in Sources */,
 				77A67D331F4BD8CC000DFD88 /* SpeakingView.m in Sources */,
+				779CF4751F70B87E00DBEE44 /* CloseFamilyItem.m in Sources */,
 				779CF44D1F6A27C000DBEE44 /* UpYunFileDealManger.m in Sources */,
 				77A67F0B1F4D1D07000DFD88 /* RemindViewController.m in Sources */,
+				779CF4911F72571400DBEE44 /* WAPhotosShowViewController.m in Sources */,
 				77A67E501F4C0EE1000DFD88 /* SBJson4StreamParserState.m in Sources */,
 				77A67E241F4C0EE1000DFD88 /* EWTextView.m in Sources */,
 				77A67E371F4C0EE1000DFD88 /* ISEResultSyll.m in Sources */,
@@ -2011,7 +2127,9 @@
 				77A67E4A1F4C0EE1000DFD88 /* SAMultisectorControl.m in Sources */,
 				77A67CFF1F3C3803000DFD88 /* WAEditRemindTwoCell.m in Sources */,
 				77D75DF01F0F6D8E00E46D15 /* WAInternetViewController.m in Sources */,
+				779CF4721F70B19B00DBEE44 /* ApplyItem.m in Sources */,
 				77A67E231F4C0EE1000DFD88 /* EWTextField.m in Sources */,
+				779CF4841F72468900DBEE44 /* WAPhotosUploadViewController.m in Sources */,
 				779CF4071F612B8300DBEE44 /* WAAddFamilyViewController.m in Sources */,
 				77A67E9A1F4C15AB000DFD88 /* NSTimer+Addition.m in Sources */,
 				779CF4001F5FCEED00DBEE44 /* ParameterModel.m in Sources */,
@@ -2020,9 +2138,11 @@
 				77A67E991F4C15AB000DFD88 /* NSData+GIF.m in Sources */,
 				77A67E9B1F4C15AB000DFD88 /* NSURLRequestForSSL.m in Sources */,
 				77A67E1D1F4C0EE1000DFD88 /* UILabel+AutoWrapLine.m in Sources */,
+				779CF4791F71108F00DBEE44 /* WACloseFamilyDetailViewController.m in Sources */,
 				77A67E971F4C15AB000DFD88 /* JKCountDownButton.m in Sources */,
 				7701046C1F32F14E00F723A2 /* ContactTableViewCell.m in Sources */,
 				771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */,
+				779CF4801F7238C800DBEE44 /* PhotosItem.m in Sources */,
 				77A67E1F1F4C0EE1000DFD88 /* UIWebView+Extension.m in Sources */,
 				77A67D1D1F4AB3A1000DFD88 /* WARemindListCell.m in Sources */,
 				779CF4551F6A27C000DBEE44 /* NSString+NSHash.m in Sources */,
@@ -2038,6 +2158,7 @@
 				77A67D2B1F4BD5C6000DFD88 /* RemindCell.m in Sources */,
 				77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */,
 				77A67D4B1F4C0D97000DFD88 /* DBManager.m in Sources */,
+				779CF46E1F6FAC4B00DBEE44 /* WANewPhotosViewController.m in Sources */,
 				77A67F1D1F54069F000DFD88 /* UserCenterViewController.m in Sources */,
 				77A67E5A1F4C0EE1000DFD88 /* UIScrollView+MJExtension.m in Sources */,
 				770104711F34105300F723A2 /* ContactItem.m in Sources */,
@@ -2048,6 +2169,7 @@
 				77A67E941F4C15AB000DFD88 /* ImagePicker.m in Sources */,
 				77A67E531F4C0EE1000DFD88 /* SBJson4StreamWriterState.m in Sources */,
 				770104471F2F15A200F723A2 /* WAHomeViewController.m in Sources */,
+				779CF48D1F724E1600DBEE44 /* PhotoItem.m in Sources */,
 				77A67E511F4C0EE1000DFD88 /* SBJson4StreamTokeniser.m in Sources */,
 				77A67E481F4C0EE1000DFD88 /* AKPickerView.m in Sources */,
 				770104841F38509F00F723A2 /* WACommonlyAppCell2.m in Sources */,
@@ -2149,7 +2271,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -2157,7 +2281,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2197,7 +2325,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -2205,7 +2335,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

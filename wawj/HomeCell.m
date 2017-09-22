@@ -7,12 +7,25 @@
 //
 
 #import "HomeCell.h"
-
+#import <UIImageView+WebCache.h>
+#import <UIImageView+AFNetworking.h>
 @implementation HomeCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+}
+
+-(void)setCloseFamilyItem:(CloseFamilyItem *)closeFamilyItem {
+    
+    _closeFamilyItem = closeFamilyItem;
+    
+    [self.headImageView sd_setImageWithURL:[NSURL URLWithString:closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageRetryFailed completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+    }];
+   
+    self.title.text = closeFamilyItem.qinmiName;
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

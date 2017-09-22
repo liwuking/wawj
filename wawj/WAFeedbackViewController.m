@@ -54,7 +54,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property (weak, nonatomic) IBOutlet UIButton *btnOne;
 @property (weak, nonatomic) IBOutlet UIButton *btnTwo;
 @property (weak, nonatomic) IBOutlet UIButton *btnThree;
-
+@property (nonatomic, strong)NSString *adviceType;
 
 @end
 
@@ -131,18 +131,39 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 - (IBAction)clickSubmitBtn:(UIButton *)sender {
     
-    NSDictionary *model = @{@"adviceType":@"1",@"adviceContent":@"111111"};;
+    [self.view endEditing:YES];
+    
+    if ([self.textView.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"" message:@"反馈内容不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    NSDictionary *model = @{@"adviceType":     self.adviceType,
+                            @"adviceContent": self.textView.text};
+    
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0003" andModel:model];
-    
+    [MBProgressHUD showMessage:nil];
     __weak __typeof__(self) weakSelf = self;
-    
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
-        NSError *error;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
         
-        
-        [MBProgressHUD showSuccess:@"提交成功"];
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            [MBProgressHUD showSuccess:@"反馈成功"];
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
         
     } fail:^(NSError *error) {
         
@@ -166,6 +187,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.navigationItem.leftBarButtonItem = backItem;
     
     self.title = @"有事您说话";
+    self.adviceType = @"1";
     
 }
 
@@ -179,6 +201,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.btnTwo setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     [self.btnThree setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     
+    self.adviceType = @"1";
 }
 
 - (IBAction)clickBtnTwo:(UIButton *)sender {
@@ -189,6 +212,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.btnOne setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     [self.btnTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.btnThree setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
+    
+    self.adviceType = @"2";
 }
 
 - (IBAction)clickBtnThree:(UIButton *)sender {
@@ -199,6 +224,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.btnOne setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     [self.btnTwo setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     [self.btnThree setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.adviceType = @"3";
 }
 
 

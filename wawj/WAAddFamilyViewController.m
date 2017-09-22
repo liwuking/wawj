@@ -10,7 +10,10 @@
 #import "ContactPersonView.h"
 #import "WAAddContactTableViewCell.h"
 #import "WAContactViewController.h"
-@interface WAAddFamilyViewController ()<UITableViewDelegate,UITableViewDataSource>
+#import "ApplyItem.h"
+#import "CloseFamilyItem.h"
+#import <UIImageView+WebCache.h>
+@interface WAAddFamilyViewController ()<UITableViewDelegate,UITableViewDataSource,WAAddContactTableViewCellDelegate>
 
 @property(nonatomic, strong)NSArray *titleArr;
 @property(nonatomic, strong)NSArray *subTitleArr;
@@ -84,6 +87,8 @@
     _contactPersonView.hidden = YES;
     [self.view addSubview:_contactPersonView];
     
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    
 }
 
 -(void)clickSubTitleBtn:(UIButton *)btn {
@@ -92,14 +97,15 @@
     WAContactViewController *vc = [[WAContactViewController alloc] initWithNibName:@"WAContactViewController" bundle:nil];
     vc.contacts = btn.titleLabel.text;
     [self.navigationController pushViewController:vc animated:YES];
+    _contactPersonView.hidden = YES;
     
 }
 
 - (void)clickSelectBtn:(UIButton *)btn {
     
     NSLog(@"%@", btn.titleLabel.text);
-    _contactPersonView.hidden = YES;
     if ([btn.titleLabel.text isEqualToString:@"其他"]) {
+        _contactPersonView.hidden = NO;
         return ;
     }
     
@@ -115,17 +121,71 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.applyArrs = [@[] mutableCopy];
     [self initView];
     
+    [self getCloseFamilyApplyListData];
 }
 
+#pragma -mark 亲密家人申请列表
+-(void)getCloseFamilyApplyListData {
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1105" andModel:nil];
+
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            if ([data[@"body"] isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *dict in data[@"body"]) {
+                    
+                    ApplyItem *item = [[ApplyItem alloc] init];
+                    item.applyId = dict[@"applyId"];
+                    item.applyName = dict[@"applyName"];
+                    item.applyPhone = dict[@"applyPhone"];
+                    item.applyRole = dict[@"applyRole"];
+                    item.headUrl = dict[@"headUrl"];
+                    
+                    [self.applyArrs addObject:item];
+                    
+                    [self.tableView reloadData];
+                }
+                
+            }
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];
+    
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.applyArrs.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 40;
+    return 60;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -136,12 +196,71 @@
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"WAAddContactTableViewCell" owner:self options:nil] lastObject];
     }
-    cell.textLabel.text = self.applyArrs[indexPath.row];
+    ApplyItem *item = [self.applyArrs objectAtIndex:indexPath.row];
+//    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:item.headUrl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
+//    cell.titleLab.text = item.applyName;
+    cell.applyItem = item;
+    cell.delegate = self;
+    
     return cell;
+    
 }
 
 
 
+-(void)clickAddContactWithCell:(WAAddContactTableViewCell *)cell {
+    
+    
+    [self addApplyWithApplyItem:cell.applyItem];
+}
+
+
+-(void)addApplyWithApplyItem:(ApplyItem *)item {
+    
+    NSDictionary *model = @{@"apply_id":item.applyId,@"applyPhone":item.applyPhone};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1106" andModel:model];
+    __weak __typeof__(self) weakSelf = self;
+    [MBProgressHUD showMessage:nil];
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            NSDictionary *dict = data[@"body"];
+            CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
+            item.headUrl = dict[@"headUrl"];
+            item.portraitUrl = dict[@"portraitUrl"];
+            item.qinmiName = dict[@"qinmiName"];
+            item.qinmiPhone = dict[@"qinmiPhone"];
+            item.qinmiUser = dict[@"qinmiUser"];
+            
+            [self.delegate waAddFamilyViewControllerWithFamilyItem:item];
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];
+
+    
+}
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];

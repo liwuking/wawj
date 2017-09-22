@@ -66,7 +66,7 @@
             NSInteger index = i*3+j;
             [btn setTitle:self.arrText[index] forState:UIControlStateNormal];
             btn.titleLabel.textColor = [UIColor whiteColor];
-            btn.titleLabel.font = [UIFont systemFontOfSize:42];
+            btn.titleLabel.font = [UIFont systemFontOfSize:40];
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
             NSInteger height = (SCREEN_HEIGHT-420)/4;
             NSInteger width = SCREEN_WIDTH/3;
@@ -161,7 +161,7 @@
 -(void)clickBtn:(UIButton *)btn {
     
     NSString *origin = self.phoneText.text;
-    if (![self.arrText[btn.tag] isEqualToString:@"删除"]) {
+    if (![self.arrText[btn.tag] isEqualToString:@"后退"]) {
         self.phoneText.text = [origin stringByAppendingString:self.arrText[btn.tag]];
     } else {
         self.phoneText.text = origin.length ? [origin substringToIndex:origin.length-1] : @"";

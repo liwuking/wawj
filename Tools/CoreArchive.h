@@ -13,6 +13,7 @@
 
 #define USERINFO  @"userINFO"
 
+#define USERNAME  @"userName"
 #define USERID  @"userID"
 #define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
 #define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面

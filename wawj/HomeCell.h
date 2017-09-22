@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CloseFamilyItem.h"
 
 @interface HomeCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UILabel *title;
+
+@property (strong, nonatomic)  CloseFamilyItem *closeFamilyItem;
 
 @end

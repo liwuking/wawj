@@ -7,16 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ApplyItem.h"
+@class WAAddContactTableViewCell;
 
 @protocol WAAddContactTableViewCellDelegate <NSObject>
 
--(void)clickAddContact;
+-(void)clickAddContactWithCell:(WAAddContactTableViewCell *)cell;
 
 @end
 
 @interface WAAddContactTableViewCell : UITableViewCell
 
 @property(nonatomic, weak)id<WAAddContactTableViewCellDelegate> delegate;
+
+@property(nonatomic, strong)ApplyItem *applyItem;
 
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;

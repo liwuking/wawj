@@ -7,16 +7,24 @@
 //
 
 #import "WAAddContactTableViewCell.h"
-
+#import <UIImageView+WebCache.h>
 @implementation WAAddContactTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
 }
+
+-(void)setApplyItem:(ApplyItem *)applyItem {
+    _applyItem = applyItem;
+    
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:applyItem.headUrl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
+    self.titleLab.text = applyItem.applyName;
+}
+
 - (IBAction)clickAdd:(UIButton *)sender {
     
-    [self.delegate clickAddContact];
+    [self.delegate clickAddContactWithCell:self];
     
 }
 

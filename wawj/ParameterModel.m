@@ -32,7 +32,6 @@
                              @"userId":   [CoreArchive strForKey:USERID]? [CoreArchive strForKey:USERID]: @"",
                              @"platform": @"iOS",
                              @"model":     model ? model: @""};
-    
     return @{@"data":[NSDictionary convertToJSONData:params]};
 }
 

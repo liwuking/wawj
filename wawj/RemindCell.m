@@ -20,7 +20,8 @@
     _cellBgView.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
     _cellBgView.layer.shadowOpacity = 0.5f;
     _cellBgView.layer.shadowPath = shadowPath.CGPath;
-
+    
+    
 }
 
 

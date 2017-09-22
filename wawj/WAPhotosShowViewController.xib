@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAPhotosShowViewController">
+            <connections>
+                <outlet property="scrollView" destination="hCb-xn-JST" id="2oB-yQ-jEW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sgz-ZR-TjK">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="文字广告位" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EE0-ki-Gdd">
+                            <rect key="frame" x="8" y="17" width="156" height="25"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="PDh-VY-EIA"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCb-xn-JST">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="xS3-bX-36C"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="hCb-xn-JST" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0px-gq-Qm7"/>
+                <constraint firstItem="sgz-ZR-TjK" firstAttribute="top" secondItem="hCb-xn-JST" secondAttribute="bottom" constant="15" id="9WW-vZ-6mo"/>
+                <constraint firstAttribute="bottom" secondItem="sgz-ZR-TjK" secondAttribute="bottom" id="Dmx-Nt-mZw"/>
+                <constraint firstAttribute="trailing" secondItem="sgz-ZR-TjK" secondAttribute="trailing" id="Q03-8s-SYz"/>
+                <constraint firstItem="hCb-xn-JST" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SHF-Ms-I0r"/>
+                <constraint firstItem="sgz-ZR-TjK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="go9-pM-nE7"/>
+                <constraint firstAttribute="trailing" secondItem="hCb-xn-JST" secondAttribute="trailing" id="o7y-Lr-jFZ"/>
+            </constraints>
+            <point key="canvasLocation" x="34" y="54"/>
+        </view>
+    </objects>
+</document>

@@ -18,14 +18,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add" translatesAutoresizingMaskIntoConstraints="NO" id="Py5-mk-lvs">
-                        <rect key="frame" x="0.0" y="0.0" width="135" height="134"/>
+                        <rect key="frame" x="5" y="5" width="125" height="125"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="Py5-mk-lvs" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="EXH-1i-SaY"/>
-                    <constraint firstItem="Py5-mk-lvs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="SbO-0V-JRe"/>
-                    <constraint firstAttribute="bottom" secondItem="Py5-mk-lvs" secondAttribute="bottom" id="kcl-sC-JAz"/>
-                    <constraint firstAttribute="trailing" secondItem="Py5-mk-lvs" secondAttribute="trailing" id="pfh-P9-kpe"/>
+                    <constraint firstItem="Py5-mk-lvs" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="EXH-1i-SaY"/>
+                    <constraint firstItem="Py5-mk-lvs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="SbO-0V-JRe"/>
+                    <constraint firstAttribute="bottom" secondItem="Py5-mk-lvs" secondAttribute="bottom" constant="4" id="kcl-sC-JAz"/>
+                    <constraint firstAttribute="trailing" secondItem="Py5-mk-lvs" secondAttribute="trailing" constant="5" id="pfh-P9-kpe"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -10,7 +10,7 @@
 #import "LJContactManager.h"
 #import "ContactItem.h"
 #import "ImagePicker.h"
-
+#import "WAHomeViewController.h"
 @interface WAContactViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *picImage;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
@@ -22,7 +22,17 @@
 
 
 -(void)initViews {
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
+    [backItem setTintColor:HEX_COLOR(0x666666)];
+    [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+    self.navigationItem.leftBarButtonItem = backItem;
     self.title = [NSString stringWithFormat:@"选择%@", self.contacts];
+    
+    
+}
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad {
@@ -85,6 +95,55 @@
         
     }];
 
+}
+
+#pragma -mark 添加亲密家人
+- (IBAction)clickAddCloseFamily:(UIButton *)sender {
+    
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSDictionary *model = @{@"apply_user":   [CoreArchive strForKey:USERID],
+                            @"apply_gender": userInfo[@"gender"],
+                            @"accept_name":  userInfo[@"userName"],
+                            @"accept_role":  self.contacts,
+                            @"accept_phone": userInfo[@"phoneNo"]};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1105" andModel:model];
+    __weak __typeof__(self) weakSelf = self;
+    [MBProgressHUD showMessage:@"正在请求"];
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[WAHomeViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+                }
+            }
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];
+
+    
 }
 
 - (void)didReceiveMemoryWarning {

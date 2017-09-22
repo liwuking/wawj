@@ -49,8 +49,12 @@
     
     jsonString = [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
     
-    [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+   // [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
+    NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"\n"];
+    jsonString = [[jsonString componentsSeparatedByCharactersInSet: doNotWant]componentsJoinedByString: @""];
+    
+    NSLog(@"jsonString: %@", jsonString);
     return jsonString;
 }
 
