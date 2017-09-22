@@ -266,7 +266,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
             }else{
                 
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                               message:@"请在“设置-隐私-麦克风”选项中允许阿凡家访问你的麦克风"
+                                                               message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风"
                                                               delegate:nil
                                                      cancelButtonTitle:@"我知道了"
                                                      otherButtonTitles:nil, nil];

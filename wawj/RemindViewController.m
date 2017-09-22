@@ -52,14 +52,6 @@
     
     _remindTableView.separatorStyle = UITableViewCellSelectionStyleNone;
     
-//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(leftAction)];
-//    self.navigationItem.leftBarButtonItem = leftItem;
-//    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-//    
-//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"图层30"] style:UIBarButtonItemStyleDone target:self action:@selector(rightAction)];
-//    self.navigationItem.rightBarButtonItem = rightItem;
-//    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(leftAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
@@ -69,11 +61,6 @@
     [rightItem setTintColor:HEX_COLOR(0x666666)];
     [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-//    NSDictionary *titleFontNormal = @{UITextAttributeFont:[UIFont systemFontOfSize:15],
-//                                      
-//                                      NSForegroundColorAttributeName:RGB_COLOR(255, 255, 255)};
-//    [rightItem setTitleTextAttributes:titleFontNormal forState:UIControlStateNormal];
     
     _iFlySpeechUnderstander = [IFlySpeechUnderstander sharedInstance];
     _iFlySpeechUnderstander.delegate = self;
@@ -93,15 +80,15 @@
     
     if ([self isOpenNotificationJurisdiction]) {
         
-        if ([self isReachable]) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                           message:@"若体验更贴心的提醒服务，请开启声音"
-                                                          delegate:nil
-                                                 cancelButtonTitle:@"知道了"
-                                                 otherButtonTitles: nil];
-            [alert show];
-            
-        }
+//        if ([self isReachable]) {
+//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
+//                                                           message:@"若体验更贴心的提醒服务，请开启声音"
+//                                                          delegate:nil
+//                                                 cancelButtonTitle:@"知道了"
+//                                                 otherButtonTitles: nil];
+//            [alert show];
+//
+//        }
     }
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -149,7 +136,7 @@
     NSUInteger notificationType = [[application currentUserNotificationSettings] types];
     if (notificationType == 0) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"未开启通知权限"
-                                                       message:@"提醒无法主动推送给用户，“设置-通知-阿凡家-允许通知”，开启通知权限，让“提醒”功能更贴心"
+                                                       message:@"提醒无法主动推送给用户，“设置-通知-我爱我家-允许通知”，开启通知权限，让“提醒”功能更贴心"
                                                       delegate:nil
                                              cancelButtonTitle:@"我知道了"
                                              otherButtonTitles:nil, nil];
@@ -405,7 +392,7 @@
             }else{
                 
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                               message:@"请在“设置-隐私-麦克风”选项中允许阿凡家访问你的麦克风"
+                                                               message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风"
                                                               delegate:nil
                                                      cancelButtonTitle:@"我知道了"
                                                      otherButtonTitles:nil, nil];
@@ -583,13 +570,13 @@
         NSString *readText = _allDataArr[indexPath.row][@"content"];
         [self readTextWithString:readText];
     }else{
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒"
-                                                       message:@"网络中断，无法朗读提醒"
-                                                      delegate:nil
-                                             cancelButtonTitle:@"我知道了"
-                                             otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒"
+//                                                       message:@"网络中断，无法朗读提醒"
+//                                                      delegate:nil
+//                                             cancelButtonTitle:@"我知道了"
+//                                             otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
     }
     
 }

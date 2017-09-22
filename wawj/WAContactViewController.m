@@ -44,6 +44,8 @@
 }
 - (IBAction)clickHead:(UITapGestureRecognizer *)sender {
     
+    [self.view endEditing:YES];
+    
     __weak __typeof__(self) weakSelf = self;
     [ImagePicker showImagePickerFromViewController:self allowsEditing:YES finishAction:^(UIImage *image) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
@@ -143,6 +145,12 @@
         
     }];
 
+    
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    [self.view endEditing:YES];
     
 }
 

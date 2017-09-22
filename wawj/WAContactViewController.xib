@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,10 +24,14 @@
             <subviews>
                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="个人设置-我的头像" translatesAutoresizingMaskIntoConstraints="NO" id="ruI-de-oO9">
                     <rect key="frame" x="85" y="110" width="150" height="150"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="Hsb-3l-wHT"/>
                         <constraint firstAttribute="height" constant="150" id="u3f-jW-KG4"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="eyu-NA-5Ya" appends="YES" id="taT-K4-vfW"/>
+                    </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPx-vy-fnU">
                     <rect key="frame" x="0.0" y="310" width="320" height="100"/>
@@ -125,13 +130,10 @@
                 <constraint firstItem="ruI-de-oO9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="110" id="bXs-gK-sKu"/>
                 <constraint firstItem="nPx-vy-fnU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gxy-Uj-Wwu"/>
             </constraints>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="cns-87-N43" appends="YES" id="ai7-Qo-b9O"/>
-            </connections>
         </view>
-        <tapGestureRecognizer id="cns-87-N43">
+        <tapGestureRecognizer id="eyu-NA-5Ya">
             <connections>
-                <action selector="clickHead:" destination="-1" id="8Jf-67-zix"/>
+                <action selector="clickHead:" destination="-1" id="pKA-dW-0r6"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
