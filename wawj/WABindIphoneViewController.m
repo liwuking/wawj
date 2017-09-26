@@ -11,7 +11,9 @@
 #import <MBProgressHUD.h>
 #import "WAOldInterfaceViewController.h"
 #import "WANewInterfaceViewController.h"
-
+#import "CloseFamilyItem.h"
+#import <objc/runtime.h>
+#import "WZLSerializeKit.h"
 @interface WABindIphoneViewController ()
 
     @property (weak, nonatomic) IBOutlet UITextField *iphoneTextField;
@@ -147,9 +149,25 @@
         
         if ([data[@"code"] isEqualToString:@"0000"]) {
  
+            NSMutableArray *qimiArr = [@[] mutableCopy];
+            for (NSDictionary *subDict in data[@"body"][@"qinMiList"]) {
+                
+                NSDictionary *dict = [subDict transforeNullValueInSimpleDictionary];
+                
+                NSDictionary *item = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":dict[@"qinmiRole"]};
+//                item.headUrl = dict[@"headUrl"];
+//                item.qinmiName = dict[@"qinmiName"];
+//                item.qinmiPhone = dict[@"qinmiPhone"];
+//                item.qinmiUser = dict[@"qinmiUser"];
+//                item.qinmiRole = dict[@"qinmiRole"];
+                [qimiArr addObject:item];
+            }
+
+            [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+            
             NSDictionary *userInfo = data[@"body"][@"userInfo"];
             [CoreArchive setDic:[userInfo transforeNullValueInSimpleDictionary] key:USERINFO];
-            [CoreArchive setStr:userInfo[@"userId"] key:USERID];
+            //[CoreArchive setStr:userInfo[@"userId"] key:USERID];
             
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];

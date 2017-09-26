@@ -10,8 +10,29 @@
 
 @implementation CoreArchive
 
++(void)setArr:(NSMutableArray *)arr key:(NSString *)key {
+    //获取preference
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-+(void)setDic:(NSObject *)obj key:(NSString *)key {
+    //保存
+    [defaults setObject:arr forKey:key];
+    
+    //立即同步
+    [defaults synchronize];
+
+}
++(NSMutableArray *)arrForKey:(NSString *)key {
+    //获取preference
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    //读取
+    NSMutableArray *str = (NSMutableArray *)[defaults objectForKey:key];
+    
+    return str;
+    
+}
+
++(void)setDic:(NSMutableDictionary *)obj key:(NSString *)key {
     
     //获取preference
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

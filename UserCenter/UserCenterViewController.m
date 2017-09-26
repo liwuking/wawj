@@ -374,14 +374,15 @@
     
     NSData *fileData = UIImageJPEGRepresentation(_picImgView.image, 0.5);
     if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
-
         //图片命名
         NSDate *currentDate = [NSDate date];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
         NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
         
-        NSString *imgName=[NSString stringWithFormat:@"share/%@/%@.jpeg",currentDateString,[CoreArchive strForKey:USERID]];
+        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+        NSString *userID = userInfo? userInfo[@"userId"] : @"";
+        NSString *imgName=[NSString stringWithFormat:@"share/%@/%@.jpeg",currentDateString,userID];
         
         __weak typeof(self) weakSelf = self;
         UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
@@ -400,7 +401,7 @@
                              __strong typeof(weakSelf) strongSelf = weakSelf;
                              strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
                              
-                            
+                             [CoreArchive setBool:YES key:USERIHEADIMG];
                              
                              [strongSelf personHeadDataRefresh];
                              
@@ -511,9 +512,9 @@
             
             [MBProgressHUD showSuccess:@"保存成功"];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [strongSelf.navigationController popViewControllerAnimated:YES];
-            });
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                [strongSelf.navigationController popViewControllerAnimated:YES];
+//            });
             
         } else {
             
@@ -537,6 +538,20 @@
 }
 
 - (IBAction)saveAction:(id)sender {
+    
+    if ([nameTextField.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"姓名不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+
+    if ([_onDatePickerLabel.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"生日不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
     
     [self refreshPersonData];
     

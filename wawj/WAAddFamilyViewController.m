@@ -231,14 +231,23 @@
         if ([code isEqualToString:@"0000"]) {
             
             NSDictionary *dict = data[@"body"];
+            
             CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
             item.headUrl = dict[@"headUrl"];
-            item.portraitUrl = dict[@"portraitUrl"];
             item.qinmiName = dict[@"qinmiName"];
             item.qinmiPhone = dict[@"qinmiPhone"];
             item.qinmiUser = dict[@"qinmiUser"];
             
-            [self.delegate waAddFamilyViewControllerWithFamilyItem:item];
+            NSDictionary *subDict = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":@""};
+            NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
+            [qimiArr addObject:subDict];
+
+            [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+            
+            
+            [MBProgressHUD showSuccess:@"添加成功"];
+            [strongSelf.navigationController popViewControllerAnimated:YES];
+            
             
         } else {
             

@@ -20,6 +20,8 @@
 #import "DBManager.h"
 #import "FMDatabase.h"
 #import "CoreArchive.h"
+#import "WABindIphoneViewController.h"
+#import "AppDelegate.h"
 
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
@@ -74,8 +76,11 @@
                            @"reserved_parameter_6" : @"string"};
     
     _tableName = @"remindList";
-    if ([CoreArchive strForKey:USERID]) {
-        _tableName = [_tableName stringByAppendingFormat:@"_%@",[CoreArchive strForKey:USERID]];
+    
+    if ([CoreArchive dicForKey:USERINFO]) {
+        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+        NSString *userID = userInfo? userInfo[@"userId"] : @"";
+        _tableName = [_tableName stringByAppendingFormat:@"_%@",userID];
     }
     
     
@@ -97,12 +102,49 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.arrTitles = @[@[@"我的头像"],@[@"整点报时",@"老年界面"],@[@"分享下载",@"关于我们"]];
+    NSString *interFace = [CoreArchive boolForKey:INTERFACE_NEW]? @"拟物界面" : @"老年界面";
+    
+    self.arrTitles = @[@[@"我的头像"],@[@"整点报时",interFace],@[@"分享下载",@"关于我们"]];
     
     [self initView];
     
 }
 
+//#define USER_QIMI_ARR  @"user_qinmi_ARR"
+//#define USERINFO  @"userINFO"
+//
+//#define USERNAME  @"userName"
+//#define USERID  @"userID"
+//#define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
+//#define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
+//#define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
+
+
+- (IBAction)clickLoginOut:(UIButton *)sender {
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+//    __weak typeof(self) weakSelf = self;
+    [self showAlertViewWithTitle:@"" message:@"是否退出登录" buttonTitle:@"确定" clickBtn:^{
+        
+//        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        [CoreArchive removeStrForKey:USER_QIMI_ARR];
+        [CoreArchive removeStrForKey:USERINFO];
+//        [CoreArchive removeStrForKey:USERNAME];
+//        [CoreArchive removeStrForKey:USERID];
+        [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
+    
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        appDelegate.window.rootViewController = nav;
+        
+    }];
+    
+    
+    
+}
 
 -(void)userCenterViewControllerWithHeadImgRefresh:(UIImage *)image {
     

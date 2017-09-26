@@ -75,7 +75,9 @@
     [self.window makeKeyAndVisible];
 
     [CoreArchive setBool:YES key:FIRST_ENTER];
-    if ([CoreArchive strForKey:USERID]) {
+//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    if ([CoreArchive dicForKey:USERINFO]) {
         
         if ([CoreArchive boolForKey:INTERFACE_NEW]) {
             

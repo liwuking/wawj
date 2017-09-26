@@ -23,13 +23,16 @@
 //        }
 //    }
     
+    
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
     NSString *timeStamp = [NSString stringWithFormat:@"%ld",(long)([[NSDate date] timeIntervalSince1970]*1000)/1000];
     
     NSDictionary *params = @{@"app":      @"WAWJ",
                              @"apiCode":  apiCode,
                              @"version":  APP_VERSION,
                              @"time":     timeStamp,
-                             @"userId":   [CoreArchive strForKey:USERID]? [CoreArchive strForKey:USERID]: @"",
+                             @"userId":   userID,
                              @"platform": @"iOS",
                              @"model":     model ? model: @""};
     return @{@"data":[NSDictionary convertToJSONData:params]};

@@ -10,11 +10,12 @@
 #import <UIKit/UIKit.h>
 #import "NSString+Extension.h"
 
-
+#define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
 
-#define USERNAME  @"userName"
-#define USERID  @"userID"
+//#define USERNAME  @"userName"
+//#define USERID  @"userID"
+#define USERIHEADIMG  @"userimg"   //yes表示已经上传  
 #define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
 #define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
 #define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
@@ -24,9 +25,11 @@
 
 #pragma mark - 偏好类信息存储
 
-
-+(void)setDic:(NSObject *)obj key:(NSString *)key;
++(void)setDic:(NSMutableDictionary *)obj key:(NSString *)key;
 +(NSDictionary *)dicForKey:(NSString *)key;
+
++(void)setArr:(NSMutableArray *)arr key:(NSString *)key;
++(NSMutableArray *)arrForKey:(NSString *)key;
 
 /**
  *  保存普通字符串

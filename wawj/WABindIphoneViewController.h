@@ -10,4 +10,6 @@
 
 @interface WABindIphoneViewController : UIViewController
 
+@property(nonatomic, assign)BOOL isFromInternal;
+
 @end

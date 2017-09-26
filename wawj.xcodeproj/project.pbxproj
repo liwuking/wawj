@@ -311,6 +311,7 @@
 		771F95861F0F276300B4D016 /* WABindIphoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABindIphoneViewController.m; sourceTree = "<group>"; };
 		771F95871F0F276300B4D016 /* WAGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGuideViewController.h; sourceTree = "<group>"; };
 		771F95881F0F276300B4D016 /* WAGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGuideViewController.m; sourceTree = "<group>"; };
+		772B48DA1F78E53200007701 /* WZLSerializeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZLSerializeKit.h; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -926,11 +927,12 @@
 				77A67D141F452F0C000DFD88 /* wawj.entitlements */,
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
+				772B48DA1F78E53200007701 /* WZLSerializeKit.h */,
 				77A67D121F452EF4000DFD88 /* Thunder Song.m4r */,
 				779CF45F1F6F658700DBEE44 /* AccountMainPage */,
 				779CF45E1F6B7D3000DBEE44 /* LoginAndRegister */,
 				7701046E1F34102C00F723A2 /* Model */,
-				77D75DE71F0F6AAF00E46D15 /* functionUI */,
+				77D75DE71F0F6AAF00E46D15 /* NetworkModel */,
 				77D75DDA1F0F2DFC00E46D15 /* Utility */,
 				771F957E1F0F270100B4D016 /* StartPage */,
 				7701044F1F307A6200F723A2 /* Views */,
@@ -1688,7 +1690,7 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
-		77D75DE71F0F6AAF00E46D15 /* functionUI */ = {
+		77D75DE71F0F6AAF00E46D15 /* NetworkModel */ = {
 			isa = PBXGroup;
 			children = (
 				77D75DE81F0F6CBE00E46D15 /* WANetViewController.h */,
@@ -1696,7 +1698,7 @@
 				77D75DEE1F0F6D8E00E46D15 /* WAInternetViewController.h */,
 				77D75DEF1F0F6D8E00E46D15 /* WAInternetViewController.m */,
 			);
-			name = functionUI;
+			name = NetworkModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,19 +21,32 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="kdk-Ye-UyF">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="467"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="F4a-oc-cr9"/>
                         <outlet property="delegate" destination="-1" id="JaF-qR-Qz4"/>
                     </connections>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="101-LH-1W5">
+                    <rect key="frame" x="137" y="581" width="100" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="458-KZ-4z4"/>
+                        <constraint firstAttribute="height" constant="30" id="Doj-pV-VMQ"/>
+                    </constraints>
+                    <state key="normal" title="退出登录"/>
+                    <connections>
+                        <action selector="clickLoginOut:" destination="-1" eventType="touchUpInside" id="SAx-On-H3t"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2EW-w1-AQz"/>
-                <constraint firstAttribute="bottom" secondItem="kdk-Ye-UyF" secondAttribute="bottom" id="8fJ-DO-HwX"/>
+                <constraint firstAttribute="bottom" secondItem="kdk-Ye-UyF" secondAttribute="bottom" constant="200" id="8fJ-DO-HwX"/>
+                <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" constant="56" id="Sxq-ux-knP"/>
                 <constraint firstAttribute="trailing" secondItem="kdk-Ye-UyF" secondAttribute="trailing" id="XLr-qG-YOX"/>
+                <constraint firstItem="101-LH-1W5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="orY-eA-EBg"/>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="se3-fh-fAw"/>
             </constraints>
             <point key="canvasLocation" x="38.5" y="70.5"/>

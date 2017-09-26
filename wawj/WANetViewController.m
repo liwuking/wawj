@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *WIFIFlowImg;
 @property(nonatomic,assign)AFNetworkReachabilityStatus status;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *costantX;
+@property (weak, nonatomic) IBOutlet UILabel *jxLab;
+@property (weak, nonatomic) IBOutlet UIButton *jxImg;
 
 @end
 
@@ -73,6 +75,8 @@
                 strongSelf.mobileFlowImg.image = [UIImage imageNamed:@"mselected"];
                 strongSelf.WIFIFlowImg.image = [UIImage imageNamed:@"WIFIUnselect"];
                 strongSelf.costantX.constant = 70;
+                self.jxImg.hidden = NO;
+                self.jxLab.hidden = NO;
                 
             }
                 break;

@@ -11,10 +11,14 @@
 #import "ContactItem.h"
 #import "ImagePicker.h"
 #import "WAHomeViewController.h"
+#import "CloseFamilyItem.h"
 @interface WAContactViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *picImage;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
+
+@property (strong, nonatomic)  NSDictionary *roleDict;
+
 
 @end
 
@@ -28,6 +32,24 @@
     self.navigationItem.leftBarButtonItem = backItem;
     self.title = [NSString stringWithFormat:@"选择%@", self.contacts];
     
+//    _titleArr = @[@"爸爸",@"妈妈",@"爷爷",                          @"奶奶",@"姥姥",@"姥爷",                          @"老公",@"老婆",@"其他"];
+//    _subTitleArr = @[@[@"儿子", @"女儿", @"孙子", @"孙女"],                     @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],                     @[@"岳父", @"岳母", @"公公", @"婆婆"],                     @[@"干妈", @"干爸", @"儿媳", @"女婿"],                     @[@"外孙", @"外孙女"]];
+//
+//
+    
+    self.roleDict = @{@"爸爸":@"21",@"妈妈":@"20",
+                           @"爷爷":@"11",@"奶奶":@"10",
+                           @"姥姥":@"12",@"姥爷":@"13",
+                           @"老公":@"31",@"老婆":@"30",
+                           @"儿子":@"41", @"女儿":@"40",
+                           @"孙子":@"51", @"孙女":@"50",
+                           @"哥哥":@"33", @"姐姐":@"32",
+                           @"弟弟":@"35", @"妹妹":@"34",
+                           @"岳父":@"23", @"岳母":@"22",
+                           @"公公":@"25", @"婆婆":@"24",
+                           @"干妈":@"26", @"干爸":@"27",
+                           @"儿媳":@"42", @"女婿":@"43",
+                           @"外孙":@"53", @"外孙女":@"52"};
     
 }
 
@@ -102,13 +124,27 @@
 #pragma -mark 添加亲密家人
 - (IBAction)clickAddCloseFamily:(UIButton *)sender {
     
+    if ([self.phoneTF.text isEqualToString:@""]) {
+     
+        [self showAlertViewWithTitle:@"提示" message:@"请输入电话号码" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if ([self.nameTF.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"请输入姓名" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+    }
+
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSDictionary *model = @{@"apply_user":   [CoreArchive strForKey:USERID],
-                            @"apply_gender": userInfo[@"gender"],
-                            @"accept_name":  userInfo[@"userName"],
-                            @"accept_role":  self.contacts,
-                            @"accept_phone": userInfo[@"phoneNo"]};
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1105" andModel:model];
+    NSDictionary *model = @{@"applyUser":   userInfo[@"userId"],
+                            @"applyGender": userInfo[@"gender"],
+                            @"acceptName":  userInfo[@"userName"],
+                            @"acceptRole":  self.roleDict[self.contacts],
+                            @"acceptPhone": userInfo[@"phoneNo"]};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1104" andModel:model];
     __weak __typeof__(self) weakSelf = self;
     [MBProgressHUD showMessage:@"正在请求"];
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
@@ -120,9 +156,23 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            for (UIViewController *temp in self.navigationController.viewControllers) {
+//            CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
+//            item.headUrl = @"";
+//            item.qinmiName = strongSelf.nameTF.text;
+//            item.qinmiPhone = strongSelf.phoneTF.text;
+//            item.qinmiUser = @"";
+//            item.qinmiRole = model[@"acceptRole"];
+            
+            NSDictionary *subDict = @{@"headUrl":@"",@"qinmiName":strongSelf.nameTF.text,@"qinmiPhone":strongSelf.phoneTF.text,@"qinmiUser":@"",@"qinmiRole":model[@"acceptRole"]};
+            NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
+            
+            [qimiArr addObject:subDict];
+            [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+            
+            
+            for (UIViewController *temp in strongSelf.navigationController.viewControllers) {
                 if ([temp isKindOfClass:[WAHomeViewController class]]) {
-                    [self.navigationController popToViewController:temp animated:YES];
+                    [strongSelf.navigationController popToViewController:temp animated:YES];
                 }
             }
             

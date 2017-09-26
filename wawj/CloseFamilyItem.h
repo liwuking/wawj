@@ -7,16 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-
 @interface CloseFamilyItem : NSObject
-@property(nonatomic, strong)NSString *headUrl;
-@property(nonatomic, strong)NSString *portraitUrl;
-@property(nonatomic, strong)NSString *qinmiName;
-@property(nonatomic, strong)NSString *qinmiPhone;
+
+//@property(nonatomic, strong)NSString *headUrl;
+//@property(nonatomic, strong)NSString *portraitUrl;
+//@property(nonatomic, strong)NSString *qinmiName;
+//@property(nonatomic, strong)NSString *qinmiPhone;
+//@property(nonatomic, strong)NSString *qinmiUser;
+//
+//@property(nonatomic, strong)NSString *applyTime;
+//@property(nonatomic, strong)NSString *qinmiRole;
+
+
 @property(nonatomic, strong)NSString *qinmiUser;
-
-@property(nonatomic, strong)NSString *applyTime;
+@property(nonatomic, strong)NSString *qinmiPhone;
 @property(nonatomic, strong)NSString *qinmiRole;
-
-
+@property(nonatomic, strong)NSString *qinmiName;
+@property(nonatomic, strong)NSString *headUrl;
 @end

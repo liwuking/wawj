@@ -9,7 +9,7 @@
 #import "NSDictionary+Util.h"
 
 @implementation NSDictionary (Util)
--(NSDictionary*)transforeNullValueInSimpleDictionary {
+-(NSMutableDictionary*)transforeNullValueInSimpleDictionary {
     
 //    // 判断originJson是不是一个有效的字符串
 //    if (![NSJSONSerialization isValidJSONObject:originJson]) {

@@ -13,6 +13,7 @@
 #import "WAAddFamilyViewController.h"
 #import "WAMyFamilyPhotosViewController.h"
 #import "WACloseFamilyDetailViewController.h"
+#import "UserCenterViewController.h"
 #import "contactView.h"
 #import "HomeCell.h"
 #import "HomeCellTwo.h"
@@ -35,67 +36,34 @@
     [super viewWillDisappear:animated];
 }
 
-#pragma -mark 亲密家人列表
--(void)getGoodFirendListData {
-    
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1103" andModel:nil];
-    __weak __typeof__(self) weakSelf = self;
-//    [MBProgressHUD showMessage:nil];
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
-        
-        NSString *code = data[@"code"];
-        NSString *desc = data[@"desc"];
-        if ([code isEqualToString:@"0000"]) {
-            
-            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
-                for (NSDictionary *dict in data[@"body"][@"qinMiList"]) {
-                    
-                    CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
-                    item.applyTime = dict[@"applyTime"];
-                    item.headUrl = dict[@"headUrl"];
-                    item.qinmiName = dict[@"qinmiName"];
-                    item.qinmiPhone = dict[@"qinmiPhone"];
-                    item.qinmiRole = dict[@"qinmiRole"];
-                    item.qinmiUser = dict[@"qinmiUser"];
-                    
-                    [self.dataArr addObject:item];
-                    
-                    [self.tableView reloadData];
-                }
-            }
-            
-        } else {
-            
-            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            
-        }
-        
-    } fail:^(NSError *error) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
-        
-        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        
-    }];
-    
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self initViews];
-    [self getGoodFirendListData];
+    [self initViews];    
+}
+
+
+-(void)viewDidAppear:(BOOL)animated {
     
+    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+    NSMutableArray *datas = [@[] mutableCopy];
+    for (NSDictionary *dict in arr) {
+        CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
+        item.headUrl = dict[@"headUrl"];
+        item.qinmiName = dict[@"qinmiName"];
+        item.qinmiPhone = dict[@"qinmiPhone"];
+        item.qinmiUser = dict[@"qinmiUser"];
+        item.qinmiRole = dict[@"qinmiRole"];
+        [datas addObject:item];
+        
+    }
+    
+    [self.dataArr removeAllObjects];
+    [self.dataArr addObjectsFromArray:datas];
+    
+    [self.tableView reloadData];
 }
 
 -(void)initViews {
@@ -105,16 +73,21 @@
     
 }
 
--(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item {
-    
-    [self.dataArr addObject:item];
-    [self.tableView reloadData];
-    
-}
+//-(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item {
+//    
+//    [self.dataArr addObject:item];
+//    [self.tableView reloadData];
+//    
+//}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return self.dataArr.count + 1;
+    if (self.dataArr.count < 6) {
+        return self.dataArr.count + 1;
+    } else {
+        return self.dataArr.count;
+    }
+    
 
 }
 
@@ -153,6 +126,39 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.row == self.dataArr.count) {
+        
+        __weak __typeof__(self) weakSelf = self;
+        if (![CoreArchive dicForKey:USERINFO][@"userName"]) {
+            
+            [self showAlertViewWithTitle:@"提示" message:@"请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
+                
+            } otherButtonTitles:@"确定" clickOtherBtn:^{
+                
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                UserCenterViewController *vc = [[UserCenterViewController alloc] initWithNibName:@"UserCenterViewController" bundle:nil];
+                [strongSelf.navigationController pushViewController:vc animated:YES];
+                
+            }];
+            
+            return;
+        }
+        
+        if (![CoreArchive dicForKey:USERINFO][@"headUrl"]) {
+            
+            [self showAlertViewWithTitle:@"提示" message:@"请先上传个人头像" cancelButtonTitle:@"取消" clickCancelBtn:^{
+                
+            } otherButtonTitles:@"确定" clickOtherBtn:^{
+                
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                UserCenterViewController *vc = [[UserCenterViewController alloc] initWithNibName:@"UserCenterViewController" bundle:nil];
+                [strongSelf.navigationController pushViewController:vc animated:YES];
+                
+            }];
+            
+            return;
+        }
+        
+        
         
         WAAddFamilyViewController *vc = [[WAAddFamilyViewController alloc] initWithNibName:@"WAAddFamilyViewController" bundle:nil];
         vc.delegate = self;
@@ -200,6 +206,8 @@
 }
 
 - (IBAction)clickFuctionSetBtn:(UIButton *)sender {
+    
+   
     
     WAFuctionSetViewController *vc = [[WAFuctionSetViewController alloc] initWithNibName:@"WAFuctionSetViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];

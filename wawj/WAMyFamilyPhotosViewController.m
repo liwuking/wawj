@@ -27,6 +27,8 @@
 
 -(void)initView {
     
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
@@ -108,8 +110,8 @@
     
     long time = [[NSDate date] timeIntervalSince1970] * 1000;
     NSString *timeStamp = [NSString stringWithFormat:@"%ld",time];//1504600817000
-    NSDictionary *model = @{@"pageNum":     [NSString stringWithFormat:@"%ld",self.dataArr.count/10+1],
-                            @"pageSize":    @"10",
+    NSDictionary *model = @{@"pageNum":     [NSString stringWithFormat:@"%ld",self.dataArr.count/50+1],
+                            @"pageSize":    @"",
                             @"lastestTime": @""};
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2101" andModel:model];

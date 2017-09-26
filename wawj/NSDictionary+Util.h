@@ -10,7 +10,7 @@
 
 @interface NSDictionary (Util)
 
--(NSDictionary*)transforeNullValueInSimpleDictionary ;
+-(NSMutableDictionary*)transforeNullValueInSimpleDictionary ;
 
 
 @end

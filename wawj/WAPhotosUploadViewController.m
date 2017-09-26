@@ -51,7 +51,6 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         NSString *code = data[@"code"];
-//        NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
             NSDictionary *dict = data[@"body"];
@@ -63,7 +62,10 @@
                 strongSelf.zanBtn.selected = NO;
             }
         
-            strongSelf.zanName = [dict[@"zanList"] firstObject][@"userName"];
+            if (!dict[@"zanList"]) {
+                strongSelf.zanName = [dict[@"zanList"] firstObject][@"userName"];
+            }
+            
         }
         
     } fail:^(NSError *error) {
@@ -310,7 +312,7 @@
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     
     NSDictionary *model = @{@"album_id": self.photosItem.albumId,
-                            @"userName":userInfo[USERNAME]
+                            @"userName":userInfo[@"userName"]
                             };
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2106" andModel:model];

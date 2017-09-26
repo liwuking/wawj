@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeTwo;
 @property (weak, nonatomic) IBOutlet UILabel *phoneText;
 @property(nonatomic, strong)NSArray *arrText;
+@property (weak, nonatomic) IBOutlet UIView *phoneView;
 
 @end
 
@@ -148,6 +149,7 @@
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeUp) userInfo:nil repeats:YES];
     
     
+    self.phoneView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
 }
 
 -(void)timeUp {
@@ -167,6 +169,7 @@
         self.phoneText.text = origin.length ? [origin substringToIndex:origin.length-1] : @"";
     }
     
+    self.phoneView.hidden = self.phoneText.text.length ? NO:YES;
     
 }
 

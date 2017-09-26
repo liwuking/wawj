@@ -14,6 +14,7 @@
 @interface WACloseFamilyDetailViewController ()<CLLocationManagerDelegate,MFMessageComposeViewControllerDelegate>
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
+@property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 
 @end
 
@@ -35,18 +36,10 @@
     self.navigationItem.leftBarButtonItem = backItem;
     
     self.title = self.closeFamilyItem.qinmiName;
-    
+    [self.phoneBtn setTitle:self.closeFamilyItem.qinmiPhone forState:UIControlStateNormal];
     [self.headImageView sd_setImageWithURL:[NSURL URLWithString:self.closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@""]];
 }
 
--(void)initLocationManager {
-    
-    
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-
-}
 
 - (void)startLocation
 {
@@ -61,24 +54,29 @@
      */
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         NSLog(@"requestWhenInUseAuthorization");
-        //        [self.locationManager requestWhenInUseAuthorization];
-        [self.locationManager requestAlwaysAuthorization];
+        [self.locationManager requestWhenInUseAuthorization];
+//        [self.locationManager requestAlwaysAuthorization];
     }
     
     [MBProgressHUD showMessage:nil];
     //开始定位，不断调用其代理方法
+    //设置定位精度
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    //设置距离筛选
+    [self.locationManager setDistanceFilter:100];
+    //开始定位
     [self.locationManager startUpdatingLocation];
+    //设置开始识别方向
+    [self.locationManager startUpdatingHeading];
     NSLog(@"start gps");
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray *)locations
-{
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    
     // 1.获取用户位置的对象
     CLLocation *location = [locations lastObject];
     CLLocationCoordinate2D coordinate = location.coordinate;
     NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
-    
     
     // 2.停止定位
     [manager stopUpdatingLocation];
@@ -86,25 +84,26 @@
     
     _geocoder=[[CLGeocoder alloc]init];
     [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
+    
 }
 
 #pragma mark 根据坐标取得地名
 -(void)getAddressByLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude{
+    
     //反地理编码
     __weak __typeof__(self) weakSelf = self;
-    
     CLLocation *location=[[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
     [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         CLPlacemark *placemark=[placemarks firstObject];
         NSLog(@"详细信息:%@",placemark.addressDictionary);
-        NSString *locationString = [NSString stringWithFormat:@"我现在的位置: %@; http://api.map.baidu.com/staticimage?zoom=17&markers=%f,%f",placemark.addressDictionary,latitude, longitude];
+        NSString *locationString = [NSString stringWithFormat:@"我现在的位置: %@; http://api.map.baidu.com/staticimage?zoom=17&markers=%f,%f",placemark.addressDictionary[@"City"],latitude, longitude];
         
         [strongSelf sendMessageBut:locationString];
         
     }];
+    
 }
-
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
@@ -117,10 +116,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if (!self.closeFamilyItem.headUrl) {
+        [self getFamilyDetail];
+    }
     
     [self initView];
-    [self initLocationManager];
-    
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
     
@@ -198,6 +198,63 @@
         default:
             break;
     }
+}
+
+-(void)getFamilyDetail {
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1101" andModel:@{@"qinmi_user":@"",@"qinmi_phone":self.closeFamilyItem.qinmiPhone}];
+    __weak __typeof__(self) weakSelf = self;
+    [MBProgressHUD showMessage:nil];
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        [MBProgressHUD hideHUD];
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            if ( data[@"body"][@"qinmiUser"]) {
+                NSString *user = data[@"body"][@"qinmiUser"];
+                if (user.length > 2) {
+                    NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
+                    
+                    for (NSInteger i = 0; i < qimiArr.count; i++) {
+                        NSDictionary *subDict = qimiArr[i];
+                        if ([subDict[@"qinmiPhone"] isEqualToString:data[@"body"][@"qinmiPhone"]]) {
+                            [qimiArr removeObjectAtIndex:i];
+                            [qimiArr insertObject:data[@"body"] atIndex:i];
+                            break;
+                        }
+                    }
+                    
+                    //[qimiArr addObject:data[@"body"]];
+                    [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+                    
+                }
+            }
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
