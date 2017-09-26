@@ -37,7 +37,10 @@
     
     self.title = self.closeFamilyItem.qinmiName;
     [self.phoneBtn setTitle:self.closeFamilyItem.qinmiPhone forState:UIControlStateNormal];
-    [self.headImageView sd_setImageWithURL:[NSURL URLWithString:self.closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@""]];
+    if (self.closeFamilyItem.headUrl) {
+        [self.headImageView sd_setImageWithURL:[NSURL URLWithString:self.closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@""]];
+    }
+    
 }
 
 
@@ -116,9 +119,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    if (!self.closeFamilyItem.headUrl) {
-        [self getFamilyDetail];
-    }
+//    if (!self.closeFamilyItem.headUrl || [self.closeFamilyItem.headUrl isEqualToString:@""]) {
+//
+//    }
+    
+    [self getFamilyDetail];
     
     [self initView];
 }
@@ -215,24 +220,25 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            if ( data[@"body"][@"qinmiUser"]) {
-                NSString *user = data[@"body"][@"qinmiUser"];
-                if (user.length > 2) {
-                    NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
-                    
-                    for (NSInteger i = 0; i < qimiArr.count; i++) {
-                        NSDictionary *subDict = qimiArr[i];
-                        if ([subDict[@"qinmiPhone"] isEqualToString:data[@"body"][@"qinmiPhone"]]) {
-                            [qimiArr removeObjectAtIndex:i];
-                            [qimiArr insertObject:data[@"body"] atIndex:i];
-                            break;
-                        }
+            NSDictionary *body = [data[@"body"] transforeNullValueInSimpleDictionary];
+            if (body[@"qinmiUser"] && body[@"headUrl"]) {
+ 
+                NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
+                
+                for (NSInteger i = 0; i < qimiArr.count; i++) {
+                    NSDictionary *subDict = qimiArr[i];
+                    if ([subDict[@"qinmiPhone"] isEqualToString:body[@"qinmiPhone"]]) {
+                        [qimiArr removeObjectAtIndex:i];
+                        [qimiArr insertObject:body atIndex:i];
+                        break;
                     }
-                    
-                    //[qimiArr addObject:data[@"body"]];
-                    [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
-                    
                 }
+                
+                UIImage *img = strongSelf.headImageView.image;
+                [strongSelf.headImageView sd_setImageWithURL:[NSURL URLWithString:body[@"headUrl"]] placeholderImage:img];
+                strongSelf.title = body[@"qinmiName"];
+                [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+
             }
             
         } else {

@@ -196,9 +196,9 @@
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"WAAddContactTableViewCell" owner:self options:nil] lastObject];
     }
+    
     ApplyItem *item = [self.applyArrs objectAtIndex:indexPath.row];
-//    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:item.headUrl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
-//    cell.titleLab.text = item.applyName;
+    
     cell.applyItem = item;
     cell.delegate = self;
     
@@ -230,25 +230,18 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            NSDictionary *dict = data[@"body"];
             
-            CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
-            item.headUrl = dict[@"headUrl"];
-            item.qinmiName = dict[@"qinmiName"];
-            item.qinmiPhone = dict[@"qinmiPhone"];
-            item.qinmiUser = dict[@"qinmiUser"];
+            if (data[@"body"]) {
+                NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
+                [qimiArr addObject:data[@"body"]];
+                
+                [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
             
-            NSDictionary *subDict = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":@""};
-            NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
-            [qimiArr addObject:subDict];
+                [MBProgressHUD showSuccess:@"添加成功"];
+                [strongSelf.navigationController popViewControllerAnimated:YES];
 
-            [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
-            
-            
-            [MBProgressHUD showSuccess:@"添加成功"];
-            [strongSelf.navigationController popViewControllerAnimated:YES];
-            
-            
+            }
+
         } else {
             
             [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{

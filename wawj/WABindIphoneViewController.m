@@ -14,7 +14,10 @@
 #import "CloseFamilyItem.h"
 #import <objc/runtime.h>
 #import "WZLSerializeKit.h"
-@interface WABindIphoneViewController ()
+#import <CoreLocation/CoreLocation.h>
+
+@interface WABindIphoneViewController ()<CLLocationManagerDelegate>
+@property (nonatomic, strong) CLLocationManager* locationManager;
 
     @property (weak, nonatomic) IBOutlet UITextField *iphoneTextField;
     @property (weak, nonatomic) IBOutlet UITextField *msgTextField;
@@ -23,11 +26,14 @@
 
 @property(nonatomic, strong)NSTimer *timer;
 @property(nonatomic, assign)NSInteger fixedTime;
+@property(nonatomic, strong)NSString *locationString;
 
 @end
 
 @implementation WABindIphoneViewController
-
+{
+    CLGeocoder *_geocoder;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -37,6 +43,8 @@
     //表明不是第一次登录了
     [CoreArchive setBool:NO key:FIRST_ENTER];
     
+    self.locationString = @"";
+    [self startLocation];
    
     //[self performSegueWithIdentifier:@"WAOldInterfaceViewController" sender:nil];
 }
@@ -133,10 +141,77 @@
     [self.view endEditing:YES];
 }
 
+- (void)startLocation
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
+     * 获取授权认证，两个方法：
+     * [self.locationManager requestWhenInUseAuthorization];
+     * [self.locationManager requestAlwaysAuthorization];
+     */
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        NSLog(@"requestWhenInUseAuthorization");
+        [self.locationManager requestWhenInUseAuthorization];
+        //        [self.locationManager requestAlwaysAuthorization];
+    }
+    
+    //开始定位，不断调用其代理方法
+    //设置定位精度
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    //设置距离筛选
+    [self.locationManager setDistanceFilter:100];
+    //开始定位
+    [self.locationManager startUpdatingLocation];
+    //设置开始识别方向
+    [self.locationManager startUpdatingHeading];
+    NSLog(@"start gps");
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    
+    // 1.获取用户位置的对象
+    CLLocation *location = [locations lastObject];
+    CLLocationCoordinate2D coordinate = location.coordinate;
+    //NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
+    
+    // 2.停止定位
+    [manager stopUpdatingLocation];
+    
+    _geocoder=[[CLGeocoder alloc]init];
+    [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
+    
+}
+
+#pragma mark 根据坐标取得地名
+-(void)getAddressByLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude{
+    
+    //反地理编码
+    __weak __typeof__(self) weakSelf = self;
+    CLLocation *location=[[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
+    [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        CLPlacemark *placemark=[placemarks firstObject];
+        strongSelf.locationString = [placemark.addressDictionary[@"FormattedAddressLines"] lastObject];
+        
+    }];
+    
+}
+
 - (IBAction)clickNext:(id)sender {
     
     //手机号绑定（即登录注册）
-    NSDictionary *model  = @{@"message_type":@"1",@"message_code":@"111111",@"phone_no":self.iphoneTextField.text};
+    NSDictionary *model  = @{@"phone_no":self.iphoneTextField.text,
+                             @"bind_os":@"iOS",
+                             @"bind_os_version": [[UIDevice currentDevice] systemVersion],
+                             @"bind_brand":[[UIDevice currentDevice] model],
+                             @"bind_sn":[[[UIDevice currentDevice] identifierForVendor] UUIDString],
+                             @"bind_lbs":self.locationString,
+                             @"invite_code":@"",
+                             @"message_type":@"1",
+                             @"message_code":@"111111"};
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1002" andModel:model];
     
     

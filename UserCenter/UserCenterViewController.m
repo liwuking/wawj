@@ -75,7 +75,8 @@
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     if (userInfo[@"headUrl"]) {
         self.imageUrl = userInfo[@"headUrl"];
-        [_picImgView sd_setImageWithURL:userInfo[@"headUrl"] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
+        NSURL *imgurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderInfo",userInfo[@"headUrl"]]];
+        [_picImgView sd_setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
     }
     
     if (userInfo[@"userName"]) {
@@ -512,9 +513,9 @@
             
             [MBProgressHUD showSuccess:@"保存成功"];
             
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                [strongSelf.navigationController popViewControllerAnimated:YES];
-//            });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [strongSelf.navigationController popViewControllerAnimated:YES];
+            });
             
         } else {
             
@@ -541,6 +542,13 @@
     
     if ([nameTextField.text isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"姓名不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if ([nameTextField.text lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > 12) {
+        [self showAlertViewWithTitle:@"姓名太长" message:@"姓名英文为12个字符，汉字为4个" buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;

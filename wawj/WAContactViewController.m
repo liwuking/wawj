@@ -132,18 +132,47 @@
         return;
     }
     
+    if (self.phoneTF.text.length > 20) {
+        
+        [self showAlertViewWithTitle:@"提示" message:@"请输入正确的电话号码" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
     if ([self.nameTF.text isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"请输入姓名" buttonTitle:@"确定" clickBtn:^{
             
         }];
+        return;
     }
+    
+    NSDictionary *userinfo = [CoreArchive dicForKey:USERINFO];
+    if ([self.phoneTF.text isEqualToString:userinfo[@"phoneNo"]]) {
+        [self showAlertViewWithTitle:@"提示" message:@"不能添加本人" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    for (NSDictionary *dict in [CoreArchive arrForKey:USER_QIMI_ARR]) {
+        
+        if ([dict[@"qinmiPhone"] isEqualToString:self.phoneTF.text]) {
+            [self showAlertViewWithTitle:@"提示" message:@"此人已经添加" buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
+    }
+    
 
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSDictionary *model = @{@"applyUser":   userInfo[@"userId"],
                             @"applyGender": userInfo[@"gender"],
-                            @"acceptName":  userInfo[@"userName"],
+                            @"acceptName":  self.nameTF.text,
                             @"acceptRole":  self.roleDict[self.contacts],
-                            @"acceptPhone": userInfo[@"phoneNo"]};
+                            @"acceptPhone": self.phoneTF.text};
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1104" andModel:model];
     __weak __typeof__(self) weakSelf = self;
     [MBProgressHUD showMessage:@"正在请求"];

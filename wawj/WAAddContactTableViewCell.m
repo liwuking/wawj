@@ -18,7 +18,7 @@
 -(void)setApplyItem:(ApplyItem *)applyItem {
     _applyItem = applyItem;
     
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:applyItem.headUrl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
+    [self.headImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderFamily",applyItem.headUrl]] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
     self.titleLab.text = applyItem.applyName;
 }
 

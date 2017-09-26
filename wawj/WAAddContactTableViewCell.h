@@ -22,7 +22,7 @@
 
 @property(nonatomic, strong)ApplyItem *applyItem;
 
-@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet UIImageView *headImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 
 @end
