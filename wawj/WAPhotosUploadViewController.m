@@ -26,6 +26,8 @@
 @property(nonatomic,strong)NSMutableArray *dataArr;
 @property(nonatomic,strong)NSString *shareUrl;
 
+@property(nonatomic,strong)UIView *hudView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *headImg;
 @property (weak, nonatomic) IBOutlet UILabel *headTitle;
@@ -39,7 +41,7 @@
 
 @implementation WAPhotosUploadViewController
 
--(void)checkIsLike {
+-(void)getZanData {
     
     NSDictionary *model = @{@"album_id": self.photosItem.albumId};
     
@@ -157,37 +159,35 @@
     UINib *cellNib=[UINib nibWithNibName:@"PhotoCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"PhotoCell"];
     
+    
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderApply",self.photosItem.coverUrl]] placeholderImage:nil];
+    
+//    self.headTitle.text = self.photosItem.author;
+    
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //设定时间格式,这里可以设置成自己需要的格式
     [dateFormatter setDateFormat:@"MM月dd日 HH:mm"];
-    
     NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[self.photosItem.updateTime doubleValue]];
     //用[NSDate date]可以获取系统当前时间
     NSString *currentDateStr = [dateFormatter stringFromDate:confromTimesp];
-    
     self.dateLab.text = currentDateStr;
+    
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateSelected];
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
 
-    [self checkIsLike];
-    
-   
-}
-
-
-
--(void)clickShare {
-
-    self.shareContant.constant = self.shareContant == 0 ? 81 : 0;
-    
-   
-    
 }
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)clickShare {
+
+    self.shareContant.constant = self.shareContant == 0 ? 81 : 0;
+ 
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -196,31 +196,26 @@
     self.dataArr = [@[] mutableCopy];
     [self initView];
     
+    [self  getZanData];
+    
+    [MBProgressHUD showMessage:nil];
     [self  getPhotosData];
-    //[self  sharePhotosData];
     
 }
 
 - (IBAction)clickUploadBtn:(UIButton *)sender {
     
-     [self uploadPhotos];
-    
-}
-
--(void)uploadPhotos {
-    
     ZLPhotoActionSheet *actionSheet = [[ZLPhotoActionSheet alloc] init];
     //设置照片最大预览数
-    actionSheet.maxPreviewCount = 20;
+    actionSheet.maxPreviewCount = 100;
     //设置照片最大选择数
-    actionSheet.maxSelectCount = 10;
+    actionSheet.maxSelectCount = 25;
     actionSheet.sender = self;
     
     __weak __typeof__(self) weakSelf = self;
     [actionSheet setSelectImageBlock:^(NSArray<UIImage *> * _Nonnull images, NSArray<PHAsset *> * _Nonnull assets, BOOL isOriginal) {
         //your codes
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD showMessage:@"正在上传"];
         [strongSelf uploadImage:images];
         
     }];
@@ -229,64 +224,117 @@
     
 }
 
+
 -(void)uploadImage:(NSArray *)images {
     
-//    NSArray *imageArr = [[NSArray alloc] initWithArray:images];
-//
-//
-//
-//    NSData *fileData = nil;//UIImageJPEGRepresentation(_picImgView.image, 0.5);
-//    if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
-//
-//        //图片命名
-//        NSDate *currentDate = [NSDate date];
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-//        NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
-//
-//        NSString *imgName=[NSString stringWithFormat:@"share/%@/%@.jpeg",currentDateString,[CoreArchive strForKey:USERID]];
-//
-//        __weak typeof(self) weakSelf = self;
-//        UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
-//        NSString *bucketName = @"wawj-test";
-//        [MBProgressHUD showMessage:nil];
-//        [up uploadWithBucketName:bucketName
-//                        operator:@"wawj2017"
-//                        password:@"1+1=2yes"
-//                        fileData:fileData
-//                        fileName:nil
-//                         saveKey:imgName
-//                 otherParameters:nil
-//                         success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
-//
-//                             [MBProgressHUD hideHUD];
-//                             __strong typeof(weakSelf) strongSelf = weakSelf;
-////                             strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
-////
-////
-////
-////                             [strongSelf personHeadDataRefresh];
-////
-////
-//                         }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
-//
-//                             [MBProgressHUD hideHUD];
-//                             __strong typeof(weakSelf) strongSelf = weakSelf;
-//
-////                             _picImgView.image = nil;
-//                             [strongSelf showAlertViewWithTitle:@"提示" message:@"请求失败" buttonTitle:@"确定" clickBtn:^{
-//
-//                             }];
-//
-//                         }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
-//
-//                         }];
-//
-//    }else{ //----没有网络
-//        [self showAlertViewWithTitle:@"提示" message:@"没有网络" buttonTitle:@"确定" clickBtn:^{
-//
-//        }];
-//    }
+    NSMutableArray *photoLists = [@[] mutableCopy];
+    
+    NSArray *imageArr = [[NSArray alloc] initWithArray:images];
+    if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
+
+        [self hudShow:[NSString stringWithFormat:@"正在上传(0/%ld)...",images.count]];
+        
+        dispatch_queue_t queue = dispatch_queue_create("com.wawj.www", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+        dispatch_async( queue, ^{
+            
+//            dispatch_group_t group = dispatch_group_create();
+            
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+            for (int i = 0; i < images.count+1; i++)
+            {
+                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+                
+                if (i >= imageArr.count && photoLists.count > 0) {
+                    
+                    NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
+                                            @"photo_List": photoLists};
+                    
+                    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2103" andModel:model];
+                    __weak __typeof__(self) weakSelf = self;
+                    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                        dispatch_semaphore_signal(semaphore);
+                        
+                        NSString *code = data[@"code"];
+                        NSString *desc = data[@"desc"];
+                        if ([code isEqualToString:@"0000"]) {
+                            
+                            //[view removeFromSuperview];
+                            [strongSelf getPhotosList];
+                            
+                        } else {
+                            
+                            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                                
+                            }];
+                            
+                        }
+                        
+                    } fail:^(NSError *error) {
+                        
+                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+                            
+                        }];
+                        
+                        dispatch_semaphore_signal(semaphore);
+                    }];
+                    
+                } else {
+                    
+                    NSData *fileData = UIImageJPEGRepresentation(imageArr[i], 1);
+                    //图片命名
+                    NSDate *currentDate = [NSDate date];
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+                    NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+                    
+                    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+                    NSString *imgName=[NSString stringWithFormat:@"%@/%@%d/%@.jpeg",self.photosItem.albumId, currentDateString,i,userInfo[@"userId"]];
+
+                    UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
+                    NSString *bucketName = @"wawj-test";
+                    
+                    __weak __typeof__(self) weakSelf = self;
+                    [up uploadWithBucketName:bucketName
+                                    operator:@"wawj2017"
+                                    password:@"1+1=2yes"
+                                    fileData:fileData
+                                    fileName:nil
+                                     saveKey:imgName
+                             otherParameters:nil
+                                     success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
+                                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                                         
+                                         NSString *photoUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
+                                         NSDictionary *photos = @{@"photo_url":photoUrl, @"photoSize":responseBody[@"file_size"], @"photoWidth":responseBody[@"image-width"], @"photoHeight":responseBody[@"image-height"]};
+                                         [photoLists addObject:photos];
+                                         
+                                         [strongSelf hudShow:[NSString stringWithFormat:@"正在上传(%ld/%ld)...",photoLists.count,images.count]];
+                                         
+                                         
+                                         dispatch_semaphore_signal(semaphore);
+                                         
+                                     }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
+                                         
+                                     }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
+                                         
+                                     }];
+                    
+                }
+//                dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            }
+
+        });
+        
+    
+    }else{ //----没有网络
+        [self showAlertViewWithTitle:@"提示" message:@"没有网络" buttonTitle:@"确定" clickBtn:^{
+
+        }];
+    }
+    
+    
     
 }
 
@@ -323,29 +371,30 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         NSString *code = data[@"code"];
-        //        NSString *desc = data[@"desc"];
+       NSString *desc = data[@"desc"];
+        
         if ([code isEqualToString:@"0000"]) {
-            
-            NSDictionary *dict = data[@"body"];
             
             strongSelf.zanBtn.selected = !strongSelf.zanBtn.selected;
             
-//            if ([dict[@"isZan"] isEqualToString:@"1"]) {
-//                [strongSelf.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateNormal];
-//            }else {
-//                [strongSelf.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
-//            }
-//
-//            strongSelf.zanName = dict[@""];
+        } else {
+            
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+
+            
         }
         
     } fail:^(NSError *error) {
         
-        //        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        //
-        //        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-        //
-        //        }];
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+    
+            [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+    
+            }];
         
     }];
 
@@ -418,38 +467,47 @@
 #pragma -mark 相册列表
 - (void)getPhotosList {
 
+    
     NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
                             @"lastestTime": @""};
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2104" andModel:model];
-    [MBProgressHUD showMessage:nil];
     __weak __typeof__(self) weakSelf = self;
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
         
+        [strongSelf hideHud];
+        
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            for (NSDictionary *dict in data[@"body"][@"photoList"]) {
+            if (![data[@"body"][@"photoList"] isKindOfClass:[NSNull class]]) {
                 
-                NSDictionary *transDict = [dict transforeNullValueInSimpleDictionary];
+                [strongSelf.dataArr removeAllObjects];
                 
-                PhotoItem *item = [[PhotoItem alloc] init];
-                item.createTime = transDict[@"createTime"];
-                item.photoHeight = transDict[@"photoHeight"];
-                item.photoId = transDict[@"photoId"];
-                item.photoSize = transDict[@"photoSize"];
-                item.photoUrl = transDict[@"photoUrl"];
-                item.photoWidth = transDict[@"photoWidth"];
+                for (NSDictionary *dict in data[@"body"][@"photoList"]) {
+                    
+                    NSDictionary *transDict = [dict transforeNullValueInSimpleDictionary];
+                    
+                    PhotoItem *item = [[PhotoItem alloc] init];
+                    item.createTime = transDict[@"createTime"];
+                    item.photoHeight = transDict[@"photoHeight"];
+                    item.photoId = transDict[@"photoId"];
+                    item.photoSize = transDict[@"photoSize"];
+                    item.photoUrl = transDict[@"photoUrl"];
+                    item.photoWidth = transDict[@"photoWidth"];
+                    
+                    [self.dataArr addObject:item];
+                    
+                }
                 
-                [self.dataArr addObject:item];
+                [self.collectionView reloadData];
                 
             }
             
-            [self.collectionView reloadData];
             
         } else {
             
@@ -478,7 +536,46 @@
 
 -(void)delPhoto:(NSInteger)photoIndex {
     
-   // [self.dataArr removeObjectAtIndex:photoIndex];
+    PhotoItem *item = self.dataArr[photoIndex];
+    [self.dataArr removeObjectAtIndex:photoIndex];
+    [self.collectionView reloadData];
+    
+    NSDictionary *model = @{@"album_id":self.photosItem.albumId,
+                            @"photoId":item.photoId};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2108" andModel:model];
+    
+//    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//        NSString *code = data[@"code"];
+//        if ([code isEqualToString:@"0000"]) {
+//
+//            NSDictionary *dict = data[@"body"];
+//
+//            if ([dict[@"isZan"] isEqualToString:@"1"]) {
+//
+//                strongSelf.zanBtn.selected = YES;
+//            }else {
+//                strongSelf.zanBtn.selected = NO;
+//            }
+//
+//            if (!dict[@"zanList"]) {
+//                strongSelf.zanName = [dict[@"zanList"] firstObject][@"userName"];
+//            }
+//
+//        }
+        
+    } fail:^(NSError *error) {
+        
+        //        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        //
+        //        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+        //
+        //        }];
+        
+    }];
     
     
     
@@ -513,7 +610,7 @@
 //    
 //    cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
     
-    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.photoUrl] placeholderImage:[UIImage imageNamed:@""]];
+    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb50",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
     return cell;
     
 }
@@ -537,11 +634,60 @@
     vc.photoItemArr = self.dataArr;
     vc.photosTitle = self.title;
     vc.photoIndex = indexPath.row;
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
 
 
+
+-(void)hudShow:(NSString *)text {
+    
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        if (!strongSelf.hudView) {
+            strongSelf.hudView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 120)];
+            strongSelf.hudView.layer.masksToBounds = YES;
+            strongSelf.hudView.layer.cornerRadius = 5.0f;
+            strongSelf.hudView.backgroundColor = [UIColor darkGrayColor];
+            strongSelf.hudView.alpha = 0.8;
+            strongSelf.hudView.center = self.view.center;
+            
+            UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(40, 15, 30, 30)];
+            indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+            [indicator startAnimating];
+            
+            UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 150, 30)];
+            lab.textAlignment = NSTextAlignmentCenter;
+            lab.textColor = [UIColor whiteColor];
+            lab.font = [UIFont systemFontOfSize:16];
+            lab.tag = 100;
+            lab.text = text;//[NSString stringWithFormat:@"正在上传(%ld/%ld)...",images.count,images.count];
+            
+            [strongSelf.hudView addSubview:indicator];
+            [strongSelf.hudView addSubview:lab];
+            
+            [[UIApplication sharedApplication].keyWindow addSubview:strongSelf.hudView];
+            
+        } else {
+            
+            UILabel *lab = [strongSelf.hudView viewWithTag:100];
+            lab.text = text;
+        }
+        
+    });
+}
+
+-(void)hideHud {
+    
+    if (self.hudView) {
+        [self.hudView removeFromSuperview];
+        self.hudView = nil;
+    }
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

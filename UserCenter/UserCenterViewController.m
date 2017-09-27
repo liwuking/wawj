@@ -14,7 +14,6 @@
 #import "UpYunFormUploader.h"
 #import <UIImageView+WebCache.h>
 
-#define HTTP_IMAGE   @"http://wawj-test.b0.upaiyun.com"
 #define blueColor RGB_COLOR(45, 168, 232)
 #define whiteColor [UIColor whiteColor]
 @interface UserCenterViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>

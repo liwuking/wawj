@@ -32,7 +32,7 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     
-    self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*self.photoItemArr.count, SCREEN_HEIGHT);
+    self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*self.photoItemArr.count, 100);
     
     
     self.title = [NSString stringWithFormat:@"%@(%lu/%lu)", self.photosTitle, self.photoIndex+1,(unsigned long)self.photoItemArr.count];
@@ -63,15 +63,13 @@
     } otherButtonTitles:@"确定" clickOtherBtn:^{
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
-        //PhotoItem *item = strongSelf.photoItemArr[index];
         [strongSelf.delegate waPhotosShowViewControllerWithDelPhotoIndex:index];
+        [strongSelf.navigationController popViewControllerAnimated:YES];
+        
         
     }];
     
 }
-
-
-
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     

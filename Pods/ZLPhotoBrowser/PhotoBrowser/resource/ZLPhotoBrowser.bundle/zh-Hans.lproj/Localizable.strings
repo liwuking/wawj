@@ -23,7 +23,7 @@
 "ZLPhotoBrowserCannotSelectLivePhoto" = "不能同时选择照片和Live Photo";
 
 "ZLPhotoBrowserLoadingText" = "加载中，请稍后";
-"ZLPhotoBrowserHandleText" = "正在处理...";
+"ZLPhotoBrowserHandleText" = "正在上传...";
 
 "ZLPhotoBrowserSaveImageErrorText" = "保存图片到相册失败";
 "ZLPhotoBrowserMaxSelectCountText" = "最多只能选择%ld张图片";

@@ -24,16 +24,21 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
 
+    if (self.photosItem) {
+        self.titleTF.placeholder = self.photosItem.title;
+    }
 }
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma -mark 新建相册
-static void extracted(WANewPhotosViewController *object, id data, WANewPhotosViewController *const strongSelf) {
-    [object.delegate waNewPhotosViewControllerWithAlbumId:data[@"body"][@"albumId"] AndTitle:strongSelf.titleTF.text];
-}
+//#pragma -mark 新建相册
+//static void extracted(WANewPhotosViewController *object, id data, WANewPhotosViewController *const strongSelf) {
+//    [object.delegate waNewPhotosViewControllerWithAlbumId:data[@"body"][@"albumId"] AndTitle:strongSelf.titleTF.text];
+//}
+
+
 
 - (IBAction)clickFanish:(UIButton *)sender {
 

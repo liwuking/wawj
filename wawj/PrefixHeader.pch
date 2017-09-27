@@ -23,5 +23,6 @@
 #import "NSDictionary+Util.h"
 // 测试URL
 #define KMain_URL   @"http://123.207.170.53/service"//@"10.61.33.27:8081/wawjapp/service"  //
+#define HTTP_IMAGE   @"http://wawj-test.b0.upaiyun.com"
 
 #endif /* PrefixHeader_pch */

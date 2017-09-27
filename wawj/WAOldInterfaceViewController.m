@@ -180,9 +180,7 @@
     [self initViews];
     
     [CoreArchive setBool:NO key:INTERFACE_NEW];
-    
-   // [Utility getDayWeek];
-    
+        
 }
 
 - (IBAction)clickAOne:(UIButton *)sender {
