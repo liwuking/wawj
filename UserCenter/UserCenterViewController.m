@@ -391,7 +391,7 @@
                              __strong typeof(weakSelf) strongSelf = weakSelf;
                              strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
                              
-                             [CoreArchive setBool:YES key:USERIHEADIMG];
+                             //[CoreArchive setBool:YES key:USERIHEADIMG];
                              
                              [strongSelf personHeadDataRefresh];
                              

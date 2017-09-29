@@ -108,34 +108,107 @@
     
 }
 
-#pragma -mark 相册列表
-- (void)getPhotosList {
+-(void)photosListCachehandle {
     
+    //从本地缓存获取数据
+    NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
     if ([self.collectionView.mj_footer isRefreshing]) {
-        //从本地缓存获取数据
-        NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
+        
         if (oldPhotoArr.count - self.dataArr.count > 0) {
             
             if (oldPhotoArr.count - self.dataArr.count > 10) {
                 NSArray *cacheArr = [oldPhotoArr subarrayWithRange:NSMakeRange(self.dataArr.count, 10)];
-                [self.dataArr addObjectsFromArray:cacheArr];
+                for (NSDictionary *dict in cacheArr) {
+                    PhotosItem *item = [[PhotosItem alloc] init];
+                    item.albumId = dict[@"albumId"];
+                    item.albumStyle = dict[@"albumStyle"];
+                    item.author = dict[@"author"];
+                    item.coverUrl = dict[@"coverUrl"];
+                    item.nums = dict[@"nums"];
+                    item.title = dict[@"title"];
+                    item.updateTime = dict[@"updateTime"];
+                    [self.dataArr addObject:item];
+                    
+                }
                 [self.collectionView.mj_footer endRefreshing];
             } else {
                 NSArray *cacheArr = [oldPhotoArr subarrayWithRange:NSMakeRange(self.dataArr.count, oldPhotoArr.count - self.dataArr.count)];
-                [self.dataArr addObjectsFromArray:cacheArr];
+                for (NSDictionary *dict in cacheArr) {
+                    PhotosItem *item = [[PhotosItem alloc] init];
+                    item.albumId = dict[@"albumId"];
+                    item.albumStyle = dict[@"albumStyle"];
+                    item.author = dict[@"author"];
+                    item.coverUrl = dict[@"coverUrl"];
+                    item.nums = dict[@"nums"];
+                    item.title = dict[@"title"];
+                    item.updateTime = dict[@"updateTime"];
+                    [self.dataArr addObject:item];
+                    
+                }
                 [self.collectionView.mj_footer endRefreshingWithNoMoreData];
             }
             
             [self.collectionView reloadData];
             
+        } else {
+            
+            [self.collectionView.mj_footer endRefreshingWithNoMoreData];
         }
-        return;
+        
     } else {
         
-        if (![AFNetworkReachabilityManager manager].isReachable) {
+        if ([AFNetworkReachabilityManager sharedManager].isReachable) {
+            
+            if (0 == self.dataArr.count) {
+                
+                if (oldPhotoArr.count > 0) {
+                    
+                    NSMutableArray *cacheArr = [@[] mutableCopy];
+                    
+                    if (oldPhotoArr.count > 10) {
+                        NSArray *photoArr = [oldPhotoArr subarrayWithRange:NSMakeRange(0, 10)];
+                        [cacheArr addObjectsFromArray:photoArr];
+                    } else if (oldPhotoArr.count > 0 && oldPhotoArr.count < 10) {
+                        NSArray *photoArr = [oldPhotoArr subarrayWithRange:NSMakeRange(0, oldPhotoArr.count)];
+                        [cacheArr addObjectsFromArray:photoArr];
+                    }
+                    
+                    for (NSDictionary *dict in cacheArr) {
+                        PhotosItem *item = [[PhotosItem alloc] init];
+                        item.albumId = dict[@"albumId"];
+                        item.albumStyle = dict[@"albumStyle"];
+                        item.author = dict[@"author"];
+                        item.coverUrl = dict[@"coverUrl"];
+                        item.nums = dict[@"nums"];
+                        item.title = dict[@"title"];
+                        item.updateTime = dict[@"updateTime"];
+                        [self.dataArr addObject:item];
+                        
+                    }
+                    [self.collectionView.mj_header endRefreshing];
+                    [self.collectionView reloadData];
+                    
+                }
+                
+            }
+            
+            
+        } else {
             [self.collectionView.mj_header endRefreshing];
             [MBProgressHUD showSuccess:@"网络未开启"];
         }
+
+    }
+}
+
+#pragma -mark 相册列表
+- (void)getPhotosList {
+    
+    //缓存处理
+    [self photosListCachehandle];
+    
+    if ([self.collectionView.mj_footer isRefreshing]) {
+        return;
     }
     
     NSString *lastestTime = @"";
@@ -163,6 +236,7 @@
             
             if (![data[@"body"] isKindOfClass:[NSNull class]]) {
                 
+                NSMutableArray *photosItemArr = [@[] mutableCopy];
                 NSMutableArray *photosArr = [@[] mutableCopy];
                 for (NSDictionary *dict in data[@"body"]) {
                     
@@ -187,12 +261,18 @@
                                                  };
                     [photosArr addObject:PhotosDict];
                     
-                    if (strongSelf.dataArr.count < 10) {
-                        [strongSelf.dataArr addObject:item];
+                    if (photosItemArr.count < 10) {
+                        [photosItemArr addObject:item];
                     }
                     
+                    if (photosArr.count == 1) {
+                        NSNumber *updateTime = (NSNumber *)item.updateTime;
+                        [CoreArchive setStr:[updateTime stringValue] key:LASTTIME];
+                    }
                 }
                 
+                [strongSelf.dataArr removeAllObjects];
+                [strongSelf.dataArr addObjectsFromArray:photosItemArr];
                 //刷新列表
                 [strongSelf.collectionView reloadData];
                 

@@ -9,7 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "CloseFamilyItem.h"
 
+@protocol WACloseFamilyDetailViewControllerDelegate <NSObject>
+
+-(void)waCloseFamilyDetailViewControllerRefreshIndex:(NSInteger)index;
+
+@end
+
 @interface WACloseFamilyDetailViewController : UIViewController
+
+@property(nonatomic, weak)id<WACloseFamilyDetailViewControllerDelegate> delegate;
 
 @property(nonatomic, strong)CloseFamilyItem *closeFamilyItem;
 @end

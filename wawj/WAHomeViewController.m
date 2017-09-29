@@ -18,7 +18,7 @@
 #import "HomeCell.h"
 #import "HomeCellTwo.h"
 
-@interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -64,6 +64,23 @@
     
     //self.isReload = YES;
     [self.tableView reloadData];
+}
+
+-(void)waCloseFamilyDetailViewControllerRefreshIndex:(NSInteger)index {
+   
+    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+    NSDictionary *dict = arr[index];
+    
+    CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
+    item.headUrl = dict[@"headUrl"];
+    item.qinmiName = dict[@"qinmiName"];
+    item.qinmiPhone = dict[@"qinmiPhone"];
+    item.qinmiUser = dict[@"qinmiUser"];
+    item.qinmiRole = dict[@"qinmiRole"];
+    
+    [self.dataArr replaceObjectAtIndex:index withObject:item];
+    
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:index]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 -(void)initViews {
@@ -219,7 +236,7 @@
         
         
         WAAddFamilyViewController *vc = [[WAAddFamilyViewController alloc] initWithNibName:@"WAAddFamilyViewController" bundle:nil];
-        vc.delegate = self;
+        //vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
         
     } else {
@@ -227,11 +244,13 @@
         CloseFamilyItem *item = self.dataArr[indexPath.section];
         WACloseFamilyDetailViewController *vc = [[WACloseFamilyDetailViewController alloc] initWithNibName:@"WACloseFamilyDetailViewController" bundle:nil];
         vc.closeFamilyItem = item;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
         
     }
 
 }
+
 
 
 -(void)clickContactViewWith:(NSString *)str {
@@ -264,8 +283,6 @@
 }
 
 - (IBAction)clickFuctionSetBtn:(UIButton *)sender {
-    
-   
     
     WAFuctionSetViewController *vc = [[WAFuctionSetViewController alloc] initWithNibName:@"WAFuctionSetViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];

@@ -230,6 +230,9 @@
                     if ([subDict[@"qinmiPhone"] isEqualToString:body[@"qinmiPhone"]]) {
                         [qimiArr removeObjectAtIndex:i];
                         [qimiArr insertObject:body atIndex:i];
+                        [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+                        
+                        [strongSelf.delegate waCloseFamilyDetailViewControllerRefreshIndex:i];
                         break;
                     }
                 }
@@ -237,7 +240,7 @@
                 UIImage *img = strongSelf.headImageView.image;
                 [strongSelf.headImageView sd_setImageWithURL:[NSURL URLWithString:body[@"headUrl"]] placeholderImage:img];
                 strongSelf.title = body[@"qinmiName"];
-                [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
+                
 
             }
             

@@ -365,8 +365,8 @@
                     [dateFormatter setDateFormat:@"yyyyMMdd"];
                     NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
                     
-                    //NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-                    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+                    //NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+                    NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
                     NSString *imgName=[NSString stringWithFormat:@"album/%@/%@%@.png", currentDateString,self.photosItem.albumId,uuid];
 
                     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
@@ -387,10 +387,7 @@
                                          NSDictionary *photos = @{@"photo_url":photoUrl, @"photoSize":responseBody[@"file_size"], @"photoWidth":responseBody[@"image-width"], @"photoHeight":responseBody[@"image-height"]};
                                          [photoLists addObject:photos];
                                          
-                                 [strongSelf.cacheImags setObject:pngData forKey:photoUrl];
-                                         
-
-                                         //[strongSelf saveImage:imageArr[i] andImagePath:photoUrl];
+                                         [strongSelf.cacheImags setObject:pngData forKey:photoUrl];
                                          
                                          [strongSelf hudShow:[NSString stringWithFormat:@"正在上传(%ld/%ld)...",photoLists.count,imageArr.count]];
                                          
@@ -399,13 +396,11 @@
                                          
                                      }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
                                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                                         NSLog(@"上传失败");
+                                         NSLog(@"上传失败: %ld", strongSelf.cacheImags.count);
                                          
-                                         [strongSelf.cacheImags removeAllObjects];
-                                         [strongSelf hudShow:@"上传失败"];
+                                         //[strongSelf.cacheImags removeAllObjects];
+                                         [strongSelf hideHudWithError:@"上传失败"];
                                          [imageArr removeAllObjects];
-                                         
-                                         [strongSelf hideHud];
                                          
                                          dispatch_semaphore_signal(semaphore);
                                          
@@ -856,7 +851,31 @@
         }
         
     });
-   
+
+}
+
+-(void)hideHudWithError:(NSString *)errorMessage {
+    
+    __weak __typeof__(self) weakSelf = self;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        UILabel *lab = [strongSelf.hudView viewWithTag:100];
+        lab.text = errorMessage;
+        
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.hudView) {
+            [strongSelf.hudView removeFromSuperview];
+            strongSelf.hudView = nil;
+        }
+    });
+    
+    
     
 }
 

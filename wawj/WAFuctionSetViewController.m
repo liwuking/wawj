@@ -110,16 +110,6 @@
     
 }
 
-//#define USER_QIMI_ARR  @"user_qinmi_ARR"
-//#define USERINFO  @"userINFO"
-//
-//#define USERNAME  @"userName"
-//#define USERID  @"userID"
-//#define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
-//#define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
-//#define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
-
-
 - (IBAction)clickLoginOut:(UIButton *)sender {
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -131,7 +121,7 @@
         
         [CoreArchive removeStrForKey:USER_QIMI_ARR];
         [CoreArchive removeStrForKey:USERINFO];
-//        [CoreArchive removeStrForKey:USERNAME];
+        [CoreArchive removeStrForKey:LASTTIME];
        [CoreArchive removeStrForKey:USER_PHOTO_ARR];
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
     

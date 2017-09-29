@@ -12,14 +12,14 @@
 
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
-
 #define USER_PHOTO_ARR  @"user_photo_ARR"
 #define LASTTIME  @"lastestTime"
-#define USERIHEADIMG  @"userimg"   //yes表示已经上传  
-#define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
+
 #define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
 #define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
 
+//#define USERIHEADIMG  @"userimg"   //yes表示已经上传
+#define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
 
 @interface CoreArchive : NSObject
 
