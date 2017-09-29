@@ -19,16 +19,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="140" height="170"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LxT-0W-wL0">
-                        <rect key="frame" x="0.0" y="0.0" width="140" height="128"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyPhotos" translatesAutoresizingMaskIntoConstraints="NO" id="LxT-0W-wL0">
+                        <rect key="frame" x="0.0" y="0.0" width="140" height="123"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="开发房屋" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pju-2A-8ii">
-                        <rect key="frame" x="0.0" y="131" width="140" height="21"/>
+                        <rect key="frame" x="0.0" y="126" width="140" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="jlS-he-lSf"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiA-Wx-x7w">
@@ -37,7 +37,7 @@
                             <constraint firstAttribute="height" constant="16" id="6Uc-1d-kdj"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="新" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3h-iy-FLc">
@@ -65,7 +65,7 @@
                 <constraint firstAttribute="bottom" secondItem="iiA-Wx-x7w" secondAttribute="bottom" constant="2" id="r9a-mn-as2"/>
                 <constraint firstAttribute="trailing" secondItem="LxT-0W-wL0" secondAttribute="trailing" id="tPE-Vx-0WT"/>
                 <constraint firstItem="Q3h-iy-FLc" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="w9q-9h-FCJ"/>
-                <constraint firstItem="iiA-Wx-x7w" firstAttribute="top" secondItem="pju-2A-8ii" secondAttribute="bottom" id="y8V-a1-76Y"/>
+                <constraint firstItem="iiA-Wx-x7w" firstAttribute="top" secondItem="pju-2A-8ii" secondAttribute="bottom" constant="5" id="y8V-a1-76Y"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
@@ -75,4 +75,7 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="familyPhotos" width="180" height="180"/>
+    </resources>
 </document>

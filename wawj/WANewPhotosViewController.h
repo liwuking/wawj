@@ -11,7 +11,6 @@
 
 @protocol WANewPhotosViewControllerDelegate <NSObject>
 
-//-(void)waNewPhotosViewControllerWithAlbumId:(NSString *)albumId;
 -(void)waNewPhotosViewControllerWithNewPhotosAlbumId:(NSString *)albumId AndTitle:(NSString *)title ;
 
 @optional

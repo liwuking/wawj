@@ -122,8 +122,9 @@
         [CoreArchive removeStrForKey:USER_QIMI_ARR];
         [CoreArchive removeStrForKey:USERINFO];
         [CoreArchive removeStrForKey:LASTTIME];
-       [CoreArchive removeStrForKey:USER_PHOTO_ARR];
+        [CoreArchive removeStrForKey:USER_PHOTO_ARR];
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
+        [CoreArchive removeStrForKey:UNSHOWPHOTOS];
     
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];

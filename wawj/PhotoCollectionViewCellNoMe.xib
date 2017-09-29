@@ -19,30 +19,31 @@
                 <rect key="frame" x="0.0" y="0.0" width="140" height="170"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P5M-RI-KDc">
-                        <rect key="frame" x="0.0" y="0.0" width="140" height="128"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyPhotos" translatesAutoresizingMaskIntoConstraints="NO" id="P5M-RI-KDc">
+                        <rect key="frame" x="0.0" y="0.0" width="140" height="123"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="开发房屋" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8x-It-zZg">
-                        <rect key="frame" x="0.0" y="130" width="140" height="21"/>
+                        <rect key="frame" x="0.0" y="126" width="140" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="uDh-97-Xkt"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkh-wg-2P1">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkh-wg-2P1">
                         <rect key="frame" x="0.0" y="152" width="140" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="uaB-H4-4w2"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="xkh-wg-2P1" firstAttribute="top" secondItem="g8x-It-zZg" secondAttribute="bottom" constant="1" id="47G-jG-NBT"/>
+                <constraint firstItem="xkh-wg-2P1" firstAttribute="top" secondItem="g8x-It-zZg" secondAttribute="bottom" constant="5" id="47G-jG-NBT"/>
                 <constraint firstItem="xkh-wg-2P1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="7qm-XW-ocE"/>
-                <constraint firstItem="g8x-It-zZg" firstAttribute="top" secondItem="P5M-RI-KDc" secondAttribute="bottom" constant="2" id="Gw8-pB-YAu"/>
+                <constraint firstItem="g8x-It-zZg" firstAttribute="top" secondItem="P5M-RI-KDc" secondAttribute="bottom" constant="3" id="Gw8-pB-YAu"/>
                 <constraint firstAttribute="trailing" secondItem="g8x-It-zZg" secondAttribute="trailing" id="ULM-j0-EEW"/>
                 <constraint firstItem="P5M-RI-KDc" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="UXS-m0-LV3"/>
                 <constraint firstAttribute="trailing" secondItem="P5M-RI-KDc" secondAttribute="trailing" id="Uee-Km-A2G"/>
@@ -59,4 +60,7 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="familyPhotos" width="180" height="180"/>
+    </resources>
 </document>

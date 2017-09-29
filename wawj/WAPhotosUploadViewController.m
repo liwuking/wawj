@@ -229,6 +229,7 @@
     
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateSelected];
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
+    
 
 }
 
@@ -273,8 +274,10 @@
     self.dataArr = [@[] mutableCopy];
     [self initView];
     
+    //请求点赞情况
     [self  getZanData];
     
+    //请求相册数据
     [MBProgressHUD showMessage:nil];
     [self  getPhotosData];
     

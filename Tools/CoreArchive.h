@@ -12,6 +12,8 @@
 
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
+#define UNSHOWPHOTOS  @"unshowphotos"
+
 #define USER_PHOTO_ARR  @"user_photo_ARR"
 #define LASTTIME  @"lastestTime"
 
@@ -30,6 +32,9 @@
 
 +(void)setArr:(NSMutableArray *)arr key:(NSString *)key;
 +(NSMutableArray *)arrForKey:(NSString *)key;
+
+//+(void)setSet:(NSMutableSet *)set key:(NSString *)key;
+//+(NSMutableSet *)setForKey:(NSString *)key;
 
 /**
  *  保存普通字符串

@@ -282,10 +282,18 @@
 }
 
 - (IBAction)clickBThree:(UIButton *)sender {
+
+    //[[UIApplication sharedApplication]openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+
     [self handlePhoto];
+//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=Photos"]];
 }
 
 - (void)handlePhoto {
+    
+    
+    
     // UIImagePickerControllerCameraDeviceRear 后置摄像头
     // UIImagePickerControllerCameraDeviceFront 前置摄像头
     

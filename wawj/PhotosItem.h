@@ -17,5 +17,7 @@
 @property(nonatomic, strong)NSString *nums;
 @property(nonatomic, strong)NSString *title;
 @property(nonatomic, strong)NSString *updateTime;
+@property(nonatomic, assign)BOOL isNew;
+@property(nonatomic, assign)BOOL isSelf;
 
 @end

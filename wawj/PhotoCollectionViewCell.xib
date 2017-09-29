@@ -27,7 +27,7 @@
                             <constraint firstAttribute="height" constant="21" id="VtY-2j-nIY"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Fe-pA-vxA">
@@ -36,7 +36,7 @@
                             <constraint firstAttribute="height" constant="16" id="j8y-bI-5Ar"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>

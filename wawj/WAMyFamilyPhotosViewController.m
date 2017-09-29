@@ -7,20 +7,23 @@
 //
 
 #import "WAMyFamilyPhotosViewController.h"
-#import "PhotoCollectionViewCell.h"
 #import "WANewPhotosViewController.h"
 #import <MJRefresh.h>
 #import "PhotosItem.h"
 #import <UIImageView+WebCache.h>
 #import "NSDictionary+Util.h"
 #import "WAPhotosUploadViewController.h"
+
+#import "PhotoCollectionViewCell.h"
+#import "PhotoCollectionViewCellNew.h"
 #import "PhotoCollectionViewCellNoMe.h"
+#import "PhotoCollectionViewCellNoMeNew.h"
 
 @interface WAMyFamilyPhotosViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WAPhotosUploadViewControllerDelegate,WANewPhotosViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property(nonatomic,strong)NSMutableArray *dataArr;
-@property(nonatomic,assign)NSInteger selectIndex;
+//@property(nonatomic,assign)NSInteger selectIndex;
 
 @end
 
@@ -78,7 +81,25 @@
 
 #pragma -mark WANewPhotosViewControllerDelegate
 -(void)waNewPhotosViewControllerWithNewPhotosAlbumId:(NSString *)albumId AndTitle:(NSString *)title {
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     
+    PhotosItem *item = [[PhotosItem alloc] init];
+    item.albumId = albumId;
+    item.albumStyle = @"";
+    item.author = userInfo[@"userId"];
+    item.coverUrl = @"";
+    item.nums = @"0";
+    item.title = title;
+    item.updateTime = @"";
+    item.isSelf = YES;
+    item.isNew = YES;
+    [self.dataArr insertObject:item atIndex:0];
+    
+    __weak __typeof__(self) weakSelf = self;
+    [UIView animateWithDuration:0.5 animations:^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
+    }];
     
 }
 
@@ -114,6 +135,12 @@
     NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
     if ([self.collectionView.mj_footer isRefreshing]) {
         
+        NSMutableArray *oldPhotoSets = [@[] mutableCopy];
+        if ([CoreArchive arrForKey:UNSHOWPHOTOS]) {
+            [oldPhotoSets addObjectsFromArray:[CoreArchive arrForKey:UNSHOWPHOTOS]];
+        }
+        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+        
         if (oldPhotoArr.count - self.dataArr.count > 0) {
             
             if (oldPhotoArr.count - self.dataArr.count > 10) {
@@ -127,11 +154,20 @@
                     item.nums = dict[@"nums"];
                     item.title = dict[@"title"];
                     item.updateTime = dict[@"updateTime"];
+                    if (![oldPhotoSets containsObject:item.albumId]) {
+                        item.isNew = YES;
+                    }
+                    if ([userInfo[@"userId"] isEqualToValue:(NSNumber *)item.author]) {
+                        item.isSelf = YES;
+                    }
+                    
+                    
                     [self.dataArr addObject:item];
                     
                 }
                 [self.collectionView.mj_footer endRefreshing];
             } else {
+                
                 NSArray *cacheArr = [oldPhotoArr subarrayWithRange:NSMakeRange(self.dataArr.count, oldPhotoArr.count - self.dataArr.count)];
                 for (NSDictionary *dict in cacheArr) {
                     PhotosItem *item = [[PhotosItem alloc] init];
@@ -142,6 +178,12 @@
                     item.nums = dict[@"nums"];
                     item.title = dict[@"title"];
                     item.updateTime = dict[@"updateTime"];
+                    if (![oldPhotoSets containsObject:item.albumId]) {
+                        item.isNew = YES;
+                    }
+                    if ([userInfo[@"userId"] isEqualToValue:(NSNumber *)item.author]) {
+                        item.isSelf = YES;
+                    }
                     [self.dataArr addObject:item];
                     
                 }
@@ -159,6 +201,7 @@
         
         if ([AFNetworkReachabilityManager sharedManager].isReachable) {
             
+            NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
             if (0 == self.dataArr.count) {
                 
                 if (oldPhotoArr.count > 0) {
@@ -182,6 +225,10 @@
                         item.nums = dict[@"nums"];
                         item.title = dict[@"title"];
                         item.updateTime = dict[@"updateTime"];
+                        if ([userInfo[@"userId"] isEqualToValue:(NSNumber *)item.author]) {
+                            item.isSelf = YES;
+                        }
+                        
                         [self.dataArr addObject:item];
                         
                     }
@@ -199,6 +246,29 @@
         }
 
     }
+}
+
+
+#pragma -mark 存储新增相册标签
+-(void)savePhotosShowTag:(NSArray *)oldPhotos{
+    
+    NSMutableSet *tagDicts;
+    if ([CoreArchive arrForKey:UNSHOWPHOTOS]) {
+        tagDicts = [NSMutableSet setWithArray:[CoreArchive arrForKey:UNSHOWPHOTOS]];
+    } else {
+        tagDicts = [[NSMutableSet alloc] init];
+    }
+    
+    NSLog(@"旧标签tagDicts: %@",tagDicts);
+    for (NSDictionary *dict in oldPhotos) {
+        [tagDicts addObject:dict[@"albumId"]];
+    }
+    
+    NSMutableArray *dataArr = [[NSMutableArray alloc] initWithArray:tagDicts.allObjects];
+
+    NSLog(@"新标签tagDicts: %@",tagDicts);
+    [CoreArchive setArr:dataArr key:UNSHOWPHOTOS];
+
 }
 
 #pragma -mark 相册列表
@@ -236,8 +306,13 @@
             
             if (![data[@"body"] isKindOfClass:[NSNull class]]) {
                 
+                NSMutableArray *oldPhotoSets = [@[] mutableCopy];
+                if ([CoreArchive arrForKey:UNSHOWPHOTOS]) {
+                    [oldPhotoSets addObjectsFromArray:[CoreArchive arrForKey:UNSHOWPHOTOS]];
+                }
+                NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
                 NSMutableArray *photosItemArr = [@[] mutableCopy];
-                NSMutableArray *photosArr = [@[] mutableCopy];
+                NSMutableArray *photosCacheArr = [@[] mutableCopy];
                 for (NSDictionary *dict in data[@"body"]) {
                     
                     NSDictionary *transDict = [dict transforeNullValueToEmptyStringInSimpleDictionary];
@@ -251,6 +326,13 @@
                     item.title = transDict[@"title"];
                     item.updateTime = transDict[@"updateTime"];
                     
+                    if (oldPhotoSets.count && ![oldPhotoSets containsObject:item.albumId]) {
+                        item.isNew = YES;
+                    }
+                    if ([userInfo[@"userId"] isEqualToValue:(NSNumber *)item.author]) {
+                        item.isSelf = YES;
+                    }
+                    
                     NSDictionary *PhotosDict = @{@"albumId":transDict[@"albumId"],
                                                  @"albumStyle":transDict[@"albumStyle"],
                                                  @"author":transDict[@"author"],
@@ -259,13 +341,13 @@
                                                  @"title":transDict[@"title"],
                                                  @"updateTime":transDict[@"updateTime"]
                                                  };
-                    [photosArr addObject:PhotosDict];
+                    [photosCacheArr addObject:PhotosDict];
                     
                     if (photosItemArr.count < 10) {
                         [photosItemArr addObject:item];
                     }
                     
-                    if (photosArr.count == 1) {
+                    if (photosCacheArr.count == 1) {
                         NSNumber *updateTime = (NSNumber *)item.updateTime;
                         [CoreArchive setStr:[updateTime stringValue] key:LASTTIME];
                     }
@@ -276,32 +358,42 @@
                 //刷新列表
                 [strongSelf.collectionView reloadData];
                 
+                //保存新增标签
+                if ([lastestTime isEqualToString:@""]) {
+                    [strongSelf savePhotosShowTag:photosCacheArr];
+                }
+                
+                
                 //存储相册列表数据
-                if(photosArr.count > 0) {
+                if(photosCacheArr.count > 0) {
                     
-                    if (photosArr.count < 20) {//更新数据小于20条，不清除缓存，反之清除
+                    if (photosCacheArr.count < 20) {//更新数据小于20条，不清除缓存，反之清除
                         if ([CoreArchive arrForKey:USER_PHOTO_ARR]) {
                             
                             NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
                             //去重处理
                             for (NSDictionary *dict in oldPhotoArr) {
-                                if (![photosArr containsObject:dict]) {
-                                    [photosArr addObject:dict];
+                                if (![photosCacheArr containsObject:dict]) {
+                                    [photosCacheArr addObject:dict];
                                 }
                             }
-    
+                            
                         } else {
+                            
                             NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
-                            [photosArr addObjectsFromArray:oldPhotoArr];
+                            [photosCacheArr addObjectsFromArray:oldPhotoArr];
+                            
                         }
                         
                     } else {//更新数据大于20条，清除缓存并获取最新50条
-                        if (photosArr.count > 50) {
-                            [photosArr removeObjectsInRange:NSMakeRange(50, photosArr.count-50)];
+                        if (photosCacheArr.count > 50) {
+                            [photosCacheArr removeObjectsInRange:NSMakeRange(50, photosCacheArr.count-50)];
                         }
+                        
                     }
                     
-                    [CoreArchive setArr:photosArr key:USER_PHOTO_ARR];
+                    [CoreArchive setArr:photosCacheArr key:USER_PHOTO_ARR];
+
                 }
                 
                 
@@ -348,7 +440,7 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     PhotosItem *item = self.dataArr[indexPath.row];
-    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //设定时间格式,这里可以设置成自己需要的格式
@@ -357,25 +449,47 @@
     //用[NSDate date]可以获取系统当前时间
     NSString *currentDateStr = [dateFormatter stringFromDate:confromTimesp];
     
-    if (![userInfo[@"userId"] isEqualToValue:(NSNumber *)item.author]) {
+    if (item.isSelf) {
         
-        PhotoCollectionViewCellNoMe *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCellNoMe" forIndexPath:indexPath];
-        
-        cell.titleLab.text= item.title;
-        cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
-        
-        return cell;
+        if (item.isNew) {
+            PhotoCollectionViewCellNew *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCellNew" forIndexPath:indexPath];
+            
+            cell.titleLab.text= item.title;
+            cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            
+            return cell;
+        } else {
+            PhotoCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell" forIndexPath:indexPath];
+            
+            cell.titleLab.text= item.title;
+            cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            
+            return cell;
+        }
         
     } else {
         
-        PhotoCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell" forIndexPath:indexPath];
+        if (item.isNew) {
+            PhotoCollectionViewCellNoMeNew *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCellNoMeNew" forIndexPath:indexPath];
+            
+            cell.titleLab.text= item.title;
+            cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            
+            return cell;
+        } else {
+            PhotoCollectionViewCellNoMe *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCellNoMe" forIndexPath:indexPath];
+            
+            cell.titleLab.text= item.title;
+            cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            
+            return cell;
+        }
         
-        cell.titleLab.text= item.title;
-        cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, currentDateStr];
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
         
-        return cell;
     }
     
 }
@@ -412,7 +526,22 @@
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     
-    self.selectIndex = indexPath.row;
+    
+    
+    
+    if (item.isNew) {
+        item.isNew = NO;
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+        
+        NSMutableArray *tagDicts = [@[] mutableCopy];
+        if ([CoreArchive arrForKey:UNSHOWPHOTOS]) {
+            [tagDicts addObjectsFromArray:[CoreArchive arrForKey:UNSHOWPHOTOS]];
+        }
+        [tagDicts addObject:item.albumId];
+        
+        [CoreArchive setArr:tagDicts key:UNSHOWPHOTOS];
+    }
+    
 }
 
 -(void)backAction {
