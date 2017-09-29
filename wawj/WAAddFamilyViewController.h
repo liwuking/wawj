@@ -12,7 +12,7 @@
 
 @protocol WAAddFamilyViewControllerDelegate <NSObject>
 
--(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item;
+//-(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item;
 
 @end
 

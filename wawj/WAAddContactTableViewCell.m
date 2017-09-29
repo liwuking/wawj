@@ -19,7 +19,7 @@
     _applyItem = applyItem;
     
     [self.headImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderFamily",applyItem.headUrl]] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
-    self.titleLab.text = applyItem.applyName;
+    self.titleLab.text = [NSString stringWithFormat:@"%@(%@)", applyItem.applyRole,applyItem.applyName];
 }
 
 - (IBAction)clickAdd:(UIButton *)sender {

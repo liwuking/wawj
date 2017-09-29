@@ -8,7 +8,7 @@
 
 #import "WAInternetViewController.h"
 #import <WebKit/WebKit.h>
-@interface WAInternetViewController ()
+@interface WAInternetViewController ()<WKNavigationDelegate>
 
 @property (strong, nonatomic)WKWebView   *webView;
 
@@ -33,9 +33,33 @@
     config.userContentController = userContent;
     self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-44) configuration:config];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
+    self.webView.navigationDelegate = self;
+    
     [self.webView loadRequest:request];
     
     [self.view addSubview:self.webView];
+    
+}
+
+-(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    [MBProgressHUD showMessage:nil];
+    
+    NSLog(@"%s", __FUNCTION__);
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+    
+    [MBProgressHUD hideHUD];
+    NSLog(@"%s", __FUNCTION__);
+}
+
+-(void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    
+    [MBProgressHUD hideHUD];
+    
+    [MBProgressHUD showError:[error localizedDescription]];
+    
+    NSLog(@"%s", __FUNCTION__);
     
 }
 

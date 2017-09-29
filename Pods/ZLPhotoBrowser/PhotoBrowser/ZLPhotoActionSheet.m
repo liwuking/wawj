@@ -197,7 +197,7 @@ double const ScalePhotoWidth = 1000;
         [self.arrSelectedAssets removeAllObjects];
         [self.arrSelectedModels removeAllObjects];
     }
-    if (self.maxSelectCount > 1) {
+    if (self.maxSelectCount > 0) {
         self.showSelectBtn = YES;
     }
     self.animate = animate;

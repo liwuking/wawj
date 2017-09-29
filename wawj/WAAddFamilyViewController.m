@@ -50,6 +50,8 @@
                     UIButton *btn = (UIButton *)view;
                     
                     [btn setTitle:_titleArr[btn.tag] forState:UIControlStateNormal];
+                    btn.clipsToBounds = YES;
+                    btn.layer.cornerRadius = 5;
                     [btn addTarget:self action:@selector(clickSelectBtn:) forControlEvents:UIControlEventTouchUpInside];
                     
                 }
@@ -71,14 +73,15 @@
         
         for (NSInteger j = 0; j < titleArr.count; j++) {
             
-            NSInteger width = (SCREEN_WIDTH-45)/4;
+            NSInteger width = (280-50)/4;
             NSString *title = titleArr[j];
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            btn.frame = CGRectMake(5*(j+1) + j* width, 5*(i+1) + 30*i, width, 30);
+            btn.frame = CGRectMake(10*(j+1) + j* width, 10*(i+1) + 40*i, width, 40);
             [btn setTitle:title forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(clickSubTitleBtn:) forControlEvents:UIControlEventTouchUpInside];
-            //btn.backgroundColor = HEX_COLOR(0xFAA41C);
             [btn setBackgroundImage:[UIImage imageNamed:@"borrow"] forState:UIControlStateNormal];
+            btn.clipsToBounds = YES;
+            btn.layer.cornerRadius = 5;
             [_contactPersonView.btnViews addSubview:btn];
             
         }
@@ -120,6 +123,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
     self.applyArrs = [@[] mutableCopy];
     [self initView];
@@ -232,6 +237,7 @@
             
             
             if (data[@"body"]) {
+                
                 NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
                 [qimiArr addObject:data[@"body"]];
                 

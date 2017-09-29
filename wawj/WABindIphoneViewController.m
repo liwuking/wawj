@@ -43,7 +43,7 @@
     //表明不是第一次登录了
     [CoreArchive setBool:NO key:FIRST_ENTER];
     
-    self.locationString = @"";
+    self.locationString = @" ";
     [self startLocation];
    
     //[self performSegueWithIdentifier:@"WAOldInterfaceViewController" sender:nil];
@@ -203,15 +203,22 @@
 - (IBAction)clickNext:(id)sender {
     
     //手机号绑定（即登录注册）
-    NSDictionary *model  = @{@"phone_no":self.iphoneTextField.text,
+    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString *modal = [[UIDevice currentDevice] model];
+    NSString *verson = [[UIDevice currentDevice] systemVersion];
+    self.locationString = self.locationString ? self.locationString : @" ";
+    NSDictionary *model  = @{
+                             @"phone_no":self.iphoneTextField.text,
                              @"bind_os":@"iOS",
-                             @"bind_os_version": [[UIDevice currentDevice] systemVersion],
-                             @"bind_brand":[[UIDevice currentDevice] model],
-                             @"bind_sn":[[[UIDevice currentDevice] identifierForVendor] UUIDString],
+                             @"bind_os_version": verson,
+                             @"bind_brand":modal,
+                             @"bind_sn":uuid,
                              @"bind_lbs":self.locationString,
                              @"invite_code":@"",
                              @"message_type":@"1",
-                             @"message_code":@"111111"};
+                             @"message_code":@"111111"
+                             
+                             };
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1002" andModel:model];
     
     

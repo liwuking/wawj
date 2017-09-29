@@ -45,27 +45,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"我";
+    self.title = @"个人设置";
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [leftItem setTintColor:HEX_COLOR(0x666666)];
     [leftItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = leftItem;
     
-    _sexManBGView.layer.cornerRadius = 16.5;
-    _sexWomanBGView.layer.cornerRadius = 16.5;
-    _sexWomanBGView.layer.borderWidth = 1;
-    _sexWomanBGView.layer.borderColor = blueColor.CGColor;
+//    _sexManBGView.layer.cornerRadius = 16.5;
+//    _sexWomanBGView.layer.cornerRadius = 16.5;
+//    _sexWomanBGView.layer.borderWidth = 1;
+//    _sexWomanBGView.layer.borderColor = blueColor.CGColor;
     isSexWithMan = YES;
     
     _calendarBGView.layer.masksToBounds = YES;
     _calendarBGView.layer.cornerRadius = 13.5;
     _calendarBGView.layer.borderWidth = 1;
     _calendarBGView.layer.borderColor = blueColor.CGColor;
-    _saveButton.layer.masksToBounds = YES;
-    _saveButton.layer.cornerRadius = 6;
-    
-    _picImgView.layer.masksToBounds = YES;
-    _picImgView.layer.cornerRadius = 50;
+
+//    _picImgView.layer.masksToBounds = YES;
+//    _picImgView.layer.cornerRadius = 50;
     
     if (SCREEN_HEIGHT == 480) {
         _contentViewHeight.constant = 88+64;
@@ -108,72 +106,67 @@
         
     }
     
-//    NSString *manImgName = @"UC_man.png";//sender.view.tag >500 ? @"UC_man.png":@"UC_man_click.png";
-//    NSString *womanImgName = @"UC_woman_click.png";//sender.view.tag >500 ? @"UC_woman_click.png":@"UC_woman.png";
-    
+
     if ([userInfo[@"gender"] isEqualToString:@"1"]) {
+        
         isSexWithMan = NO;
         UIView *womanBGView = _sexWomanBGView;//sender.view;
-        womanBGView.backgroundColor = blueColor;
         UIImageView *womanImgView = [womanBGView viewWithTag:100];
-        womanImgView.image = [UIImage imageNamed:@"UC_woman_click.png"];
         UILabel *womanLabel = [womanBGView viewWithTag:101];
-        womanLabel.textColor = whiteColor;
-        
-        
+        womanImgView.image = [UIImage imageNamed:@"UC_woman"];
+        womanLabel.textColor = BLACK_COLOR;
+
         UIView *manBGView = _sexManBGView;
-        manBGView.backgroundColor = whiteColor;
         UIImageView *manImgView = [manBGView viewWithTag:100];
-        manImgView.image = [UIImage imageNamed:@"UC_woman.png"];
         UILabel *manLabel = [manBGView viewWithTag:101];
-        manLabel.textColor = blueColor;
-        manBGView.layer.borderWidth = 1;
-        manBGView.layer.borderColor = blueColor.CGColor;
+        manImgView.image = [UIImage imageNamed:@"UC_man_click"];
+        manLabel.textColor = HEX_COLOR(0x999999);
         
+
     } else {
     
         isSexWithMan = YES;
-        UIView *manBGView = _sexWomanBGView;//sender.view;
-        manBGView.backgroundColor = blueColor;
+        UIView *manBGView = _sexManBGView;
+        manBGView.backgroundColor = whiteColor;
         UIImageView *manImgView = [manBGView viewWithTag:100];
-        manImgView.image = [UIImage imageNamed:@"UC_man.png"];
+        manImgView.image = [UIImage imageNamed:@"UC_man"];
         UILabel *manLabel = [manBGView viewWithTag:101];
-        manLabel.textColor = whiteColor;
+        manLabel.textColor = BLACK_COLOR;
         
         
         UIView *womanBGView = _sexWomanBGView;
         womanBGView.backgroundColor = whiteColor;
         UIImageView *womanImgView = [womanBGView viewWithTag:100];
-        womanImgView.image = [UIImage imageNamed:@"UC_woman.png"];
+        womanImgView.image = [UIImage imageNamed:@"UC_woman_click"];
         UILabel *womanLabel = [womanBGView viewWithTag:101];
-        womanLabel.textColor = blueColor;
+        womanLabel.textColor = HEX_COLOR(0x999999);
 
     }
     
 }
 
 - (IBAction)selectSex:(UITapGestureRecognizer *)sender {
-    NSString *manImgName = sender.view.tag >500 ? @"UC_man.png":@"UC_man_click.png";
-    NSString *womanImgName = sender.view.tag >500 ? @"UC_woman_click.png":@"UC_woman.png";
+//    NSString *manImgName = sender.view.tag >500 ? @"UC_man.png":@"UC_man_click.png";
+//    NSString *womanImgName = sender.view.tag >500 ? @"UC_woman_click.png":@"UC_woman.png";
     
     switch (sender.view.tag) {
         case 500:
         {
             isSexWithMan = YES;
-            UIView *manBGView = sender.view;
-            manBGView.backgroundColor = blueColor;
+            UIView *manBGView = _sexManBGView;
             UIImageView *manImgView = [manBGView viewWithTag:100];
-            manImgView.image = [UIImage imageNamed:manImgName];
             UILabel *manLabel = [manBGView viewWithTag:101];
-            manLabel.textColor = whiteColor;
+            manImgView.image = [UIImage imageNamed:@"UC_man"];
+            manLabel.textColor = BLACK_COLOR;
             
             
             UIView *womanBGView = _sexWomanBGView;
-            womanBGView.backgroundColor = whiteColor;
+//            womanBGView.backgroundColor = whiteColor;
             UIImageView *womanImgView = [womanBGView viewWithTag:100];
-            womanImgView.image = [UIImage imageNamed:womanImgName];
+            womanImgView.image = [UIImage imageNamed:@"UC_woman_click"];
             UILabel *womanLabel = [womanBGView viewWithTag:101];
-            womanLabel.textColor = blueColor;
+            womanLabel.textColor = HEX_COLOR(0x999999);
+            
             
         }
             
@@ -181,22 +174,19 @@
         case 501:
         {
             isSexWithMan = NO;
-            UIView *womanBGView = sender.view;
-            womanBGView.backgroundColor = blueColor;
+            
+            UIView *womanBGView = _sexWomanBGView;//sender.view;
             UIImageView *womanImgView = [womanBGView viewWithTag:100];
-            womanImgView.image = [UIImage imageNamed:womanImgName];
             UILabel *womanLabel = [womanBGView viewWithTag:101];
-            womanLabel.textColor = whiteColor;
+            womanImgView.image = [UIImage imageNamed:@"UC_woman"];
+            womanLabel.textColor = BLACK_COLOR;
             
             
             UIView *manBGView = _sexManBGView;
-            manBGView.backgroundColor = whiteColor;
             UIImageView *manImgView = [manBGView viewWithTag:100];
-            manImgView.image = [UIImage imageNamed:manImgName];
             UILabel *manLabel = [manBGView viewWithTag:101];
-            manLabel.textColor = blueColor;
-            manBGView.layer.borderWidth = 1;
-            manBGView.layer.borderColor = blueColor.CGColor;
+            manImgView.image = [UIImage imageNamed:@"UC_man_click"];
+            manLabel.textColor = HEX_COLOR(0x999999);
         }
             
         default:

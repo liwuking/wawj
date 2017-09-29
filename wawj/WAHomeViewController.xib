@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAHomeViewController">
             <connections>
+                <outlet property="tableHeightConstrain" destination="GnS-0n-0Bh" id="jmX-zz-isx"/>
                 <outlet property="tableView" destination="Dtn-qT-kcP" id="RYd-HJ-R8K"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="VCb-7v-Wc1"/>
             </connections>
@@ -85,11 +86,12 @@
                         <action selector="clickFuctionSetBtn:" destination="-1" eventType="touchUpInside" id="Pmh-TV-Xbn"/>
                     </connections>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="135" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dtn-qT-kcP">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="135" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Dtn-qT-kcP">
                     <rect key="frame" x="124" y="80" width="128" height="375"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="375" id="GnS-0n-0Bh"/>
                         <constraint firstAttribute="width" constant="128" id="L30-Y9-wnK"/>
                     </constraints>
                     <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -102,14 +104,13 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="xob-mg-H5z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="44F-o0-SXf"/>
                 <constraint firstItem="vsz-Sg-f4o" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="5jN-Gm-gwQ"/>
                 <constraint firstItem="40l-TV-PSx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="7xM-NT-QJ1"/>
                 <constraint firstAttribute="trailing" secondItem="40l-TV-PSx" secondAttribute="trailing" constant="20" id="C0I-kc-rNu"/>
                 <constraint firstItem="NLx-9p-PnA" firstAttribute="top" secondItem="vsz-Sg-f4o" secondAttribute="bottom" constant="43" id="IEE-JS-ZHJ"/>
-                <constraint firstItem="xob-mg-H5z" firstAttribute="top" secondItem="Dtn-qT-kcP" secondAttribute="bottom" constant="-80" id="Mlj-FO-iwx"/>
                 <constraint firstItem="Tvp-Q5-4OS" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OyH-aC-CCX"/>
                 <constraint firstAttribute="bottom" secondItem="NLx-9p-PnA" secondAttribute="bottom" constant="12" id="Re8-1R-Kvu"/>
                 <constraint firstItem="Tvp-Q5-4OS" firstAttribute="top" secondItem="40l-TV-PSx" secondAttribute="bottom" constant="74" id="VMO-cB-Yn3"/>

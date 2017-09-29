@@ -118,6 +118,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     if ([self.textView.text isEqualToString:@"感谢您对我爱我家做出的贡献, 有事请反馈..."]) {
         self.textView.text = @"";
+        self.textView.textColor = [UIColor blackColor];
     }
 }
 
@@ -125,6 +126,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     if ([self.textView.text isEqualToString:@""]) {
         self.textView.text = @"感谢您对我爱我家做出的贡献, 有事请反馈...";
+        self.textView.textColor = [UIColor lightGrayColor];
     }
 
 }
@@ -213,7 +215,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.btnTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.btnThree setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     
-    self.adviceType = @"2";
+    self.adviceType = @"3";
 }
 
 - (IBAction)clickBtnThree:(UIButton *)sender {
@@ -225,7 +227,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.btnTwo setTitleColor:HEX_COLOR(0x666666) forState:UIControlStateNormal];
     [self.btnThree setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    self.adviceType = @"3";
+    self.adviceType = @"2";
 }
 
 
@@ -558,8 +560,16 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSLog(@"responseJSON = %@",responseJsonDic);
     
     
-    self.textView.text = [self.textView.text stringByAppendingString:responseJsonDic[@"text"]];
     
+    
+    if (responseJsonDic[@"text"]) {
+        
+        if ([self.textView.text isEqualToString:@"感谢您对我爱我家做出的贡献, 有事请反馈..."]) {
+            self.textView.text = @"";
+            self.textView.textColor = [UIColor blackColor];
+        }
+        self.textView.text = [self.textView.text stringByAppendingString:responseJsonDic[@"text"]];
+    }
     
     
     

@@ -8,7 +8,8 @@
 
 #import "WANewPhotosViewController.h"
 
-@interface WANewPhotosViewController ()
+@interface WANewPhotosViewController ()<UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *titleTF;
 
 @end
@@ -26,6 +27,9 @@
 
     if (self.photosItem) {
         self.titleTF.placeholder = self.photosItem.title;
+        self.title = @"编辑相册";
+    } else {
+        self.title = @"新建相册";
     }
 }
 
@@ -34,12 +38,6 @@
 }
 
 //#pragma -mark 新建相册
-//static void extracted(WANewPhotosViewController *object, id data, WANewPhotosViewController *const strongSelf) {
-//    [object.delegate waNewPhotosViewControllerWithAlbumId:data[@"body"][@"albumId"] AndTitle:strongSelf.titleTF.text];
-//}
-
-
-
 - (IBAction)clickFanish:(UIButton *)sender {
 
     [self.view endEditing:YES];
@@ -67,9 +65,9 @@
             NSString *desc = data[@"desc"];
             if ([code isEqualToString:@"0000"]) {
                 
-                [self.delegate waNewPhotosViewControllerWithAlbumId:strongSelf.albumId AndTitle:strongSelf.titleTF.text];
+                [strongSelf.delegate waNewPhotosViewControllerWithAlbumId:strongSelf.albumId AndRefreshTitle:strongSelf.titleTF.text];
                 
-                [self.navigationController popViewControllerAnimated:YES];
+                [strongSelf.navigationController popViewControllerAnimated:YES];
                 
             } else {
                 
@@ -106,8 +104,8 @@
             NSString *desc = data[@"desc"];
             if ([code isEqualToString:@"0000"]) {
                 
-                [self.delegate waNewPhotosViewControllerWithAlbumId:data[@"body"][@"albumId"]];
-                [self.navigationController popViewControllerAnimated:YES];
+                [strongSelf.delegate waNewPhotosViewControllerWithNewPhotosAlbumId:data[@"body"][@"albumId"] AndTitle:strongSelf.titleTF.text];
+                [strongSelf.navigationController popViewControllerAnimated:YES];
                 
             } else {
                 
@@ -139,6 +137,18 @@
     
     [self initViews];
     
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    [self.view endEditing:YES];
+    
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

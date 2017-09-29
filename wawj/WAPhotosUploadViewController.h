@@ -12,8 +12,8 @@
 @class WAPhotosUploadViewController;
 @protocol WAPhotosUploadViewControllerDelegate <NSObject>
 
--(void)waNewPhotosViewControllerWithAlbumId:(NSString *)albumId;
--(void)waPhotosUploadViewController:(WAPhotosUploadViewController *)vc andEditName:(NSString *)albumName;
+//-(void)waNewPhotosViewControllerWithAlbumId:(NSString *)albumId;
+-(void)waPhotosUploadViewController:(WAPhotosUploadViewController *)vc andRefreshName:(PhotosItem *)photosItem;
 
 @end
 

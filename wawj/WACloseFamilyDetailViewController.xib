@@ -23,7 +23,7 @@
             <subviews>
                 <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-kd-ov3">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="468"/>
-                    <color key="backgroundColor" red="1" green="0.34726706299999999" blue="0.29105530499999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="odQ-Kj-AKl">
                     <rect key="frame" x="0.0" y="468" width="320" height="100"/>
@@ -57,7 +57,7 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="-45" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="13520382752" image="phone_x">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="clickPhoneBtn:" destination="-1" eventType="touchUpInside" id="pS5-1b-Jfe"/>
@@ -72,25 +72,29 @@
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="提现她" image="email_x">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="clickRemind:" destination="-1" eventType="touchUpInside" id="con-K9-Qjd"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxv-Tc-A8e">
+                        <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxv-Tc-A8e">
                             <rect key="frame" x="181" y="56" width="120" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="2wq-h7-xbJ"/>
                                 <constraint firstAttribute="width" constant="120" id="FAo-0T-AHH"/>
                             </constraints>
-                            <state key="normal" title="发位置"/>
+                            <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="发位置" image="location">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
                             <connections>
                                 <action selector="clickSendLocation:" destination="-1" eventType="touchUpInside" id="aTn-52-Ksu"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="0lG-Zq-MC4"/>
                         <constraint firstItem="fkl-L1-shq" firstAttribute="leading" secondItem="odQ-Kj-AKl" secondAttribute="leading" id="8FS-Ae-ioS"/>
@@ -121,6 +125,7 @@
     </objects>
     <resources>
         <image name="email_x" width="47" height="47"/>
+        <image name="location" width="40" height="40"/>
         <image name="phone_x" width="40" height="40"/>
     </resources>
 </document>

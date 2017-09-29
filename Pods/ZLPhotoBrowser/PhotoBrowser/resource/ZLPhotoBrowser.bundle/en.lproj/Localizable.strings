@@ -1,35 +1,36 @@
-"ZLPhotoBrowserCameraText" = "Camera";
-"ZLPhotoBrowserAblumText" = "Album";
-"ZLPhotoBrowserCancelText" = "Cancel";
+"ZLPhotoBrowserCameraText" = "拍照";
+"ZLPhotoBrowserAblumText" = "相册";
+"ZLPhotoBrowserCancelText" = "取消";
 
-"ZLPhotoBrowserOriginalText" = "Original";
-"ZLPhotoBrowserDoneText" = "Done";
-"ZLPhotoBrowserOKText" = "OK";
+"ZLPhotoBrowserOriginalText" = "原图";
+"ZLPhotoBrowserDoneText" = "确定";
+"ZLPhotoBrowserOKText" = "确定";
 
-"ZLPhotoBrowserBackText" = "Back";
+"ZLPhotoBrowserBackText" = "返回";
 
-"ZLPhotoBrowserEditText" = "Edit";
-"ZLPhotoBrowserSaveText" = "Save";
+"ZLPhotoBrowserEditText" = "编辑";
+"ZLPhotoBrowserSaveText" = "保存";
 
-"ZLPhotoBrowserPhotoText" = "Photos";
-"ZLPhotoBrowserPreviewText" = "Preview";
-"ZLPhotoBrowserGifPreviewText" = "GIF preview";
-"ZLPhotoBrowserVideoPreviewText" = "Video preview";
-"ZLPhotoBrowserLivePhotoPreviewText" = "Live Photo preview";
+"ZLPhotoBrowserPhotoText" = "照片";
+"ZLPhotoBrowserPreviewText" = "预览";
+"ZLPhotoBrowserGifPreviewText" = "GIF 预览";
+"ZLPhotoBrowserVideoPreviewText" = "视频 预览";
+"ZLPhotoBrowserLivePhotoPreviewText" = "Live Photo 预览";
 
-"ZLPhotoBrowserNoPhotoText" = "No Photo";
-"ZLPhotoBrowserCannotSelectVideo" = "Unable to select video";
-"ZLPhotoBrowserCannotSelectGIF" = "Unable to select GIF image";
-"ZLPhotoBrowserCannotSelectLivePhoto" = "Unable to select Live Photo";
+"ZLPhotoBrowserNoPhotoText" = "无照片";
+"ZLPhotoBrowserCannotSelectVideo" = "不能同时选择照片和视频";
+"ZLPhotoBrowserCannotSelectGIF" = "不能同时选择照片和GIF";
+"ZLPhotoBrowserCannotSelectLivePhoto" = "不能同时选择照片和Live Photo";
 
-"ZLPhotoBrowserLoadingText" = "loading，waiting please";
-"ZLPhotoBrowserHandleText" = "waiting...";
+"ZLPhotoBrowserLoadingText" = "加载中，请稍后";
+"ZLPhotoBrowserHandleText" = "正在上传...";
 
-"ZLPhotoBrowserSaveImageErrorText" = "Save photo to ablum failed";
-"ZLPhotoBrowserMaxSelectCountText" = "Max select count: %ld";
+"ZLPhotoBrowserSaveImageErrorText" = "保存图片到相册失败";
+"ZLPhotoBrowserMaxSelectCountText" = "最多只能选择%ld张图片";
 
-"ZLPhotoBrowserNoCameraAuthorityText" = "Please allow %@ to access your device's camera in \"Settings\"->\"Privacy\"->\"Camera\"";
-"ZLPhotoBrowserNoAblumAuthorityText" = "Allow %@ to access your ablum in \"Settings\"->\"Privacy\"->\"Photos\"";
+"ZLPhotoBrowserNoCameraAuthorityText" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的相机";
+"ZLPhotoBrowserNoAblumAuthorityText" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的相册";
 
-"ZLPhotoBrowseriCloudPhotoText" = "Retry after download in photo ablum";
-"ZLPhotoBrowseriCloudVideoText" = "Unable to sync from iCloud";
+"ZLPhotoBrowseriCloudPhotoText" = "请在系统相册中下载到本地后重新尝试";
+"ZLPhotoBrowseriCloudVideoText" = "iCloud无法同步";
+

@@ -66,7 +66,7 @@
     
     //保存
     [defaults setObject:str forKey:key];
-    
+
     //立即同步
     [defaults synchronize];
 

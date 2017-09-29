@@ -14,6 +14,13 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.title.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.title.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.title.layer.mask = maskLayer;
+    
 }
 
 -(void)setCloseFamilyItem:(CloseFamilyItem *)closeFamilyItem {

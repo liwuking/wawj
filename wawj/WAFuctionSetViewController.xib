@@ -29,25 +29,35 @@
                     </connections>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="101-LH-1W5">
-                    <rect key="frame" x="137" y="581" width="100" height="30"/>
+                    <rect key="frame" x="15" y="517" width="345" height="50"/>
+                    <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="100" id="458-KZ-4z4"/>
-                        <constraint firstAttribute="height" constant="30" id="Doj-pV-VMQ"/>
+                        <constraint firstAttribute="height" constant="50" id="Doj-pV-VMQ"/>
                     </constraints>
-                    <state key="normal" title="退出登录"/>
+                    <state key="normal" title="退出登录">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="clickLoginOut:" destination="-1" eventType="touchUpInside" id="SAx-On-H3t"/>
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2EW-w1-AQz"/>
                 <constraint firstAttribute="bottom" secondItem="kdk-Ye-UyF" secondAttribute="bottom" constant="200" id="8fJ-DO-HwX"/>
-                <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" constant="56" id="Sxq-ux-knP"/>
+                <constraint firstAttribute="trailing" secondItem="101-LH-1W5" secondAttribute="trailing" constant="15" id="Ght-zY-nvX"/>
+                <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" constant="100" id="Sxq-ux-knP"/>
                 <constraint firstAttribute="trailing" secondItem="kdk-Ye-UyF" secondAttribute="trailing" id="XLr-qG-YOX"/>
                 <constraint firstItem="101-LH-1W5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="orY-eA-EBg"/>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="se3-fh-fAw"/>
+                <constraint firstItem="101-LH-1W5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="tHS-ab-7OO"/>
             </constraints>
             <point key="canvasLocation" x="38.5" y="70.5"/>
         </view>

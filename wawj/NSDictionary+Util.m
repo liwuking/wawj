@@ -9,16 +9,10 @@
 #import "NSDictionary+Util.h"
 
 @implementation NSDictionary (Util)
+
 -(NSMutableDictionary*)transforeNullValueInSimpleDictionary {
     
-//    // 判断originJson是不是一个有效的字符串
-//    if (![NSJSONSerialization isValidJSONObject:originJson]) {
-//        return nil;
-//    }
-//    NSDictionary *originDic = (NSDictionary*)originJson;
-    NSMutableDictionary *translatedDic = [NSMutableDictionary dictionary];
-//
-//    
+    NSMutableDictionary *translatedDic = [@{} mutableCopy];
     [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         
         if ([obj isKindOfClass:[NSNull class]]) {
@@ -31,6 +25,22 @@
     }];
     
     return translatedDic;
-        
 }
+
+-(NSMutableDictionary*)transforeNullValueToEmptyStringInSimpleDictionary {
+    
+    NSMutableDictionary *translatedDic = [@{} mutableCopy];
+    [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        
+        if ([obj isKindOfClass:[NSNull class]]) {
+            [translatedDic setObject:@"" forKey:key];
+        }else{
+            [translatedDic setObject:obj forKey:key];
+        }
+        
+    }];
+    
+    return translatedDic;
+}
+
 @end

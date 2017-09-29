@@ -45,7 +45,7 @@
         
         PhotoItem *item = self.photoItemArr[i];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width*i, 0, SCREEN_WIDTH, self.scrollView.frame.size.height)];
-        
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         [imageView sd_setImageWithURL:[NSURL URLWithString:item.photoUrl]];
         
         [self.scrollView addSubview:imageView];

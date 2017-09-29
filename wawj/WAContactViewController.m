@@ -12,7 +12,7 @@
 #import "ImagePicker.h"
 #import "WAHomeViewController.h"
 #import "CloseFamilyItem.h"
-@interface WAContactViewController ()
+@interface WAContactViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *picImage;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 @property (weak, nonatomic) IBOutlet UITextField *nameTF;
@@ -231,6 +231,12 @@
     
     [self.view endEditing:YES];
     
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

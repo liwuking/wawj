@@ -11,6 +11,6 @@
 @interface NSDictionary (Util)
 
 -(NSMutableDictionary*)transforeNullValueInSimpleDictionary ;
-
+-(NSMutableDictionary*)transforeNullValueToEmptyStringInSimpleDictionary;
 
 @end

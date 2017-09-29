@@ -20,8 +20,10 @@
 
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(strong,nonatomic) NSMutableArray *dataArr;
+
 @end
 
 @implementation WAHomeViewController
@@ -29,6 +31,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
+    [self refreshTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -36,20 +40,13 @@
     [super viewWillDisappear:animated];
 }
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
-    [self initViews];
-    
-    
-}
-
-
--(void)viewDidAppear:(BOOL)animated {
+-(void)refreshTableView{
     
     NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+    if (arr.count == self.dataArr.count) {
+        return;
+    }
+    
     NSMutableArray *datas = [@[] mutableCopy];
     for (NSDictionary *dict in arr) {
         CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
@@ -65,48 +62,84 @@
     [self.dataArr removeAllObjects];
     [self.dataArr addObjectsFromArray:datas];
     
+    //self.isReload = YES;
     [self.tableView reloadData];
 }
 
 -(void)initViews {
     
     self.dataArr = [@[] mutableCopy];
+    
+    self.tableHeightConstrain.constant = SCREEN_WIDTH;
     self.tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
     
 }
 
-//-(void)waAddFamilyViewControllerWithFamilyItem:(CloseFamilyItem *)item {
-//    
-//    [self.dataArr addObject:item];
-//    [self.tableView reloadData];
-//    
-//}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    
+    [self initViews];
+
+}
+
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     if (self.dataArr.count < 6) {
         return self.dataArr.count + 1;
     } else {
         return self.dataArr.count;
     }
-    
 
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor clearColor];
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 135;
+    
+    if (self.dataArr.count == indexPath.section) {
+        return 145;//section尾部高度
+    } else {
+        return 135;
+    }
+    
+}
+
+//section头部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return (SCREEN_WIDTH - 270)/3;//section头部高度
+}
+
+//section底部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (self.dataArr.count == section) {
+        return (SCREEN_WIDTH - 270)/3;//section尾部高度
+    } else {
+        
+        return 1;
+    }
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.dataArr.count != indexPath.row) {
+    if (self.dataArr.count != indexPath.section) {
         static NSString *identifier = @"HomeCell";
         
-        CloseFamilyItem *item = self.dataArr[indexPath.row];
+        CloseFamilyItem *item = self.dataArr[indexPath.section];
         HomeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCell" owner:nil options:nil] lastObject];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCell" owner:nil options:nil] lastObject];
         }
         cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
         cell.closeFamilyItem = item;
@@ -123,11 +156,34 @@
         return cell;
     }
     
+//    if (self.dataArr.count != indexPath.row) {
+//        static NSString *identifier = @"HomeCell";
+//
+//        CloseFamilyItem *item = self.dataArr[indexPath.row];
+//        HomeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+//        if (!cell) {
+//        cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCell" owner:nil options:nil] lastObject];
+//        }
+//        cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
+//        cell.closeFamilyItem = item;
+//        return cell;
+//
+//    } else {
+//        static NSString *identifier = @"HomeCellTwo";
+//
+//        HomeCellTwo *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+//        if (!cell) {
+//            cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCellTwo" owner:nil options:nil] lastObject];
+//        }
+//        cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
+//        return cell;
+//    }
+    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    if (indexPath.row == self.dataArr.count) {
+    if (indexPath.section == self.dataArr.count) {
         
         __weak __typeof__(self) weakSelf = self;
         if (![CoreArchive dicForKey:USERINFO][@"userName"]) {
@@ -168,7 +224,7 @@
         
     } else {
         
-        CloseFamilyItem *item = self.dataArr[indexPath.row];
+        CloseFamilyItem *item = self.dataArr[indexPath.section];
         WACloseFamilyDetailViewController *vc = [[WACloseFamilyDetailViewController alloc] initWithNibName:@"WACloseFamilyDetailViewController" bundle:nil];
         vc.closeFamilyItem = item;
         [self.navigationController pushViewController:vc animated:YES];
