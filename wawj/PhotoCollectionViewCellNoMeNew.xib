@@ -31,7 +31,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BIb-ka-nrz">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8张 9月17日 12:05:05" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BIb-ka-nrz">
                         <rect key="frame" x="0.0" y="152" width="140" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="YE8-id-cjL"/>
@@ -68,6 +68,11 @@
                 <constraint firstAttribute="trailing" secondItem="zsn-o6-lFj" secondAttribute="trailing" id="u36-6f-Plf"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <connections>
+                <outlet property="headImageView" destination="ttt-Bb-g2y" id="AU9-Ze-vef"/>
+                <outlet property="timeLab" destination="BIb-ka-nrz" id="L4H-9T-pXV"/>
+                <outlet property="titleLab" destination="6Xt-A0-OJW" id="dGR-9j-QNK"/>
+            </connections>
         </collectionViewCell>
     </objects>
     <resources>

@@ -43,12 +43,12 @@
 		77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEF1F0CB3600009F004 /* LaunchScreen.storyboard */; };
 		77832DFC1F0CB3600009F004 /* wawjTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DFB1F0CB3600009F004 /* wawjTests.m */; };
 		77832E071F0CB3600009F004 /* wawjUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832E061F0CB3600009F004 /* wawjUITests.m */; };
-		7788D2EF1F7CD42800F3512A /* PhotoCollectionViewCellNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D2ED1F7CD42800F3512A /* PhotoCollectionViewCellNew.m */; };
-		7788D2F01F7CD42800F3512A /* PhotoCollectionViewCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D2EE1F7CD42800F3512A /* PhotoCollectionViewCellNew.xib */; };
 		7788D2F41F7CD43900F3512A /* PhotoCollectionViewCellNoMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D2F21F7CD43900F3512A /* PhotoCollectionViewCellNoMe.m */; };
 		7788D2F51F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D2F31F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib */; };
 		7788D2F91F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D2F71F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.m */; };
 		7788D2FA1F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D2F81F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib */; };
+		7788D33C1F7F669400F3512A /* UploadPhotoNullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D33B1F7F669400F3512A /* UploadPhotoNullView.m */; };
+		7788D33E1F7F66A300F3512A /* UploadPhotoNullView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D33D1F7F66A300F3512A /* UploadPhotoNullView.xib */; };
 		779CF3FA1F5F9FC000DBEE44 /* CLNetworkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */; };
 		779CF3FB1F5F9FC000DBEE44 /* CLImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F51F5F9FC000DBEE44 /* CLImageModel.m */; };
 		779CF3FC1F5F9FC000DBEE44 /* NSString+Cache.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F71F5F9FC000DBEE44 /* NSString+Cache.m */; };
@@ -332,15 +332,15 @@
 		77832E021F0CB3600009F004 /* wawjUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wawjUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832E061F0CB3600009F004 /* wawjUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wawjUITests.m; sourceTree = "<group>"; };
 		77832E081F0CB3600009F004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7788D2EC1F7CD42800F3512A /* PhotoCollectionViewCellNew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNew.h; sourceTree = "<group>"; };
-		7788D2ED1F7CD42800F3512A /* PhotoCollectionViewCellNew.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNew.m; sourceTree = "<group>"; };
-		7788D2EE1F7CD42800F3512A /* PhotoCollectionViewCellNew.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNew.xib; sourceTree = "<group>"; };
 		7788D2F11F7CD43900F3512A /* PhotoCollectionViewCellNoMe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNoMe.h; sourceTree = "<group>"; };
 		7788D2F21F7CD43900F3512A /* PhotoCollectionViewCellNoMe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNoMe.m; sourceTree = "<group>"; };
 		7788D2F31F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNoMe.xib; sourceTree = "<group>"; };
 		7788D2F61F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNoMeNew.h; sourceTree = "<group>"; };
 		7788D2F71F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNoMeNew.m; sourceTree = "<group>"; };
 		7788D2F81F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNoMeNew.xib; sourceTree = "<group>"; };
+		7788D33A1F7F669400F3512A /* UploadPhotoNullView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadPhotoNullView.h; sourceTree = "<group>"; };
+		7788D33B1F7F669400F3512A /* UploadPhotoNullView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadPhotoNullView.m; sourceTree = "<group>"; };
+		7788D33D1F7F66A300F3512A /* UploadPhotoNullView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadPhotoNullView.xib; sourceTree = "<group>"; };
 		779CF3EF1F5F9FC000DBEE44 /* CLNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworking.h; sourceTree = "<group>"; };
 		779CF3F11F5F9FC000DBEE44 /* CLNetworkingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworkingManager.h; sourceTree = "<group>"; };
 		779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNetworkingManager.m; sourceTree = "<group>"; };
@@ -845,6 +845,9 @@
 				779CF4091F622F1400DBEE44 /* ContactPersonView.h */,
 				779CF40A1F622F1400DBEE44 /* ContactPersonView.m */,
 				779CF40C1F622F3300DBEE44 /* ContactPersonView.xib */,
+				7788D33A1F7F669400F3512A /* UploadPhotoNullView.h */,
+				7788D33B1F7F669400F3512A /* UploadPhotoNullView.m */,
+				7788D33D1F7F66A300F3512A /* UploadPhotoNullView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1191,9 +1194,6 @@
 				779CF4661F6FA93C00DBEE44 /* PhotoCollectionViewCell.h */,
 				779CF4671F6FA93C00DBEE44 /* PhotoCollectionViewCell.m */,
 				779CF4681F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib */,
-				7788D2EC1F7CD42800F3512A /* PhotoCollectionViewCellNew.h */,
-				7788D2ED1F7CD42800F3512A /* PhotoCollectionViewCellNew.m */,
-				7788D2EE1F7CD42800F3512A /* PhotoCollectionViewCellNew.xib */,
 				7788D2F11F7CD43900F3512A /* PhotoCollectionViewCellNoMe.h */,
 				7788D2F21F7CD43900F3512A /* PhotoCollectionViewCellNoMe.m */,
 				7788D2F31F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib */,
@@ -1861,6 +1861,7 @@
 				77A67E441F4C0EE1000DFD88 /* grammar_sample.abnf in Resources */,
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
 				770104631F31AAA000F723A2 /* WACommonlyPhoneViewController.xib in Resources */,
+				7788D33E1F7F66A300F3512A /* UploadPhotoNullView.xib in Resources */,
 				77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */,
 				7788D2F51F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib in Resources */,
 				779CF46F1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib in Resources */,
@@ -1883,7 +1884,6 @@
 				77A67E551F4C0EE1000DFD88 /* MJRefresh.bundle in Resources */,
 				77A67E471F4C0EE1000DFD88 /* tts.strings in Resources */,
 				779CF4651F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib in Resources */,
-				7788D2F01F7CD42800F3512A /* PhotoCollectionViewCellNew.xib in Resources */,
 				770104761F34143F00F723A2 /* WACommonAddCell.xib in Resources */,
 				77A67EA41F4C15AB000DFD88 /* ZQCycleCell.xib in Resources */,
 				7701046D1F32F14E00F723A2 /* ContactTableViewCell.xib in Resources */,
@@ -2107,7 +2107,6 @@
 				770104671F32B68B00F723A2 /* WACommonCell.m in Sources */,
 				77A67E601F4C0EE1000DFD88 /* ITTPullTableView.m in Sources */,
 				779CF44F1F6A27C000DBEE44 /* UpApiUtils.m in Sources */,
-				7788D2EF1F7CD42800F3512A /* PhotoCollectionViewCellNew.m in Sources */,
 				77A67E5D1F4C0EE1000DFD88 /* OpenUDID.m in Sources */,
 				77A67E3F1F4C0EE1000DFD88 /* UnderstandViewController.m in Sources */,
 				779CF3FD1F5F9FC000DBEE44 /* NSString+CLTools.m in Sources */,
@@ -2152,6 +2151,7 @@
 				779CF3FC1F5F9FC000DBEE44 /* NSString+Cache.m in Sources */,
 				77A67E541F4C0EE1000DFD88 /* SBJson4Writer.m in Sources */,
 				77A67E161F4C0EE1000DFD88 /* NSDate+Extension.m in Sources */,
+				7788D33C1F7F669400F3512A /* UploadPhotoNullView.m in Sources */,
 				77A67D4F1F4C0D97000DFD88 /* FMDatabaseQueue.m in Sources */,
 				77A67E681F4C1277000DFD88 /* AlarmClockItem.m in Sources */,
 				779CF4031F5FE78800DBEE44 /* NSDictionary+StringConversion.m in Sources */,

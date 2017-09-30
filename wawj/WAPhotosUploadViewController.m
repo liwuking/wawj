@@ -20,8 +20,8 @@
 #import "UpYunFormUploader.h"
 #import "UpYunBlockUpLoader.h"
 #import <UMSocialCore/UMSocialCore.h>
-
-@interface WAPhotosUploadViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WANewPhotosViewControllerDelegate,WAPhotosShowViewControllerDelegate>
+#import "UploadPhotoNullView.h"
+@interface WAPhotosUploadViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WANewPhotosViewControllerDelegate,WAPhotosShowViewControllerDelegate,WAUploadPhotoNullViewDelegate>
 
 @property(nonatomic,assign)NSInteger delIndex;
 
@@ -44,64 +44,18 @@
 @property (weak, nonatomic) IBOutlet UIButton *editBtn;
 @property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
 
+
+@property(nonatomic,assign)BOOL isChange;
+
+@property(nonatomic,strong)UploadPhotoNullView *uploadPhotoNullView;
+
+
 @end
 
 @implementation WAPhotosUploadViewController
 
--(void)getZanData {
-    
-    NSDictionary *model = @{@"album_id": self.photosItem.albumId};
-    
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2107" andModel:model];
-    
-    __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
-        NSString *code = data[@"code"];
-        if ([code isEqualToString:@"0000"]) {
-            
-            NSDictionary *dict = data[@"body"];
-            
-            if ([dict[@"isZan"] isEqualToString:@"1"]) {
-                
-                strongSelf.zanBtn.selected = YES;
-            }else {
-                strongSelf.zanBtn.selected = NO;
-            }
-        
-            if (![dict[@"zanList"] isKindOfClass:[NSNull class]]) {
-                
-                NSString *nameText = @"";
-                NSMutableArray *texts = [@[] mutableCopy];
-                for (NSDictionary *subDict in dict[@"zanList"]) {
-                    [texts addObject:subDict[@"userName"]];
-                }
-                
-                texts = (NSMutableArray *)[[texts reverseObjectEnumerator] allObjects];
-                
-                for (NSString *name in texts) {
-                    NSString *str = [nameText isEqualToString:@""]? name:[NSString stringWithFormat:@"、%@", name];
-                    nameText = [nameText stringByAppendingString:str];
-                }
-                
-                strongSelf.zanName.text = nameText;
-            }
-            
-        }
-        
-    } fail:^(NSError *error) {
-        
-//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//
-//        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-//
-//        }];
-        
-    }];
-    
-}
+
+
 
 - (IBAction)clickShareWXFriend:(UITapGestureRecognizer *)sender {
      [self hideShareHudView];
@@ -169,6 +123,13 @@
     
     self.title = self.photosItem.title;
     
+    if (![self.photosItem.nums integerValue]) {
+        self.uploadPhotoNullView = [[[NSBundle mainBundle] loadNibNamed:@"UploadPhotoNullView" owner:self options:nil] lastObject];
+        self.uploadPhotoNullView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        self.uploadPhotoNullView.delegate = self;
+        [self.view addSubview:self.uploadPhotoNullView];
+    }
+    
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     if ([userInfo[@"userId"] isEqualToNumber:(NSNumber *)self.photosItem.author]) {
         self.editBtn.hidden = NO;
@@ -230,10 +191,33 @@
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateSelected];
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
     
+}
 
+-(void)viewDidAppear:(BOOL)animated {
+    
+    if (-1 != self.delIndex) {
+        [self delPhoto:self.delIndex];
+        self.delIndex = -1;
+    }
+    
 }
 
 -(void)backAction {
+    
+    if (self.isChange) {
+        if (self.dataArr.count) {
+            PhotoItem *item = self.dataArr[0];
+            self.photosItem.coverUrl = item.photoUrl;
+            self.photosItem.nums = [NSString stringWithFormat:@"%ld", self.dataArr.count];
+        } else {
+            self.photosItem.coverUrl = @"";
+            self.photosItem.nums = @"0";
+        }
+        
+        [self.delegate waNewPhotosViewControllerWithPhotosItem:self.photosItem andRefreshPhotoNum:self.dataArr.count];
+    }
+    
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -251,10 +235,9 @@
    
 }
 
+
 -(void)clickShare {
 
-    
-    
     [UIView animateWithDuration:0.2 animations:^{
          //self.shareContant.constant = self.shareContant.constant == 0 ? -81 : 0;
         self.hudShareView.hidden = NO;
@@ -274,13 +257,20 @@
     self.dataArr = [@[] mutableCopy];
     [self initView];
     
-    //请求点赞情况
-    [self  getZanData];
+    if ([self.photosItem.nums integerValue]) {
+        //请求点赞情况
+        [self  getZanData];
+        //请求相册数据
+        [MBProgressHUD showMessage:nil];
+        [self  getPhotosData];
+    }
     
-    //请求相册数据
-    [MBProgressHUD showMessage:nil];
-    [self  getPhotosData];
+}
+
+#pragma -mark WAUploadPhotoNullViewDelegate
+-(void)waUploadPhotoNullViewWithClickUploadNewPhotos {
     
+    [self clickUploadBtn:nil];
 }
 
 - (IBAction)clickUploadBtn:(UIButton *)sender {
@@ -464,6 +454,8 @@
     
 }
 
+
+
 #pragma -mark WANewPhotosViewControllerDelegate
 
 -(void)waNewPhotosViewControllerWithAlbumId:(NSString *)albumId AndRefreshTitle:(NSString *)title {
@@ -646,6 +638,12 @@
                 }
                 
                 if (!strongSelf.cacheImags.count) {
+                    
+                    if (strongSelf.uploadPhotoNullView) {
+                        [strongSelf.uploadPhotoNullView removeFromSuperview];
+                        strongSelf.uploadPhotoNullView = nil;
+                    }
+                    
                     [strongSelf.collectionView reloadData];
                 } else {
                     
@@ -655,6 +653,10 @@
                         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
                     }
                     
+                    if (strongSelf.uploadPhotoNullView) {
+                        [strongSelf.uploadPhotoNullView removeFromSuperview];
+                        strongSelf.uploadPhotoNullView = nil;
+                    }
                     [UIView animateWithDuration:0.5 animations:^{
                         [strongSelf.collectionView insertItemsAtIndexPaths:indexPaths];
                     }];
@@ -693,16 +695,9 @@
     
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    
-    if (-1 != self.delIndex) {
-        [self delPhoto:self.delIndex];
-        self.delIndex = -1;
-    }
-    
-}
-
 -(void)delPhoto:(NSInteger)photoIndex {
+    
+    self.isChange = YES;
     
     PhotoItem *item = self.dataArr[photoIndex];
     [self.dataArr removeObjectAtIndex:photoIndex];
@@ -752,6 +747,8 @@
         cell.headImageView.image = img;
         
         [self.cacheImags removeObjectForKey:item.photoUrl];
+        
+        self.isChange = YES;
     } else {
         
         [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb50",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
@@ -879,6 +876,61 @@
     });
     
     
+    
+}
+
+-(void)getZanData {
+    
+    NSDictionary *model = @{@"album_id": self.photosItem.albumId};
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2107" andModel:model];
+    
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        NSString *code = data[@"code"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            NSDictionary *dict = data[@"body"];
+            
+            if ([dict[@"isZan"] isEqualToString:@"1"]) {
+                
+                strongSelf.zanBtn.selected = YES;
+            }else {
+                strongSelf.zanBtn.selected = NO;
+            }
+            
+            if (![dict[@"zanList"] isKindOfClass:[NSNull class]]) {
+                
+                NSString *nameText = @"";
+                NSMutableArray *texts = [@[] mutableCopy];
+                for (NSDictionary *subDict in dict[@"zanList"]) {
+                    [texts addObject:subDict[@"userName"]];
+                }
+                
+                texts = (NSMutableArray *)[[texts reverseObjectEnumerator] allObjects];
+                
+                for (NSString *name in texts) {
+                    NSString *str = [nameText isEqualToString:@""]? name:[NSString stringWithFormat:@"、%@", name];
+                    nameText = [nameText stringByAppendingString:str];
+                }
+                
+                strongSelf.zanName.text = nameText;
+            }
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        //        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        //
+        //        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+        //
+        //        }];
+        
+    }];
     
 }
 

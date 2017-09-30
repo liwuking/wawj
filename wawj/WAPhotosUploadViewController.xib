@@ -46,7 +46,9 @@
                                 <constraint firstAttribute="width" constant="40" id="0q6-XU-q0c"/>
                                 <constraint firstAttribute="height" constant="40" id="3k4-mp-0Cv"/>
                             </constraints>
-                            <state key="normal" title="上传"/>
+                            <state key="normal" title="上传">
+                                <color key="titleColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
                             <connections>
                                 <action selector="clickUploadBtn:" destination="-1" eventType="touchUpInside" id="zhL-LS-osb"/>
                             </connections>
@@ -90,7 +92,9 @@
                                 <constraint firstAttribute="width" constant="40" id="bMB-34-rkw"/>
                                 <constraint firstAttribute="height" constant="40" id="lyF-Ub-guf"/>
                             </constraints>
-                            <state key="normal" title="编辑"/>
+                            <state key="normal" title="编辑">
+                                <color key="titleColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
                             <connections>
                                 <action selector="clickEditBtn:" destination="-1" eventType="touchUpInside" id="hF6-5M-hnZ"/>
                             </connections>

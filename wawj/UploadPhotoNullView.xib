@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="JMo-Ec-vMh" customClass="UploadPhotoNullView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQW-XW-Qbi">
+                    <rect key="frame" x="110" y="244" width="100" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无照片" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRX-m1-xkr">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="azq-Jn-fzo"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zdb-wL-G7m">
+                            <rect key="frame" x="0.0" y="40" width="100" height="40"/>
+                            <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="tl5-7q-Fyl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <state key="normal" title="上传照片">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickUploadPhotoBtn:" destination="JMo-Ec-vMh" eventType="touchUpInside" id="aeO-IN-Ka5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="lRX-m1-xkr" secondAttribute="trailing" id="6v2-7j-Nsi"/>
+                        <constraint firstItem="Zdb-wL-G7m" firstAttribute="leading" secondItem="jQW-XW-Qbi" secondAttribute="leading" id="B0R-dt-Iga"/>
+                        <constraint firstAttribute="trailing" secondItem="Zdb-wL-G7m" secondAttribute="trailing" id="B86-yN-zh5"/>
+                        <constraint firstAttribute="width" constant="100" id="D57-uI-Dof"/>
+                        <constraint firstAttribute="bottom" secondItem="Zdb-wL-G7m" secondAttribute="bottom" id="E8X-6h-BeJ"/>
+                        <constraint firstItem="lRX-m1-xkr" firstAttribute="top" secondItem="jQW-XW-Qbi" secondAttribute="top" id="FSz-CU-bho"/>
+                        <constraint firstItem="lRX-m1-xkr" firstAttribute="leading" secondItem="jQW-XW-Qbi" secondAttribute="leading" id="VzH-J6-Veb"/>
+                        <constraint firstAttribute="height" constant="80" id="kEC-ht-aiv"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="jQW-XW-Qbi" firstAttribute="centerY" secondItem="JMo-Ec-vMh" secondAttribute="centerY" id="RCM-iD-II4"/>
+                <constraint firstItem="jQW-XW-Qbi" firstAttribute="centerX" secondItem="JMo-Ec-vMh" secondAttribute="centerX" id="ggZ-NW-0VB"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="x5K-Jf-OFl"/>
+            <point key="canvasLocation" x="104" y="64"/>
+        </view>
+    </objects>
+</document>
