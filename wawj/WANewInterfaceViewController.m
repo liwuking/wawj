@@ -48,8 +48,8 @@
     
     NSString *weekDay;
     NSDate *dateNow;
-    int dayDelay = 0;
-    dateNow=[NSDate dateWithTimeIntervalSinceNow:dayDelay*24*60*60];//dayDelay代表向后推几天，如果是0则代表是今天，如果是1就代表向后推24小时，如果想向后推12小时，就可以改成dayDelay*12*60*60,让dayDelay＝1
+//    int dayDelay = 0;
+    dateNow= [NSDate date];//[NSDate dateWithTimeIntervalSinceNow:dayDelay*24*60*60];//dayDelay代表向后推几天，如果是0则代表是今天，如果是1就代表向后推24小时，如果想向后推12小时，就可以改成dayDelay*12*60*60,让dayDelay＝1
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
     NSCalendar *chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];//设置成中国阳历
     NSDateComponents *comps = [[NSDateComponents alloc] init];
@@ -100,10 +100,7 @@
     NSString *dayStr = day < 10 ? [NSString stringWithFormat:@"0%ld",day] : [NSString stringWithFormat:@"%ld",day];
     
     comps = [chineseCalendar components:unitFlags fromDate:dateNow];
-    long lunarDay=[comps day];//获取日期对应的长整形字符串
-    long lunarMonth=[comps month];//获取月对应的长整形字符串
-    
-    NSString *riQi =[NSString stringWithFormat:@"%@月%@日 %@ %@%@",monthStr,dayStr,weekDay, ChineseMonths[lunarMonth],ChineseDays[lunarDay]];//把日期长整形转成对应的汉字字符串
+    NSString *riQi =[NSString stringWithFormat:@"%@月%@日 %@ %@%@",monthStr,dayStr,weekDay, ChineseMonths[comps.month-1],ChineseDays[comps.day-1]];//把日期长整形转成对应的汉字字符串
     
     self.dateLab.text = riQi;
     

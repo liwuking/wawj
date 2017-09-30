@@ -77,36 +77,26 @@
 
 - (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
 {
-    
-    return;
-    
-//    if (!self.shareUrl) {
-//        [MBProgressHUD showMessage:nil];
-//        self.shareUrl = @"request";
-//        [self sharePhotosData];
-//
-//        return;
-//    }
-    
-    //创建分享消息对象
-    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
-    
-    //创建网页内容对象
-    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"相册" thumImage:[UIImage imageNamed:@"hzph"]];
-    //设置网页地址
-    shareObject.webpageUrl =self.shareUrl;
-    
-    //分享消息对象设置分享内容对象
-    messageObject.shareObject = shareObject;
-    
-    //调用分享接口
-    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
-        if (error) {
-            NSLog(@"************Share fail with error %@*********",error);
-        }else{
-            NSLog(@"response data is %@",data);
-        }
-    }];
+
+//    //创建分享消息对象
+//    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+//    
+//    //创建网页内容对象
+//    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"相册" thumImage:[UIImage imageNamed:@"hzph"]];
+//    //设置网页地址
+//    shareObject.webpageUrl =self.shareUrl;
+//    
+//    //分享消息对象设置分享内容对象
+//    messageObject.shareObject = shareObject;
+//    
+//    //调用分享接口
+//    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+//        if (error) {
+//            NSLog(@"************Share fail with error %@*********",error);
+//        }else{
+//            NSLog(@"response data is %@",data);
+//        }
+//    }];
 }
 
 -(void)initView {
