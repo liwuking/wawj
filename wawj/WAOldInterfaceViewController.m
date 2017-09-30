@@ -82,10 +82,9 @@
     
     device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
-    
     NSString *weekDay;
     NSDate *dateNow;
-    dateNow= [NSDate date];//[NSDate dateWithTimeIntervalSinceNow:dayDelay*24*60*60];//dayDelay代表向后推几天，如果是0则代表是今天，如果是1就代表向后推24小时，如果想向后推12小时，就可以改成dayDelay*12*60*60,让dayDelay＝1
+    dateNow = [NSDate date];//[NSDate dateWithTimeIntervalSinceNow:dayDelay*24*60*60];//dayDelay代表向后推几天，如果是0则代表是今天，如果是1就代表向后推24小时，如果想向后推12小时，就可以改成dayDelay*12*60*60,让dayDelay＝1
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
      NSCalendar *chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];//设置成中国阳历
     NSDateComponents *comps = [[NSDateComponents alloc] init];
@@ -165,7 +164,14 @@
         self.phoneText.text = origin.length ? [origin substringToIndex:origin.length-1] : @"";
     }
     
-    self.phoneView.hidden = self.phoneText.text.length ? NO:YES;
+    //self.phoneView.hidden = self.phoneText.text.length ? NO:YES;
+    
+    if (self.phoneText.text.length) {
+        self.phoneText.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    } else {
+        self.phoneText.backgroundColor = [UIColor clearColor];
+    }
+    
     
 }
 
