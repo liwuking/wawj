@@ -163,7 +163,7 @@
                         <constraint firstItem="0oe-b9-kOo" firstAttribute="top" secondItem="t4T-48-NOo" secondAttribute="top" id="uP3-S8-hId"/>
                     </constraints>
                 </stackView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aYr-xf-BOQ">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="downloadQR" translatesAutoresizingMaskIntoConstraints="NO" id="aYr-xf-BOQ">
                     <rect key="frame" x="43" y="30" width="235" height="235"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="235" id="V8p-BK-NNj"/>
@@ -251,6 +251,7 @@
     </objects>
     <resources>
         <image name="QZone" width="45" height="45"/>
+        <image name="downloadQR" width="250" height="250"/>
         <image name="friends" width="45" height="45"/>
         <image name="qqFriends" width="45" height="45"/>
         <image name="wxFriends" width="45" height="45"/>

@@ -530,6 +530,7 @@
         
         cell.titleLab.text= item.title;
         cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
+        NSString *imageUrl = [NSString stringWithFormat:@"%@!", item.coverUrl];
         [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:item.coverUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
         
         return cell;

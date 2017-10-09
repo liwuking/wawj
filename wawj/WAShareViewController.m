@@ -36,6 +36,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
     [self initViews];
 }
 
@@ -62,9 +64,9 @@
     UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
     
     //创建网页内容对象
-    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"下载我爱我家" thumImage:[UIImage imageNamed:@"hzph"]];
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"下载我爱我家" thumImage:[UIImage imageNamed:@"logo"]];
     //设置网页地址
-    shareObject.webpageUrl =@"https://itunes.apple.com/cn/app/id1048910278";
+    shareObject.webpageUrl =@"https://itunes.apple.com/us/app/我爱我家app/id1209731951?l=zh&ls=1&mt=8";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
