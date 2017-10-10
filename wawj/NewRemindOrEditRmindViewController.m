@@ -104,7 +104,7 @@
                            @"remind_ID"            : @"string",
                            @"state"                : @"string",
                            @"reserved_parameter_1" : @"string",
-                           @"reserved_parameter_2" : @"string",
+                           @"c" : @"string",
                            @"reserved_parameter_3" : @"string",
                            @"reserved_parameter_4" : @"string",
                            @"reserved_parameter_5" : @"string",

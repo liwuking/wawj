@@ -326,13 +326,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 从数据库获取提醒数据
 - (NSMutableArray *)getRemindList {
    
-    NSDate *nowDate = [NSDate dateWithTimeIntervalSinceNow:8*60*6];
     int nowSp = [[NSDate date] timeIntervalSince1970];
     NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp > %d order by time_stamp",_tableName,nowSp];
     NSLog(@"sql = %@",sql);
     
     NSMutableArray *allDataArr = [[NSMutableArray alloc] init];
-    if ([_db open]) {
+    if ([self.db open]) {
         FMResultSet * res = [_db executeQuery:sql];
         
         while ([res next]) {
@@ -916,15 +915,15 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSString* timeStr = [NSString stringWithFormat:@"%@ %@",dateString,timeString];
         NSLog(@"timeStr = %@",timeStr);
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-        [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
         [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
         
         NSDate* date = [formatter dateFromString:timeStr];
         int timeSp_f = [date timeIntervalSince1970];
         NSLog(@"timeSp_f = %d",timeSp_f);
         
-        int nowSp_f = [[NSDate dateWithTimeIntervalSinceNow:8*60*60] timeIntervalSince1970];
-        NSLog(@"date = %@",[NSDate dateWithTimeIntervalSinceNow:8*60*60]);
+        int nowSp_f = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"date = %@",[NSDate date]);
         
         NSLog(@"nowSp_f = %d",nowSp_f);
         if (nowSp_f > timeSp_f) {
@@ -950,7 +949,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         
         NSString *dateOrig = nil;
-        NSString *currentDate = [NSString stringWithFormat:@"%@",[NSDate dateWithTimeIntervalSinceNow:8*60*60]];
+        NSString *currentDate = [NSString stringWithFormat:@"%@",[NSDate date]];
         if (itemDic[@"datetime"][@"dateOrig"]) {
             NSString *dateOrigStr = itemDic[@"datetime"][@"dateOrig"];
             if ([[dateOrigStr substringToIndex:dateOrigStr.length-1] isEqualToString:@"今天"]) {
