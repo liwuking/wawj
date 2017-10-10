@@ -25,7 +25,7 @@
 
 #import "BuildRemindView.h"
 #import "OverdueViewController.h"
-
+#import "EditRemindViewController.h"
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
     UriType             = 6, //uri合成
@@ -99,9 +99,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 #pragma -mark BuildRemindViewDelegate
 -(void)BuildRemindViewWithClickBuildRemind {
-    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-    vc.type = NewRemind;
-    vc.database = _db;
+//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
+//    vc.type = NewRemind;
+//    vc.database = _db;
+//    [self.navigationController pushViewController:vc animated:YES];
+    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 
 }

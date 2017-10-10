@@ -55,6 +55,8 @@
 		7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3471F8CA9EC00F3512A /* OverdueViewController.xib */; };
 		7788D34D1F8CAAFD00F3512A /* OverdueRemindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */; };
 		7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */; };
+		7788D3521F8CC9A800F3512A /* EditRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D3501F8CC9A800F3512A /* EditRemindViewController.m */; };
+		7788D3531F8CC9A800F3512A /* EditRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */; };
 		779CF3FA1F5F9FC000DBEE44 /* CLNetworkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */; };
 		779CF3FB1F5F9FC000DBEE44 /* CLImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F51F5F9FC000DBEE44 /* CLImageModel.m */; };
 		779CF3FC1F5F9FC000DBEE44 /* NSString+Cache.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F71F5F9FC000DBEE44 /* NSString+Cache.m */; };
@@ -356,6 +358,9 @@
 		7788D34A1F8CAAFD00F3512A /* OverdueRemindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverdueRemindCell.h; sourceTree = "<group>"; };
 		7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverdueRemindCell.m; sourceTree = "<group>"; };
 		7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverdueRemindCell.xib; sourceTree = "<group>"; };
+		7788D34F1F8CC9A800F3512A /* EditRemindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditRemindViewController.h; sourceTree = "<group>"; };
+		7788D3501F8CC9A800F3512A /* EditRemindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditRemindViewController.m; sourceTree = "<group>"; };
+		7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditRemindViewController.xib; sourceTree = "<group>"; };
 		779CF3EF1F5F9FC000DBEE44 /* CLNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworking.h; sourceTree = "<group>"; };
 		779CF3F11F5F9FC000DBEE44 /* CLNetworkingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworkingManager.h; sourceTree = "<group>"; };
 		779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNetworkingManager.m; sourceTree = "<group>"; };
@@ -1013,6 +1018,9 @@
 				77A67F081F4D1D07000DFD88 /* RemindViewController.h */,
 				77A67F091F4D1D07000DFD88 /* RemindViewController.m */,
 				77A67F0A1F4D1D07000DFD88 /* RemindViewController.xib */,
+				7788D34F1F8CC9A800F3512A /* EditRemindViewController.h */,
+				7788D3501F8CC9A800F3512A /* EditRemindViewController.m */,
+				7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */,
 			);
 			name = MyRemind;
 			sourceTree = "<group>";
@@ -1897,6 +1905,7 @@
 				77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */,
 				7788D2F51F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib in Resources */,
 				779CF46F1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib in Resources */,
+				7788D3531F8CC9A800F3512A /* EditRemindViewController.xib in Resources */,
 				77A67F1E1F54069F000DFD88 /* UserCenterViewController.xib in Resources */,
 				7788D2FA1F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib in Resources */,
 				779CF47A1F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib in Resources */,
@@ -2158,6 +2167,7 @@
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
 				77A67E131F4C0EE1000DFD88 /* BMChineseSort.m in Sources */,
 				77A67E301F4C0EE1000DFD88 /* ISEResult.m in Sources */,
+				7788D3521F8CC9A800F3512A /* EditRemindViewController.m in Sources */,
 				77A67EA31F4C15AB000DFD88 /* ZQCycleCell.m in Sources */,
 				77A67E311F4C0EE1000DFD88 /* ISEResultFinal.m in Sources */,
 				77A67D331F4BD8CC000DFD88 /* SpeakingView.m in Sources */,

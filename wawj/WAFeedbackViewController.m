@@ -8,7 +8,7 @@
 
 #import "WAFeedbackViewController.h"
 #import <AudioToolbox/AudioSession.h>
-#import <AVFoundation/AVAudioSession.h>
+//#import <AVFoundation/AVAudioSession.h>
 #import <AVFoundation/AVFoundation.h>
 #import "iflyMSC/IFlyMSC.h"
 #import "PcmPlayer.h"
@@ -78,12 +78,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
         
     }else{
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提醒"
-                                                        message:@"网络中断，无法语音添加提醒和朗读提醒"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"我知道了"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+        [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法语音添加提醒和朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
+            
+        }];
         
     }
     
@@ -267,22 +264,18 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 [self beginDistinguish];
             }else{
                 
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                               message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风"
-                                                              delegate:nil
-                                                     cancelButtonTitle:@"我知道了"
-                                                     otherButtonTitles:nil, nil];
-                [alert show];
+                [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
+                    
+                }];
+                
                 return;
             }
             
         }else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒"
-                                                           message:@"网络中断，无法语音添加提醒"
-                                                          delegate:nil
-                                                 cancelButtonTitle:@"我知道了"
-                                                 otherButtonTitles:nil, nil];
-            [alert show];
+            
+            [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法语音添加提醒" buttonTitle:@"我知道了" clickBtn:^{
+                
+            }];
             return;
             
         }
@@ -612,7 +605,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [MBProgressHUD hideHUD];
     
     if (!_myApp) {
-        _myApp = [UIApplication sharedApplication].delegate;
+        _myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
     }
     
     [_listeningView setFrame:[UIScreen mainScreen].bounds];
