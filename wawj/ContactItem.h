@@ -13,5 +13,4 @@
 @property(nonatomic, strong)NSString *name;
 @property(nonatomic, strong)NSString *phone;
 
-
 @end

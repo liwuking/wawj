@@ -393,7 +393,9 @@
     if ([CoreArchive strForKey:LASTTIME]) {
         lastestTime = [CoreArchive strForKey:LASTTIME];
     }
-    NSDictionary *model = @{@"lastestTime": lastestTime};
+    NSDictionary *model = @{@"lastestTime": lastestTime,
+                            @"pageNum":@"50"
+                            };
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2101" andModel:model];
     
     __weak __typeof__(self) weakSelf = self;
