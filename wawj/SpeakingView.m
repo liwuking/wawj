@@ -1,10 +1,3 @@
-//
-//  SpeakingView.m
-//  AFanJia
-//
-//  Created by 焦庆峰 on 2016/12/2.
-//  Copyright © 2016年 焦庆峰. All rights reserved.
-//
 
 #import "SpeakingView.h"
 

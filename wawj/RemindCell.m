@@ -1,26 +1,22 @@
-//
-//  RemindCell.m
-//  aFanJia
-//
-//  Created by 焦庆峰 on 2016/12/7.
-//  Copyright © 2016年 焦庆峰. All rights reserved.
-//
+
 
 #import "RemindCell.h"
 
 @implementation RemindCell
-@synthesize delegate;
+
 - (void)awakeFromNib {
     [super awakeFromNib];
-    _cellBgView.layer.cornerRadius = 4;
     
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, SCREEN_WIDTH-20, _cellBgView.frame.size.height)];
-    _cellBgView.layer.masksToBounds = NO;
-    _cellBgView.layer.shadowColor = RGB_COLOR(220, 220, 200).CGColor;
-    _cellBgView.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    _cellBgView.layer.shadowOpacity = 0.5f;
-    _cellBgView.layer.shadowPath = shadowPath.CGPath;
     
+//    _cellBgView.layer.cornerRadius = 4;
+//
+//    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, SCREEN_WIDTH-20, _cellBgView.frame.size.height)];
+//    _cellBgView.layer.masksToBounds = NO;
+//    _cellBgView.layer.shadowColor = RGB_COLOR(220, 220, 200).CGColor;
+//    _cellBgView.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+//    _cellBgView.layer.shadowOpacity = 0.5f;
+//    _cellBgView.layer.shadowPath = shadowPath.CGPath;
+//
     
 }
 

@@ -741,16 +741,8 @@
         self.isChange = YES;
     } else {
         
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb50",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb30",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
     }
- 
-//    if ([self.cacheImags.allKeys containsObject:[item.photoUrl stringByAppendingString:@"/image.png"]]) {
-//        UIImage *img =  [self getImageFromFileManagerWithImagePath:item.photoUrl];//[[UIImage alloc] initWithData:self.cacheImags[@"item.photoUrl"]];
-//        cell.headImageView.image = img;
-//    } else {
-//
-//        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb50",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
-//    }
     
     return cell;
     

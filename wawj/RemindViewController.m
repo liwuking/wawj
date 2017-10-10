@@ -1,15 +1,7 @@
-//
-//  RemindViewController.m
-//  AFanJia
-//
-//  Created by 焦庆峰 on 2016/10/31.
-//  Copyright © 2016年 焦庆峰. All rights reserved.
-//
 
 #import "RemindViewController.h"
 #import "SpeakingView.h"
 #import "AppDelegate.h"
-//#import "ExpiredRemindViewController.h"
 #import "NewRemindOrEditRmindViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "iflyMSC/IFlyMSC.h"
@@ -17,8 +9,12 @@
 #import "IATConfig.h"
 #import "RemindCell.h"
 #import "MBProgressHUD+Extension.h"
-#import <AVFoundation/AVAudioSession.h>
 #import <AudioToolbox/AudioSession.h>
+#import <AVFoundation/AVFoundation.h>
+#import "iflyMSC/IFlyMSC.h"
+#import "PcmPlayer.h"
+#import "MJRefresh.h"
+
 #import "TTSConfig.h"
 #import "ListeningView.h"
 #import "DBManager.h"
@@ -27,27 +23,99 @@
 #import "CoreArchive.h"
 #import "AlarmClockItem.h"
 
-@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,RemindCellDelegate>
+#import "BuildRemindView.h"
+#import "OverdueViewController.h"
+
+typedef NS_OPTIONS(NSInteger, SynthesizeType) {
+    NomalType           = 5,//普通合成
+    UriType             = 6, //uri合成
+};
+
+typedef NS_OPTIONS(NSInteger, Status) {
+    NotStart            = 0,
+    Playing             = 2, //高异常分析需要的级别
+    Paused              = 4,
+};
+
+@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate>
 {
+    
     IBOutlet UIView        *_voiceSearchView;
     IBOutlet UIView        *_microphoneBGView;
-    SpeakingView           *_speakingView;
-    IBOutlet UITableView   *_remindTableView;
-    NSMutableArray         *_allDataArr;
-    ListeningView          *_listeningView;
-    AppDelegate            *_myApp;
-    //    IBOutlet UIView        *_noRemindView;
-    FMDatabase             *_db;
-    NSString               *_tableName;
-    BOOL                   isHeaderFresh;
+    
 }
+
+@property (weak, nonatomic) IBOutlet UITableView *remindTableView;
+
+//语音语义理解对象
+@property (nonatomic,strong) IFlySpeechUnderstander *iFlySpeechUnderstander;
+//文本语义理解对象
+//@property (nonatomic,strong) IFlyTextUnderstander *iFlyUnderStand;
+
+@property (nonatomic, copy)  NSString * defaultText;
+@property (nonatomic) BOOL isCanceled;
+@property (nonatomic,strong) NSString *result;
+@property (nonatomic) BOOL isSpeechUnderstander;//当前状态是否是语音语义理解
+
+//语音合成对象
+@property (nonatomic, strong) IFlySpeechSynthesizer * iFlySpeechSynthesizer;
+@property (nonatomic, assign) BOOL isSpeechCanceled;
+@property (nonatomic, assign) BOOL hasError;
+@property (nonatomic, assign) BOOL isViewDidDisappear;
+@property (nonatomic, strong) PcmPlayer *audioPlayer;
+@property (nonatomic, assign) Status state;
+@property (nonatomic, assign) SynthesizeType synType;
+
+@property(nonatomic, strong)SpeakingView           *speakingView;
+@property(nonatomic, strong)NSMutableArray         *allDataArr;
+@property(nonatomic, strong)FMDatabase             *db;
+@property(nonatomic, strong)AppDelegate            *myApp;
+@property(nonatomic, strong)NSString               *tableName;
+@property(nonatomic, strong)ListeningView          *listeningView;
+@property(nonatomic, assign)BOOL                    isHeaderFresh;
+
 @end
+
 
 @implementation RemindViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)leftAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)rightAction {
+    
+    BuildRemindView *buildRemindView = [[[NSBundle mainBundle] loadNibNamed:@"BuildRemindView" owner:self options:nil] lastObject];
+    buildRemindView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64);
+    buildRemindView.delegate = self;
+    [self.view addSubview:buildRemindView];
+    
+}
+
+#pragma -mark BuildRemindViewDelegate
+-(void)BuildRemindViewWithClickBuildRemind {
+    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
+    vc.type = NewRemind;
+    vc.database = _db;
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+-(void)BuildRemindViewWithClickOverDueRemind {
+    
+    OverdueViewController *vc = [[OverdueViewController alloc] initWithNibName:@"OverdueViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)initViews {
+    
     self.title = @"我的提醒";
+    
     _microphoneBGView.layer.cornerRadius = 30;
     
     _remindTableView.separatorStyle = UITableViewCellSelectionStyleNone;
@@ -61,58 +129,81 @@
     [rightItem setTintColor:HEX_COLOR(0x666666)];
     [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-    _iFlySpeechUnderstander = [IFlySpeechUnderstander sharedInstance];
-    _iFlySpeechUnderstander.delegate = self;
-    
-    //pcm播放器初始化
-    _audioPlayer = [[PcmPlayer alloc] init];
-    
+ 
     //add shadow
     _voiceSearchView.layer.masksToBounds = NO;
     _voiceSearchView.layer.shadowColor = RGB_COLOR(220, 220, 200).CGColor;
     _voiceSearchView.layer.shadowOffset = CGSizeMake(0.0f, -2.0f);
     _voiceSearchView.layer.shadowOpacity = 0.9f;
-    
-    [self createDatabaseTable];
-    [self canRecord];
+
     [self setupRefresh];
-    
-    if ([self isOpenNotificationJurisdiction]) {
-        
-//        if ([self isReachable]) {
-//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-//                                                           message:@"若体验更贴心的提醒服务，请开启声音"
-//                                                          delegate:nil
-//                                                 cancelButtonTitle:@"知道了"
-//                                                 otherButtonTitles: nil];
-//            [alert show];
-//
-//        }
-    }
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [self loadData];
-    
-    
-    if ([self isReachable]) {
+
+-(void)checkRecord
+{
+    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+    if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
         
-        self.isSpeechUnderstander = NO;
+        [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
+        }];
         
-        [super viewWillAppear:animated];
-        [self initRecognizer];
-        [self initSynthesizer];
+    }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
         
-    }else{
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提醒"
-                                                       message:@"网络中断，无法语音添加提醒和朗读提醒"
-                                                      delegate:nil
-                                             cancelButtonTitle:@"我知道了"
-                                             otherButtonTitles:nil, nil];
-        [alert show];
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
+            if (granted) {
+                // Microphone enabled code
+            }
+            else {
+                // Microphone disabled code
+            }
+        }];
         
     }
+    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self.tableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    self.tableName = [self.tableName stringByAppendingFormat:@"_%@",userID];
+    
+    self.allDataArr = [@[] mutableCopy];
+    self.myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    
+    [self initViews];
+    
+    //讯飞初始化
+    self.isSpeechUnderstander = NO;
+    _iFlySpeechUnderstander = [IFlySpeechUnderstander sharedInstance];
+    _iFlySpeechUnderstander.delegate = self;
+    [self initRecognizer];
+    [self initSynthesizer];
+    //pcm播放器初始化
+    _audioPlayer = [[PcmPlayer alloc] init];
+    
+    //创建数据库表
+    [self createDatabaseTable];
+    //检查麦克风
+    [self checkRecord];
+
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+   [super viewWillAppear:animated];
+    
+//    [self loadData];
+//
+//    if (![self isReachable]) {
+//        [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法语音添加提醒和朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
+//
+//        }];
+//    }
     
 }
 
@@ -135,13 +226,10 @@
     UIApplication *application = [UIApplication sharedApplication];
     NSUInteger notificationType = [[application currentUserNotificationSettings] types];
     if (notificationType == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"未开启通知权限"
-                                                       message:@"提醒无法主动推送给用户，“设置-通知-我爱我家-允许通知”，开启通知权限，让“提醒”功能更贴心"
-                                                      delegate:nil
-                                             cancelButtonTitle:@"我知道了"
-                                             otherButtonTitles:nil, nil];
-        
-        [alert show];
+  
+        [self showAlertViewWithTitle:@"未开启通知权限" message:@"提醒无法主动推送给用户，“设置-通知-我爱我家-允许通知”，开启通知权限，让“提醒”功能更贴心" buttonTitle:@"我知道了" clickBtn:^{
+            
+        }];
         
         return NO;
     }
@@ -149,15 +237,10 @@
     return YES;
 }
 
+#pragma -mark 创建数据库表
 - (void)createDatabaseTable {
     
     [MBProgressHUD showMessage:@"正在加载..."];
-    if (!_allDataArr) {
-        _allDataArr = [[NSMutableArray alloc] init];
-    }
-    [_allDataArr removeAllObjects];
-    
-    
     NSDictionary *keys = @{@"date"                 : @"string",
                            @"time"                 : @"string",
                            @"time_interval"        : @"string",
@@ -174,22 +257,19 @@
                            @"reserved_parameter_5" : @"string",
                            @"reserved_parameter_6" : @"string"};
     
-    _tableName = @"remindList";
-    if ([CoreArchive strForKey:@"userID"]) {
-        _tableName = [_tableName stringByAppendingFormat:@"_%@",[CoreArchive strForKey:@"userID"]];
-    }
-    
-    
+    __weak __typeof__(self) weakSelf = self;
     [[DBManager defaultManager] createTableWithName:_tableName AndKeys:keys Result:^(BOOL isOK) {
+         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (!isOK) {
             //建表失败！
             [MBProgressHUD hideHUD];
-            [self showNoRemindView];
+            [strongSelf showNoRemindView];
             return ;
         }
     } FMDatabase:^(FMDatabase *database) {
-        _db = database;
-        [self loadData];
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.db = database;
+        [strongSelf getDataFromDatabase];
     }];
     
 }
@@ -200,27 +280,30 @@
  */
 - (void)setupRefresh
 {
-    _remindTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
-    _remindTableView.tableHeaderView.backgroundColor = [UIColor clearColor];
-    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
-    //    [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
-    // dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
-    [_remindTableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"investment"];
+    self.remindTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    self.remindTableView.tableHeaderView.backgroundColor = [UIColor clearColor];
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing),dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    [self.remindTableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"investment"];
     
 }
 
-- (void)loadData {
-    [_allDataArr removeAllObjects];
-    if ([_db open]) {
+#pragma -mark 更新列表
+- (void)getDataFromDatabase {
+    
+    [self.allDataArr removeAllObjects];
+    if ([self.db open]) {
         
-        if (isHeaderFresh) {
-            [_remindTableView headerEndRefreshing];
-            isHeaderFresh = NO;
+        if (self.isHeaderFresh) {
+            [self.remindTableView headerEndRefreshing];
+            self.isHeaderFresh = NO;
         }
-        [_allDataArr addObjectsFromArray:[self getRemindList]];
-        [_remindTableView reloadData];
         
-        if (![_allDataArr count]) {
+        NSMutableArray *listArr = [self getRemindList];
+        [self.allDataArr removeAllObjects];
+        [self.allDataArr addObjectsFromArray:listArr];
+        [self.remindTableView reloadData];
+        
+        if (![self.allDataArr count]) {
             [self showNoRemindView];
         }else{
             //            [_noRemindView removeFromSuperview];
@@ -239,9 +322,12 @@
     //    [_noRemindView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, 160)];
     //    [self.view addSubview:_noRemindView];
 }
+
+#pragma -mark 从数据库获取提醒数据
 - (NSMutableArray *)getRemindList {
-    NSDate *nowDate = [NSDate dateWithTimeIntervalSinceNow:8*60*60];
-    int nowSp = [nowDate timeIntervalSince1970];
+   
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSinceNow:8*60*6];
+    int nowSp = [[NSDate date] timeIntervalSince1970];
     NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp > %d order by time_stamp",_tableName,nowSp];
     NSLog(@"sql = %@",sql);
     
@@ -350,95 +436,67 @@
     
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)leftAction {
-//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Remind" bundle:nil];
-//    ExpiredRemindViewController *vc = [sb instantiateViewControllerWithIdentifier:@"ExpiredRemindViewController"];
-//    vc.hidesBottomBarWhenPushed = YES;
-//    vc.database = _db;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)rightAction {
-    
-    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-    vc.type = NewRemind;
-    vc.database = _db;
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
-
-
+#pragma -mark 点击录音
 - (IBAction)beginRecording:(UILongPressGestureRecognizer *)sender {
     
     if (sender.state == UIGestureRecognizerStateBegan) {
         
         if ([self isReachable]) {
             if ([self isRecord]) {
-                _speakingView = [[NSBundle mainBundle] loadNibNamed:@"SpeakingView" owner:self options:nil][0];
-                [_speakingView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-                //_speakingView.delegate = self;
-                _myApp = [UIApplication sharedApplication].delegate;
-                [_myApp.window addSubview:_speakingView];
-                [_speakingView startAction];
+                
+                if (!self.speakingView) {
+                    self.speakingView = [[NSBundle mainBundle] loadNibNamed:@"SpeakingView" owner:self options:nil][0];
+                    [self.speakingView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+                }
+                [self.myApp.window addSubview:self.speakingView];
+                [self.speakingView startAction];
+                
                 [self beginDistinguish];
+                
             }else{
                 
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                               message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风"
-                                                              delegate:nil
-                                                     cancelButtonTitle:@"我知道了"
-                                                     otherButtonTitles:nil, nil];
-                [alert show];
+                [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
+                }];
+                
                 return;
             }
             
         }else{
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒"
-                                                           message:@"网络中断，无法语音添加提醒"
-                                                          delegate:nil
-                                                 cancelButtonTitle:@"我知道了"
-                                                 otherButtonTitles:nil, nil];
-            [alert show];
+            
+            [self showAlertViewWithTitle:@"提示" message:@"网络中断，无法语音添加提醒" buttonTitle:@"我知道了" clickBtn:^{
+                
+            }];
             return;
             
         }
         
-    }
-    if (sender.state == UIGestureRecognizerStateEnded) {
+    } else if (sender.state == UIGestureRecognizerStateEnded) {
+        
         if (![self isReachable]) {
             return;
         }
         
-        [_speakingView endSpeak];
-        [_iFlySpeechUnderstander stopListening];
-        [MBProgressHUD showMessage:@"正在创建..."];
+        [self.speakingView endSpeak];
+        [self.iFlySpeechUnderstander stopListening];
+        if (self.iFlySpeechUnderstander.isUnderstanding) {
+            [MBProgressHUD showMessage:@"正在创建..."];
+        }
+        
+        
     }
-    
     
 }
 
 
 - (BOOL)isRecord{
+    
     AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
     switch (permissionStatus) {
         case AVAudioSessionRecordPermissionDenied:
-            // direct to settings...
-            NSLog(@"已经拒绝麦克风弹框");
             return NO;
-            
             break;
         case AVAudioSessionRecordPermissionGranted:
-            NSLog(@"已经允许麦克风弹框");
             return YES;
-            // mic access ok...
             break;
         default:
             // this should not happen.. maybe throw an exception.
@@ -448,41 +506,22 @@
     return NO;
 }
 
--(void)canRecord
-{
-    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
-    
-    if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
-        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-            // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
-            if (granted) {
-                // Microphone enabled code
-            }
-            else {
-                // Microphone disabled code
-            }
-        }];
-        
-    }
-}
-
+#pragma -mark 开始录音
 - (void)beginDistinguish {
     if (self.isSpeechUnderstander){
         return;
     }
     //设置为麦克风输入语音
-    [_iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
+    [self.iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
     
-    bool ret = [_iFlySpeechUnderstander startListening];
+    bool ret = [self.iFlySpeechUnderstander startListening];
     
     if (ret) {
         
         self.isSpeechUnderstander = YES;
         self.isCanceled = NO;
         
-    }
-    else
-    {
+    } else {
         
     }
     
@@ -492,16 +531,17 @@
 #pragma mark 开始进入刷新状态
 - (void)headerRereshing
 {
-    isHeaderFresh = YES;
-    [self loadData];
+    self.isHeaderFresh = YES;
+    [self getDataFromDatabase];
 }
 
 #pragma mark - table data source and delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_allDataArr count];
+    return [self.allDataArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     static NSString *identifiter = @"remindCell";
     RemindCell *cell = [tableView dequeueReusableCellWithIdentifier:identifiter];
     if (!cell) {
@@ -510,13 +550,15 @@
     }
     
     
-    NSDictionary *itemDic = _allDataArr[indexPath.row];
+    NSDictionary *itemDic = self.allDataArr[indexPath.row];
+    
     NSString *contentStr = itemDic[@"event"];
     cell.eventLabel.text = [contentStr substringToIndex:contentStr.length-1];
+    
     NSString *eventTime = itemDic[@"time"];
     cell.eventDateLabel.text = [eventTime substringToIndex:eventTime.length-3];
-    cell.cellIndexPath = indexPath;
     
+    cell.cellIndexPath = indexPath;
     
     NSString* timeStr = [NSString stringWithFormat:@"%@ %@",itemDic[@"date"],itemDic[@"time"]];
     NSLog(@"timeStr = %@",timeStr);
@@ -525,11 +567,12 @@
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     
     NSDate* date = [formatter dateFromString:timeStr];
+
+//    cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@",[timeStr compareDate:date],itemDic[@"time_interval"]];
+    cell.dateLabel.text = [NSString stringWithFormat:@"%@",[timeStr compareDate:date]];
+
     NSLog(@"date = %@",date);
-    
     NSLog(@"123 = %@",[timeStr compareDate:date]);
-    
-    cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@",[timeStr compareDate:date],itemDic[@"time_interval"]];
     
     return cell;
 }
@@ -552,10 +595,10 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Remind" bundle:nil];
-    NewRemindOrEditRmindViewController *vc = [sb instantiateViewControllerWithIdentifier:@"NewRemindOrEditRmindViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
+    
+    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
     vc.type = EditRemind;
     vc.editDataDic = [[NSDictionary alloc]initWithDictionary:_allDataArr[indexPath.row]];
     vc.database = _db;
@@ -567,20 +610,20 @@
 - (void)tableViewCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
+        
         NSString *readText = _allDataArr[indexPath.row][@"content"];
         [self readTextWithString:readText];
+        
     }else{
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒"
-//                                                       message:@"网络中断，无法朗读提醒"
-//                                                      delegate:nil
-//                                             cancelButtonTitle:@"我知道了"
-//                                             otherButtonTitles:nil, nil];
-//        [alert show];
-//        return;
+
+        [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
+            
+        }];
     }
     
 }
 
+#pragma -mark 读出文字
 - (void)readTextWithString:(NSString *)str {
     if ([str isEqualToString:@""]) {
         return;
@@ -738,7 +781,7 @@
     [MBProgressHUD hideHUD];
     
     if (!_myApp) {
-        _myApp = [UIApplication sharedApplication].delegate;
+        _myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
     }
     
     [_listeningView setFrame:[UIScreen mainScreen].bounds];
@@ -886,12 +929,9 @@
         NSLog(@"nowSp_f = %d",nowSp_f);
         if (nowSp_f > timeSp_f) {
             [MBProgressHUD hideHUD];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                           message:@"设置提醒时间应大于当前时间！"
-                                                          delegate:nil
-                                                 cancelButtonTitle:@"知道了"
-                                                 otherButtonTitles:nil, nil];
-            [alert show];
+            [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
+                
+            }];
             return;
         }
         
@@ -939,17 +979,16 @@
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {
             [MBProgressHUD showSuccess:@"创建成功"];
-            [self loadData];
+            [self getDataFromDatabase];
             
             //创建闹钟
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(queue, ^{
                 
-                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                });
+                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr];
+                NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,timeStr);
+                
             });
             
             
@@ -959,4 +998,13 @@
         }
     }
 }
+
 @end
+
+
+
+
+
+
+
+

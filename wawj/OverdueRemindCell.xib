@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OverdueRemindCell" rowHeight="95" id="fl0-Ym-cOE" customClass="OverdueRemindCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="95"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fl0-Ym-cOE" id="kEH-tj-Qzn">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="94.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1R-sj-Sws" userLabel="View - bg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="94.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今天" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCU-cJ-nar" userLabel="上午／下午">
+                                <rect key="frame" x="155" y="39" width="115" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="MbX-oU-p3k"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃饭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Alf-yU-N8N" userLabel="event">
+                                <rect key="frame" x="65" y="67" width="255" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="TtE-gl-llC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <color key="textColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23:59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhT-IB-jsg" userLabel="time">
+                                <rect key="frame" x="65" y="27" width="90" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="BSN-6C-3jS"/>
+                                    <constraint firstAttribute="width" constant="90" id="bpz-3s-gkd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vId-vu-6En">
+                                <rect key="frame" x="270" y="27" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="Id7-Mx-FBY"/>
+                                    <constraint firstAttribute="height" constant="40" id="mN8-BH-qlG"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="remind_read"/>
+                                <connections>
+                                    <action selector="readAction:" destination="fl0-Ym-cOE" eventType="touchUpInside" id="6ef-sV-NJD"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friends" translatesAutoresizingMaskIntoConstraints="NO" id="V3O-BJ-5bQ">
+                                <rect key="frame" x="10" y="22" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="DxD-X0-Ykm"/>
+                                    <constraint firstAttribute="width" constant="50" id="wEH-0a-iiE"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="V3O-BJ-5bQ" firstAttribute="leading" secondItem="a1R-sj-Sws" secondAttribute="leading" constant="10" id="0bc-bN-5Ki"/>
+                            <constraint firstItem="V3O-BJ-5bQ" firstAttribute="centerY" secondItem="a1R-sj-Sws" secondAttribute="centerY" id="10b-zd-vMa"/>
+                            <constraint firstItem="vId-vu-6En" firstAttribute="leading" secondItem="WCU-cJ-nar" secondAttribute="trailing" id="5U1-TW-W6D"/>
+                            <constraint firstItem="vId-vu-6En" firstAttribute="centerY" secondItem="a1R-sj-Sws" secondAttribute="centerY" id="9tY-a2-NLM"/>
+                            <constraint firstItem="Alf-yU-N8N" firstAttribute="top" secondItem="vId-vu-6En" secondAttribute="bottom" id="AIj-Rw-0Ix"/>
+                            <constraint firstAttribute="trailing" secondItem="vId-vu-6En" secondAttribute="trailing" constant="10" id="D2R-dr-VUR"/>
+                            <constraint firstItem="dhT-IB-jsg" firstAttribute="leading" secondItem="V3O-BJ-5bQ" secondAttribute="trailing" constant="5" id="Xz7-z2-XE6"/>
+                            <constraint firstItem="Alf-yU-N8N" firstAttribute="leading" secondItem="V3O-BJ-5bQ" secondAttribute="trailing" constant="5" id="a9Y-DH-S2D"/>
+                            <constraint firstItem="WCU-cJ-nar" firstAttribute="top" secondItem="a1R-sj-Sws" secondAttribute="top" constant="39" id="hzC-uZ-bZN"/>
+                            <constraint firstAttribute="trailing" secondItem="Alf-yU-N8N" secondAttribute="trailing" id="lSM-ZU-Eyw"/>
+                            <constraint firstItem="WCU-cJ-nar" firstAttribute="leading" secondItem="dhT-IB-jsg" secondAttribute="trailing" id="oTI-Pw-yco"/>
+                            <constraint firstItem="dhT-IB-jsg" firstAttribute="top" secondItem="a1R-sj-Sws" secondAttribute="top" constant="27" id="qAk-EM-JGj"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="a1R-sj-Sws" firstAttribute="leading" secondItem="kEH-tj-Qzn" secondAttribute="leading" id="IlD-ov-ocp"/>
+                    <constraint firstItem="a1R-sj-Sws" firstAttribute="top" secondItem="kEH-tj-Qzn" secondAttribute="top" id="JOP-6b-DRh"/>
+                    <constraint firstAttribute="trailing" secondItem="a1R-sj-Sws" secondAttribute="trailing" id="RA6-eL-5Xk"/>
+                    <constraint firstAttribute="bottom" secondItem="a1R-sj-Sws" secondAttribute="bottom" id="imJ-qw-f4G"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="_cellBgView" destination="a1R-sj-Sws" id="FQ2-Qk-Av2"/>
+                <outlet property="dateLabel" destination="WCU-cJ-nar" id="rvs-88-li8"/>
+                <outlet property="eventDateLabel" destination="dhT-IB-jsg" id="jYL-4Z-grM"/>
+                <outlet property="eventLabel" destination="Alf-yU-N8N" id="WVe-uJ-FFM"/>
+            </connections>
+            <point key="canvasLocation" x="49" y="103.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="friends" width="45" height="45"/>
+        <image name="remind_read" width="40" height="40"/>
+    </resources>
+</document>

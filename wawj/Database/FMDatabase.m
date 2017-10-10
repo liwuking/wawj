@@ -137,6 +137,7 @@
 #pragma mark Open and close database
 
 - (BOOL)open {
+   
     if (_db) {
         return YES;
     }

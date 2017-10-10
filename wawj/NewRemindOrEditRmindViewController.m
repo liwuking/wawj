@@ -1,10 +1,4 @@
-//
-//  NewRemindOrEditRmindViewController.m
-//  wawj
-//
-//  Created by ruiyou on 2017/8/30.
-//  Copyright © 2017年 technology. All rights reserved.
-//
+
 
 
 #import "NewRemindOrEditRmindViewController.h"
@@ -24,11 +18,14 @@
     IBOutlet UISwitch    *_advanceSwitch;
     BOOL                 isAdvance;//是否提前
     IBOutlet UILabel     *_tagLabel;
-    NSString             *_tableName;
     NSString             *_event;
     NSString             *_dateAndTime;
     
 }
+
+@property(nonatomic,assign)NSString             *dataTableName;
+
+
 @end
 
 @implementation NewRemindOrEditRmindViewController
@@ -43,6 +40,10 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.extendedLayoutIncludesOpaqueBars = NO;
 
+    self.dataTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    self.dataTableName = [self.dataTableName stringByAppendingFormat:@"_%@",userID];
     
     switch (self.type) {
         case NewRemind:
@@ -81,10 +82,8 @@
     //add inputAccessoryView
     [self loadInputAccessoryView];
     
-//    _tableName = @"remindList";
-//    if ([CoreArchive strForKey:USERID]) {
-//        _tableName = [_tableName stringByAppendingFormat:@"_%@",[CoreArchive strForKey:USERID]];
-//    }
+    
+    
     
     [self createDatabaseTable];//创建数据库表
     
@@ -95,13 +94,6 @@
 
 - (void)createDatabaseTable {
     
-//    [MBProgressHUD showMessage:@"正在加载..."];
-//    if (!_allDataArr) {
-//        _allDataArr = [[NSMutableArray alloc] init];
-//    }
-//    [_allDataArr removeAllObjects];
-//    
-//    
     NSDictionary *keys = @{@"date"                 : @"string",
                            @"time"                 : @"string",
                            @"time_interval"        : @"string",
@@ -117,15 +109,11 @@
                            @"reserved_parameter_4" : @"string",
                            @"reserved_parameter_5" : @"string",
                            @"reserved_parameter_6" : @"string"};
-    
-    _tableName = @"remindList";
-    if ([CoreArchive strForKey:@"userID"]) {
-        _tableName = [_tableName stringByAppendingFormat:@"_%@",[CoreArchive strForKey:@"userID"]];
-    }
+
     
     __weak __typeof__(self) weakSelf = self;
    
-    [[DBManager defaultManager] createTableWithName:_tableName AndKeys:keys Result:^(BOOL isOK) {
+    [[DBManager defaultManager] createTableWithName:self.dataTableName AndKeys:keys Result:^(BOOL isOK) {
         if (!isOK) {
             //建表失败！
 //            [MBProgressHUD hideHUD];
@@ -197,7 +185,7 @@
             
             //delete
             NSString *time_stamp = self.editDataDic[@"time_stamp"];
-            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",_tableName,time_stamp];
+            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",self.dataTableName,time_stamp];
             NSLog(@"deleteSql = %@",deleteSql);
             BOOL isDelete = [self.database executeUpdate:deleteSql];
             if (isDelete) {
@@ -306,6 +294,14 @@
 }
 
 - (IBAction)saveAction:(UIButton *)sender {
+    
+    self.dataTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    self.dataTableName = [self.dataTableName stringByAppendingFormat:@"_%@",userID];
+    
+    
+  
     
     //判断是否填写事件
     if (_remindTextView.text.length ==0) {
@@ -596,7 +592,7 @@
             NSLog(@"enent and date");
             //update该条数据  更改所有字段
             //删除之前提醒在数据库中的数据
-            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",_tableName,self.editDataDic[@"time_stamp"]];
+            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",self.dataTableName,self.editDataDic[@"time_stamp"]];
             NSLog(@"deleteSql = %@",deleteSql);
             BOOL isDelete = [self.database executeUpdate:deleteSql];
             if (isDelete) {
@@ -639,7 +635,7 @@
             NSLog(@"Advane and date    or    edit all ");
             
             //update该条数据  更改所有字段(content需要重新配置)
-            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",_tableName,self.editDataDic[@"time_stamp"]];
+            NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where time_stamp = %@",self.dataTableName,self.editDataDic[@"time_stamp"]];
             NSLog(@"deleteSql = %@",deleteSql);
             BOOL isDelete = [self.database executeUpdate:deleteSql];
             if (isDelete) {
@@ -728,7 +724,7 @@
     //remind_ID
     NSString *remind_ID = [NSString stringWithFormat:@"rd_%@",timeSp];
     
-    NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,event,timeSp,content,dateOrig,remind_ID,state,@"0",@"0",@"0",@"0",@"0",@"0"];
+    NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",self.dataTableName,dateString,timeString,timeInterval,event,timeSp,content,dateOrig,remind_ID,state,@"0",@"0",@"0",@"0",@"0",@"0"];
     NSLog(@"sql = %@",sql);
     BOOL isCreate = [self.database executeUpdate:sql];
     if (isCreate) {
@@ -798,22 +794,23 @@
     
     int stamp = [[self dateFromDateStr:dateStr] timeIntervalSince1970];
     return [NSString stringWithFormat:@"%d",stamp];
+    
 }
 
 - (NSDate *)dateFromDateStr:(NSString *)dateStr {
     NSString* timeStr = [NSString stringWithFormat:@"%@",dateStr];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+    [formatter setTimeZone: [NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     
     return [formatter dateFromString:timeStr];
 }
 
 - (NSMutableArray *)selectAllRemindTime {
-    NSDate *nowDate = [NSDate dateWithTimeIntervalSinceNow:8*60*60];
-    int nowSp = [nowDate timeIntervalSince1970];
-    NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp > %d order by time_stamp",_tableName,nowSp];
+//    NSDate *nowDate = [NSDate dateWithTimeIntervalSinceNow:8*60*60];
+    int nowSp = [[NSDate date] timeIntervalSince1970];
+    NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp > %d order by time_stamp",self.dataTableName,nowSp];
     NSLog(@"sql = %@",sql);
     
     NSMutableArray *allDataArr = [[NSMutableArray alloc] init];

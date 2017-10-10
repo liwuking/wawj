@@ -173,29 +173,6 @@
         return cell;
     }
     
-//    if (self.dataArr.count != indexPath.row) {
-//        static NSString *identifier = @"HomeCell";
-//
-//        CloseFamilyItem *item = self.dataArr[indexPath.row];
-//        HomeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-//        if (!cell) {
-//        cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCell" owner:nil options:nil] lastObject];
-//        }
-//        cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
-//        cell.closeFamilyItem = item;
-//        return cell;
-//
-//    } else {
-//        static NSString *identifier = @"HomeCellTwo";
-//
-//        HomeCellTwo *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-//        if (!cell) {
-//            cell = [[[NSBundle mainBundle] loadNibNamed:@"HomeCellTwo" owner:nil options:nil] lastObject];
-//        }
-//        cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
-//        return cell;
-//    }
-    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

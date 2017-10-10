@@ -49,6 +49,12 @@
 		7788D2FA1F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D2F81F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib */; };
 		7788D33C1F7F669400F3512A /* UploadPhotoNullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D33B1F7F669400F3512A /* UploadPhotoNullView.m */; };
 		7788D33E1F7F66A300F3512A /* UploadPhotoNullView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D33D1F7F66A300F3512A /* UploadPhotoNullView.xib */; };
+		7788D3421F8CA20600F3512A /* BuildRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D3411F8CA20600F3512A /* BuildRemindView.m */; };
+		7788D3441F8CA21A00F3512A /* BuildRemindView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3431F8CA21A00F3512A /* BuildRemindView.xib */; };
+		7788D3481F8CA9EC00F3512A /* OverdueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D3461F8CA9EC00F3512A /* OverdueViewController.m */; };
+		7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3471F8CA9EC00F3512A /* OverdueViewController.xib */; };
+		7788D34D1F8CAAFD00F3512A /* OverdueRemindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */; };
+		7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */; };
 		779CF3FA1F5F9FC000DBEE44 /* CLNetworkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */; };
 		779CF3FB1F5F9FC000DBEE44 /* CLImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F51F5F9FC000DBEE44 /* CLImageModel.m */; };
 		779CF3FC1F5F9FC000DBEE44 /* NSString+Cache.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF3F71F5F9FC000DBEE44 /* NSString+Cache.m */; };
@@ -116,7 +122,7 @@
 		77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */; };
 		77A67D101F43DC59000DFD88 /* WAFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */; };
 		77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */; };
-		77A67D131F452EF4000DFD88 /* Thunder Song.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* Thunder Song.m4r */; };
+		77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* ThunderSong.m4r */; };
 		77A67D1D1F4AB3A1000DFD88 /* WARemindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */; };
 		77A67D1E1F4AB3A1000DFD88 /* WARemindListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D1C1F4AB3A1000DFD88 /* WARemindListCell.xib */; };
 		77A67D2B1F4BD5C6000DFD88 /* RemindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D271F4BD5C6000DFD88 /* RemindCell.m */; };
@@ -341,6 +347,15 @@
 		7788D33A1F7F669400F3512A /* UploadPhotoNullView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadPhotoNullView.h; sourceTree = "<group>"; };
 		7788D33B1F7F669400F3512A /* UploadPhotoNullView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadPhotoNullView.m; sourceTree = "<group>"; };
 		7788D33D1F7F66A300F3512A /* UploadPhotoNullView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadPhotoNullView.xib; sourceTree = "<group>"; };
+		7788D3401F8CA20600F3512A /* BuildRemindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuildRemindView.h; sourceTree = "<group>"; };
+		7788D3411F8CA20600F3512A /* BuildRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuildRemindView.m; sourceTree = "<group>"; };
+		7788D3431F8CA21A00F3512A /* BuildRemindView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuildRemindView.xib; sourceTree = "<group>"; };
+		7788D3451F8CA9EC00F3512A /* OverdueViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverdueViewController.h; sourceTree = "<group>"; };
+		7788D3461F8CA9EC00F3512A /* OverdueViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverdueViewController.m; sourceTree = "<group>"; };
+		7788D3471F8CA9EC00F3512A /* OverdueViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverdueViewController.xib; sourceTree = "<group>"; };
+		7788D34A1F8CAAFD00F3512A /* OverdueRemindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverdueRemindCell.h; sourceTree = "<group>"; };
+		7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverdueRemindCell.m; sourceTree = "<group>"; };
+		7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverdueRemindCell.xib; sourceTree = "<group>"; };
 		779CF3EF1F5F9FC000DBEE44 /* CLNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworking.h; sourceTree = "<group>"; };
 		779CF3F11F5F9FC000DBEE44 /* CLNetworkingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNetworkingManager.h; sourceTree = "<group>"; };
 		779CF3F21F5F9FC000DBEE44 /* CLNetworkingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNetworkingManager.m; sourceTree = "<group>"; };
@@ -455,7 +470,7 @@
 		77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFeedbackViewController.h; sourceTree = "<group>"; };
 		77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFeedbackViewController.m; sourceTree = "<group>"; };
 		77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFeedbackViewController.xib; sourceTree = "<group>"; };
-		77A67D121F452EF4000DFD88 /* Thunder Song.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Thunder Song.m4r"; sourceTree = "<group>"; };
+		77A67D121F452EF4000DFD88 /* ThunderSong.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThunderSong.m4r; sourceTree = "<group>"; };
 		77A67D141F452F0C000DFD88 /* wawj.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wawj.entitlements; sourceTree = "<group>"; };
 		77A67D1A1F4AB3A1000DFD88 /* WARemindListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemindListCell.h; sourceTree = "<group>"; };
 		77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemindListCell.m; sourceTree = "<group>"; };
@@ -864,21 +879,9 @@
 		771F957E1F0F270100B4D016 /* StartPage */ = {
 			isa = PBXGroup;
 			children = (
-				77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */,
-				77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */,
-				77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */,
 				77A67D371F4C0614000DFD88 /* ListeningView.h */,
 				77A67D381F4C0614000DFD88 /* ListeningView.m */,
 				77A67D391F4C0614000DFD88 /* ListeningView.xib */,
-				77A67D261F4BD5C6000DFD88 /* RemindCell.h */,
-				77A67D271F4BD5C6000DFD88 /* RemindCell.m */,
-				77A67D281F4BD5C6000DFD88 /* RemindCell.xib */,
-				77A67F081F4D1D07000DFD88 /* RemindViewController.h */,
-				77A67F091F4D1D07000DFD88 /* RemindViewController.m */,
-				77A67F0A1F4D1D07000DFD88 /* RemindViewController.xib */,
-				77A67D301F4BD8CC000DFD88 /* SpeakingView.h */,
-				77A67D311F4BD8CC000DFD88 /* SpeakingView.m */,
-				77A67D321F4BD8CC000DFD88 /* SpeakingView.xib */,
 				779CF4181F67C21500DBEE44 /* contactView.h */,
 				779CF4191F67C21500DBEE44 /* contactView.m */,
 				779CF41D1F67C43600DBEE44 /* contactView.xib */,
@@ -935,12 +938,13 @@
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
 				772B48DA1F78E53200007701 /* WZLSerializeKit.h */,
-				77A67D121F452EF4000DFD88 /* Thunder Song.m4r */,
+				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
 				77A67D091F429500000DFD88 /* WANewInterfaceViewController.m */,
 				77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */,
+				7788D33F1F8C580600F3512A /* MyRemind */,
 				779CF45F1F6F658700DBEE44 /* AccountMainPage */,
 				779CF45E1F6B7D3000DBEE44 /* LoginAndRegister */,
 				7701046E1F34102C00F723A2 /* Model */,
@@ -983,6 +987,34 @@
 				77832E081F0CB3600009F004 /* Info.plist */,
 			);
 			path = wawjUITests;
+			sourceTree = "<group>";
+		};
+		7788D33F1F8C580600F3512A /* MyRemind */ = {
+			isa = PBXGroup;
+			children = (
+				77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */,
+				77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */,
+				77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */,
+				7788D34A1F8CAAFD00F3512A /* OverdueRemindCell.h */,
+				7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */,
+				7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */,
+				7788D3451F8CA9EC00F3512A /* OverdueViewController.h */,
+				7788D3461F8CA9EC00F3512A /* OverdueViewController.m */,
+				7788D3471F8CA9EC00F3512A /* OverdueViewController.xib */,
+				77A67D261F4BD5C6000DFD88 /* RemindCell.h */,
+				77A67D271F4BD5C6000DFD88 /* RemindCell.m */,
+				77A67D281F4BD5C6000DFD88 /* RemindCell.xib */,
+				77A67D301F4BD8CC000DFD88 /* SpeakingView.h */,
+				77A67D311F4BD8CC000DFD88 /* SpeakingView.m */,
+				77A67D321F4BD8CC000DFD88 /* SpeakingView.xib */,
+				7788D3401F8CA20600F3512A /* BuildRemindView.h */,
+				7788D3411F8CA20600F3512A /* BuildRemindView.m */,
+				7788D3431F8CA21A00F3512A /* BuildRemindView.xib */,
+				77A67F081F4D1D07000DFD88 /* RemindViewController.h */,
+				77A67F091F4D1D07000DFD88 /* RemindViewController.m */,
+				77A67F0A1F4D1D07000DFD88 /* RemindViewController.xib */,
+			);
+			name = MyRemind;
 			sourceTree = "<group>";
 		};
 		779CF3EE1F5F9FC000DBEE44 /* CLNetworking */ = {
@@ -1874,7 +1906,7 @@
 				770104481F2F15A200F723A2 /* WAHomeViewController.xib in Resources */,
 				779CF4281F6900AF00DBEE44 /* HomeCellTwo.xib in Resources */,
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
-				77A67D131F452EF4000DFD88 /* Thunder Song.m4r in Resources */,
+				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
 				77A67F3B1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
@@ -1890,9 +1922,11 @@
 				770104591F307ACA00F723A2 /* WASetTwoCell.xib in Resources */,
 				779CF4851F72468900DBEE44 /* WAPhotosUploadViewController.xib in Resources */,
 				779CF4121F626F2600DBEE44 /* WAContactViewController.xib in Resources */,
+				7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */,
 				77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */,
 				779CF48A1F724D1000DBEE44 /* PhotoCell.xib in Resources */,
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
+				7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
 				77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */,
@@ -1903,6 +1937,7 @@
 				779CF4081F612B8300DBEE44 /* WAAddFamilyViewController.xib in Resources */,
 				779CF46A1F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib in Resources */,
 				779CF40D1F622F3300DBEE44 /* ContactPersonView.xib in Resources */,
+				7788D3441F8CA21A00F3512A /* BuildRemindView.xib in Resources */,
 				77A67D511F4C0D97000DFD88 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2109,6 +2144,8 @@
 				779CF44F1F6A27C000DBEE44 /* UpApiUtils.m in Sources */,
 				77A67E5D1F4C0EE1000DFD88 /* OpenUDID.m in Sources */,
 				77A67E3F1F4C0EE1000DFD88 /* UnderstandViewController.m in Sources */,
+				7788D3481F8CA9EC00F3512A /* OverdueViewController.m in Sources */,
+				7788D3421F8CA20600F3512A /* BuildRemindView.m in Sources */,
 				779CF3FD1F5F9FC000DBEE44 /* NSString+CLTools.m in Sources */,
 				77D75DE21F0F31B900E46D15 /* UIViewController+AlertUtil.m in Sources */,
 				7701047F1F38321100F723A2 /* WACommonlyAppCell.m in Sources */,
@@ -2232,6 +2269,7 @@
 				77A67E281F4C0EE1000DFD88 /* WDLabel.m in Sources */,
 				77A67E9D1F4C15AB000DFD88 /* stringUtil.m in Sources */,
 				77A67F3A1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m in Sources */,
+				7788D34D1F8CAAFD00F3512A /* OverdueRemindCell.m in Sources */,
 				77A67E351F4C0EE1000DFD88 /* ISEResultReadWord.m in Sources */,
 				77A67E491F4C0EE1000DFD88 /* SAMath.m in Sources */,
 				7788D2F91F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.m in Sources */,

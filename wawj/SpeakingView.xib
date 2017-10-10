@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,21 +18,21 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nM-nS-gb4" userLabel="View - bg">
                     <rect key="frame" x="107" y="253" width="160" height="160"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingBkg.png" translatesAutoresizingMaskIntoConstraints="NO" id="X6j-8g-nDy" userLabel="话题">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingBkg" translatesAutoresizingMaskIntoConstraints="NO" id="X6j-8g-nDy" userLabel="话题">
                             <rect key="frame" x="26" y="22" width="62" height="100"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="100" id="hg9-w0-6IT"/>
                                 <constraint firstAttribute="width" constant="62" id="sWP-r1-cmq"/>
                             </constraints>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingSignal004.png" translatesAutoresizingMaskIntoConstraints="NO" id="iU8-zK-eaZ" userLabel="音量">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RecordingSignal004" translatesAutoresizingMaskIntoConstraints="NO" id="iU8-zK-eaZ" userLabel="音量">
                             <rect key="frame" x="100" y="22" width="38" height="100"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="6G5-5C-J6e"/>
                                 <constraint firstAttribute="height" constant="100" id="cM8-te-sOn"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在录音..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xo9-vP-uTX">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手指松开, 取消录音" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xo9-vP-uTX">
                             <rect key="frame" x="8" y="125" width="144" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="I2G-LE-jbX"/>
@@ -72,7 +72,7 @@
         </view>
     </objects>
     <resources>
-        <image name="RecordingBkg.png" width="62" height="100"/>
-        <image name="RecordingSignal004.png" width="38" height="100"/>
+        <image name="RecordingBkg" width="62" height="100"/>
+        <image name="RecordingSignal004" width="38" height="100"/>
     </resources>
 </document>

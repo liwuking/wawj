@@ -44,7 +44,7 @@
         
         //推送声音
         
-        noti.soundName = @"father.caf";;
+        noti.soundName = @"ThunderSong.m4r";;
         
         
         //内容
