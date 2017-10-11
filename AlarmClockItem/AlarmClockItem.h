@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, AlarmType) {
     AlarmTypeOnce,
     AlarmTypeEveryDay,
     AlarmTypeOverWeekend,
-    AlarTypeWorkDay
+    AlarmTypeWorkDay
     
 };
 

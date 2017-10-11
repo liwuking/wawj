@@ -532,7 +532,8 @@
         
         cell.titleLab.text= item.title;
         cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
-        NSString *imageUrl = [NSString stringWithFormat:@"%@!PhotoThumb40", item.coverUrl];
+        NSString *imageUrl = [NSString stringWithFormat:@"%@!HeaderFamily", item.coverUrl];
+        NSLog(@"imageUrl: %@", imageUrl);
         [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
         
         return cell;
@@ -544,7 +545,8 @@
             
             cell.titleLab.text= item.title;
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
-            NSString *imageUrl = [NSString stringWithFormat:@"%@!PhotoThumb40", item.coverUrl];
+            NSString *imageUrl = [NSString stringWithFormat:@"%@!HeaderFamily", item.coverUrl];
+            NSLog(@"imageUrl: %@", imageUrl);
             [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
             
             return cell;
@@ -553,7 +555,8 @@
             
             cell.titleLab.text= item.title;
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
-            NSString *imageUrl = [NSString stringWithFormat:@"%@!PhotoThumb40", item.coverUrl];
+            NSString *imageUrl = [NSString stringWithFormat:@"%@!HeaderFamily", item.coverUrl];
+            NSLog(@"imageUrl: %@", imageUrl);
             [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
             
             return cell;

@@ -37,7 +37,7 @@ static DBManager *defaultManager = nil;
     // 追加文件系统路径
     NSString *dbPath = [documentDirectory stringByAppendingPathComponent:@"wawj.sqlite"];
     
-    NSLog(@"dbPath__%@",dbPath);
+//    NSLog(@"dbPath__%@",dbPath);
     self.databaseQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
     
     [self.databaseQueue inDatabase:^(FMDatabase *db) {

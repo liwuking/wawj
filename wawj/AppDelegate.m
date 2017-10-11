@@ -48,14 +48,14 @@
             
         } else {
             
-//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//            WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            self.window.rootViewController = nav;
-            
-            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             self.window.rootViewController = nav;
+            
+//            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//            self.window.rootViewController = nav;
         }
         
         

@@ -19,7 +19,6 @@
     NSString* timeStr = [NSString stringWithFormat:@"%@",date];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//[NSTimeZone timeZoneWithName:@"Asia/Beijing"]
     if (timeStr.length == 16) {
        [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     }else{
@@ -36,29 +35,28 @@
         //设置推送时间
         localNotification.fireDate = fireDate;//=now
         //设置时区
-//        noti.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:8];
         localNotification.timeZone = [NSTimeZone defaultTimeZone];
         //推送声音
         localNotification.soundName = @"ThunderSong.m4r";;
         //内容
         localNotification.alertBody = content;
         
-//        switch (alarType) {
-//            case AlarmTypeOnce:
-//                
-//                break;
-//            case AlarmTypeEveryDay:
-//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
-//                break;
-//            case AlarmTypeOverWeekend:
-//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
-//                break;
-//            case AlarTypeWorkDay:
-//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
-//                break;
-//            default:
-//                break;
-//        }
+        switch (alarType) {
+            case AlarmTypeOnce:
+                
+                break;
+            case AlarmTypeEveryDay:
+                localNotification.repeatInterval = kCFCalendarUnitDay;
+                break;
+            case AlarmTypeOverWeekend:
+                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
+                break;
+            case AlarmTypeWorkDay:
+                localNotification.repeatInterval = kCFCalendarUnitWeekday;
+                break;
+            default:
+                break;
+        }
         
 //        //显示在icon上的红色圈中的数子
 //        noti.applicationIconBadgeNumber = 1;

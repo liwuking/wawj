@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="140" height="170"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyPhotos" translatesAutoresizingMaskIntoConstraints="NO" id="P5M-RI-KDc">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyPhotos" translatesAutoresizingMaskIntoConstraints="NO" id="P5M-RI-KDc">
                         <rect key="frame" x="0.0" y="0.0" width="140" height="123"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="开发房屋" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8x-It-zZg">

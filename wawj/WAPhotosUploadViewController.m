@@ -741,7 +741,7 @@
         self.isChange = YES;
     } else {
         
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb30",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderFamily",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
     }
     
     return cell;

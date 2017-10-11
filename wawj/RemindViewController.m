@@ -99,12 +99,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 #pragma -mark BuildRemindViewDelegate
 -(void)BuildRemindViewWithClickBuildRemind {
-    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-    vc.type = NewRemind;
-    vc.database = _db;
+//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
+//    vc.type = NewRemind;
+//    vc.database = _db;
 //    [self.navigationController pushViewController:vc animated:YES];
-//    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
-   
+    
+    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+    vc.eventType = NRemind;
+    vc.database = _db;
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -330,7 +332,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (NSMutableArray *)getRemindList {
    
     int nowSp = [[NSDate date] timeIntervalSince1970];
-    NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp > %d order by time_stamp",_tableName,nowSp];
+    NSString *sql = [NSString stringWithFormat:@"select * from %@  where time_stamp > %d or state != 0 order by time_stamp",_tableName,nowSp];
     NSLog(@"sql = %@",sql);
     
     NSMutableArray *allDataArr = [[NSMutableArray alloc] init];
@@ -558,23 +560,22 @@ typedef NS_OPTIONS(NSInteger, Status) {
     cell.eventLabel.text = [contentStr substringToIndex:contentStr.length-1];
     
     NSString *eventTime = itemDic[@"time"];
-    cell.eventDateLabel.text = [eventTime substringToIndex:eventTime.length-3];
+    cell.eventDateLabel.text = [eventTime substringToIndex:5];
     
     cell.cellIndexPath = indexPath;
     
-    NSString* timeStr = [NSString stringWithFormat:@"%@ %@",itemDic[@"date"],itemDic[@"time"]];
-    NSLog(@"timeStr = %@",timeStr);
+
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-//    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    NSInteger timestamp = [itemDic[@"time_stamp"] integerValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    NSString *timeStr = [formatter stringFromDate:date];
     
-    NSDate* date = [formatter dateFromString:timeStr];
+    cell.dateLabel.text = [NSString stringWithFormat:@"%@",[timeStr compareDate:[NSDate date]]];
 
-//    cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@",[timeStr compareDate:date],itemDic[@"time_interval"]];
-    cell.dateLabel.text = [NSString stringWithFormat:@"%@",[timeStr compareDate:date]];
-
-    NSLog(@"date = %@",date);
-    NSLog(@"123 = %@",[timeStr compareDate:date]);
+    NSLog(@"123 = %@",[timeStr compareDate:[NSDate date]]);
     
     return cell;
 }
@@ -977,7 +978,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         NSString *content = itemDic[@"content"];
         
-        NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"仅一次",@"0",@"0",@"0",@"0",@"0",@"0"];
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"0",@"0",@"0",@"0",@"0",@"0",@"0"];
         NSLog(@"sql = %@",sql);
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {

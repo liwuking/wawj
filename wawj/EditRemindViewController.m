@@ -20,8 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnThree;
 @property (weak, nonatomic) IBOutlet UIButton *btnFour;
 
-@property (nonatomic, strong)NSString *adviceType;
-@property(nonatomic,assign)NSString             *dataTableName;
+@property (nonatomic, assign)AlarmType alarmType;
 
 @end
 
@@ -114,13 +113,7 @@
     self.datePicker.locale = locale;
     self.datePicker.minimumDate = [NSDate date]; // 最小时间
     
-    
-    self.dataTableName = @"remindList";
-    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSString *userID = userInfo? userInfo[@"userId"] : @"";
-    self.dataTableName = [self.dataTableName stringByAppendingFormat:@"_%@",userID];
-    
-    switch (self.type) {
+    switch (self.eventType) {
         case NRemind:
             self.title = @"新建提醒";
             break;
@@ -168,14 +161,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.adviceType = @"仅一次";
+    self.alarmType = AlarmTypeOnce;
     [self initViews];
     
+   
     [self createDatabaseTable];//创建数据库表
   
 }
 
 - (void)createDatabaseTable {
+    
+    NSString  *dataTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    dataTableName = [dataTableName stringByAppendingFormat:@"_%@",userID];
+    
     
     NSDictionary *keys = @{@"date"                 : @"string",
                            @"time"                 : @"string",
@@ -196,7 +196,7 @@
     
     __weak __typeof__(self) weakSelf = self;
     
-    [[DBManager defaultManager] createTableWithName:self.dataTableName AndKeys:keys Result:^(BOOL isOK) {
+    [[DBManager defaultManager] createTableWithName:dataTableName AndKeys:keys Result:^(BOOL isOK) {
         if (!isOK) {
             //建表失败！
             //            [MBProgressHUD hideHUD];
@@ -225,16 +225,20 @@
     }
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    
     format.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *timeStr = [format stringFromDate:self.datePicker.date];
-    NSInteger timeStamp = [[format dateFromString:timeStr] timeIntervalSince1970];
-    NSString *timeStampStr = [NSString stringWithFormat:@"%ld",timeStamp];
+    NSString *timeStrMM = [format stringFromDate:self.datePicker.date];
     
     format.dateFormat = @"yyyy-MM-dd";
-    NSString *dateStringOne = [format stringFromDate:self.datePicker.date];
+    NSString *dateStrDD = [format stringFromDate:self.datePicker.date];
     
     format.dateFormat = @"HH:mm";
-    NSString *dateStringTwo = [format stringFromDate:self.datePicker.date];
+    NSString *dateStrHourMinite = [format stringFromDate:self.datePicker.date];
+    
+    NSInteger timeStamp = [[format dateFromString:timeStrMM] timeIntervalSince1970];
+    NSString *timeStampStr = [NSString stringWithFormat:@"%ld",timeStamp];
+    
+
     
     
     //dateOrig(暂无意义，现写死)
@@ -244,7 +248,15 @@
     NSString *remind_ID = [NSString stringWithFormat:@"rd_%@",timeStampStr];
     NSString *timeInterval = @"timeInterval";
     NSString *event = @"event";
-    NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",self.dataTableName,dateStringOne,dateStringTwo,timeInterval,event,timeStampStr,remindContent,dateOrig,remind_ID,self.adviceType,@"0",@"0",@"0",@"0",@"0",@"0"];
+    
+    NSString *stateString = [NSString stringWithFormat:@"%ld",self.alarmType];
+    
+    NSString  *dataTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    dataTableName = [dataTableName stringByAppendingFormat:@"_%@",userID];
+    
+    NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",dataTableName,dateStrDD,dateStrHourMinite,timeInterval,event,timeStampStr,remindContent,dateOrig,remind_ID,stateString,@"0",@"0",@"0",@"0",@"0",@"0"];
     NSLog(@"sql = %@",sql);
     
     
@@ -253,38 +265,25 @@
     if (isCreate) {
         
         //添加一个新的闹钟
-        [AlarmClockItem addAlarmClockWithAlarmClockID:timeStampStr AlarmClockContent:remindContent AlarmClockDate:timeStr AlarmClockType:AlarmTypeOnce];
-        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeStampStr,remindContent,timeStr);
-        
-//        if (isAdvance) {
-//            //添加一个提前闹钟
-//            NSDate *nowDate = [self dateFromDateStr:_remindTimeButton.titleLabel.text];
-//            NSDate *advanceDate = [nowDate dateByAddingTimeInterval:-5*60];
-//            int advanceDateSp = [advanceDate timeIntervalSince1970];
-//            NSString * advanceStr = [dateAndTimeStr ew_timestampWithString:[NSString stringWithFormat:@"%d",advanceDateSp] WithIndex:16];
-//
-//            [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr  AlarmClockType:AlarmTypeOnce];
-//        }
+        [AlarmClockItem addAlarmClockWithAlarmClockID:timeStampStr AlarmClockContent:remindContent AlarmClockDate:timeStrMM AlarmClockType:AlarmTypeOnce];
+        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeStampStr,remindContent,timeStrMM);
         
         
-//        if (!types) {
-//            [MBProgressHUD showSuccess:@"创建成功"];
-//            [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
-//        }
-        
-//        return YES;
+        if (NRemind == self.eventType) {
+            [MBProgressHUD showSuccess:@"创建成功"];
+            [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+        }
         
     }else{
         [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
         [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
-//        return NO;
     }
 }
 
 
 - (IBAction)clickBtnOne:(UIButton *)sender {
     
-    self.adviceType = @"仅一次";
+    self.alarmType = AlarmTypeOnce;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
     [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -302,7 +301,7 @@
 
 - (IBAction)clickBtnTwo:(UIButton *)sender {
 
-    self.adviceType = @"每天";
+    self.alarmType = AlarmTypeEveryDay;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
     [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -318,7 +317,7 @@
 
 - (IBAction)clickBtnThree:(UIButton *)sender {
 
-    self.adviceType = @"周末";
+    self.alarmType = AlarmTypeOverWeekend;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
     [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -334,7 +333,7 @@
 
 - (IBAction)clickBtnFour:(UIButton *)sender {
 
-    self.adviceType = @"工作日";
+    self.alarmType = AlarmTypeWorkDay;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
     [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

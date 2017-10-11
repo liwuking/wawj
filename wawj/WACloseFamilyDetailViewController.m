@@ -38,7 +38,7 @@
     self.title = self.closeFamilyItem.qinmiName;
     [self.phoneBtn setTitle:self.closeFamilyItem.qinmiPhone forState:UIControlStateNormal];
     if (self.closeFamilyItem.headUrl) {
-        [self.headImageView sd_setImageWithURL:[NSURL URLWithString:self.closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@""]];
+        [self.headImageView sd_setImageWithURL:[NSURL URLWithString:self.closeFamilyItem.headUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
     }
     
 }

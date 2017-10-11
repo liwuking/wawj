@@ -14,12 +14,19 @@ typedef enum : NSUInteger{
     NRemind = 0,
     EdRemind,
     ExpRemind,
-} RemindType;
+} RemindEventType;
+
+//typedef enum : NSUInteger{
+//    RemindOnce = 0,
+//    RemindEveryDay,
+//    RemindWeekend,
+//    RemindWorkDay
+//} RemindType;
 
 
 @interface EditRemindViewController : UIViewController
 
-@property (nonatomic , assign)RemindType  type;
+@property (nonatomic , assign)RemindEventType  eventType;
 @property (nonatomic , strong)FMDatabase         *database;
 @property (nonatomic , strong)NSDictionary       *editDataDic;
 

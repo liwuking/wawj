@@ -43,7 +43,7 @@
                     </connections>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="hCb-xn-JST" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0px-gq-Qm7"/>
                 <constraint firstItem="sgz-ZR-TjK" firstAttribute="top" secondItem="hCb-xn-JST" secondAttribute="bottom" constant="15" id="9WW-vZ-6mo"/>
