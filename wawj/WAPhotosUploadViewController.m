@@ -121,7 +121,7 @@
     }
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    if ([userInfo[@"userId"] isEqualToNumber:(NSNumber *)self.photosItem.author]) {
+    if ([userInfo[@"userId"] isEqualToString:self.photosItem.author]) {
         self.editBtn.hidden = NO;
         self.uploadBtn.hidden = NO;
         self.headTitle.text = userInfo[@"userName"];
@@ -139,7 +139,7 @@
         for (NSDictionary *dict in qimiArr) {
             
             NSLog(@"dict: %@", dict);
-            if ([dict[@"qinmiUser"] isEqualToNumber:(NSNumber *)self.photosItem.author]) {
+            if ([dict[@"qinmiUser"] isEqualToString:self.photosItem.author]) {
                 if (![dict[@"qinmiUser"] isKindOfClass:[NSString class]]) {
                     self.headTitle.text = dict[@"qinmiName"];
                 }
@@ -203,6 +203,7 @@
             self.photosItem.coverUrl = @"";
             self.photosItem.nums = @"0";
         }
+        
         
         [self.delegate waNewPhotosViewControllerWithPhotosItem:self.photosItem andRefreshPhotoNum:self.dataArr.count];
     }
@@ -613,7 +614,7 @@
                 [strongSelf.dataArr removeAllObjects];
                 for (NSDictionary *dict  in data[@"body"][@"photoList"]) {
                     
-                    NSDictionary *transDict = [dict transforeNullValueInSimpleDictionary];
+                    NSDictionary *transDict = [dict transforeNullValueToEmptyStringInSimpleDictionary];
                     
                     PhotoItem *item = [[PhotoItem alloc] init];
                     item.createTime = transDict[@"createTime"];
@@ -750,22 +751,22 @@
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 4;
+    return 1;
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 4;
+    return 1;
 }
 //每一个分组的上左下右间距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(4, 4, 4, 4);
+    return UIEdgeInsetsMake(1, 1, 1, 1);
 }
 
 //定义每一个cell的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake((SCREEN_WIDTH-20)/3, 110);
+    return CGSizeMake((SCREEN_WIDTH-5)/3, (SCREEN_WIDTH-5)/3);
 }
 
 //cell的点击事件

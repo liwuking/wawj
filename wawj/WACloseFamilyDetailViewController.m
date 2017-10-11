@@ -220,7 +220,7 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            NSDictionary *body = [data[@"body"] transforeNullValueInSimpleDictionary];
+            NSDictionary *body = [data[@"body"] transforeNullValueToEmptyStringInSimpleDictionary];
             if (body[@"qinmiUser"] && body[@"headUrl"]) {
  
                 NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];

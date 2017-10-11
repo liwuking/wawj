@@ -148,6 +148,18 @@
 }
 
 
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+//
+//    if(decelerate) return;
+//
+//    [self scrollViewDidEndDecelerating:scrollView];
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UITableView *)tableView {
+//
+//    [tableView scrollToRowAtIndexPath:[tableView indexPathForRowAtPoint: CGPointMake(tableView.contentOffset.x, tableView.contentOffset.y+tableView.rowHeight/2)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (self.dataArr.count != indexPath.section) {

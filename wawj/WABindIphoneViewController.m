@@ -234,7 +234,7 @@
             NSMutableArray *qimiArr = [@[] mutableCopy];
             for (NSDictionary *subDict in data[@"body"][@"qinMiList"]) {
                 
-                NSDictionary *dict = [subDict transforeNullValueInSimpleDictionary];
+                NSDictionary *dict = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
                 
                 NSDictionary *item = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":dict[@"qinmiRole"]};
 //                item.headUrl = dict[@"headUrl"];
@@ -248,7 +248,7 @@
             [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
             
             NSDictionary *userInfo = data[@"body"][@"userInfo"];
-            [CoreArchive setDic:[userInfo transforeNullValueInSimpleDictionary] key:USERINFO];
+            [CoreArchive setDic:[userInfo transforeNullValueToEmptyStringInSimpleDictionary] key:USERINFO];
             //[CoreArchive setStr:userInfo[@"userId"] key:USERID];
             
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

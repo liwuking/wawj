@@ -16,15 +16,19 @@ typedef enum : NSUInteger{
     ExpRemind,
 } RemindEventType;
 
-//typedef enum : NSUInteger{
-//    RemindOnce = 0,
-//    RemindEveryDay,
-//    RemindWeekend,
-//    RemindWorkDay
-//} RemindType;
+
+@protocol EditRemindViewControllerDelegate <NSObject>
+
+-(void)editRemindViewControllerWithNewAddRemind;
+-(void)editRemindViewControllerWithEditRemind;
+
+@end
+
 
 
 @interface EditRemindViewController : UIViewController
+
+@property(nonatomic,weak) id<EditRemindViewControllerDelegate> delegate;
 
 @property (nonatomic , assign)RemindEventType  eventType;
 @property (nonatomic , strong)FMDatabase         *database;

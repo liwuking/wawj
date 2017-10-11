@@ -45,9 +45,9 @@
         
         PhotoItem *item = self.photoItemArr[i];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width*i, 0, SCREEN_WIDTH, self.scrollView.frame.size.height)];
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.clipsToBounds = YES;
-        [imageView sd_setImageWithURL:[NSURL URLWithString:item.photoUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb30",item.photoUrl]] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
         
         [self.scrollView addSubview:imageView];
     }

@@ -493,7 +493,7 @@
         [MBProgressHUD hideHUD];
        
         NSDictionary *userInfo = data[@"body"][@"userInfo"];
-        [CoreArchive setDic:[userInfo transforeNullValueInSimpleDictionary] key:USERINFO];
+        [CoreArchive setDic:[userInfo transforeNullValueToEmptyStringInSimpleDictionary] key:USERINFO];
 
         
         NSString *code = data[@"code"];

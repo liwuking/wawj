@@ -229,14 +229,16 @@
     format.dateFormat = @"yyyy-MM-dd HH:mm";
     NSString *timeStrMM = [format stringFromDate:self.datePicker.date];
     
+    NSInteger timeStamp = [[format dateFromString:timeStrMM] timeIntervalSince1970];
+    NSString *timeStampStr = [NSString stringWithFormat:@"%ld",timeStamp];
+    
     format.dateFormat = @"yyyy-MM-dd";
     NSString *dateStrDD = [format stringFromDate:self.datePicker.date];
     
     format.dateFormat = @"HH:mm";
     NSString *dateStrHourMinite = [format stringFromDate:self.datePicker.date];
     
-    NSInteger timeStamp = [[format dateFromString:timeStrMM] timeIntervalSince1970];
-    NSString *timeStampStr = [NSString stringWithFormat:@"%ld",timeStamp];
+   
     
 
     
@@ -247,7 +249,7 @@
     //remind_ID
     NSString *remind_ID = [NSString stringWithFormat:@"rd_%@",timeStampStr];
     NSString *timeInterval = @"timeInterval";
-    NSString *event = @"event";
+    NSString *event = remindContent;
     
     NSString *stateString = [NSString stringWithFormat:@"%ld",self.alarmType];
     
@@ -271,7 +273,9 @@
         
         if (NRemind == self.eventType) {
             [MBProgressHUD showSuccess:@"创建成功"];
+            [self.delegate editRemindViewControllerWithNewAddRemind];
             [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+            
         }
         
     }else{

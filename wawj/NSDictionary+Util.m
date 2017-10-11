@@ -10,22 +10,22 @@
 
 @implementation NSDictionary (Util)
 
--(NSMutableDictionary*)transforeNullValueInSimpleDictionary {
-    
-    NSMutableDictionary *translatedDic = [@{} mutableCopy];
-    [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        
-        if ([obj isKindOfClass:[NSNull class]]) {
-            //[translatedDic setObject:@"" forKey:key];
-            
-        }else{
-            [translatedDic setObject:obj forKey:key];
-        }
-        
-    }];
-    
-    return translatedDic;
-}
+//-(NSMutableDictionary*)transforeNullValueInSimpleDictionary {
+//    
+//    NSMutableDictionary *translatedDic = [@{} mutableCopy];
+//    [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+//        
+//        if ([obj isKindOfClass:[NSNull class]]) {
+//            //[translatedDic setObject:@"" forKey:key];
+//            
+//        }else{
+//            [translatedDic setObject:obj forKey:key];
+//        }
+//        
+//    }];
+//    
+//    return translatedDic;
+//}
 
 -(NSMutableDictionary*)transforeNullValueToEmptyStringInSimpleDictionary {
     
@@ -35,7 +35,12 @@
         if ([obj isKindOfClass:[NSNull class]]) {
             [translatedDic setObject:@"" forKey:key];
         }else{
-            [translatedDic setObject:obj forKey:key];
+            if ([obj isKindOfClass:[NSNumber class]]) {
+                [translatedDic setObject:[obj stringValue] forKey:key];
+            } else {
+                [translatedDic setObject:obj forKey:key];
+            }
+            
         }
         
     }];
