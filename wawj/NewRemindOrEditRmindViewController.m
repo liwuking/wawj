@@ -103,8 +103,9 @@
                            @"dateOrig"             : @"string",
                            @"remind_ID"            : @"string",
                            @"state"                : @"string",
+                           @"repeatInternal"       : @"string",
                            @"reserved_parameter_1" : @"string",
-                           @"c" : @"string",
+                           @"reserved_parameter_2" : @"string",
                            @"reserved_parameter_3" : @"string",
                            @"reserved_parameter_4" : @"string",
                            @"reserved_parameter_5" : @"string",
@@ -254,7 +255,7 @@
 }
 
 - (void)cancelButtonAction {
-    AppDelegate *app = [UIApplication sharedApplication].delegate;
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [[app.window viewWithTag:600] removeFromSuperview];
 }
 - (void)determineButtonAction {
@@ -486,7 +487,7 @@
                 int advanceDateSp = [advanceDate timeIntervalSince1970];
                 NSString * advanceStr = [dateAndTimeStr ew_timestampWithString:[NSString stringWithFormat:@"%d",advanceDateSp] WithIndex:16];
                 
-                [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr];
+                [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr AlarmClockType:AlarmTypeOnce];
                 [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
             }else{
                 [MBProgressHUD showSuccess:@"由于数据库问题，编辑失败"];
@@ -567,7 +568,7 @@
                     int advanceDateSp = [advanceDate timeIntervalSince1970];
                     NSString * advanceStr = [dateAndTimeStr ew_timestampWithString:[NSString stringWithFormat:@"%d",advanceDateSp] WithIndex:16];
                     
-                    [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr];
+                    [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr AlarmClockType:AlarmTypeOnce];
                 }else{
                     state = @"normal";
                     //删除提前闹钟
@@ -730,7 +731,8 @@
     if (isCreate) {
         
         //添加一个新的闹钟
-        [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:_remindTextView.text AlarmClockDate:dateAndTimeStr];
+        [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:_remindTextView.text AlarmClockDate:dateAndTimeStr AlarmClockType:AlarmTypeOnce];
+         NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,dateAndTimeStr);
         
         if (isAdvance) {
             //添加一个提前闹钟
@@ -739,7 +741,7 @@
             int advanceDateSp = [advanceDate timeIntervalSince1970];
             NSString * advanceStr = [dateAndTimeStr ew_timestampWithString:[NSString stringWithFormat:@"%d",advanceDateSp] WithIndex:16];
             
-            [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr];
+            [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr  AlarmClockType:AlarmTypeOnce];
         }
         
         
@@ -801,7 +803,7 @@
     NSString* timeStr = [NSString stringWithFormat:@"%@",dateStr];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setTimeZone: [NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
+//    [formatter setTimeZone: [NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     
     return [formatter dateFromString:timeStr];

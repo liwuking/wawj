@@ -8,6 +8,8 @@
 
 #import "EditRemindViewController.h"
 
+#import "DBManager.h"
+#import "AlarmClockItem.h"
 @interface EditRemindViewController ()
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
@@ -19,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnFour;
 
 @property (nonatomic, strong)NSString *adviceType;
+@property(nonatomic,assign)NSString             *dataTableName;
 
 @end
 
@@ -71,6 +74,30 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)deleteRemind {
+    
+    
+}
+
+- (void)loadInputAccessoryView {
+    UIView *inputBGView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
+    inputBGView.opaque = NO;
+    inputBGView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton * closeButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 0, 50, 44)];
+    [closeButton setTitle:@"隐藏" forState:UIControlStateNormal];
+    [closeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [closeButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [closeButton addTarget:self action:@selector(closeKeybord) forControlEvents:UIControlEventTouchUpInside];
+    [inputBGView addSubview:closeButton];
+    self.textView.inputAccessoryView = inputBGView;
+}
+
+-(void)closeKeybord {
+    
+    [self.view endEditing:YES];
+}
+
 -(void)initViews {
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
@@ -86,6 +113,35 @@
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
     self.datePicker.locale = locale;
     self.datePicker.minimumDate = [NSDate date]; // 最小时间
+    
+    
+    self.dataTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    self.dataTableName = [self.dataTableName stringByAppendingFormat:@"_%@",userID];
+    
+    switch (self.type) {
+        case NRemind:
+            self.title = @"新建提醒";
+            break;
+        case EdRemind:
+        case ExpRemind:
+        {
+            self.title = @"编辑提醒";
+            //right items
+            UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"remind_delete.png"] style:UIBarButtonItemStyleDone target:self action:@selector(deleteRemind)];
+            deleteItem.tintColor = [UIColor whiteColor];
+            self.navigationItem.rightBarButtonItem = deleteItem;
+            
+            //[self loadEidtData];
+        }
+            break;
+        default:
+            break;
+    }
+    
+    
+    [self loadInputAccessoryView];
     
 //    [self.datePicker setValue:HEX_COLOR(0x219ce0) forKey:@"textColor"];
 //    for (UIView *view in self.datePicker.subviews) {
@@ -112,24 +168,119 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.adviceType = @"仅一次";
     [self initViews];
     
-    self.adviceType = @"仅一次";
+    [self createDatabaseTable];//创建数据库表
+  
+}
+
+- (void)createDatabaseTable {
+    
+    NSDictionary *keys = @{@"date"                 : @"string",
+                           @"time"                 : @"string",
+                           @"time_interval"        : @"string",
+                           @"event"                : @"string",
+                           @"time_stamp"           : @"string",
+                           @"content"              : @"string",
+                           @"dateOrig"             : @"string",
+                           @"remind_ID"            : @"string",
+                           @"state"                : @"string",
+                           @"reserved_parameter_1" : @"string",
+                           @"reserved_parameter_2" : @"string",
+                           @"reserved_parameter_3" : @"string",
+                           @"reserved_parameter_4" : @"string",
+                           @"reserved_parameter_5" : @"string",
+                           @"reserved_parameter_6" : @"string"};
+    
+    
+    __weak __typeof__(self) weakSelf = self;
+    
+    [[DBManager defaultManager] createTableWithName:self.dataTableName AndKeys:keys Result:^(BOOL isOK) {
+        if (!isOK) {
+            //建表失败！
+            //            [MBProgressHUD hideHUD];
+            //            [self showNoRemindView];
+            return ;
+        }
+    } FMDatabase:^(FMDatabase *database) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.database = database;
+        //        [self loadData];
+    }];
     
 }
+
 
 - (IBAction)clickSubmitBtn:(UIButton *)sender {
     
     [self.view endEditing:YES];
     
-    if ([self.textView.text isEqualToString:@""]) {
-        [self showAlertViewWithTitle:@"" message:@"反馈内容不能为空" buttonTitle:@"确定" clickBtn:^{
+    NSString *remindContent = [self.textView.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([remindContent isEqualToString:@"请输入您要提醒的事情"]) {
+        [self showAlertViewWithTitle:@"" message:@"请输入提醒的事情" buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;
     }
     
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    format.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSString *timeStr = [format stringFromDate:self.datePicker.date];
+    NSInteger timeStamp = [[format dateFromString:timeStr] timeIntervalSince1970];
+    NSString *timeStampStr = [NSString stringWithFormat:@"%ld",timeStamp];
+    
+    format.dateFormat = @"yyyy-MM-dd";
+    NSString *dateStringOne = [format stringFromDate:self.datePicker.date];
+    
+    format.dateFormat = @"HH:mm";
+    NSString *dateStringTwo = [format stringFromDate:self.datePicker.date];
+    
+    
+    //dateOrig(暂无意义，现写死)
+    NSString *dateOrig = @"今天";
+    
+    //remind_ID
+    NSString *remind_ID = [NSString stringWithFormat:@"rd_%@",timeStampStr];
+    NSString *timeInterval = @"timeInterval";
+    NSString *event = @"event";
+    NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",self.dataTableName,dateStringOne,dateStringTwo,timeInterval,event,timeStampStr,remindContent,dateOrig,remind_ID,self.adviceType,@"0",@"0",@"0",@"0",@"0",@"0"];
+    NSLog(@"sql = %@",sql);
+    
+    
+    
+    BOOL isCreate = [self.database executeUpdate:sql];
+    if (isCreate) {
+        
+        //添加一个新的闹钟
+        [AlarmClockItem addAlarmClockWithAlarmClockID:timeStampStr AlarmClockContent:remindContent AlarmClockDate:timeStr AlarmClockType:AlarmTypeOnce];
+        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeStampStr,remindContent,timeStr);
+        
+//        if (isAdvance) {
+//            //添加一个提前闹钟
+//            NSDate *nowDate = [self dateFromDateStr:_remindTimeButton.titleLabel.text];
+//            NSDate *advanceDate = [nowDate dateByAddingTimeInterval:-5*60];
+//            int advanceDateSp = [advanceDate timeIntervalSince1970];
+//            NSString * advanceStr = [dateAndTimeStr ew_timestampWithString:[NSString stringWithFormat:@"%d",advanceDateSp] WithIndex:16];
+//
+//            [AlarmClockItem addAlarmClockWithAlarmClockID:[NSString stringWithFormat:@"%d",advanceDateSp] AlarmClockContent:_remindTextView.text AlarmClockDate:advanceStr  AlarmClockType:AlarmTypeOnce];
+//        }
+        
+        
+//        if (!types) {
+//            [MBProgressHUD showSuccess:@"创建成功"];
+//            [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+//        }
+        
+//        return YES;
+        
+    }else{
+        [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
+        [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+//        return NO;
+    }
 }
+
 
 - (IBAction)clickBtnOne:(UIButton *)sender {
     

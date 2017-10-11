@@ -99,11 +99,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 #pragma -mark BuildRemindViewDelegate
 -(void)BuildRemindViewWithClickBuildRemind {
-//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-//    vc.type = NewRemind;
-//    vc.database = _db;
+    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
+    vc.type = NewRemind;
+    vc.database = _db;
 //    [self.navigationController pushViewController:vc animated:YES];
-    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+//    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+   
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -564,7 +565,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSString* timeStr = [NSString stringWithFormat:@"%@ %@",itemDic[@"date"],itemDic[@"time"]];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+//    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     
     NSDate* date = [formatter dateFromString:timeStr];
@@ -604,6 +605,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     vc.editDataDic = [[NSDictionary alloc]initWithDictionary:_allDataArr[indexPath.row]];
     vc.database = _db;
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 
@@ -917,7 +919,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSString* timeStr = [NSString stringWithFormat:@"%@ %@",dateString,timeString];
         NSLog(@"timeStr = %@",timeStr);
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
+//        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
         [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
         
         NSDate* date = [formatter dateFromString:timeStr];
@@ -975,7 +977,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         NSString *content = itemDic[@"content"];
         
-        NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"normal",@"0",@"0",@"0",@"0",@"0",@"0"];
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"仅一次",@"0",@"0",@"0",@"0",@"0",@"0"];
         NSLog(@"sql = %@",sql);
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {
@@ -985,11 +987,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
             //创建闹钟
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(queue, ^{
-                
-                
-                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr];
+                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr  AlarmClockType:AlarmTypeOnce];
                 NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,timeStr);
-                
             });
             
             

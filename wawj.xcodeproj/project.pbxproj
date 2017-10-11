@@ -36,6 +36,8 @@
 		770104851F38509F00F723A2 /* WACommonlyAppCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770104831F38509F00F723A2 /* WACommonlyAppCell2.xib */; };
 		771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95861F0F276300B4D016 /* WABindIphoneViewController.m */; };
 		771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95881F0F276300B4D016 /* WAGuideViewController.m */; };
+		774FB8841F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */; };
+		774FB8851F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */; };
 		77832DE31F0CB3600009F004 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE21F0CB3600009F004 /* main.m */; };
 		77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE51F0CB3600009F004 /* AppDelegate.m */; };
 		77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEA1F0CB3600009F004 /* Main.storyboard */; };
@@ -254,8 +256,6 @@
 		77A67F2D1F564F58000DFD88 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A67F2C1F564F58000DFD88 /* AddressBook.framework */; };
 		77A67F2F1F564FBE000DFD88 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A67F2E1F564FBE000DFD88 /* libstdc++.6.0.9.tbd */; };
 		77A67F311F5656AE000DFD88 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A67F301F5656AE000DFD88 /* iflyMSC.framework */; };
-		77A67F3A1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */; };
-		77A67F3B1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */; };
 		77D75DE21F0F31B900E46D15 /* UIViewController+AlertUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DE11F0F31B900E46D15 /* UIViewController+AlertUtil.m */; };
 		77D75DEA1F0F6CBE00E46D15 /* WANetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DE91F0F6CBE00E46D15 /* WANetViewController.m */; };
 		77D75DED1F0F6CD200E46D15 /* WAOldInterfaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */; };
@@ -326,6 +326,9 @@
 		771F95871F0F276300B4D016 /* WAGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGuideViewController.h; sourceTree = "<group>"; };
 		771F95881F0F276300B4D016 /* WAGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGuideViewController.m; sourceTree = "<group>"; };
 		772B48DA1F78E53200007701 /* WZLSerializeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZLSerializeKit.h; sourceTree = "<group>"; };
+		774FB8811F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewRemindOrEditRmindViewController.h; sourceTree = "<group>"; };
+		774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewRemindOrEditRmindViewController.m; sourceTree = "<group>"; };
+		774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRemindOrEditRmindViewController.xib; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -719,9 +722,6 @@
 		77A67F2C1F564F58000DFD88 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		77A67F2E1F564FBE000DFD88 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		77A67F301F5656AE000DFD88 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
-		77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewRemindOrEditRmindViewController.h; sourceTree = "<group>"; };
-		77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewRemindOrEditRmindViewController.m; sourceTree = "<group>"; };
-		77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRemindOrEditRmindViewController.xib; sourceTree = "<group>"; };
 		77D75DDE1F0F2EA200E46D15 /* WACommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WACommon.h; sourceTree = "<group>"; };
 		77D75DDF1F0F2ED700E46D15 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		77D75DE01F0F31B900E46D15 /* UIViewController+AlertUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AlertUtil.h"; sourceTree = "<group>"; };
@@ -997,9 +997,9 @@
 		7788D33F1F8C580600F3512A /* MyRemind */ = {
 			isa = PBXGroup;
 			children = (
-				77A67F371F5664FD000DFD88 /* NewRemindOrEditRmindViewController.h */,
-				77A67F381F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m */,
-				77A67F391F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib */,
+				774FB8811F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.h */,
+				774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */,
+				774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */,
 				7788D34A1F8CAAFD00F3512A /* OverdueRemindCell.h */,
 				7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */,
 				7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */,
@@ -1917,7 +1917,6 @@
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
 				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
-				77A67F3B1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
 				77A67D051F3C4E73000DFD88 /* WADatePicker.xib in Resources */,
@@ -1937,6 +1936,7 @@
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
 				7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
+				774FB8851F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
 				77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */,
 				7701045E1F307AE400F723A2 /* WASetThreeCell.xib in Resources */,
@@ -2164,6 +2164,7 @@
 				779CF4891F724D1000DBEE44 /* PhotoCell.m in Sources */,
 				77A67E221F4C0EE1000DFD88 /* EWPhotoViewer.m in Sources */,
 				77A67E4E1F4C0EE1000DFD88 /* SBJson4Parser.m in Sources */,
+				774FB8841F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.m in Sources */,
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
 				77A67E131F4C0EE1000DFD88 /* BMChineseSort.m in Sources */,
 				77A67E301F4C0EE1000DFD88 /* ISEResult.m in Sources */,
@@ -2278,7 +2279,6 @@
 				77A67E931F4C15AB000DFD88 /* BaseField.m in Sources */,
 				77A67E281F4C0EE1000DFD88 /* WDLabel.m in Sources */,
 				77A67E9D1F4C15AB000DFD88 /* stringUtil.m in Sources */,
-				77A67F3A1F5664FD000DFD88 /* NewRemindOrEditRmindViewController.m in Sources */,
 				7788D34D1F8CAAFD00F3512A /* OverdueRemindCell.m in Sources */,
 				77A67E351F4C0EE1000DFD88 /* ISEResultReadWord.m in Sources */,
 				77A67E491F4C0EE1000DFD88 /* SAMath.m in Sources */,

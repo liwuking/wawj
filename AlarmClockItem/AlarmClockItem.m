@@ -13,12 +13,13 @@
 + (void)addAlarmClockWithAlarmClockID:(NSString *)ID
                     AlarmClockContent:(NSString *)content
                        AlarmClockDate:(NSString *)date
+                       AlarmClockType:(AlarmType)alarType
 {
     
     NSString* timeStr = [NSString stringWithFormat:@"%@",date];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//[NSTimeZone timeZoneWithName:@"Asia/Beijing"]
     if (timeStr.length == 16) {
        [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
     }else{
@@ -27,45 +28,47 @@
      
     NSDate *fireDate = [formatter dateFromString:timeStr];//触发通知的时间
     
-    NSLog(@"now = %@",fireDate);
+    NSLog(@"触发通知的时间now = %@",fireDate);
      
-    UILocalNotification *noti = [[UILocalNotification alloc] init];
-    
-    if (noti) {
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    if (localNotification) {
         
         //设置推送时间
-        
-        noti.fireDate = fireDate;//=now
-        
+        localNotification.fireDate = fireDate;//=now
         //设置时区
-        
-        noti.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:8];
-        
-        
+//        noti.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:8];
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
         //推送声音
-        
-        noti.soundName = @"ThunderSong.m4r";;
-        
-        
+        localNotification.soundName = @"ThunderSong.m4r";;
         //内容
+        localNotification.alertBody = content;
         
-        noti.alertBody = content;
+//        switch (alarType) {
+//            case AlarmTypeOnce:
+//                
+//                break;
+//            case AlarmTypeEveryDay:
+//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
+//                break;
+//            case AlarmTypeOverWeekend:
+//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
+//                break;
+//            case AlarTypeWorkDay:
+//                localNotification.repeatInterval = kCFCalendarUnitWeekOfMonth;
+//                break;
+//            default:
+//                break;
+//        }
         
-        //显示在icon上的红色圈中的数子
+//        //显示在icon上的红色圈中的数子
+//        noti.applicationIconBadgeNumber = 1;
         
-        noti.applicationIconBadgeNumber = 1;
-        
-        //设置userinfo 方便在之后需要撤销的时候使用
-        
+        //设置userinfo 方便在之后需要撤销的时候使用---ID即触发本地推送的时间戳
         NSDictionary *infoDic = [NSDictionary dictionaryWithObject:ID forKey:@"noti_ID"];
-        
-        noti.userInfo = infoDic;
+        localNotification.userInfo = infoDic;
         
         //添加推送到uiapplication
-        
-        UIApplication *app = [UIApplication sharedApplication];
-        
-        [app scheduleLocalNotification:noti];
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
     
 }
@@ -74,6 +77,7 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 + (void)cancleAlarmClockWithValue:(NSString *)value{
+   
     NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
     
     NSLog(@"notiArray = %@",notiArray);
@@ -93,8 +97,8 @@
 
 + (void)cancelAllExpireAlarmClock {
     
-    NSDate *date = [[NSDate date] dateByAddingTimeInterval:8*60*60];
-    int nowSp = [date timeIntervalSince1970];
+//    NSDate *date = [[NSDate date] dateByAddingTimeInterval:8*60*60];
+    int nowSp = [[NSDate date] timeIntervalSince1970];
     NSLog(@"nowSp = %d",nowSp);
     
     NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
@@ -117,3 +121,12 @@
 }
 
 @end
+
+
+
+
+
+
+
+
+

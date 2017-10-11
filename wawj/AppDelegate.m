@@ -19,6 +19,9 @@
 #import "WABindIphoneViewController.h"
 #import "WAGuideViewController.h"
 
+#import "EditRemindViewController.h"
+
+
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
 @interface AppDelegate ()
@@ -28,52 +31,13 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //杀死进程之后，点击后台进入可获取当前闹钟
-    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotif) {
-        NSLog(@"userInfo = %@",localNotif.userInfo);
-        [AlarmClockItem cancelAllExpireAlarmClock];
-    }
-    
-    //科大讯飞
-    //设置sdk的log等级，log保存在下面设置的工作路径中
-    [IFlySetting setLogFile:LVL_ALL];
-    
-    //打开输出在console的log开关
-    [IFlySetting showLogcat:NO];
-    
-    //设置sdk的工作路径
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [paths objectAtIndex:0];
-    [IFlySetting setLogFilePath:cachePath];
-    
-    //创建语音配置,appid必须要传入，仅执行一次则可
-    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",APPID_VALUE];
-    
-    //所有服务启动前，需要确保执行createUtility
-    [IFlySpeechUtility createUtility:initString];
-    
-    [self registerLocalNotification];
-    [self requestAuthorizationAddressBook];
-    //网络监控
-    [self netMonitor];
-    
-    /* 打开调试日志 */
-    [[UMSocialManager defaultManager] openLog:YES];
-    /* 设置友盟appkey */
-    [[UMSocialManager defaultManager] setUmSocialAppkey:USHARE_APPKEY];
-    [self configUSharePlatforms];
-    [self confitUShareSettings];
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-
+    
     [CoreArchive setBool:YES key:FIRST_ENTER];
-//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-//    NSString *userID = userInfo? userInfo[@"userId"] : @"";
     if ([CoreArchive dicForKey:USERINFO]) {
         
         if ([CoreArchive boolForKey:INTERFACE_NEW]) {
@@ -84,8 +48,12 @@
             
         } else {
             
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
+//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//            self.window.rootViewController = nav;
+            
+            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             self.window.rootViewController = nav;
         }
@@ -101,7 +69,7 @@
             self.window.rootViewController = nav;
             
         } else {
-        
+            
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -109,8 +77,63 @@
         }
         
     }
-        
+    
+    [self.window makeKeyAndVisible];
+    
+    
+    //设置科大讯飞
+    [self iFlySet];
+    //设置本地推送
+    [self setLocalNotification:(NSDictionary *)launchOptions];
+    //获取通讯录授权
+//    [self requestAuthorizationAddressBook];
+    //网络监控
+    [self netMonitor];
+    //设置友盟
+    [self setUMShare];
+    
     return YES;
+    
+}
+
+-(void)setLocalNotification:(NSDictionary *)launchOptions {
+    
+    [self registerLocalNotification];
+    
+    //杀死进程之后，点击后台进入可获取当前闹钟
+    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif) {
+        NSLog(@"userInfo = %@",localNotif.userInfo);
+        [AlarmClockItem cancelAllExpireAlarmClock];
+    }
+    
+}
+
+-(void)setUMShare {
+    
+    /* 打开调试日志 */
+    [[UMSocialManager defaultManager] openLog:YES];
+    /* 设置友盟appkey */
+    [[UMSocialManager defaultManager] setUmSocialAppkey:USHARE_APPKEY];
+    [self configUSharePlatforms];
+    [self confitUShareSettings];
+    
+}
+
+-(void)iFlySet {
+    //科大讯飞
+    //设置sdk的log等级，log保存在下面设置的工作路径中
+    [IFlySetting setLogFile:LVL_ALL];
+    //打开输出在console的log开关
+    [IFlySetting showLogcat:NO];
+    //设置sdk的工作路径
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [paths objectAtIndex:0];
+    [IFlySetting setLogFilePath:cachePath];
+    //创建语音配置,appid必须要传入，仅执行一次则可
+    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",APPID_VALUE];
+    //所有服务启动前，需要确保执行createUtility
+    [IFlySpeechUtility createUtility:initString];
 }
 
 -(void)configUSharePlatforms {
@@ -138,78 +161,61 @@
         if(status == AFNetworkReachabilityStatusNotReachable){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"networkAnomaly" object:nil];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络连接中断，请检查网络" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络连接中断，请检查网络" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            [alertView show];
             
-        }else if(status == AFNetworkReachabilityStatusReachableViaWiFi){
+            [[self topViewController] showAlertViewWithTitle:@"提示" message:@"网络连接中断，请检查网络" buttonTitle:@"确定" clickBtn:^{
+                
+            }];
             
         }
     }];
 }
 
 - (void)registerLocalNotification {
+    
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
     
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     
 }
 
-- (void)requestAuthorizationAddressBook {
-    // 判断是否授权
-    ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
-    if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
-        // 请求授权
-        ABAddressBookRef addressBookRef = ABAddressBookCreate();
-        ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
-            if (granted) { // 授权成功
-                NSLog(@"授权成功！");
-            } else {  // 授权失败
-                NSLog(@"授权失败！");
-            }
-        });
-    }
-}
+//- (void)requestAuthorizationAddressBook {
+//    // 判断是否授权
+//    ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
+//    if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
+//        // 请求授权
+//        ABAddressBookRef addressBookRef = ABAddressBookCreate();
+//        ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+//            if (granted) { // 授权成功
+//                NSLog(@"授权成功！");
+//            } else {  // 授权失败
+//                NSLog(@"授权失败！");
+//            }
+//        });
+//    }
+//}
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     
     //点击后台进入
     if (application.applicationState == UIApplicationStateInactive) {
-//        NSLog(@"_aFanJiaTabbarController = %@",[_aFanJiaTabbarController description]);
-//        [_aFanJiaTabbarController setSelectedIndex:1];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提醒"
-                              
-                                                        message:notification.alertBody
-                              
-                                                       delegate:nil
-                              
-                                              cancelButtonTitle:@"确定"
-                              
-                                              otherButtonTitles:nil];
-        
-        [alert show];
+
+        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+     
+        }];
         
         NSLog(@"UIApplicationStateInactive");
     }else{
         
         //播放声音
         AudioServicesPlaySystemSound(1007);
-        
         //开启震动
         AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提醒"
-                              
-                                                        message:notification.alertBody
-                              
-                                                       delegate:nil
-                              
-                                              cancelButtonTitle:@"确定"
-                              
-                                              otherButtonTitles:nil];
-        
-        [alert showAlertWithBlock:^(NSInteger buttonIndex) {
+        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
             //关闭震动
             AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
         }];
@@ -217,9 +223,6 @@
     }
     //这里，你就可以通过notification的useinfo，干一些你想做的事情了
     NSLog(@"info = %@",notification.userInfo);
-    
-    application.applicationIconBadgeNumber -= 1;
-    
     //删除已过期的闹钟
     [AlarmClockItem cancelAllExpireAlarmClock];
     
@@ -229,7 +232,26 @@ void systemAudioCallback()
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
+- (UIViewController*)topViewController
+{
+    return [self topViewControllerWithRootViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
 
+- (UIViewController*)topViewControllerWithRootViewController:(UIViewController*)rootViewController
+{
+    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tabBarController = (UITabBarController *)rootViewController;
+        return [self topViewControllerWithRootViewController:tabBarController.selectedViewController];
+    } else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* navigationController = (UINavigationController*)rootViewController;
+        return [self topViewControllerWithRootViewController:navigationController.visibleViewController];
+    } else if (rootViewController.presentedViewController) {
+        UIViewController* presentedViewController = rootViewController.presentedViewController;
+        return [self topViewControllerWithRootViewController:presentedViewController];
+    } else {
+        return rootViewController;
+    }
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

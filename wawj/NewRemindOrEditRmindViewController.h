@@ -1,6 +1,7 @@
 
 
 #import <UIKit/UIKit.h>
+
 #import "FMDatabase.h"
 typedef enum : NSUInteger{
     NewRemind = 0,
@@ -20,8 +21,10 @@ typedef enum : NSUInteger{
 } EditRemindType;
 
 @interface NewRemindOrEditRmindViewController : UIViewController
+
 @property (nonatomic , assign)CurrentRemindType  type;
 @property (nonatomic , strong)FMDatabase         *database;
 @property (nonatomic , strong)NSDictionary       *editDataDic;
+
 @end
 

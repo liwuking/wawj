@@ -10,13 +10,24 @@
 
 @interface AlarmClockItem : NSObject
 
+typedef NS_ENUM(NSInteger, AlarmType) {
+    
+    AlarmTypeOnce,
+    AlarmTypeEveryDay,
+    AlarmTypeOverWeekend,
+    AlarTypeWorkDay
+    
+};
+
 //add
 + (void)addAlarmClockWithAlarmClockID:(NSString *)ID
                     AlarmClockContent:(NSString *)content
-                       AlarmClockDate:(NSString *)date;
+                       AlarmClockDate:(NSString *)date
+                       AlarmClockType:(AlarmType)alarType;
 
 //delete
 + (void)cancelAllAlarmClock;
 + (void)cancelAllExpireAlarmClock;
 + (void)cancleAlarmClockWithValue:(NSString *)value;
+
 @end

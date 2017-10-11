@@ -240,7 +240,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSString* timeStr = [NSString stringWithFormat:@"%@ %@",itemDic[@"date"],itemDic[@"time"]];
     NSLog(@"timeStr = %@",timeStr);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     
     NSDate* date = [formatter dateFromString:timeStr];
