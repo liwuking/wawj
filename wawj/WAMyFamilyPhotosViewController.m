@@ -117,13 +117,15 @@
     }
     
     long timeStamp = [[NSDate date] timeIntervalSince1970] * 1000;
-    NSDictionary *photosDict = @{@"albumId":@([albumId integerValue]),
-                                 @"albumStyle":@(0),
+    NSString *timeStampStr = [NSString stringWithFormat:@"%ld", timeStamp];
+    
+    NSDictionary *photosDict = @{@"albumId":albumId,
+                                 @"albumStyle":@"0",
                                  @"author":userInfo[@"userId"],
                                  @"coverUrl":@"",
-                                 @"nums":@(0),
+                                 @"nums":@"0",
                                  @"title":title,
-                                 @"updateTime":@(timeStamp)
+                                 @"updateTime":timeStampStr
                                  };
     [oldPhotoArr insertObject:photosDict atIndex:0];
     [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
@@ -133,7 +135,6 @@
 #pragma -mark WAPhotosUploadViewControllerDelegate
 
 -(void)waNewPhotosViewControllerWithPhotosItem:(PhotosItem *)photosItem andRefreshPhotoNum:(NSInteger)photoNum {
-    
     for (NSInteger i = 0; i < self.dataArr.count; i++) {
         PhotosItem *item = self.dataArr[i];
         if ([item.albumId integerValue] == [photosItem.albumId integerValue]) {
@@ -141,7 +142,20 @@
             item.coverUrl = photosItem.coverUrl;
             item.isNew = YES;
             [self removePhotosShowTag:@[@{@"albumId": photosItem.albumId}]];
+            
             [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]]];
+        }
+    }
+    
+    //更新本地缓存
+    NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
+    for (NSInteger j = 0; j < oldPhotoArr.count; j++) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:oldPhotoArr[j]];
+        if ([dict[@"albumId"] isEqualToString:photosItem.albumId] && ![dict[@"nums"] isEqualToString: photosItem.nums]) {
+            dict[@"nums"] = photosItem.nums;
+            [oldPhotoArr replaceObjectAtIndex:j withObject:dict];
+            
+            [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
         }
     }
 }
@@ -156,6 +170,18 @@
             [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]]];
         }
     }
+    
+    //更新本地缓存
+    NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
+    for (NSInteger j = 0; j < oldPhotoArr.count; j++) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:oldPhotoArr[j]];
+        if (![dict[@"title"] isEqualToString:photosItem.title]) {
+            dict[@"title"] = photosItem.title;
+            [oldPhotoArr replaceObjectAtIndex:j withObject:dict];
+            [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
+        }
+    }
+
 }
 
 
@@ -172,9 +198,7 @@
 }
 
 -(void)photosListCachehandle {
-    
-   
-    
+
     //从本地缓存获取数据
     NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
     
@@ -455,16 +479,16 @@
                 for (NSDictionary *dict in data[@"body"]) {
                     
                     NSDictionary *transDict = [dict transforeNullValueToEmptyStringInSimpleDictionary];
-                    
-                    
-                    
-                    NSString *albumId;
-                    if ([transDict[@"albumId"] isKindOfClass:[NSNumber class]]) {
-                        albumId = [transDict[@"albumId"] stringValue];
-                    } else {
-                        albumId = transDict[@"albumId"];
-                    }
-                    NSDictionary *PhotosDict = @{@"albumId":albumId,
+//
+//
+//
+//                    NSString *albumId;
+//                    if ([transDict[@"albumId"] isKindOfClass:[NSNumber class]]) {
+//                        albumId = [transDict[@"albumId"] stringValue];
+//                    } else {
+//                        albumId = transDict[@"albumId"];
+//                    }
+                    NSDictionary *PhotosDict = @{@"albumId":transDict[@"albumId"],
                                                  @"albumStyle":transDict[@"albumStyle"],
                                                  @"author":transDict[@"author"],
                                                  @"coverUrl":transDict[@"coverUrl"],
@@ -508,12 +532,15 @@
                                     NSInteger newAlbumId = [newDict[@"albumId"] integerValue];
                                     NSInteger oldAlbumId = [oldDict[@"albumId"] integerValue];
                                     
-                                    NSLog(@"newAlbumId: %ld oldAlbumId: %ld",newAlbumId,oldAlbumId);
+                                    NSInteger newAlbumNums = [newDict[@"nums"] integerValue];
+                                    NSInteger oldAlbumIdNums = [oldDict[@"nums"] integerValue];
+                                    
+                                    NSLog(@"newAlbumId: %ld oldAlbumId: %ld ,newAlbumNums: %ld oldAlbumIdNums:%ld",newAlbumId,oldAlbumId,newAlbumNums,oldAlbumIdNums);
                                     if (newAlbumId == oldAlbumId) {
                                         //相册数据有更新，缓存里面做替换
                                         if (![newDict[@"author"] isEqualToString:userInfo[@"userId"]]) {
                                             [newTags addObject:newDict];
-                                        }else if(![newDict[@"nums"] isEqualToString:oldDict[@"nums"]]) {
+                                        }else if(newAlbumNums != oldAlbumIdNums) {
                                             [newTags addObject:newDict];
                                         }
                                         [newCacheArr removeObjectAtIndex:i];

@@ -124,7 +124,7 @@
     if ([userInfo[@"userId"] isEqualToString:self.photosItem.author]) {
         self.editBtn.hidden = NO;
         self.uploadBtn.hidden = NO;
-        self.headTitle.text = userInfo[@"userName"];
+        self.headTitle.text = @"我";
         
         if (![userInfo[@"headUrl"] isKindOfClass:[NSNull class]]) {
             [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderApply",userInfo[@"headUrl"]]] placeholderImage:nil];
@@ -134,15 +134,12 @@
         
         self.editBtn.hidden = YES;
         self.uploadBtn.hidden = YES;
-        
         NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
         for (NSDictionary *dict in qimiArr) {
             
             NSLog(@"dict: %@", dict);
             if ([dict[@"qinmiUser"] isEqualToString:self.photosItem.author]) {
-                if (![dict[@"qinmiUser"] isKindOfClass:[NSString class]]) {
-                    self.headTitle.text = dict[@"qinmiName"];
-                }
+                self.headTitle.text = dict[@"qinmiName"];
                 
                 if (![dict[@"headUrl"] isKindOfClass:[NSNull class]]) {
                     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderApply",dict[@"headUrl"]]] placeholderImage:nil];
@@ -242,6 +239,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
     self.cacheImags = [@{} mutableCopy];
     self.delIndex = -1;
@@ -590,9 +589,28 @@
     
 }
 
+-(void)photosListCachehandle {
+    
+    
+}
+
 #pragma -mark 相册列表
 - (void)getPhotosList {
 
+    if ([self.collectionView.mj_footer isRefreshing]) {
+        //缓存处理
+        [self photosListCachehandle];
+        return;
+    }
+    
+    if (![AFNetworkReachabilityManager sharedManager].isReachable) {
+        [self.collectionView.mj_header endRefreshing];
+        [MBProgressHUD showSuccess:@"网络未开启"];
+        
+        return;
+    }
+    
+    
     NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
                             @"lastestTime": @""};
     

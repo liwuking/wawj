@@ -135,7 +135,7 @@
     NSString *dayStr = day < 10 ? [NSString stringWithFormat:@"0%ld",day] : [NSString stringWithFormat:@"%ld",day];
     
     comps = [chineseCalendar components:unitFlags fromDate:dateNow];
-    NSString *riQi =[NSString stringWithFormat:@"%@月%@日 %@ %@%@",monthStr,dayStr,weekDay, ChineseMonths[comps.month-1],ChineseDays[comps.day-1]];//把日期长整形转成对应的汉字字符串
+    NSString *riQi =[NSString stringWithFormat:@"%@月%@日   %@   %@%@",monthStr,dayStr,weekDay, ChineseMonths[comps.month-1],ChineseDays[comps.day-1]];//把日期长整形转成对应的汉字字符串
     
     self.timeTwo.text = riQi;
 

@@ -44,8 +44,8 @@ static UILabel *toastView = nil;
     @synchronized(self){
         if (toastView == nil) {
             toastView = [[UILabel alloc] init];
-            toastView.backgroundColor = [UIColor darkGrayColor];
-            toastView.textColor = [UIColor whiteColor];
+            toastView.backgroundColor = [UIColor blackColor];
+            toastView.textColor = [UIColor redColor];
             toastView.font = [UIFont systemFontOfSize:17];
             toastView.layer.masksToBounds = YES;
             toastView.layer.cornerRadius = 3.0f;

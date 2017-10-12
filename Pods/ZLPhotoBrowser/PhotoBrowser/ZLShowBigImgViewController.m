@@ -100,7 +100,7 @@
     //left nav btn
     UIImage *navBackImg = GetImageWithName(@"navBackBtn.png");
                            
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[navBackImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(btnBack_Click)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:navBackImg style:UIBarButtonItemStylePlain target:self action:@selector(btnBack_Click)];
     
     ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
     if (!nav.showSelectBtn) {
@@ -162,7 +162,7 @@
     [_btnOriginalPhoto addTarget:self action:@selector(btnOriginalImage_Click:) forControlEvents:UIControlEventTouchUpInside];
     _btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
     [self getPhotosBytes];
-    [_bottomView addSubview:_btnOriginalPhoto];
+    //[_bottomView addSubview:_btnOriginalPhoto];
     
     self.labPhotosBytes = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_btnOriginalPhoto.frame)+5, 7, 80, 30)];
     self.labPhotosBytes.font = [UIFont systemFontOfSize:15];
@@ -176,7 +176,7 @@
     _btnEdit.titleLabel.font = [UIFont systemFontOfSize:15];
     [_btnEdit setTitleColor:kDoneButton_bgColor forState:UIControlStateNormal];
     [_btnEdit addTarget:self action:@selector(btnEdit_Click:) forControlEvents:UIControlEventTouchUpInside];
-    [_bottomView addSubview:_btnEdit];
+    //[_bottomView addSubview:_btnEdit];
     
     _btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     _btnDone.frame = CGRectMake(kViewWidth - 82, 7, 70, 30);
@@ -283,7 +283,7 @@
         //选中
         [btn.layer addAnimation:GetBtnStatusChangedAnimation() forKey:nil];
         if (nav.arrSelectedModels.count >= nav.maxSelectCount) {
-            ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), nav.maxSelectCount);
+            ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), 25);
             return;
         }
         if (![ZLPhotoManager judgeAssetisInLocalAblum:model.asset]) {

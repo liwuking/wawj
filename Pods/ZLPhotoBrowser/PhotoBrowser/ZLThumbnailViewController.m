@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) NSMutableArray<ZLPhotoModel *> *arrDataSources;
 @property (nonatomic, assign) BOOL allowTakePhoto;
+@property (nonatomic, assign) NSInteger originSelectPhotoNums;
 
 @end
 
@@ -56,7 +57,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = self.albumListModel.title;
+    //
     
     self.btnDone.layer.masksToBounds = YES;
     self.btnDone.layer.cornerRadius = 3.0f;
@@ -69,7 +70,7 @@
     [self.btnEdit setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserEditText) forState:UIControlStateNormal];
     [self.btnPreView setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserPreviewText) forState:UIControlStateNormal];
     [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];
-    [self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateNormal];
+//    [self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateNormal];
     self.bottomView.backgroundColor = kBottomView_color;
     
     if (!nav.allowEditImage) {
@@ -84,6 +85,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    ZLImageNavigationController *weakNav = (ZLImageNavigationController *)self.navigationController;
+    self.title = [NSString stringWithFormat:@"选择照片(%ld/25)", weakNav.arrSelectedModels.count+self.originSelectPhotoNums];
     [self resetBottomBtnsStatus];
 }
 
@@ -135,7 +138,7 @@
             self.labPhotosBytes.text = nil;
         }
         self.btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
-        [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(ZLPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
+        //[self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(ZLPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
         [self.btnOriginalPhoto setTitleColor:kDoneButton_bgColor forState:UIControlStateNormal];
         [self.btnPreView setTitleColor:kDoneButton_bgColor forState:UIControlStateNormal];
         self.btnDone.backgroundColor = kDoneButton_bgColor;
@@ -146,7 +149,7 @@
         self.btnPreView.enabled = NO;
         self.btnDone.enabled = NO;
         self.labPhotosBytes.text = nil;
-        [self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateDisabled];
+        //[self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateDisabled];
         [self.btnOriginalPhoto setTitleColor:kButtonUnable_textColor forState:UIControlStateDisabled];
         [self.btnPreView setTitleColor:kButtonUnable_textColor forState:UIControlStateDisabled];
         self.btnDone.backgroundColor = kButtonUnable_textColor;
@@ -177,8 +180,15 @@
     }
 }
 
+
+
+
 - (void)initNavBtn
 {
+    ZLImageNavigationController *weakNav = (ZLImageNavigationController *)self.navigationController;
+    self.title = [NSString stringWithFormat:@"选择照片(%ld/25)",25 - weakNav.maxSelectCount];
+    self.originSelectPhotoNums = 25 - weakNav.maxSelectCount;
+    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat width = GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserCancelText), 16, YES, 44);
     btn.frame = CGRectMake(0, 0, width, 44);
@@ -187,6 +197,16 @@
     [btn setTitleColor:kNavBar_tintColor forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(navRightBtn_Click) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    //left nav btn
+    UIImage *navBackImg = GetImageWithName(@"navBackBtn.png");
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:navBackImg style:UIBarButtonItemStylePlain target:self action:@selector(btnBack_Click)];
+    
+}
+
+-(void)btnBack_Click {
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UIButton Action
@@ -304,16 +324,22 @@
         if (!selected) {
             //选中
             if (weakNav.arrSelectedModels.count >= weakNav.maxSelectCount) {
-                ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), weakNav.maxSelectCount);
+//                ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), weakNav.maxSelectCount);
+                ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), 25);
+
                 return;
             }
             if (![ZLPhotoManager judgeAssetisInLocalAblum:model.asset]) {
                 ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowseriCloudPhotoText));
                 return;
             }
+            
+            
             model.isSelected = YES;
             [weakNav.arrSelectedModels addObject:model];
             strongCell.btnSelect.selected = YES;
+            
+            self.title = [NSString stringWithFormat:@"选择照片(%ld/25)", weakNav.arrSelectedModels.count+self.originSelectPhotoNums];
         } else {
             strongCell.btnSelect.selected = NO;
             model.isSelected = NO;
@@ -323,6 +349,8 @@
                     break;
                 }
             }
+            
+            self.title = [NSString stringWithFormat:@"选择照片(%ld/25)", weakNav.arrSelectedModels.count+self.originSelectPhotoNums];
         }
 //        [collectionView reloadItemsAtIndexPaths:[collectionView indexPathsForVisibleItems]];
         [strongSelf resetBottomBtnsStatus];

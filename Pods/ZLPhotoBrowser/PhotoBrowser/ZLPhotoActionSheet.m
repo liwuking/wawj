@@ -496,7 +496,7 @@ double const ScalePhotoWidth = 1000;
         if (!selected) {
             //选中
             if (strongSelf.arrSelectedModels.count >= strongSelf.maxSelectCount) {
-                ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), strongSelf.maxSelectCount);
+                ShowToastLong(GetLocalLanguageTextValue(ZLPhotoBrowserMaxSelectCountText), 25);
                 return;
             }
             if (![ZLPhotoManager judgeAssetisInLocalAblum:model.asset]) {

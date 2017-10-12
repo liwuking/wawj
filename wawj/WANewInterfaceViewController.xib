@@ -32,22 +32,22 @@
                     <rect key="frame" x="0.0" y="190" width="375" height="477"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jvl-V1-quQ">
-                    <rect key="frame" x="27" y="44" width="320" height="80"/>
+                    <rect key="frame" x="67" y="44" width="240" height="80"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="80" id="l6W-bs-XBT"/>
-                        <constraint firstAttribute="width" constant="320" id="lho-Wf-qmw"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="lho-Wf-qmw"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="75"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="60"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5月3日 星期二 二月二十日" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uO4-Dl-gXX">
-                    <rect key="frame" x="49.5" y="149" width="275" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5月3日   星期二    二月二十日" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uO4-Dl-gXX">
+                    <rect key="frame" x="26" y="134" width="322" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="275" id="bYH-GV-eMX"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="bYH-GV-eMX"/>
                         <constraint firstAttribute="height" constant="20" id="dd1-YH-mLn"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -115,7 +115,7 @@
                 <constraint firstAttribute="trailing" secondItem="uNf-iS-Uun" secondAttribute="trailing" id="Gzj-rC-cko"/>
                 <constraint firstItem="uO4-Dl-gXX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Hvc-aw-6cv"/>
                 <constraint firstAttribute="bottom" secondItem="hby-Rr-bsu" secondAttribute="bottom" id="LIo-VZ-iyd"/>
-                <constraint firstItem="uO4-Dl-gXX" firstAttribute="top" secondItem="Jvl-V1-quQ" secondAttribute="bottom" constant="25" id="Mar-aQ-3pt"/>
+                <constraint firstItem="uO4-Dl-gXX" firstAttribute="top" secondItem="Jvl-V1-quQ" secondAttribute="bottom" constant="10" id="Mar-aQ-3pt"/>
                 <constraint firstItem="Hjq-Ok-ZiB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PV6-bX-bXy"/>
                 <constraint firstItem="uNf-iS-Uun" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QER-yF-31b"/>
                 <constraint firstItem="Jvl-V1-quQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="e7k-MV-gEi"/>

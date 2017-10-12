@@ -26,43 +26,43 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     //读取
-    NSMutableArray *str = (NSMutableArray *)[defaults objectForKey:key];
-    
-    return str;
-    
-}
-
-+(void)setSet:(NSMutableSet *)set key:(NSString *)key {
-    //获取preference
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    //保存
-    [defaults setObject:set forKey:key];
-    
-    //立即同步
-    [defaults synchronize];
+    if ([defaults arrayForKey:key]) {
+        return [[NSMutableArray alloc] initWithArray:[defaults arrayForKey:key]];
+    } else {
+        return nil;
+    }
     
 }
 
-+(NSMutableSet *)setForKey:(NSString *)key {
-    //获取preference
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    //读取
-    NSMutableSet *str = (NSMutableSet *)[defaults objectForKey:key];
-    
-    return str;
-    
-}
+//+(void)setSet:(NSMutableSet *)set key:(NSString *)key {
+//    //获取preference
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    //保存
+//    [defaults setObject:set forKey:key];
+//    
+//    //立即同步
+//    [defaults synchronize];
+//    
+//}
+//
+//+(NSMutableSet *)setForKey:(NSString *)key {
+//    //获取preference
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    //读取
+//    NSMutableSet *str = (NSMutableSet *)[defaults objectForKey:key];
+//    
+//    return str;
+//    
+//}
 
 +(void)setDic:(NSMutableDictionary *)obj key:(NSString *)key {
     
     //获取preference
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
     //保存
     [defaults setObject:obj forKey:key];
-    
     //立即同步
     [defaults synchronize];
     
@@ -74,7 +74,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     //读取
-    NSDictionary *str = (NSDictionary *)[defaults objectForKey:key];
+    NSDictionary *str = [defaults dictionaryForKey:key];
     
     return str;
     

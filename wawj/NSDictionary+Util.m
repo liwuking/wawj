@@ -34,13 +34,10 @@
         
         if ([obj isKindOfClass:[NSNull class]]) {
             [translatedDic setObject:@"" forKey:key];
-        }else{
-            if ([obj isKindOfClass:[NSNumber class]]) {
-                [translatedDic setObject:[obj stringValue] forKey:key];
-            } else {
-                [translatedDic setObject:obj forKey:key];
-            }
-            
+        } else if ([obj isKindOfClass:[NSNumber class]]) {
+            [translatedDic setObject:[obj stringValue] forKey:key];
+        } else {
+            [translatedDic setObject:obj forKey:key];
         }
         
     }];

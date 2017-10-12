@@ -31,7 +31,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lC9-bF-wbQ">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="lC9-bF-wbQ">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="iIu-Dm-Pqw"/>
@@ -383,6 +383,7 @@
     </objects>
     <resources>
         <image name="QZone" width="45" height="45"/>
+        <image name="banner" width="562" height="219"/>
         <image name="friends" width="45" height="45"/>
         <image name="qqFriends" width="45" height="45"/>
         <image name="wxFriends" width="45" height="45"/>
