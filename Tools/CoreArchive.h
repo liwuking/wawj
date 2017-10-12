@@ -17,6 +17,9 @@
 #define USER_PHOTO_ARR  @"user_photo_ARR"
 #define LASTTIME  @"lastestTime"
 
+#define PHOTO_LIST_DICT  @"user_photoList_ARR"
+
+
 #define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
 #define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
 

@@ -100,8 +100,6 @@
     item.isSelf = YES;
     item.isNew = YES;
     
-//    [self removePhotosShowTag:@[@{@"albumId": albumId}]];
-    
     [self.dataArr insertObject:item atIndex:0];
 
     __weak __typeof__(self) weakSelf = self;
@@ -129,7 +127,7 @@
                                  };
     [oldPhotoArr insertObject:photosDict atIndex:0];
     [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
-    
+
 }
 
 #pragma -mark WAPhotosUploadViewControllerDelegate
@@ -142,8 +140,8 @@
             item.coverUrl = photosItem.coverUrl;
             item.isNew = YES;
             [self removePhotosShowTag:@[@{@"albumId": photosItem.albumId}]];
-            
             [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]]];
+            break;
         }
     }
     
@@ -151,11 +149,11 @@
     NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
     for (NSInteger j = 0; j < oldPhotoArr.count; j++) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:oldPhotoArr[j]];
-        if ([dict[@"albumId"] isEqualToString:photosItem.albumId] && ![dict[@"nums"] isEqualToString: photosItem.nums]) {
+        if ([dict[@"albumId"] isEqualToString:photosItem.albumId]) {
             dict[@"nums"] = photosItem.nums;
             [oldPhotoArr replaceObjectAtIndex:j withObject:dict];
-            
             [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
+            break;
         }
     }
 }
@@ -175,10 +173,11 @@
     NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
     for (NSInteger j = 0; j < oldPhotoArr.count; j++) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:oldPhotoArr[j]];
-        if (![dict[@"title"] isEqualToString:photosItem.title]) {
+        if ([dict[@"albumId"] isEqualToString:photosItem.albumId]) {
             dict[@"title"] = photosItem.title;
             [oldPhotoArr replaceObjectAtIndex:j withObject:dict];
             [CoreArchive setArr:oldPhotoArr key:USER_PHOTO_ARR];
+            break;
         }
     }
 
@@ -192,8 +191,18 @@
     self.dataArr = [@[] mutableCopy];
     [self initView];
     
-    //获取相册列表
-    [self.collectionView.mj_header beginRefreshing];
+
+    //从本地缓存获取数据
+    NSMutableArray *oldPhotoArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_PHOTO_ARR]];
+    if (oldPhotoArr.count) {
+        [self photosListCachehandle];
+        [MBProgressHUD showMessage:nil];
+        [self getPhotosList];
+    } else {
+        [MBProgressHUD showMessage:nil];
+        [self getPhotosList];
+    }
+    
     
 }
 
@@ -447,7 +456,7 @@
     if (![AFNetworkReachabilityManager sharedManager].isReachable) {
         [self.collectionView.mj_header endRefreshing];
         [MBProgressHUD showSuccess:@"网络未开启"];
-        
+         [MBProgressHUD hideHUD];
         return;
     }
     
@@ -465,7 +474,7 @@
     __weak __typeof__(self) weakSelf = self;
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
+         [MBProgressHUD hideHUD];
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         
@@ -479,15 +488,6 @@
                 for (NSDictionary *dict in data[@"body"]) {
                     
                     NSDictionary *transDict = [dict transforeNullValueToEmptyStringInSimpleDictionary];
-//
-//
-//
-//                    NSString *albumId;
-//                    if ([transDict[@"albumId"] isKindOfClass:[NSNumber class]]) {
-//                        albumId = [transDict[@"albumId"] stringValue];
-//                    } else {
-//                        albumId = transDict[@"albumId"];
-//                    }
                     NSDictionary *PhotosDict = @{@"albumId":transDict[@"albumId"],
                                                  @"albumStyle":transDict[@"albumStyle"],
                                                  @"author":transDict[@"author"],
@@ -591,6 +591,7 @@
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
+         [MBProgressHUD hideHUD];
         if ([strongSelf.collectionView.mj_header isRefreshing]) {
             [strongSelf.collectionView.mj_header endRefreshing];
         } else {

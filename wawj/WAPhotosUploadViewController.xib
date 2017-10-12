@@ -41,11 +41,12 @@
                     <rect key="frame" x="0.0" y="160" width="375" height="50"/>
                     <subviews>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oy8-rM-FxA">
-                            <rect key="frame" x="266" y="5" width="40" height="40"/>
+                            <rect key="frame" x="220" y="5" width="60" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="0q6-XU-q0c"/>
+                                <constraint firstAttribute="width" constant="60" id="0q6-XU-q0c"/>
                                 <constraint firstAttribute="height" constant="40" id="3k4-mp-0Cv"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
                             <state key="normal" title="上传">
                                 <color key="titleColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -87,11 +88,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFO-Dv-MrC">
-                            <rect key="frame" x="315" y="5" width="40" height="40"/>
+                            <rect key="frame" x="295" y="5" width="60" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="bMB-34-rkw"/>
+                                <constraint firstAttribute="width" constant="60" id="bMB-34-rkw"/>
                                 <constraint firstAttribute="height" constant="40" id="lyF-Ub-guf"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
                             <state key="normal" title="编辑">
                                 <color key="titleColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -102,7 +104,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="vFO-Dv-MrC" firstAttribute="leading" secondItem="Oy8-rM-FxA" secondAttribute="trailing" constant="9" id="6wT-4U-PSr"/>
+                        <constraint firstItem="vFO-Dv-MrC" firstAttribute="leading" secondItem="Oy8-rM-FxA" secondAttribute="trailing" constant="15" id="6wT-4U-PSr"/>
                         <constraint firstAttribute="trailing" secondItem="vFO-Dv-MrC" secondAttribute="trailing" constant="20" id="7sy-tA-Ei0"/>
                         <constraint firstItem="Lcz-xh-V15" firstAttribute="leading" secondItem="JQx-vC-dmv" secondAttribute="trailing" constant="8" id="Iod-oP-5fK"/>
                         <constraint firstItem="QhX-HX-i80" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="5" id="UFD-y7-KHo"/>

@@ -166,14 +166,20 @@
     UINib *cellNib=[UINib nibWithNibName:@"PhotoCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"PhotoCell"];
 
-    //实例化一个NSDateFormatter对象
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //设定时间格式,这里可以设置成自己需要的格式
-    [dateFormatter setDateFormat:@"MM月dd日 HH:mm"];
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[self.photosItem.updateTime doubleValue]];
-    //用[NSDate date]可以获取系统当前时间
-    NSString *currentDateStr = [dateFormatter stringFromDate:confromTimesp];
-    self.dateLab.text = currentDateStr;
+    // The drop-down refresh
+    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        //Call this Block When enter the refresh status automatically
+        [self getPhotosList];
+    }];
+    
+//    //实例化一个NSDateFormatter对象
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    //设定时间格式,这里可以设置成自己需要的格式
+//    [dateFormatter setDateFormat:@"MM月dd日 HH:mm"];
+//    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[self.photosItem.updateTime doubleValue]];
+//    //用[NSDate date]可以获取系统当前时间
+//    NSString *currentDateStr = [dateFormatter stringFromDate:confromTimesp];
+    self.dateLab.text = self.photosItem.updateTime;
     
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateSelected];
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
@@ -226,12 +232,21 @@
 
 -(void)clickShare {
 
-    [UIView animateWithDuration:0.2 animations:^{
-         //self.shareContant.constant = self.shareContant.constant == 0 ? -81 : 0;
-        self.hudShareView.hidden = NO;
-        self.shareView.frame = CGRectMake(0, SCREEN_HEIGHT-81, SCREEN_WIDTH, SCREEN_HEIGHT);
-        
-    }];
+    if (self.hudShareView.hidden) {
+        [UIView animateWithDuration:0.2 animations:^{
+            //self.shareContant.constant = self.shareContant.constant == 0 ? -81 : 0;
+            self.hudShareView.hidden = NO;
+            self.shareView.frame = CGRectMake(0, SCREEN_HEIGHT-81-64, SCREEN_WIDTH, SCREEN_HEIGHT);
+            
+        }];
+    } else {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.hudShareView.hidden = YES;
+            self.shareView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+            
+        }];
+    }
+    
  
 }
 
@@ -247,14 +262,57 @@
     self.dataArr = [@[] mutableCopy];
     [self initView];
     
-    if ([self.photosItem.nums integerValue]) {
-        //请求点赞情况
-        [self  getZanData];
-        //请求相册数据
-        [MBProgressHUD showMessage:nil];
-        [self  getPhotosData];
+    //请求点赞情况
+    [self  getZanData];
+    
+    [self photosListCachehandle];
+    
+}
+
+-(void)photosListCachehandle {
+    
+    [MBProgressHUD showMessage:nil];
+    if ([CoreArchive dicForKey:PHOTO_LIST_DICT]) {
+        
+        NSDictionary *dict = [CoreArchive dicForKey:PHOTO_LIST_DICT];
+        
+        if ([dict.allKeys containsObject:self.photosItem.albumId]) {
+            NSArray *cacheDataArr = dict[self.photosItem.albumId];
+            
+            NSMutableArray *dataArr = [@[] mutableCopy];
+            for (NSDictionary *dict  in cacheDataArr) {
+                
+                PhotoItem *item = [[PhotoItem alloc] init];
+                item.createTime = dict[@"createTime"];
+                item.photoHeight = dict[@"photoHeight"];
+                item.photoId = dict[@"photoId"];
+                item.photoSize = dict[@"photoSize"];
+                item.photoUrl = dict[@"photoUrl"];
+                item.photoWidth = dict[@"photoWidth"];
+                
+                [dataArr addObject:item];
+            }
+            
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:dataArr];
+            [self.collectionView reloadData];
+            
+            
+           [self getPhotosList];
+            
+        } else {
+            
+            
+            [self getPhotosList];
+        }
+        
+    } else {
+        
+        [self getPhotosList];
     }
     
+   
+
 }
 
 #pragma -mark WAUploadPhotoNullViewDelegate
@@ -525,24 +583,6 @@
 
 }
 
--(void)getPhotosData {
-    
-//    // The drop-down refresh
-//    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        //Call this Block When enter the refresh status automatically
-//        [self getPhotosList];
-//    }];
-//    
-//    // The pull to refresh
-//    self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//        //Call this Block When enter the refresh status automatically
-//        [self getPhotosList];
-//    }];
-//    
-//    [self.collectionView.mj_header beginRefreshing];
-    
-    [self getPhotosList];
-}
 
 -(void)sharePhotosData {
     
@@ -589,24 +629,18 @@
     
 }
 
--(void)photosListCachehandle {
-    
-    
-}
-
 #pragma -mark 相册列表
 - (void)getPhotosList {
 
-    if ([self.collectionView.mj_footer isRefreshing]) {
-        //缓存处理
-        [self photosListCachehandle];
-        return;
-    }
-    
+
     if (![AFNetworkReachabilityManager sharedManager].isReachable) {
-        [self.collectionView.mj_header endRefreshing];
-        [MBProgressHUD showSuccess:@"网络未开启"];
         
+        if (self.collectionView.mj_header.isRefreshing) {
+             [self.collectionView.mj_header endRefreshing];
+        }
+       
+        [MBProgressHUD showSuccess:@"网络未开启"];
+
         return;
     }
     
@@ -623,13 +657,18 @@
         
         [strongSelf hideHud];
         
+        if (strongSelf.collectionView.mj_header.isRefreshing) {
+            [strongSelf.collectionView.mj_header endRefreshing];
+        }
+        
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
             if (![data[@"body"][@"photoList"] isKindOfClass:[NSNull class]]) {
                 
-                [strongSelf.dataArr removeAllObjects];
+                NSMutableArray *photosCacheArr = [@[] mutableCopy];
+                NSMutableArray *dataArr = [@[] mutableCopy];
                 for (NSDictionary *dict  in data[@"body"][@"photoList"]) {
                     
                     NSDictionary *transDict = [dict transforeNullValueToEmptyStringInSimpleDictionary];
@@ -642,9 +681,24 @@
                     item.photoUrl = transDict[@"photoUrl"];
                     item.photoWidth = transDict[@"photoWidth"];
                     
-                    [strongSelf.dataArr addObject:item];
+                    [dataArr addObject:item];
+                    [photosCacheArr addObject:transDict];
                     
                 }
+                
+                if (photosCacheArr.count) {
+                    
+                    NSMutableDictionary *photoLists;
+                    if ([CoreArchive dicForKey:PHOTO_LIST_DICT]) {
+                        photoLists = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:PHOTO_LIST_DICT]];
+                    } else {
+                        photoLists = [[NSMutableDictionary alloc] init];
+                    }
+                    [photoLists setObject:photosCacheArr forKey:strongSelf.photosItem.albumId];
+                    [CoreArchive setDic:photoLists key:PHOTO_LIST_DICT];
+                    
+                }
+                
                 
                 if (!strongSelf.cacheImags.count) {
                     
@@ -652,7 +706,8 @@
                         [strongSelf.uploadPhotoNullView removeFromSuperview];
                         strongSelf.uploadPhotoNullView = nil;
                     }
-                    
+                    [strongSelf.dataArr removeAllObjects];
+                    [strongSelf.dataArr addObjectsFromArray:dataArr];
                     [strongSelf.collectionView reloadData];
                 } else {
                     
@@ -666,6 +721,9 @@
                         [strongSelf.uploadPhotoNullView removeFromSuperview];
                         strongSelf.uploadPhotoNullView = nil;
                     }
+                    
+                    [strongSelf.dataArr removeAllObjects];
+                    [strongSelf.dataArr addObjectsFromArray:dataArr];
                     [UIView animateWithDuration:0.5 animations:^{
                         [strongSelf.collectionView insertItemsAtIndexPaths:indexPaths];
                     }];
@@ -689,10 +747,16 @@
         
     } fail:^(NSError *error) {
         
+         [MBProgressHUD hideHUD];
+        
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
             
         }];
+        
+        if (strongSelf.collectionView.mj_header.isRefreshing) {
+            [strongSelf.collectionView.mj_header endRefreshing];
+        }
         
     }];
     

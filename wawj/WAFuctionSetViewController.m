@@ -125,6 +125,7 @@
         [CoreArchive removeStrForKey:USER_PHOTO_ARR];
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
+        [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
     
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];

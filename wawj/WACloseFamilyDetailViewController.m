@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 
+@property (nonatomic, strong) NSString* locationString;
+
 @end
 
 @implementation WACloseFamilyDetailViewController
@@ -61,7 +63,7 @@
 //        [self.locationManager requestAlwaysAuthorization];
     }
     
-    [MBProgressHUD showMessage:nil];
+    
     //开始定位，不断调用其代理方法
     //设置定位精度
     [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
@@ -83,7 +85,7 @@
     
     // 2.停止定位
     [manager stopUpdatingLocation];
-    [MBProgressHUD hideHUD];
+    
     
     _geocoder=[[CLGeocoder alloc]init];
     [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
@@ -97,12 +99,20 @@
     __weak __typeof__(self) weakSelf = self;
     CLLocation *location=[[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
     [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        [MBProgressHUD hideHUD];
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        CLPlacemark *placemark=[placemarks firstObject];
-        NSLog(@"详细信息:%@",placemark.addressDictionary);
-        NSString *locationString = [NSString stringWithFormat:@"我现在的位置: %@; http://api.map.baidu.com/staticimage?zoom=17&markers=%f,%f",placemark.addressDictionary[@"City"],latitude, longitude];
+        if (!error) {
+            
+            CLPlacemark *placemark=[placemarks firstObject];
+            NSLog(@"详细信息:%@",placemark.addressDictionary);
+            strongSelf.locationString = [NSString stringWithFormat:@"我现在的位置: %@;",[placemark.addressDictionary[@"FormattedAddressLines"] lastObject]];
+            
+            [strongSelf sendMessageBut:strongSelf.locationString];
+        } else {
+            
+//            strongSelf showAlertViewWithTitle:@"提示" message:[] buttonTitle:<#(nullable NSString *)#> clickBtn:<#^(void)btnBlock#>
+        }
         
-        [strongSelf sendMessageBut:locationString];
         
     }];
     
@@ -126,6 +136,24 @@
     [self getFamilyDetail];
     
     [self initView];
+    
+    
+    
+    if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
+    {
+        [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+    } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {//位置服务是在设置中禁用
+        [self showAlertViewWithTitle:@"提示" message:@"请先打开此应用的定位功能" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+    } else {
+        
+        [self startLocation];
+        
+    }
+    
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
     
@@ -147,18 +175,25 @@
 
 - (IBAction)clickSendLocation:(UIButton *)sender {
     
-    if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
-    {
-        [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-    } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {//位置服务是在设置中禁用
-        [self showAlertViewWithTitle:@"提示" message:@"请先打开此应用的定位功能" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-    } else {
+    if (self.locationString) {
+        [self sendMessageBut:self.locationString];
+    }else {
         
-        [self startLocation];
+        if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
+        {
+            [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+        } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {//位置服务是在设置中禁用
+            [self showAlertViewWithTitle:@"提示" message:@"请先打开此应用的定位功能" buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+        } else {
+            
+            [MBProgressHUD showMessage:@"正在定位"];
+            [self startLocation];
+            
+        }
         
     }
     

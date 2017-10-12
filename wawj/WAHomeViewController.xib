@@ -103,6 +103,13 @@
                         <outlet property="delegate" destination="-1" id="qPC-jY-ydM"/>
                     </connections>
                 </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nj5-ci-Fpe">
+                    <rect key="frame" x="0.0" y="198" width="375" height="128"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="128" id="XP5-lO-0Ik"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -113,13 +120,16 @@
                 <constraint firstItem="NLx-9p-PnA" firstAttribute="top" secondItem="vsz-Sg-f4o" secondAttribute="bottom" constant="43" id="IEE-JS-ZHJ"/>
                 <constraint firstItem="Tvp-Q5-4OS" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OyH-aC-CCX"/>
                 <constraint firstAttribute="bottom" secondItem="NLx-9p-PnA" secondAttribute="bottom" constant="12" id="Re8-1R-Kvu"/>
-                <constraint firstItem="Tvp-Q5-4OS" firstAttribute="top" secondItem="40l-TV-PSx" secondAttribute="bottom" constant="74" id="VMO-cB-Yn3"/>
                 <constraint firstItem="wug-cl-eDN" firstAttribute="top" secondItem="xob-mg-H5z" secondAttribute="bottom" constant="13" id="X7E-G8-UWL"/>
                 <constraint firstItem="vsz-Sg-f4o" firstAttribute="top" secondItem="wug-cl-eDN" secondAttribute="bottom" constant="13" id="Z08-xA-oWa"/>
                 <constraint firstItem="Dtn-qT-kcP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="gR0-4G-uIM"/>
                 <constraint firstItem="Dtn-qT-kcP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="gt2-J5-pgf"/>
+                <constraint firstItem="nj5-ci-Fpe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="guz-f9-GfT"/>
                 <constraint firstItem="NLx-9p-PnA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="kXf-2g-w65"/>
+                <constraint firstItem="nj5-ci-Fpe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="198" id="krn-OX-4DH"/>
                 <constraint firstItem="wug-cl-eDN" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mFh-6j-4mg"/>
+                <constraint firstItem="nj5-ci-Fpe" firstAttribute="top" secondItem="Tvp-Q5-4OS" secondAttribute="bottom" constant="10" id="ohQ-jk-VYQ"/>
+                <constraint firstAttribute="trailing" secondItem="nj5-ci-Fpe" secondAttribute="trailing" id="rxR-YF-rTS"/>
             </constraints>
             <point key="canvasLocation" x="43.5" y="53.5"/>
         </view>

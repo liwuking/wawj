@@ -49,6 +49,13 @@
         return;
     }
     
+    if ([self.titleTF.text lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > 24) {
+        [self showAlertViewWithTitle:@"相册名称太长" message:@"英文为24个字符，汉字为8个" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
     if (self.photosItem) {
         NSDictionary *model = @{@"album_id":     self.photosItem.albumId,
                                 @"title":        self.titleTF.text,
