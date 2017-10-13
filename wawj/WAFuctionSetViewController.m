@@ -115,10 +115,9 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
 //    __weak typeof(self) weakSelf = self;
-    [self showAlertViewWithTitle:@"" message:@"是否退出登录" buttonTitle:@"确定" clickBtn:^{
+    [self showAlertViewWithTitle:@"" message:@"是否退出登录" cancelButtonTitle:@"取消" clickCancelBtn:^{
         
-//        __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+    } otherButtonTitles:@"确定" clickOtherBtn:^{
         [CoreArchive removeStrForKey:USER_QIMI_ARR];
         [CoreArchive removeStrForKey:USERINFO];
         [CoreArchive removeStrForKey:LASTTIME];
@@ -126,12 +125,12 @@
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
-    
+        
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         appDelegate.window.rootViewController = nav;
-        
+
     }];
     
     

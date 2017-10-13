@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 
 @property (nonatomic, strong) NSString* locationString;
+@property (nonatomic, assign) BOOL isSendMessage;
 
 @end
 
@@ -107,7 +108,12 @@
             NSLog(@"详细信息:%@",placemark.addressDictionary);
             strongSelf.locationString = [NSString stringWithFormat:@"我现在的位置: %@;",[placemark.addressDictionary[@"FormattedAddressLines"] lastObject]];
             
-            [strongSelf sendMessageBut:strongSelf.locationString];
+            if (strongSelf.isSendMessage) {
+                strongSelf.isSendMessage = NO;
+                [strongSelf sendMessageBut:strongSelf.locationString];
+            }
+            
+            
         } else {
             
 //            strongSelf showAlertViewWithTitle:@"提示" message:[] buttonTitle:<#(nullable NSString *)#> clickBtn:<#^(void)btnBlock#>
@@ -190,6 +196,7 @@
             }];
         } else {
             
+            self.isSendMessage = YES;
             [MBProgressHUD showMessage:@"正在定位"];
             [self startLocation];
             

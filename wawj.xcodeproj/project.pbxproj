@@ -828,9 +828,6 @@
 		7701044F1F307A6200F723A2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				770104501F307AB300F723A2 /* WASetOneCell.h */,
-				770104511F307AB300F723A2 /* WASetOneCell.m */,
-				770104521F307AB300F723A2 /* WASetOneCell.xib */,
 				779CF4131F62863F00DBEE44 /* WAAddContactTableViewCell.h */,
 				779CF4141F62863F00DBEE44 /* WAAddContactTableViewCell.m */,
 				779CF4151F62863F00DBEE44 /* WAAddContactTableViewCell.xib */,
@@ -895,6 +892,7 @@
 				779CF4181F67C21500DBEE44 /* contactView.h */,
 				779CF4191F67C21500DBEE44 /* contactView.m */,
 				779CF41D1F67C43600DBEE44 /* contactView.xib */,
+				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 				77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */,
 				77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */,
 				77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */,
@@ -1162,6 +1160,9 @@
 		779CF45D1F6B6D6400DBEE44 /* PersonalSet */ = {
 			isa = PBXGroup;
 			children = (
+				770104501F307AB300F723A2 /* WASetOneCell.h */,
+				770104511F307AB300F723A2 /* WASetOneCell.m */,
+				770104521F307AB300F723A2 /* WASetOneCell.xib */,
 				770104491F30770B00F723A2 /* WAFuctionSetViewController.h */,
 				7701044A1F30770B00F723A2 /* WAFuctionSetViewController.m */,
 				7701044B1F30770B00F723A2 /* WAFuctionSetViewController.xib */,
@@ -1223,7 +1224,6 @@
 				779CF4761F71108F00DBEE44 /* WACloseFamilyDetailViewController.h */,
 				779CF4771F71108F00DBEE44 /* WACloseFamilyDetailViewController.m */,
 				779CF4781F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib */,
-				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 			);
 			name = CloseFamily;
 			sourceTree = "<group>";

@@ -261,8 +261,6 @@
     NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",dataTableName,dateStrDD,dateStrHourMinite,timeInterval,event,timeStampStr,remindContent,dateOrig,remind_ID,stateString,@"0",@"0",@"0",@"0",@"0",@"0"];
     NSLog(@"sql = %@",sql);
     
-    
-    
     BOOL isCreate = [self.database executeUpdate:sql];
     if (isCreate) {
         
@@ -275,7 +273,6 @@
             [MBProgressHUD showSuccess:@"创建成功"];
             [self.delegate editRemindViewControllerWithNewAddRemind];
             [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
-            
         }
         
     }else{
