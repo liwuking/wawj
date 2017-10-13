@@ -20,6 +20,19 @@
 #define PHOTO_LIST_DICT  @"user_photoList_ARR"
 
 
+#define REMINDTYPE_ONLYONCE      @"onlyonce"
+#define REMINDTYPE_EVERYDAY      @"everyday"
+#define REMINDTYPE_WORKDAY       @"workday"
+#define REMINDTYPE_WEEKEND       @"weekend"
+
+#define MONDAY      @"Monday"
+#define TUESDAY @   "Tuesday"
+#define WEDNESDAY   @"Wednesday"
+#define THURSDAY    @"Thursday"
+#define FRIDAY      @"Friday"
+#define SATURDAY    @"Saturday"
+#define SUNDAY      @"Sunday"
+
 #define INTERFACE_NEW  @"interface_new"   //是否新界面    YES表示新界面，NO表示旧界面
 #define FIRST_ENTER  @"first_enter"       //是否第一次进入 YES表示是，NO表示否
 

@@ -26,6 +26,18 @@ static DBManager *defaultManager = nil;
     return defaultManager;
 }
 
+-(void)deleteSqlite {
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    // 获取document目录
+    NSString*documentDirectory = [paths objectAtIndex: 0];
+    // 追加文件系统路径
+    NSString *dbPath = [documentDirectory stringByAppendingPathComponent:@"wawj.sqlite"];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:dbPath error:nil];
+    
+}
+
 - (void)createTableWithName:(NSString *)tableName
                     AndKeys:(NSDictionary *)keys
                      Result:(void (^)(BOOL))result
@@ -52,7 +64,7 @@ static DBManager *defaultManager = nil;
         
         
         NSString *executeString = [NSString stringWithFormat:@"create table %@ (%@)",tableName,[values componentsJoinedByString:@","]];
-        NSLog(@"executeString = %@",executeString);
+//        NSLog(@"executeString = %@",executeString);
         
         
         BOOL res =  [self.database executeUpdate:executeString];

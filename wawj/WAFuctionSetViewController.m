@@ -22,7 +22,7 @@
 #import "CoreArchive.h"
 #import "WABindIphoneViewController.h"
 #import "AppDelegate.h"
-
+#import "AlarmClockItem.h"
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -125,6 +125,11 @@
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
+        
+        //取消所有提醒
+        [AlarmClockItem cancelAllAlarmClock];
+        //删除提醒数据库
+        [[DBManager defaultManager] deleteSqlite];
         
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];

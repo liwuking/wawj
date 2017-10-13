@@ -11,10 +11,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemindViewController">
             <connections>
-                <outlet property="_microphoneBGView" destination="IgU-b1-kaS" id="G9d-7o-g9m"/>
-                <outlet property="_voiceSearchView" destination="Nb1-yj-K1b" id="WmU-2C-rio"/>
-                <outlet property="remindTableView" destination="F0B-Kq-p2g" id="w3y-9p-Bte"/>
+                <outlet property="microphoneBGView" destination="IgU-b1-kaS" id="PiX-O3-A9i"/>
+                <outlet property="tableView" destination="F0B-Kq-p2g" id="pQm-Ls-kGH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="voiceSearchView" destination="Nb1-yj-K1b" id="ieg-1K-mii"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

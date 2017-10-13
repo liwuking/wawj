@@ -29,6 +29,6 @@
                  FMDatabase:(void(^)(FMDatabase * database))dataBase;
 
 
-
+-(void)deleteSqlite;
 
 @end

@@ -40,6 +40,7 @@
 		774FB8851F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */; };
 		774FB8891F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */; };
 		774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */; };
+		774FB88D1F906445003F6A05 /* RemindItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB88C1F906445003F6A05 /* RemindItem.m */; };
 		77832DE31F0CB3600009F004 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE21F0CB3600009F004 /* main.m */; };
 		77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE51F0CB3600009F004 /* AppDelegate.m */; };
 		77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEA1F0CB3600009F004 /* Main.storyboard */; };
@@ -334,6 +335,8 @@
 		774FB8861F8E0F2D003F6A05 /* PhotoCollectionViewCellNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNew.h; sourceTree = "<group>"; };
 		774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNew.xib; sourceTree = "<group>"; };
 		774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNew.m; sourceTree = "<group>"; };
+		774FB88B1F906445003F6A05 /* RemindItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemindItem.h; sourceTree = "<group>"; };
+		774FB88C1F906445003F6A05 /* RemindItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemindItem.m; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1018,6 +1021,8 @@
 				7788D3401F8CA20600F3512A /* BuildRemindView.h */,
 				7788D3411F8CA20600F3512A /* BuildRemindView.m */,
 				7788D3431F8CA21A00F3512A /* BuildRemindView.xib */,
+				774FB88B1F906445003F6A05 /* RemindItem.h */,
+				774FB88C1F906445003F6A05 /* RemindItem.m */,
 				77A67F081F4D1D07000DFD88 /* RemindViewController.h */,
 				77A67F091F4D1D07000DFD88 /* RemindViewController.m */,
 				77A67F0A1F4D1D07000DFD88 /* RemindViewController.xib */,
@@ -2228,6 +2233,7 @@
 				77A67E9B1F4C15AB000DFD88 /* NSURLRequestForSSL.m in Sources */,
 				77A67E1D1F4C0EE1000DFD88 /* UILabel+AutoWrapLine.m in Sources */,
 				779CF4791F71108F00DBEE44 /* WACloseFamilyDetailViewController.m in Sources */,
+				774FB88D1F906445003F6A05 /* RemindItem.m in Sources */,
 				77A67E971F4C15AB000DFD88 /* JKCountDownButton.m in Sources */,
 				7701046C1F32F14E00F723A2 /* ContactTableViewCell.m in Sources */,
 				771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */,

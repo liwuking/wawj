@@ -22,8 +22,8 @@
 
 
 - (IBAction)readAction:(id)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(tableViewCell:AndIndexPath:)]) {
-        [self.delegate tableViewCell:self AndIndexPath:self.cellIndexPath];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(RemindCell:AndIndexPath:)]) {
+        [self.delegate RemindCell:self AndIndexPath:self.cellIndexPath];
     }
 }
 

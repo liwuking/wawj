@@ -4,20 +4,18 @@
 
 @protocol RemindCellDelegate <NSObject>
 
-- (void)tableViewCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath*)indexPath;
+- (void)RemindCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath*)indexPath;
 @end
 
 
 @interface RemindCell : UITableViewCell
-{
-    
-    IBOutlet UIView *_cellBgView;
-    
-}
+
+
 @property (assign, nonatomic) id<RemindCellDelegate>delegate;
-@property (strong, nonatomic) IBOutlet UILabel *eventLabel;
-@property (strong, nonatomic) IBOutlet UILabel *eventDateLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *headImageView;
+@property (strong, nonatomic) IBOutlet UILabel *contentLab;
+@property (strong, nonatomic) IBOutlet UILabel *remindTimeLab;
+@property (strong, nonatomic) IBOutlet UILabel *remindDateLab;
 @property (assign, nonatomic) NSIndexPath *cellIndexPath;
 
 

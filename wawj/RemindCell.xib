@@ -94,10 +94,10 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="_cellBgView" destination="Ykg-r9-j3T" id="qBo-Hm-hhS"/>
-                <outlet property="dateLabel" destination="ysa-UI-ual" id="5ks-jS-TD7"/>
-                <outlet property="eventDateLabel" destination="4ha-zV-VSY" id="LvU-Tg-2gR"/>
-                <outlet property="eventLabel" destination="pi6-Zh-6Aj" id="Dw6-ch-3kS"/>
+                <outlet property="contentLab" destination="pi6-Zh-6Aj" id="gyX-Ak-Hkh"/>
+                <outlet property="headImageView" destination="GNh-4z-OBx" id="vSW-Ep-8zD"/>
+                <outlet property="remindDateLab" destination="ysa-UI-ual" id="eTI-iU-Ctq"/>
+                <outlet property="remindTimeLab" destination="4ha-zV-VSY" id="6vV-hm-NxY"/>
             </connections>
             <point key="canvasLocation" x="49" y="103.5"/>
         </tableViewCell>

@@ -13,7 +13,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "iflyMSC/IFlyMSC.h"
 #import "PcmPlayer.h"
-#import "MJRefresh.h"
+#import <MJRefresh.h>
 
 #import "TTSConfig.h"
 #import "ListeningView.h"
@@ -26,6 +26,9 @@
 #import "BuildRemindView.h"
 #import "OverdueViewController.h"
 #import "EditRemindViewController.h"
+
+#import "RemindItem.h"
+
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
     UriType             = 6, //uri合成
@@ -38,14 +41,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
 };
 
 @interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate>
-{
-    
-    IBOutlet UIView        *_voiceSearchView;
-    IBOutlet UIView        *_microphoneBGView;
-    
-}
 
-@property (weak, nonatomic) IBOutlet UITableView *remindTableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIImageView *microphoneBGView;
+@property (weak, nonatomic) IBOutlet UIView *voiceSearchView;
 
 //语音语义理解对象
 @property (nonatomic,strong) IFlySpeechUnderstander *iFlySpeechUnderstander;
@@ -67,12 +66,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property (nonatomic, assign) SynthesizeType synType;
 
 @property(nonatomic, strong)SpeakingView           *speakingView;
-@property(nonatomic, strong)NSMutableArray         *allDataArr;
+@property(nonatomic, strong)NSMutableArray<RemindItem*>         *dataArr;
 @property(nonatomic, strong)FMDatabase             *db;
 @property(nonatomic, strong)AppDelegate            *myApp;
-@property(nonatomic, strong)NSString               *tableName;
+@property(nonatomic, strong)NSString               *databaseTableName;
 @property(nonatomic, strong)ListeningView          *listeningView;
-@property(nonatomic, assign)BOOL                    isHeaderFresh;
 
 @end
 
@@ -120,10 +118,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 -(void)initViews {
     
     self.title = @"我的提醒";
-    
-    _microphoneBGView.layer.cornerRadius = 30;
-    
-    _remindTableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    self.microphoneBGView.layer.cornerRadius = 30;
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(leftAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
@@ -136,12 +131,30 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.navigationItem.rightBarButtonItem = rightItem;
  
     //add shadow
-    _voiceSearchView.layer.masksToBounds = NO;
-    _voiceSearchView.layer.shadowColor = RGB_COLOR(220, 220, 200).CGColor;
-    _voiceSearchView.layer.shadowOffset = CGSizeMake(0.0f, -2.0f);
-    _voiceSearchView.layer.shadowOpacity = 0.9f;
+    self.voiceSearchView.layer.masksToBounds = NO;
+    self.voiceSearchView.layer.shadowColor = RGB_COLOR(220, 220, 200).CGColor;
+    self.voiceSearchView.layer.shadowOffset = CGSizeMake(0.0f, -2.0f);
+    self.voiceSearchView.layer.shadowOpacity = 0.9f;
 
     [self setupRefresh];
+}
+
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
+{
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing),dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    __weak __typeof__(self) weakSelf = self;
+    // The drop-down refresh
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        //Call this Block When enter the refresh status automatically
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf getDataFromDatabase];
+    }];
+    
 }
 
 -(void)checkRecord
@@ -171,16 +184,15 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.tableName = @"remindList";
+    [self initViews];
+    
+    self.databaseTableName = @"remindList";
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSString *userID = userInfo? userInfo[@"userId"] : @"";
-    self.tableName = [self.tableName stringByAppendingFormat:@"_%@",userID];
+    self.databaseTableName = [self.databaseTableName stringByAppendingFormat:@"_%@",userID];
     
-    self.allDataArr = [@[] mutableCopy];
+    self.dataArr = [@[] mutableCopy];
     self.myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
-    
-    [self initViews];
     
     //讯飞初始化
     self.isSpeechUnderstander = NO;
@@ -189,42 +201,25 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self initRecognizer];
     [self initSynthesizer];
     //pcm播放器初始化
-    _audioPlayer = [[PcmPlayer alloc] init];
+    self.audioPlayer = [[PcmPlayer alloc] init];
+    
+    //检查麦克风
+    [self checkRecord];
+    
+    //判断是否开起推送权限
+    [self isOpenNotificationJurisdiction];
     
     //创建数据库表
     [self createDatabaseTable];
-    //检查麦克风
-    [self checkRecord];
 
-}
-
-
-- (void)viewWillAppear:(BOOL)animated {
-   [super viewWillAppear:animated];
-    
-//    [self loadData];
-//
-//    if (![self isReachable]) {
-//        [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法语音添加提醒和朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
-//
-//        }];
-//    }
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [_iFlySpeechUnderstander cancel];//终止语义
-    [_iFlySpeechUnderstander setParameter:@"" forKey:[IFlySpeechConstant PARAMS]];
+    [self.iFlySpeechUnderstander cancel];//终止语义
+    [self.iFlySpeechUnderstander setParameter:@"" forKey:[IFlySpeechConstant PARAMS]];
     [super viewWillDisappear:animated];
 }
-
-//判断当前网络状态
-- (BOOL)isReachable {
-    AFNetworkReachabilityManager*manager = [AFNetworkReachabilityManager sharedManager];
-    return manager.isReachable;
-}
-
 
 //是否授权推送权限
 - (BOOL)isOpenNotificationJurisdiction {
@@ -245,32 +240,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 创建数据库表
 - (void)createDatabaseTable {
     
-    [MBProgressHUD showMessage:@"正在加载..."];
-    NSDictionary *keys = @{@"date"                 : @"string",
-                           @"time"                 : @"string",
-                           @"time_interval"        : @"string",
-                           @"event"                : @"string",
-                           @"time_stamp"           : @"string",
-                           @"content"              : @"string",
-                           @"dateOrig"             : @"string",
-                           @"remind_ID"            : @"string",
-                           @"state"                : @"string",
-                           @"reserved_parameter_1" : @"string",
-                           @"reserved_parameter_2" : @"string",
-                           @"reserved_parameter_3" : @"string",
-                           @"reserved_parameter_4" : @"string",
-                           @"reserved_parameter_5" : @"string",
-                           @"reserved_parameter_6" : @"string"};
+    NSDictionary *keys = @{@"remindtype"                 : @"string",
+                           @"remindtime"                 : @"string",
+                           @"createtimestamp"            : @"string",
+                           @"content"                    : @"string"};
     
     __weak __typeof__(self) weakSelf = self;
-    [[DBManager defaultManager] createTableWithName:_tableName AndKeys:keys Result:^(BOOL isOK) {
-         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        if (!isOK) {
-            //建表失败！
-            [MBProgressHUD hideHUD];
-            [strongSelf showNoRemindView];
-            return ;
-        }
+    [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
+//         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        if (!isOK) {
+//            //建表失败！
+//            [strongSelf showAlertViewWithTitle:@"提示" message:@"建表失败" buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//            return ;
+//        }
     } FMDatabase:^(FMDatabase *database) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         strongSelf.db = database;
@@ -279,87 +263,207 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
-
-/**
- *  集成刷新控件
- */
-- (void)setupRefresh
-{
-    self.remindTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
-    self.remindTableView.tableHeaderView.backgroundColor = [UIColor clearColor];
-    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing),dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
-    [self.remindTableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"investment"];
-    
-}
-
-#pragma -mark 更新列表
+#pragma -mark
+#pragma -mark 从数据库获取数据
 - (void)getDataFromDatabase {
     
-    [self.allDataArr removeAllObjects];
     if ([self.db open]) {
         
-        if (self.isHeaderFresh) {
-            [self.remindTableView headerEndRefreshing];
-            self.isHeaderFresh = NO;
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype != 'onlyonce' or createtimestamp > %ld",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+        if ([self.db open]) {
+            FMResultSet * res = [self.db executeQuery:sql];
+            
+            while ([res next]) {
+                RemindItem *item = [[RemindItem alloc] init];
+                item.remindtype = [res stringForColumn:@"remindtype"];
+                item.remindtime = [res stringForColumn:@"remindtime"];
+                item.content = [res stringForColumn:@"content"];
+                item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+                item.remindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
+                
+                [dataArr addObject:item];
+            }
+            NSLog(@"arr = %@",dataArr);
         }
         
-        NSMutableArray *listArr = [self getRemindList];
-        [self.allDataArr removeAllObjects];
-        [self.allDataArr addObjectsFromArray:listArr];
-        [self.remindTableView reloadData];
+        [self.dataArr removeAllObjects];
+        [self.dataArr addObjectsFromArray:dataArr];
+        [self.tableView reloadData];
         
-        if (![self.allDataArr count]) {
-            [self showNoRemindView];
-        }else{
-            //            [_noRemindView removeFromSuperview];
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
         }
-        
-        [MBProgressHUD hideHUD];
         
     }else{
-        [self showNoRemindView];
-        [MBProgressHUD showSuccess:@"获取提醒数据失败"];
-    }
-    
-}
-
-- (void)showNoRemindView {
-    //    [_noRemindView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, 160)];
-    //    [self.view addSubview:_noRemindView];
-}
-
-#pragma -mark 从数据库获取提醒数据
-- (NSMutableArray *)getRemindList {
-   
-    int nowSp = [[NSDate date] timeIntervalSince1970];
-    NSString *sql = [NSString stringWithFormat:@"select * from %@  where time_stamp > %d or state != 0 order by time_stamp",_tableName,nowSp];
-    NSLog(@"sql = %@",sql);
-    
-    NSMutableArray *allDataArr = [[NSMutableArray alloc] init];
-    if ([self.db open]) {
-        FMResultSet * res = [_db executeQuery:sql];
         
-        while ([res next]) {
-            NSDictionary *itemDic = @{@"date"          : [res stringForColumn:@"date"],
-                                      @"time"          : [res stringForColumn:@"time"],
-                                      @"time_interval" : [res stringForColumn:@"time_interval"],
-                                      @"event"         : [res stringForColumn:@"event"],
-                                      @"time_stamp"    : [res stringForColumn:@"time_stamp"],
-                                      @"content"       : [res stringForColumn:@"content"],
-                                      @"dateOrig"      : [res stringForColumn:@"dateOrig"],
-                                      @"remind_ID"     : [res stringForColumn:@"remind_ID"],
-                                      @"state"         : [res stringForColumn:@"state"]};
-            [allDataArr addObject:itemDic];
+        [MBProgressHUD showSuccess:@"获取提醒数据失败"];
+        
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
         }
-        NSLog(@"arr = %@",allDataArr);
     }
     
-    return allDataArr;
 }
 
-/**
- 设置识别参数
- ****/
+-(NSString *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+    
+    NSString *dateTime = @"";
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,remindTime];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
+    
+    NSString *weekDay = [Utility getDayWeek];
+    
+    if ([remindType isEqualToString:REMINDTYPE_ONLYONCE]) {
+        dateTime = @"今天";
+    } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]){
+        
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        if ([weekDay isEqualToString:MONDAY]) {
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:5*24*60*60]];
+        } else if([weekDay isEqualToString:TUESDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:4*24*60*60]];
+        } else if([weekDay isEqualToString:WEDNESDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:3*24*60*60]];
+        } else if([weekDay isEqualToString:THURSDAY]){
+            dateTime = @"后天";
+        } else if([weekDay isEqualToString:FRIDAY]){
+            dateTime = @"明天";
+        } else if([weekDay isEqualToString:SATURDAY]){
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+                dateTime = @"明天";
+            }else {
+                dateTime = @"今天";
+            }
+        } else if([weekDay isEqualToString:SUNDAY]){
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+                dateTime = @"明天";
+            }else {
+                dateTime = @"今天";
+            }
+        }
+        
+    } else if ([remindType isEqualToString:REMINDTYPE_WORKDAY]){
+        
+        if ([weekDay isEqualToString:SATURDAY]) {
+            dateTime = @"后天";
+        } else if([weekDay isEqualToString:SUNDAY]){
+            dateTime = @"明天";
+        } else {
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+                dateTime = @"明天";
+            }else {
+                dateTime = @"今天";
+            }
+        }
+    
+    } else {
+        
+        dateTime = @"今天";
+        
+    }
+    
+    return dateTime;
+}
+
+#pragma mark - database event
+- (void)insertRemindWithData:(NSDictionary *)data{
+    NSLog(@"data = %@",data);
+    
+    if ([_db open]) {
+        
+        NSDictionary *itemDic = data[@"semantic"][@"slots"];
+        NSString *dateString = itemDic[@"datetime"][@"date"];
+        NSString *timeString = itemDic[@"datetime"][@"time"];
+        
+        NSString *remindTime = [timeString substringToIndex:5];
+        NSString *content = itemDic[@"content"];
+        
+        
+        NSString* timeStr = [NSString stringWithFormat:@"%@ %@",dateString,timeString];
+        NSLog(@"timeStr = %@",timeStr);
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+        [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+        
+        NSDate* date = [formatter dateFromString:timeStr];
+        NSInteger timeSp_f = [date timeIntervalSince1970];
+        NSLog(@"timeSp_f = %ld",timeSp_f);
+        
+        NSInteger nowSp_f = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"date = %@",[NSDate date]);
+        
+        NSLog(@"nowSp_f = %ld",nowSp_f);
+        if (nowSp_f > timeSp_f) {
+            [MBProgressHUD hideHUD];
+            [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
+        
+        //        NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",self.databaseTableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"0",@"0",@"0",@"0",@"0",@"0",@"0"];
+        //        NSLog(@"sql = %@",sql);
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,remindTime,content,timeSp_f];
+        BOOL isCreate = [_db executeUpdate:sql];
+        if (isCreate) {
+            [MBProgressHUD showSuccess:@"创建成功"];
+            [self getDataFromDatabase];
+            
+            //            //创建闹钟
+            //            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            //            dispatch_async(queue, ^{
+            //                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr  AlarmClockType:AlarmTypeOnce];
+            //                NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,timeStr);
+            //            });
+            
+            
+            
+        }else{
+            [MBProgressHUD showSuccess:@"创建失败"];
+        }
+    }
+}
+
+//#pragma -mark 从数据库获取提醒数据
+//- (NSMutableArray *)getRemindList {
+//
+//    NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+//    NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindType != onlyonce or createtimestamp > %ld",self.databaseTableName,nowSp];
+//    NSLog(@"sql = %@",sql);
+//
+//    NSMutableArray *allDataArr = [[NSMutableArray alloc] init];
+//    if ([self.db open]) {
+//        FMResultSet * res = [_db executeQuery:sql];
+//
+//        while ([res next]) {
+//            RemindItem *item = [[RemindItem alloc] init];
+//            item.remindtype = [res stringForColumn:@"remindtype"];
+//            item.remindtime = [res stringForColumn:@"remindtime"];
+//            item.content = [res stringForColumn:@"content"];
+//            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+//            [allDataArr addObject:item];
+//        }
+//        NSLog(@"arr = %@",allDataArr);
+//    }
+//
+//    return allDataArr;
+//}
+
+
+
+
+ #pragma mark - 设置识别参数
+
 -(void)initRecognizer
 {
     //语义理解单例
@@ -491,7 +595,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
-
+#pragma -mark 是否允许访问麦克风
 - (BOOL)isRecord{
     
     AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
@@ -512,9 +616,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 #pragma -mark 开始录音
 - (void)beginDistinguish {
+    
     if (self.isSpeechUnderstander){
         return;
     }
+    
     //设置为麦克风输入语音
     [self.iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
     
@@ -532,16 +638,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
 }
 
 
-#pragma mark 开始进入刷新状态
-- (void)headerRereshing
-{
-    self.isHeaderFresh = YES;
-    [self getDataFromDatabase];
-}
-
 #pragma mark - table data source and delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.allDataArr count];
+    return [self.dataArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -554,28 +653,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }
     
     
-    NSDictionary *itemDic = self.allDataArr[indexPath.row];
-    
-    NSString *contentStr = itemDic[@"event"];
-    cell.eventLabel.text = [contentStr substringToIndex:contentStr.length-1];
-    
-    NSString *eventTime = itemDic[@"time"];
-    cell.eventDateLabel.text = [eventTime substringToIndex:5];
-    
-    cell.cellIndexPath = indexPath;
-    
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm"];
-    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-    [formatter setTimeZone:timeZone];
-    NSInteger timestamp = [itemDic[@"time_stamp"] integerValue];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSString *timeStr = [formatter stringFromDate:date];
-    
-    cell.dateLabel.text = [NSString stringWithFormat:@"%@",[timeStr compareDate:[NSDate date]]];
-
-    NSLog(@"123 = %@",[timeStr compareDate:[NSDate date]]);
+    RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    cell.contentLab.text = remindItem.content;
+    cell.remindTimeLab.text = remindItem.remindtime;
+    cell.remindDateLab.text = remindItem.remindDate;
     
     return cell;
 }
@@ -601,21 +682,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-    vc.type = EditRemind;
-    vc.editDataDic = [[NSDictionary alloc]initWithDictionary:_allDataArr[indexPath.row]];
-    vc.database = _db;
-    [self.navigationController pushViewController:vc animated:YES];
+//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
+//    vc.type = EditRemind;
+//    vc.editDataDic = [[NSDictionary alloc]initWithDictionary:self.dataArr[indexPath.row]];
+//    vc.database = _db;
+//    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
 
-#pragma mark - cell delegate
-- (void)tableViewCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
+#pragma mark - RemindCell delegate
+- (void)RemindCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
         
-        NSString *readText = _allDataArr[indexPath.row][@"content"];
+        NSString *readText = @"hahah";//self.dataArr[indexPath.row][@"content"];
         [self readTextWithString:readText];
         
     }else{
@@ -907,98 +988,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
 }
 
 
-#pragma mark - database event
-- (void)insertRemindWithData:(NSDictionary *)data{
-    NSLog(@"data = %@",data);
-    
-    if ([_db open]) {
-        
-        NSDictionary *itemDic = data[@"semantic"][@"slots"];
-        NSString *dateString = itemDic[@"datetime"][@"date"];
-        NSString *timeString = itemDic[@"datetime"][@"time"];
-        
-        NSString* timeStr = [NSString stringWithFormat:@"%@ %@",dateString,timeString];
-        NSLog(@"timeStr = %@",timeStr);
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-//        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Beijing"]];
-        [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-        
-        NSDate* date = [formatter dateFromString:timeStr];
-        int timeSp_f = [date timeIntervalSince1970];
-        NSLog(@"timeSp_f = %d",timeSp_f);
-        
-        int nowSp_f = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"date = %@",[NSDate date]);
-        
-        NSLog(@"nowSp_f = %d",nowSp_f);
-        if (nowSp_f > timeSp_f) {
-            [MBProgressHUD hideHUD];
-            [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
-                
-            }];
-            return;
-        }
-        
-        
-        
-        NSString *timeSp = [NSString stringWithFormat:@"%d",timeSp_f];
-        
-        NSString *remindID = [NSString stringWithFormat:@"rd_%@",timeSp];
-        NSLog(@"timeSp = %@",timeSp);
-        
-        NSString *timeInterval = [timeString substringToIndex:2];
-        if ([timeInterval intValue] < 12) {
-            timeInterval = @"上午";
-        }else{
-            timeInterval = @"下午";
-        }
-        
-        NSString *dateOrig = nil;
-        NSString *currentDate = [NSString stringWithFormat:@"%@",[NSDate date]];
-        if (itemDic[@"datetime"][@"dateOrig"]) {
-            NSString *dateOrigStr = itemDic[@"datetime"][@"dateOrig"];
-            if ([[dateOrigStr substringToIndex:dateOrigStr.length-1] isEqualToString:@"今天"]) {
-                if ([[currentDate substringToIndex:10] isEqualToString:dateString]) {
-                    dateOrig = @"今天";
-                }else{
-                    dateOrig = @"明天";
-                }
-                
-            }else{
-                dateOrig = itemDic[@"datetime"][@"dateOrig"];
-            }
-            
-        }else{
-            if ([[currentDate substringToIndex:10] isEqualToString:dateString]) {
-                dateOrig = @"今天";
-            }else{
-                dateOrig = @"明天";
-            }
-            
-        }
-        NSString *content = itemDic[@"content"];
-        
-        NSString *sql = [NSString stringWithFormat:@"insert into %@ (date,time,time_interval,event,time_stamp,content,dateOrig,remind_ID,state,reserved_parameter_1,reserved_parameter_2,reserved_parameter_3,reserved_parameter_4,reserved_parameter_5,reserved_parameter_6) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_tableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"0",@"0",@"0",@"0",@"0",@"0",@"0"];
-        NSLog(@"sql = %@",sql);
-        BOOL isCreate = [_db executeUpdate:sql];
-        if (isCreate) {
-            [MBProgressHUD showSuccess:@"创建成功"];
-            [self getDataFromDatabase];
-            
-            //创建闹钟
-            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(queue, ^{
-                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr  AlarmClockType:AlarmTypeOnce];
-                NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,timeStr);
-            });
-            
-            
-            
-        }else{
-            [MBProgressHUD showSuccess:@"创建失败"];
-        }
-    }
+
+
+//判断当前网络状态
+- (BOOL)isReachable {
+    AFNetworkReachabilityManager*manager = [AFNetworkReachabilityManager sharedManager];
+    return manager.isReachable;
 }
+
 
 @end
 
