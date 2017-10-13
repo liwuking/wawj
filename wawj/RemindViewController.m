@@ -40,7 +40,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Paused              = 4,
 };
 
-@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate>
+@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,EditRemindViewControllerDelegate, OverdueViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *microphoneBGView;
@@ -105,6 +105,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
     vc.eventType = NRemind;
     vc.database = _db;
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 
 }
@@ -112,7 +113,13 @@ typedef NS_OPTIONS(NSInteger, Status) {
 -(void)BuildRemindViewWithClickOverDueRemind {
     
     OverdueViewController *vc = [[OverdueViewController alloc] initWithNibName:@"OverdueViewController" bundle:nil];
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma -mark OverdueViewControllerDelegate
+-(void)OverdueViewControllerRefresh {
+    [self getDataFromDatabase];
 }
 
 -(void)initViews {
@@ -136,6 +143,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.voiceSearchView.layer.shadowOffset = CGSizeMake(0.0f, -2.0f);
     self.voiceSearchView.layer.shadowOpacity = 0.9f;
 
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setupRefresh];
 }
 
@@ -237,6 +245,15 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return YES;
 }
 
+#pragma -mark EditRemindViewControllerDelegate
+-(void)editRemindViewControllerWithNewAddRemind {
+    [self getDataFromDatabase];
+}
+
+-(void)editRemindViewControllerWithEditRemind {
+     [self getDataFromDatabase];
+}
+
 #pragma -mark 创建数据库表
 - (void)createDatabaseTable {
     
@@ -284,6 +301,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 item.content = [res stringForColumn:@"content"];
                 item.createtimestamp = [res stringForColumn:@"createtimestamp"];
                 item.remindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
+                
+                if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
+                    item.content = [NSString stringWithFormat:@"每天 %@",item.content];
+                } else  if ([item.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
+                    item.content = [NSString stringWithFormat:@"工作日 %@",item.content];
+                } else  if ([item.remindtype isEqualToString:REMINDTYPE_WEEKEND]) {
+                    item.content = [NSString stringWithFormat:@"周末 %@",item.content];
+                }
                 
                 [dataArr addObject:item];
             }
@@ -368,7 +393,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     } else {
         
-        dateTime = @"今天";
+        if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+            dateTime = @"明天";
+        }else {
+            dateTime = @"今天";
+        }
         
     }
     
@@ -661,32 +690,18 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    RemindCell *shotCell = (RemindCell *) cell;
-    
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    
-    scaleAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.7, 0.7, 1)];
-    
-    scaleAnimation.toValue  = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1, 1, 1)];
-    
-    scaleAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    [shotCell.layer addAnimation:scaleAnimation forKey:@"transform"];
-    
-}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-//    vc.type = EditRemind;
-//    vc.editDataDic = [[NSDictionary alloc]initWithDictionary:self.dataArr[indexPath.row]];
-//    vc.database = _db;
-//    [self.navigationController pushViewController:vc animated:YES];
+    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+    vc.eventType = EdRemind;
+    vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    vc.database = self.db;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

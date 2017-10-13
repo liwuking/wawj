@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol OverdueViewControllerDelegate <NSObject>
+
+@optional
+-(void)OverdueViewControllerRefresh;
+@end
+
 @interface OverdueViewController : UIViewController
+
+@property(nonatomic,weak)id<OverdueViewControllerDelegate> delegate;
 
 @end

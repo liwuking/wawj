@@ -19,9 +19,12 @@
 
 @property (assign, nonatomic) id<OverdueRemindCellDelegate>delegate;
 
-@property (strong, nonatomic) IBOutlet UILabel *eventLabel;
-@property (strong, nonatomic) IBOutlet UILabel *eventDateLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *headImageView;
+@property (strong, nonatomic) IBOutlet UILabel *contentLab;
+@property (strong, nonatomic) IBOutlet UILabel *remindTimeLab;
+@property (strong, nonatomic) IBOutlet UILabel *remindDateLab;
+
 @property (assign, nonatomic) NSIndexPath *cellIndexPath;
+
 
 @end

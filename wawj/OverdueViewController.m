@@ -16,6 +16,9 @@
 #import "DBManager.h"
 #import "iflyMSC/IFlyMSC.h"
 #import "TTSConfig.h"
+#import "RemindItem.h"
+#import <MJRefresh.h>
+#import "EditRemindViewController.h"
 
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
@@ -28,91 +31,52 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Paused              = 4,
 };
 
-@interface OverdueViewController ()<UITableViewDelegate,UITableViewDataSource,OverdueRemindCellDelegate,IFlySpeechSynthesizerDelegate>
+@interface OverdueViewController ()<UITableViewDelegate,UITableViewDataSource,OverdueRemindCellDelegate,IFlySpeechSynthesizerDelegate,EditRemindViewControllerDelegate>
 
 @property(nonatomic, strong)FMDatabase             *db;
-@property(nonatomic, strong)NSString               *tableName;
+@property(nonatomic, strong)NSString               *databaseTableName;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property(nonatomic, strong)NSMutableArray         *allDataArr;
+@property(nonatomic, strong)NSMutableArray         *dataArr;
 @property (nonatomic, strong) IFlySpeechSynthesizer * iFlySpeechSynthesizer;
 @property(nonatomic, strong)ListeningView          *listeningView;
 @property (nonatomic, strong) PcmPlayer *audioPlayer;
 @property(nonatomic, strong)AppDelegate            *myApp;
 @property (nonatomic, assign) Status state;
 
+@property (nonatomic, assign) BOOL isChange;
+
+
 @end
 
 @implementation OverdueViewController
 
-#pragma -mark 从数据库获取提醒数据
-- (NSMutableArray *)getRemindList {
-    
-    int nowSp = [[NSDate date] timeIntervalSince1970];
-    NSString *sql = [NSString stringWithFormat:@"select * from %@ where time_stamp < %d order by time_stamp",_tableName,nowSp];
-    NSLog(@"sql = %@",sql);
-    
-    NSMutableArray *allDataArr = [[NSMutableArray alloc] init];
-    if ([self.db open]) {
-        FMResultSet * res = [self.db executeQuery:sql];
-        
-        while ([res next]) {
-            NSDictionary *itemDic = @{@"date"          : [res stringForColumn:@"date"],
-                                      @"time"          : [res stringForColumn:@"time"],
-                                      @"time_interval" : [res stringForColumn:@"time_interval"],
-                                      @"event"         : [res stringForColumn:@"event"],
-                                      @"time_stamp"    : [res stringForColumn:@"time_stamp"],
-                                      @"content"       : [res stringForColumn:@"content"],
-                                      @"dateOrig"      : [res stringForColumn:@"dateOrig"],
-                                      @"remind_ID"     : [res stringForColumn:@"remind_ID"],
-                                      @"state"         : [res stringForColumn:@"state"]};
-            [allDataArr addObject:itemDic];
-        }
-        
-    }
-    
-    return allDataArr;
-}
 
-- (void)createDatabaseTable {
-    
-    [MBProgressHUD showMessage:@"正在加载..."];
-    NSDictionary *keys = @{@"date"                 : @"string",
-                           @"time"                 : @"string",
-                           @"time_interval"        : @"string",
-                           @"event"                : @"string",
-                           @"time_stamp"           : @"string",
-                           @"content"              : @"string",
-                           @"dateOrig"             : @"string",
-                           @"remind_ID"            : @"string",
-                           @"state"                : @"string",
-                           @"reserved_parameter_1" : @"string",
-                           @"reserved_parameter_2" : @"string",
-                           @"reserved_parameter_3" : @"string",
-                           @"reserved_parameter_4" : @"string",
-                           @"reserved_parameter_5" : @"string",
-                           @"reserved_parameter_6" : @"string"};
-    
-    __weak __typeof__(self) weakSelf = self;
-    [[DBManager defaultManager] createTableWithName:_tableName AndKeys:keys Result:^(BOOL isOK) {
-//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        if (!isOK) {
-            //建表失败！
-            [MBProgressHUD hideHUD];
-            //[strongSelf showNoRemindView];
-            return ;
-        }
-    } FMDatabase:^(FMDatabase *database) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        strongSelf.db = database;
-       // [strongSelf getDataFromDatabase];
-    }];
-    
-}
 
 -(void)leftAction {
     
+    if (self.isChange) {
+        [self.delegate OverdueViewControllerRefresh];
+    }
     [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
+{
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing),dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
+    __weak __typeof__(self) weakSelf = self;
+    // The drop-down refresh
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        //Call this Block When enter the refresh status automatically
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf getDataFromDatabase];
+    }];
     
 }
 
@@ -127,7 +91,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.navigationItem.leftBarButtonItem = backItem;
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.tableView reloadData];
+    [self setupRefresh];
 }
 
 
@@ -187,30 +151,125 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.tableName = @"remindList";
+    self.databaseTableName = @"remindList";
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSString *userID = userInfo? userInfo[@"userId"] : @"";
-    self.tableName = [self.tableName stringByAppendingFormat:@"_%@",userID];
+    self.databaseTableName = [self.databaseTableName stringByAppendingFormat:@"_%@",userID];
     
-    
-    [self createDatabaseTable];
-    
-    self.allDataArr = [@[] mutableCopy];
-    NSMutableArray *dataArr = [self getRemindList];
-    [self.allDataArr addObjectsFromArray:dataArr];
-    
+    self.dataArr = [@[] mutableCopy];
     [self initViews];
     
     [self initSynthesizer];
     //pcm播放器初始化
     _audioPlayer = [[PcmPlayer alloc] init];
     
+    [self createDatabaseTable];
+    
 }
 
+#pragma -mark 创建数据库表
+- (void)createDatabaseTable {
+    
+    
+    NSDictionary *keys = @{@"remindtype"                 : @"string",
+                           @"remindtime"                 : @"string",
+                           @"createtimestamp"            : @"string",
+                           @"content"                    : @"string"};
+    
+    __weak __typeof__(self) weakSelf = self;
+    [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
+        
+    } FMDatabase:^(FMDatabase *database) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.db = database;
+        [strongSelf getDataFromDatabase];
+    }];
+    
+}
+
+#pragma -mark
+#pragma -mark 从数据库获取数据
+- (void)getDataFromDatabase {
+    
+    if ([self.db open]) {
+        
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+        if ([self.db open]) {
+            FMResultSet * res = [self.db executeQuery:sql];
+            
+            while ([res next]) {
+                RemindItem *item = [[RemindItem alloc] init];
+                item.remindtype = [res stringForColumn:@"remindtype"];
+                item.remindtime = [res stringForColumn:@"remindtime"];
+                item.content = [res stringForColumn:@"content"];
+                item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+                item.remindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
+                
+                [dataArr addObject:item];
+            }
+            NSLog(@"arr = %@",dataArr);
+        }
+        
+        [self.dataArr removeAllObjects];
+        [self.dataArr addObjectsFromArray:dataArr];
+        [self.tableView reloadData];
+        
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
+        }
+        
+    }else{
+        
+        [MBProgressHUD showSuccess:@"获取提醒数据失败"];
+        
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
+        }
+    }
+    
+}
+
+-(NSString *)dateTimeWithCreateTimeStamp:(NSString *)timeStamp {
+    
+    NSString *dateTime = @"";
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
+    
+    NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-24*60*60];
+    NSDate *beforeYesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
+    
+    if ([remindDate compare:beforeYesterdayDate] == NSOrderedAscending) {
+
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        dateTime = [dateFormatter stringFromDate:remindDate];
+
+    } else if ([remindDate compare:yesterdayDate] == NSOrderedAscending) {
+        
+        dateTime = @"前天";
+
+    } else if ([remindDate compare:[NSDate date]] == NSOrderedAscending) {
+        
+        dateTime = @"昨天";
+        
+    }else {
+        
+        dateTime = @"今天";
+        
+    }
+    
+    return dateTime;
+}
 
 #pragma mark - table data source and delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.allDataArr count];
+    return [self.dataArr count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -222,66 +281,38 @@ typedef NS_OPTIONS(NSInteger, Status) {
     static NSString *identifiter = @"OverdueRemindCell";
     OverdueRemindCell *cell = [tableView dequeueReusableCellWithIdentifier:identifiter];
     if (!cell) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"OverdueRemindCell" owner:self options:nil] lastObject];
+        cell = [[NSBundle mainBundle] loadNibNamed:@"OverdueRemindCell" owner:self options:nil][0];
         cell.delegate = self;
     }
     
     
-    NSDictionary *itemDic = self.allDataArr[indexPath.row];
-    
-    NSString *contentStr = itemDic[@"event"];
-    cell.eventLabel.text = [contentStr substringToIndex:contentStr.length-1];
-    
-    NSString *eventTime = itemDic[@"time"];
-    cell.eventDateLabel.text = [eventTime substringToIndex:eventTime.length-3];
-    
-    cell.cellIndexPath = indexPath;
-    
-    NSString* timeStr = [NSString stringWithFormat:@"%@ %@",itemDic[@"date"],itemDic[@"time"]];
-    NSLog(@"timeStr = %@",timeStr);
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
-//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-    
-    NSDate* date = [formatter dateFromString:timeStr];
-    
-    //    cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@",[timeStr compareDate:date],itemDic[@"time_interval"]];
-    cell.dateLabel.text = [NSString stringWithFormat:@"%@",[timeStr compareDate:date]];
-    
-    NSLog(@"date = %@",date);
-    NSLog(@"123 = %@",[timeStr compareDate:date]);
+    RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    cell.contentLab.text = remindItem.content;
+    cell.remindTimeLab.text = remindItem.remindtime;
+    cell.remindDateLab.text = remindItem.remindDate;
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    OverdueRemindCell *shotCell = (OverdueRemindCell *) cell;
-    
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    
-    scaleAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.7, 0.7, 1)];
-    
-    scaleAnimation.toValue  = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1, 1, 1)];
-    
-    scaleAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    [shotCell.layer addAnimation:scaleAnimation forKey:@"transform"];
-    
+#pragma -mark
+#pragma -mark EditRemindViewControllerDelegate
+-(void)editRemindViewControllerWithEditRemind {
+    self.isChange = YES;
+    [self getDataFromDatabase];
 }
 
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    
-//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-//    vc.type = EditRemind;
-//    vc.editDataDic = [[NSDictionary alloc]initWithDictionary:_allDataArr[indexPath.row]];
-//    vc.database = _db;
-//    [self.navigationController pushViewController:vc animated:YES];
-//    
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+    vc.eventType = ExpRemind;
+    vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    vc.database = self.db;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 
 
 #pragma mark - cell delegate
@@ -289,7 +320,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     if ([self isReachable]) {
         
-        NSString *readText = _allDataArr[indexPath.row][@"content"];
+        NSString *readText = self.dataArr[indexPath.row][@"content"];
         [self readTextWithString:readText];
         
     }else{

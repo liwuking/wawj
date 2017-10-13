@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditRemindViewController">
             <connections>
                 <outlet property="btnFour" destination="zZ1-9T-epf" id="cJ4-Xr-Du9"/>
-                <outlet property="btnOne" destination="bKc-Eq-pRe" id="dl7-KM-tTy"/>
+                <outlet property="btnOne" destination="lWI-eB-BMX" id="7IG-Rv-L5g"/>
                 <outlet property="btnThree" destination="g7t-an-4PM" id="Oxa-AA-jn2"/>
                 <outlet property="btnTwo" destination="t07-mI-qq6" id="63v-ch-THK"/>
                 <outlet property="btnsView" destination="4th-x0-hkF" id="bq8-vt-f1I"/>
@@ -36,47 +36,13 @@
                     <date key="date" timeIntervalSinceReferenceDate="529320492.13188499">
                         <!--2017-10-10 09:28:12 +0000-->
                     </date>
-                    <locale key="locale" localeIdentifier="en_GM"/>
+                    <locale key="locale" localeIdentifier="zh-Hans"/>
                 </datePicker>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4th-x0-hkF">
-                    <rect key="frame" x="37.5" y="167" width="300" height="30"/>
+                    <rect key="frame" x="32.5" y="167" width="310" height="30"/>
                     <subviews>
-                        <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bKc-Eq-pRe">
-                            <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.98039215690000003" green="0.64313725489999995" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <state key="normal" title="仅一次">
-                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="5"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="clickBtnOne:" destination="-1" eventType="touchUpInside" id="j5v-9c-k41"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" tag="102" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7t-an-4PM">
-                            <rect key="frame" x="146" y="0.0" width="50" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <state key="normal" title="周末">
-                                <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="5"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="clickBtnThree:" destination="-1" eventType="touchUpInside" id="zWr-hJ-qR7"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" tag="103" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZ1-9T-epf">
-                            <rect key="frame" x="218" y="0.0" width="70" height="30"/>
+                            <rect key="frame" x="230" y="0.0" width="70" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" title="工作日">
@@ -93,7 +59,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="101" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t07-mI-qq6">
-                            <rect key="frame" x="77" y="0.0" width="50" height="30"/>
+                            <rect key="frame" x="90" y="0.0" width="50" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" title="每天">
@@ -109,10 +75,44 @@
                                 <action selector="clickBtnTwo:" destination="-1" eventType="touchUpInside" id="h81-2B-dXh"/>
                             </connections>
                         </button>
+                        <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lWI-eB-BMX">
+                            <rect key="frame" x="0.0" y="0.0" width="70" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.98039215690000003" green="0.64313725489999995" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="仅一次">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickBtnOne:" destination="-1" eventType="touchUpInside" id="bjB-wb-UTN"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="102" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7t-an-4PM">
+                            <rect key="frame" x="160" y="0.0" width="50" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="周末">
+                                <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickBtnThree:" destination="-1" eventType="touchUpInside" id="zWr-hJ-qR7"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="300" id="AAu-qD-VKG"/>
+                        <constraint firstAttribute="width" constant="310" id="AAu-qD-VKG"/>
                         <constraint firstAttribute="height" constant="30" id="PId-lO-j3g"/>
                     </constraints>
                 </view>

@@ -36,8 +36,6 @@
 		770104851F38509F00F723A2 /* WACommonlyAppCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770104831F38509F00F723A2 /* WACommonlyAppCell2.xib */; };
 		771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95861F0F276300B4D016 /* WABindIphoneViewController.m */; };
 		771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95881F0F276300B4D016 /* WAGuideViewController.m */; };
-		774FB8841F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */; };
-		774FB8851F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */; };
 		774FB8891F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */; };
 		774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */; };
 		774FB88D1F906445003F6A05 /* RemindItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB88C1F906445003F6A05 /* RemindItem.m */; };
@@ -329,9 +327,6 @@
 		771F95871F0F276300B4D016 /* WAGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGuideViewController.h; sourceTree = "<group>"; };
 		771F95881F0F276300B4D016 /* WAGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGuideViewController.m; sourceTree = "<group>"; };
 		772B48DA1F78E53200007701 /* WZLSerializeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZLSerializeKit.h; sourceTree = "<group>"; };
-		774FB8811F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewRemindOrEditRmindViewController.h; sourceTree = "<group>"; };
-		774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewRemindOrEditRmindViewController.m; sourceTree = "<group>"; };
-		774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewRemindOrEditRmindViewController.xib; sourceTree = "<group>"; };
 		774FB8861F8E0F2D003F6A05 /* PhotoCollectionViewCellNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNew.h; sourceTree = "<group>"; };
 		774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNew.xib; sourceTree = "<group>"; };
 		774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNew.m; sourceTree = "<group>"; };
@@ -1003,9 +998,6 @@
 		7788D33F1F8C580600F3512A /* MyRemind */ = {
 			isa = PBXGroup;
 			children = (
-				774FB8811F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.h */,
-				774FB8821F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.m */,
-				774FB8831F8DD91A003F6A05 /* NewRemindOrEditRmindViewController.xib */,
 				7788D34A1F8CAAFD00F3512A /* OverdueRemindCell.h */,
 				7788D34B1F8CAAFD00F3512A /* OverdueRemindCell.m */,
 				7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */,
@@ -1949,7 +1941,6 @@
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
 				7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
-				774FB8851F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
 				77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */,
 				7701045E1F307AE400F723A2 /* WASetThreeCell.xib in Resources */,
@@ -2179,7 +2170,6 @@
 				77A67E221F4C0EE1000DFD88 /* EWPhotoViewer.m in Sources */,
 				77A67E4E1F4C0EE1000DFD88 /* SBJson4Parser.m in Sources */,
 				774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */,
-				774FB8841F8DD91B003F6A05 /* NewRemindOrEditRmindViewController.m in Sources */,
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
 				77A67E131F4C0EE1000DFD88 /* BMChineseSort.m in Sources */,
 				77A67E301F4C0EE1000DFD88 /* ISEResult.m in Sources */,

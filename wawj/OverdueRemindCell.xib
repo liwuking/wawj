@@ -94,9 +94,10 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="dateLabel" destination="WCU-cJ-nar" id="rvs-88-li8"/>
-                <outlet property="eventDateLabel" destination="dhT-IB-jsg" id="jYL-4Z-grM"/>
-                <outlet property="eventLabel" destination="Alf-yU-N8N" id="WVe-uJ-FFM"/>
+                <outlet property="contentLab" destination="Alf-yU-N8N" id="WPe-Ub-MEj"/>
+                <outlet property="headImageView" destination="V3O-BJ-5bQ" id="7Op-vM-fpZ"/>
+                <outlet property="remindDateLab" destination="WCU-cJ-nar" id="Tl8-3a-rV8"/>
+                <outlet property="remindTimeLab" destination="dhT-IB-jsg" id="xJR-x1-Qmm"/>
             </connections>
             <point key="canvasLocation" x="49" y="103.5"/>
         </tableViewCell>

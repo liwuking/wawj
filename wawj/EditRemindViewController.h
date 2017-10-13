@@ -9,16 +9,18 @@
 #import <UIKit/UIKit.h>
 
 #import "FMDatabase.h"
+#import "RemindItem.h"
 
 typedef enum : NSUInteger{
-    NRemind = 0,
+    NRemind,
     EdRemind,
-    ExpRemind,
+    ExpRemind
 } RemindEventType;
 
 
 @protocol EditRemindViewControllerDelegate <NSObject>
 
+@optional
 -(void)editRemindViewControllerWithNewAddRemind;
 -(void)editRemindViewControllerWithEditRemind;
 
@@ -32,6 +34,6 @@ typedef enum : NSUInteger{
 
 @property (nonatomic , assign)RemindEventType  eventType;
 @property (nonatomic , strong)FMDatabase         *database;
-@property (nonatomic , strong)NSDictionary       *editDataDic;
+@property (nonatomic , strong)RemindItem         *remindItem;
 
 @end
