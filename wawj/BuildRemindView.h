@@ -12,6 +12,7 @@
 
 - (void)BuildRemindViewWithClickBuildRemind;
 - (void)BuildRemindViewWithClickOverDueRemind;
+- (void)BuildRemindViewWithHiddenBuildRemind;
 
 @end
 

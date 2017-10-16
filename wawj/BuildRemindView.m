@@ -12,15 +12,18 @@
 
 - (IBAction)clickBuildRemind:(UIButton *)sender {
     [self.delegate BuildRemindViewWithClickBuildRemind];
-    [self removeFromSuperview];
+    [self.delegate BuildRemindViewWithHiddenBuildRemind];
+//    [self removeFromSuperview];
+
 }
 - (IBAction)clickOverDueRemind:(UIButton *)sender {
     [self.delegate BuildRemindViewWithClickOverDueRemind];
-    [self removeFromSuperview];
+    [self.delegate BuildRemindViewWithHiddenBuildRemind];
+//    [self removeFromSuperview];
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self removeFromSuperview];
+    [self.delegate BuildRemindViewWithHiddenBuildRemind];
 }
 
 /*

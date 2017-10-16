@@ -13,8 +13,13 @@
 @property(nonatomic, strong)NSString *remindtype;
 @property(nonatomic, strong)NSString *remindtime;
 @property(nonatomic, strong)NSString *content;
-@property(nonatomic, strong)NSString *remindDate;
 @property(nonatomic, strong)NSString *createtimestamp;
+
+@property(nonatomic, strong)NSString *remindDate;
+
+@property(nonatomic, strong)NSDate *recentlyRemindDate;
+
+
 
 
 @end

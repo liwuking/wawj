@@ -113,7 +113,7 @@
     self.datePicker.datePickerMode = UIDatePickerModeTime;
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
     self.datePicker.locale = locale;
-    
+     self.datePicker.minimumDate = nil;
     
     switch (self.eventType) {
         case NRemind:
@@ -126,6 +126,7 @@
         case ExpRemind:
         {
             self.title = @"编辑提醒";
+           
             //right items
             UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"delegate"] style:UIBarButtonItemStyleDone target:self action:@selector(deleteRemind)];
             deleteItem.tintColor = HEX_COLOR(0x666666);
@@ -135,11 +136,8 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd"];
             NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
             NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.remindItem.remindtime];
-            
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
-            
-            
             
             
             self.textView.textColor = [UIColor blackColor];
@@ -157,7 +155,9 @@
                 [self clickBtnFour:self.btnFour];
             }
             
+            self.datePicker.minimumDate = nil; // 最小时间
             self.datePicker.date = remindDate;
+            
         }
             break;
         default:
@@ -258,15 +258,25 @@
         return;
     }
    
+    RemindItem *remindItem = [[RemindItem alloc] init];
     NSString *sql;
     if (self.eventType == NRemind) {
         
         sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%ld')",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp];
         
+        remindItem.remindtype = self.alarmType;
+        remindItem.remindtime = dateStrHourMinite;
+        remindItem.content = remindContent;
+        remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
     } else {
         
         sql =  [NSString stringWithFormat:
                 @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,self.remindItem.remindtype,self.remindItem.remindtime];
+        
+        remindItem.remindtype = self.alarmType;
+        remindItem.remindtime = dateStrHourMinite;
+        remindItem.content = remindContent;
+        remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
         
     }
 
@@ -275,17 +285,19 @@
     BOOL isCreate = [self.database executeUpdate:sql];
     if (isCreate) {
         
-//        //添加一个新的闹钟
-//        [AlarmClockItem addAlarmClockWithAlarmClockID:timeStampStr AlarmClockContent:remindContent AlarmClockDate:timeStrMM AlarmClockType:AlarmTypeOnce];
-//        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeStampStr,remindContent,timeStrMM);
-//        
+        //添加一个新的闹钟
+        NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
+        [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier];
+        
+        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",remindContent,dateStrHourMinite,self.alarmType);
+        
         
         if (self.eventType == NRemind) {
             [MBProgressHUD showSuccess:@"创建成功"];
-            [self performSelector:@selector(backActionWithRefresh) withObject:nil afterDelay:1];
+            [self performSelector:@selector(backActionWithEditAddRefresh:) withObject:remindItem afterDelay:1];
         } else {
             [MBProgressHUD showSuccess:@"编辑成功"];
-            [self performSelector:@selector(backActionWithEditRefresh) withObject:nil afterDelay:1];
+            [self performSelector:@selector(backActionWithEditRefresh:) withObject:remindItem afterDelay:1];
         }
         
         
@@ -293,6 +305,24 @@
         [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
         [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
     }
+}
+
+-(void)backActionWithEditRefresh:(RemindItem *)remindItem {
+//    [self.delegate editRemindViewControllerWithEditRemind:remindItem];
+    self.editRemindViewControllerWithEditRemind(remindItem);
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)backActionWithEditAddRefresh:(RemindItem *)remindItem {
+//    [self.delegate editRemindViewControllerWithNewAddRemind:remindItem];
+    self.editRemindViewControllerWithAddRemind(remindItem);
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)backActionWithDelRefresh:(RemindItem *)remindItem {
+    //    [self.delegate editRemindViewControllerWithNewAddRemind:remindItem];
+    self.editRemindViewControllerWithDelRemind(remindItem);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)deleteRemind {
@@ -303,13 +333,10 @@
     NSLog(@"sql = %@",sql);
     BOOL isCreate = [self.database executeUpdate:sql];
     if (isCreate) {
-        
+        //删除本地通知
+        [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
         [MBProgressHUD showSuccess:@"删除成功"];
-        if (self.eventType == NRemind) {
-            [self performSelector:@selector(backActionWithRefresh) withObject:nil afterDelay:1];
-        } else {
-            [self performSelector:@selector(backActionWithEditRefresh) withObject:nil afterDelay:1];
-        }
+        [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
 
     } else {
         [MBProgressHUD showSuccess:@"删除失败"];
@@ -317,15 +344,7 @@
     
 }
 
--(void)backActionWithEditRefresh {
-    [self.delegate editRemindViewControllerWithEditRemind];
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
--(void)backActionWithRefresh {
-    [self.delegate editRemindViewControllerWithEditRemind];
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 -(BOOL)adjustRemindRepeatWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
     

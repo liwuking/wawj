@@ -19,6 +19,7 @@
 
 
 
+
 +(NSString *)getDayWeek{
     
     NSString *weekDay;

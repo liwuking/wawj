@@ -21,19 +21,37 @@ typedef enum : NSUInteger{
 @protocol EditRemindViewControllerDelegate <NSObject>
 
 @optional
--(void)editRemindViewControllerWithNewAddRemind;
--(void)editRemindViewControllerWithEditRemind;
+-(void)editRemindViewControllerWithNewAddRemind:(RemindItem *)remindItem;
+-(void)editRemindViewControllerWithEditRemind:(RemindItem *)remindItem;
 
 @end
+
+
+typedef void(^EditRemindViewControllerWithAddRemind)(RemindItem *remindItem);
+typedef void(^EditRemindViewControllerWithEditRemind)(RemindItem *remindItem);
+typedef void(^EditRemindViewControllerWithDelRemind)(RemindItem *remindItem);
 
 
 
 @interface EditRemindViewController : UIViewController
 
-@property(nonatomic,weak) id<EditRemindViewControllerDelegate> delegate;
+//@property(nonatomic,weak) id<EditRemindViewControllerDelegate> delegate;
 
 @property (nonatomic , assign)RemindEventType  eventType;
 @property (nonatomic , strong)FMDatabase         *database;
 @property (nonatomic , strong)RemindItem         *remindItem;
 
+@property (nonatomic , strong)EditRemindViewControllerWithAddRemind         editRemindViewControllerWithAddRemind;
+@property (nonatomic , strong)EditRemindViewControllerWithEditRemind        editRemindViewControllerWithEditRemind;
+@property (nonatomic , strong)EditRemindViewControllerWithDelRemind         editRemindViewControllerWithDelRemind;
+
 @end
+
+
+
+
+
+
+
+
+

@@ -71,7 +71,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property(nonatomic, strong)AppDelegate            *myApp;
 @property(nonatomic, strong)NSString               *databaseTableName;
 @property(nonatomic, strong)ListeningView          *listeningView;
-
+@property(nonatomic, strong)BuildRemindView *buildRemindView;
 @end
 
 
@@ -88,33 +88,50 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 - (void)rightAction {
     
-    BuildRemindView *buildRemindView = [[[NSBundle mainBundle] loadNibNamed:@"BuildRemindView" owner:self options:nil] lastObject];
-    buildRemindView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64);
-    buildRemindView.delegate = self;
-    [self.view addSubview:buildRemindView];
+    if (!self.buildRemindView) {
+        self.buildRemindView = [[[NSBundle mainBundle] loadNibNamed:@"BuildRemindView" owner:self options:nil] lastObject];
+        self.buildRemindView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64);
+        self.buildRemindView.delegate = self;
+        
+        [self.view addSubview:self.buildRemindView];
+    }
     
 }
 
 #pragma -mark BuildRemindViewDelegate
 -(void)BuildRemindViewWithClickBuildRemind {
-//    NewRemindOrEditRmindViewController *vc = [[NewRemindOrEditRmindViewController alloc] initWithNibName:@"NewRemindOrEditRmindViewController" bundle:nil];
-//    vc.type = NewRemind;
-//    vc.database = _db;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
+
     EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
     vc.eventType = NRemind;
     vc.database = _db;
-    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
+    
+    __weak __typeof__(self) weakSelf = self;
+    vc.editRemindViewControllerWithAddRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf addRemindItem:remindItem];
+        
+    };
 
 }
 
 -(void)BuildRemindViewWithClickOverDueRemind {
-    
+
     OverdueViewController *vc = [[OverdueViewController alloc] initWithNibName:@"OverdueViewController" bundle:nil];
-    vc.delegate = self;
+//    vc.delegate = self;
+    __weak __typeof__(self) weakSelf = self;
+
+    vc.overdueViewControllerWithAddRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf addRemindItem:remindItem];
+    };
+    
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)BuildRemindViewWithHiddenBuildRemind {
+    [self.buildRemindView removeFromSuperview];
+    self.buildRemindView = nil;
 }
 
 #pragma -mark OverdueViewControllerDelegate
@@ -246,12 +263,62 @@ typedef NS_OPTIONS(NSInteger, Status) {
 }
 
 #pragma -mark EditRemindViewControllerDelegate
--(void)editRemindViewControllerWithNewAddRemind {
-    [self getDataFromDatabase];
+-(void)editRemindViewControllerWithNewAddRemind:(RemindItem *)remindItem {
+    
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    
+    NSIndexPath *indexPath;
+    NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
+    for (NSInteger i = 0; i < oriDataArr.count; i++) {
+        RemindItem *oriRemindItem = oriDataArr[i];
+        if ([oriRemindItem.recentlyRemindDate compare:remindItem.recentlyRemindDate] == NSOrderedDescending) {
+            [oriDataArr insertObject:remindItem atIndex:i];
+            indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            break;
+        }
+    }
+    
+    
+    [self.dataArr removeAllObjects];
+    [self.dataArr addObjectsFromArray:oriDataArr];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView layoutIfNeeded];
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        //刷新完成
+        [strongSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    });
+    
 }
 
--(void)editRemindViewControllerWithEditRemind {
-     [self getDataFromDatabase];
+-(void)editRemindViewControllerWithEditRemind:(RemindItem *)remindItem {
+    
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    
+    NSIndexPath *indexPath;
+    NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
+    for (NSInteger i = 0; i < oriDataArr.count; i++) {
+        RemindItem *oriRemindItem = oriDataArr[i];
+        if ([oriRemindItem.recentlyRemindDate compare:remindItem.recentlyRemindDate] == NSOrderedDescending) {
+//            [oriDataArr insertObject:remindItem atIndex:i];
+            indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            break;
+        }
+    }
+    
+    
+    [self.dataArr removeAllObjects];
+    [self.dataArr removeObjectAtIndex:indexPath.row];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView layoutIfNeeded];
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        //刷新完成
+        [strongSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    });
+    
 }
 
 #pragma -mark 创建数据库表
@@ -290,7 +357,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype != 'onlyonce' or createtimestamp > %ld",self.databaseTableName,nowSp];
         NSLog(@"sql = %@",sql);
         
-        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+        NSMutableArray<RemindItem *> *dataArr = [[NSMutableArray alloc] init];
         if ([self.db open]) {
             FMResultSet * res = [self.db executeQuery:sql];
             
@@ -300,8 +367,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 item.remindtime = [res stringForColumn:@"remindtime"];
                 item.content = [res stringForColumn:@"content"];
                 item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-                item.remindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
-                
+                item.remindDate = [self showDateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
+                item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
+
                 if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
                     item.content = [NSString stringWithFormat:@"每天 %@",item.content];
                 } else  if ([item.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
@@ -312,12 +380,20 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 
                 [dataArr addObject:item];
             }
-            NSLog(@"arr = %@",dataArr);
+
         }
         
-        [self.dataArr removeAllObjects];
-        [self.dataArr addObjectsFromArray:dataArr];
-        [self.tableView reloadData];
+        if (dataArr.count) {
+          NSArray *recentlyDataArr = [dataArr sortedArrayUsingComparator:^NSComparisonResult(RemindItem *obj1, RemindItem *obj2) {
+              NSLog(@"obj1: %@",obj1.recentlyRemindDate);
+                return [obj1.recentlyRemindDate compare:obj2.recentlyRemindDate];
+            }];
+            
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:recentlyDataArr];
+            [self.tableView reloadData];
+        }
+        
         
         if (self.tableView.mj_header.isRefreshing) {
             [self.tableView.mj_header endRefreshing];
@@ -334,7 +410,83 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
--(NSString *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+-(NSDate *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+    
+    NSString *dateTime = @"";
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,remindTime];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
+    
+    NSString *weekDay = [Utility getDayWeek];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    if ([remindType isEqualToString:REMINDTYPE_ONLYONCE]) {
+        dateTime = currentDateDD;
+    } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]){
+        
+        if ([weekDay isEqualToString:MONDAY]) {
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:5*24*60*60]];
+        } else if([weekDay isEqualToString:TUESDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:4*24*60*60]];
+        } else if([weekDay isEqualToString:WEDNESDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:3*24*60*60]];
+        } else if([weekDay isEqualToString:THURSDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+        } else if([weekDay isEqualToString:FRIDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+        } else if([weekDay isEqualToString:SATURDAY]){
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+                dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+            }else {
+                dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+            }
+        } else if([weekDay isEqualToString:SUNDAY]){
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+                dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+            }else {
+                dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+            }
+        }
+        
+    } else if ([remindType isEqualToString:REMINDTYPE_WORKDAY]){
+        
+        if ([weekDay isEqualToString:SATURDAY]) {
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+        } else if([weekDay isEqualToString:SUNDAY]){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+        } else {
+            if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+               dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+            }else {
+                dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+            }
+        }
+        
+    } else {
+        
+        if ([remindDate compare:[NSDate date]] == NSOrderedAscending){
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+        }else {
+            dateTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+        }
+        
+    }
+    
+    NSLog(@"dateTime: %@", dateTime);
+    
+    dateTime = [NSString stringWithFormat:@"%@ %@:00",dateTime,remindTime];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *recentlyRemindDate = [dateFormatter dateFromString:dateTime];
+    
+    return recentlyRemindDate;
+}
+
+-(NSString *)showDateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
     
     NSString *dateTime = @"";
     
@@ -690,8 +842,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return cell;
 }
 
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -700,8 +850,72 @@ typedef NS_OPTIONS(NSInteger, Status) {
     vc.eventType = EdRemind;
     vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
     vc.database = self.db;
-    vc.delegate = self;
+//    vc.delegate = self;
+    
     [self.navigationController pushViewController:vc animated:YES];
+    
+    __weak __typeof__(self) weakSelf = self;
+    vc.editRemindViewControllerWithEditRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
+        [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+        [strongSelf addRemindItem:remindItem];
+    };
+    
+    vc.editRemindViewControllerWithDelRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
+        [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+    };
+    
+}
+
+-(void)addRemindItem:(RemindItem *)remindItem {
+    
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    
+    if ([remindItem.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
+        remindItem.content = [NSString stringWithFormat:@"每天 %@",remindItem.content];
+    } else  if ([remindItem.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
+        remindItem.content = [NSString stringWithFormat:@"工作日 %@",remindItem.content];
+    } else  if ([remindItem.remindtype isEqualToString:REMINDTYPE_WEEKEND]) {
+        remindItem.content = [NSString stringWithFormat:@"周末 %@",remindItem.content];
+    }
+    
+    NSIndexPath *indexPath;
+    NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
+    for (NSInteger i = 0; i < self.dataArr.count; i++) {
+        RemindItem *oriRemindItem = oriDataArr[i];
+        if ([oriRemindItem.recentlyRemindDate compare:remindItem.recentlyRemindDate] == NSOrderedDescending) {
+            [oriDataArr insertObject:remindItem atIndex:i];
+            indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            break;
+        } else if (i == oriDataArr.count-1) {
+            [oriDataArr addObject:remindItem];
+            indexPath = [NSIndexPath indexPathForRow:i+1 inSection:0];
+            
+        }
+    }
+    
+    if (!self.dataArr.count) {
+        [oriDataArr addObject:remindItem];
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }
+    
+    [self.dataArr removeAllObjects];
+    [self.dataArr addObjectsFromArray:oriDataArr];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView layoutIfNeeded];
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        //刷新完成
+        [strongSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    });
     
 }
 

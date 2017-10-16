@@ -7,27 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RemindItem.h"
 
 @interface AlarmClockItem : NSObject
 
-typedef NS_ENUM(NSInteger, AlarmType) {
-    
-    AlarmTypeOnce,
-    AlarmTypeEveryDay,
-    AlarmTypeOverWeekend,
-    AlarmTypeWorkDay
-    
-};
 
-//add
-+ (void)addAlarmClockWithAlarmClockID:(NSString *)ID
-                    AlarmClockContent:(NSString *)content
-                       AlarmClockDate:(NSString *)date
-                       AlarmClockType:(AlarmType)alarType;
++ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
+                        AlarmClockDateTime:(NSString *)dateTime
+                            AlarmClockType:(NSString *)alarType
+                      AlarmClockIdentifier:(NSString *)clockIdentifier;
 
 //delete
 + (void)cancelAllAlarmClock;
 + (void)cancelAllExpireAlarmClock;
-+ (void)cancleAlarmClockWithValue:(NSString *)value;
++ (void)cancelAlarmClockWithRemindItem:(RemindItem *)remindItem;
 
 @end

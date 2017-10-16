@@ -21,10 +21,11 @@
 
 #import "EditRemindViewController.h"
 
+#import <UserNotifications/UserNotifications.h>
 
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
 @end
 
@@ -84,7 +85,8 @@
     //设置科大讯飞
     [self iFlySet];
     //设置本地推送
-    [self setLocalNotification:(NSDictionary *)launchOptions];
+    [self setLocalNotification];
+    
     //获取通讯录授权
 //    [self requestAuthorizationAddressBook];
     //网络监控
@@ -96,18 +98,22 @@
     
 }
 
--(void)setLocalNotification:(NSDictionary *)launchOptions {
+-(void)setLocalNotification {
+
+    //iOS 10
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge | 
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (!error) {
+            NSLog(@"request authorization succeeded!");
+        }
+    }];
     
-    [self registerLocalNotification];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     
-    //杀死进程之后，点击后台进入可获取当前闹钟
-    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotif) {
-        NSLog(@"userInfo = %@",localNotif.userInfo);
-        [AlarmClockItem cancelAllExpireAlarmClock];
-    }
-    
+    [AlarmClockItem cancelAllExpireAlarmClock];
+
 }
+
 
 -(void)setUMShare {
     
@@ -172,13 +178,7 @@
     }];
 }
 
-- (void)registerLocalNotification {
-    
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
-    
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    
-}
+
 
 //- (void)requestAuthorizationAddressBook {
 //    // 判断是否授权
@@ -196,37 +196,60 @@
 //    }
 //}
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
-{
-    
-    //点击后台进入
-    if (application.applicationState == UIApplicationStateInactive) {
 
-        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-     
-        }];
-        
-        NSLog(@"UIApplicationStateInactive");
-    }else{
-        
-        //播放声音
-        AudioServicesPlaySystemSound(1007);
-        //开启震动
-        AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
-        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-            //关闭震动
-            AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-        }];
-        
-    }
-    //这里，你就可以通过notification的useinfo，干一些你想做的事情了
-    NSLog(@"info = %@",notification.userInfo);
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    
+    //播放声音
+    AudioServicesPlaySystemSound(1007);
+    //开启震动
+    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    NSString *body = notification.request.content.body ;
+    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
+        //关闭震动
+        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+    }];
+    
     //删除已过期的闹钟
     [AlarmClockItem cancelAllExpireAlarmClock];
+}
+
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     
 }
+
+//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
+//{
+//    
+//    //点击后台进入
+//    if (application.applicationState == UIApplicationStateInactive) {
+//
+//        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+//     
+//        }];
+//        
+//        NSLog(@"UIApplicationStateInactive");
+//    }else{
+//        
+//        //播放声音
+//        AudioServicesPlaySystemSound(1007);
+//        //开启震动
+//        AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//        
+//        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+//            //关闭震动
+//            AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+//        }];
+//        
+//    }
+//    //这里，你就可以通过notification的useinfo，干一些你想做的事情了
+//    NSLog(@"info = %@",notification.userInfo);
+//    //删除已过期的闹钟
+//    [AlarmClockItem cancelAllExpireAlarmClock];
+//    
+//}
 void systemAudioCallback()
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);

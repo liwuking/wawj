@@ -55,9 +55,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 -(void)leftAction {
     
-    if (self.isChange) {
-        [self.delegate OverdueViewControllerRefresh];
-    }
+//    if (self.isChange) {
+//        [self.delegate OverdueViewControllerRefresh];
+//    }
     [self.navigationController popViewControllerAnimated:YES];
     
 }
@@ -198,25 +198,32 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSLog(@"sql = %@",sql);
         
         NSMutableArray *dataArr = [[NSMutableArray alloc] init];
-        if ([self.db open]) {
-            FMResultSet * res = [self.db executeQuery:sql];
+        FMResultSet * res = [self.db executeQuery:sql];
+        
+        while ([res next]) {
+            RemindItem *item = [[RemindItem alloc] init];
+            item.remindtype = [res stringForColumn:@"remindtype"];
+            item.remindtime = [res stringForColumn:@"remindtime"];
+            item.content = [res stringForColumn:@"content"];
+            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
+            item.recentlyRemindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
             
-            while ([res next]) {
-                RemindItem *item = [[RemindItem alloc] init];
-                item.remindtype = [res stringForColumn:@"remindtype"];
-                item.remindtime = [res stringForColumn:@"remindtime"];
-                item.content = [res stringForColumn:@"content"];
-                item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-                item.remindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
-                
-                [dataArr addObject:item];
-            }
-            NSLog(@"arr = %@",dataArr);
+            [dataArr addObject:item];
+        }
+        NSLog(@"arr = %@",dataArr);
+        
+        if (dataArr.count) {
+            NSArray *recentlyDataArr = [dataArr sortedArrayUsingComparator:^NSComparisonResult(RemindItem *obj1, RemindItem *obj2) {
+                NSLog(@"obj1: %@",obj1.recentlyRemindDate);
+                return [obj1.recentlyRemindDate compare:obj2.recentlyRemindDate];
+            }];
+            
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:recentlyDataArr];
+            [self.tableView reloadData];
         }
         
-        [self.dataArr removeAllObjects];
-        [self.dataArr addObjectsFromArray:dataArr];
-        [self.tableView reloadData];
         
         if (self.tableView.mj_header.isRefreshing) {
             [self.tableView.mj_header endRefreshing];
@@ -233,35 +240,52 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
--(NSString *)dateTimeWithCreateTimeStamp:(NSString *)timeStamp {
+-(NSDate *)dateTimeWithCreateTimeStamp:(NSString *)timeStamp {
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+
+    NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
+    
+    return remindDate;
+}
+
+-(NSString *)showDateTimeWithCreateTimeStamp:(NSString *)timeStamp {
     
     NSString *dateTime = @"";
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:8];
     NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
     
+    NSString *remindDateStr = [dateFormatter stringFromDate:remindDate];
+    remindDate = [dateFormatter dateFromString:remindDateStr];
+    
+    
+    NSDate *todaydayDate = [NSDate dateWithTimeIntervalSinceNow:-0*60*60];
     NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-24*60*60];
     NSDate *beforeYesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
     
-    if ([remindDate compare:beforeYesterdayDate] == NSOrderedAscending) {
-
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        dateTime = [dateFormatter stringFromDate:remindDate];
-
-    } else if ([remindDate compare:yesterdayDate] == NSOrderedAscending) {
-        
+    
+    NSString *todayDateStr = [dateFormatter stringFromDate:todaydayDate];
+    todaydayDate = [dateFormatter dateFromString:todayDateStr];
+    
+    NSString *yesterdayDateStr = [dateFormatter stringFromDate:yesterdayDate];
+    yesterdayDate = [dateFormatter dateFromString:yesterdayDateStr];
+    
+    NSString *beforeYesterdayDateStr = [dateFormatter stringFromDate:beforeYesterdayDate];
+    beforeYesterdayDate = [dateFormatter dateFromString:beforeYesterdayDateStr];
+    
+    
+    if ([remindDate compare:beforeYesterdayDate] == NSOrderedSame) {
         dateTime = @"前天";
-
-    } else if ([remindDate compare:[NSDate date]] == NSOrderedAscending) {
-        
+    } else if ([remindDate compare:yesterdayDate] == NSOrderedSame) {
         dateTime = @"昨天";
-        
+    } else if ([remindDate compare:todaydayDate] == NSOrderedSame) {
+         dateTime = @"今天";
     }else {
-        
-        dateTime = @"今天";
-        
+        dateTime = [dateFormatter stringFromDate:remindDate];
     }
     
     return dateTime;
@@ -309,7 +333,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
     vc.eventType = ExpRemind;
     vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
     vc.database = self.db;
-    vc.delegate = self;
+//    vc.delegate = self;
+    __weak __typeof__(self) weakSelf = self;
+    vc.editRemindViewControllerWithDelRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
+        [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+    };
+    
+    vc.editRemindViewControllerWithEditRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.overdueViewControllerWithAddRemind(remindItem);
+        [strongSelf.navigationController popViewControllerAnimated:YES];        
+    };
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }
