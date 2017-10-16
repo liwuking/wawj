@@ -22,8 +22,8 @@
 }
 
 - (IBAction)readAction:(id)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(tableViewCell:AndClickAudioIndexPath:)]) {
-        [self.delegate tableViewCell:self AndClickAudioIndexPath:self.cellIndexPath];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(OverdueRemindCell:AndClickAudioIndexPath:)]) {
+        [self.delegate OverdueRemindCell:self AndClickAudioIndexPath:self.cellIndexPath];
     }
 }
 

@@ -886,6 +886,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
         remindItem.content = [NSString stringWithFormat:@"周末 %@",remindItem.content];
     }
     
+    remindItem.remindDate = [self showDateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
     for (NSInteger i = 0; i < self.dataArr.count; i++) {
@@ -921,11 +923,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 
 #pragma mark - RemindCell delegate
-- (void)RemindCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
+- (void)RemindCell:(RemindCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
-        
-        NSString *readText = @"hahah";//self.dataArr[indexPath.row][@"content"];
+        NSString *readText = cell.contentLab.text;
         [self readTextWithString:readText];
         
     }else{
@@ -972,6 +973,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onBeginOfSpeech
 {
     //[_popUpView showText: @"正在录音"];
+    NSLog(@"%s",__func__);
 }
 
 /**
@@ -980,6 +982,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onEndOfSpeech
 {
     // [_popUpView showText: @"停止录音"];
+    NSLog(@"%s",__func__);
 }
 
 /**
@@ -988,6 +991,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onVolumeChanged: (int)volume
 {
+    NSLog(@"%s",__func__);
     //    if (self.isCanceled) {
     //        [_popUpView removeFromSuperview];
     //        return;
@@ -1029,6 +1033,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }
     
     self.isSpeechUnderstander = NO;
+    
+    [_listeningView removeFromSuperview];
+    _listeningView = nil;
 }
 
 
@@ -1039,6 +1046,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onResults:(NSArray *) results isLast:(BOOL)isLast
 {
+    NSLog(@"%s",__func__);
     [MBProgressHUD hideHUD];
     NSMutableString *result = [[NSMutableString alloc] init];
     NSDictionary *dic = results [0];
@@ -1074,6 +1082,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onCancel
 {
+    NSLog(@"%s",__func__);
     NSLog(@"识别取消");
 }
 
@@ -1087,6 +1096,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void)onSpeakBegin
 {
+    NSLog(@"%s",__func__);
     self.isSpeechCanceled = NO;
     if (_state  != Playing) {
         NSLog(@"开始播放");
@@ -1116,6 +1126,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void)onBufferProgress:(int) progress message:(NSString *)msg
 {
+    NSLog(@"%s",__func__);
     NSLog(@"buffer progress %2d%%. msg: %@.", progress, msg);
 }
 
@@ -1133,6 +1144,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onSpeakProgress:(int) progress beginPos:(int)beginPos endPos:(int)endPos
 {
+    NSLog(@"%s",__func__);
     _listeningView.progressLabel.text = [NSString stringWithFormat:@"%2d%%",progress];
     
     //NSLog(@"speak progress %2d%%.", progress);
@@ -1147,7 +1159,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void)onSpeakPaused
 {
-    
+    NSLog(@"%s",__func__);
     _state = Paused;
 }
 
@@ -1161,6 +1173,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void)onSpeakResumed
 {
+    NSLog(@"%s",__func__);
     _state = Playing;
 }
 
@@ -1192,6 +1205,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     _state = NotStart;
     [_iFlySpeechSynthesizer stopSpeaking];
     [_listeningView removeFromSuperview];
+    _listeningView = nil;
     
 }
 
@@ -1203,6 +1217,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void)onSpeakCancel
 {
+    NSLog(@"%s",__func__);
     if (_isViewDidDisappear) {
         return;
     }

@@ -354,11 +354,13 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 
 #pragma mark - cell delegate
-- (void)tableViewCell:(UITableViewCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
+- (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
+    
     
     if ([self isReachable]) {
         
-        NSString *readText = self.dataArr[indexPath.row][@"content"];
+//        RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+        NSString *readText = cell.contentLab.text;
         [self readTextWithString:readText];
         
     }else{

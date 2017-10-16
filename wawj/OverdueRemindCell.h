@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class OverdueRemindCell;
+
 @protocol OverdueRemindCellDelegate <NSObject>
 
-- (void)tableViewCell:(UITableViewCell *)cell AndClickAudioIndexPath:(NSIndexPath*)indexPath;
+- (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath*)indexPath;
 
 @end
 

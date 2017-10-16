@@ -57,7 +57,7 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="remind_read"/>
                                 <connections>
-                                    <action selector="readAction:" destination="fl0-Ym-cOE" eventType="touchUpInside" id="6ef-sV-NJD"/>
+                                    <action selector="readAction:" destination="fl0-Ym-cOE" eventType="touchUpInside" id="0ez-S7-5mj"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friends" translatesAutoresizingMaskIntoConstraints="NO" id="V3O-BJ-5bQ">

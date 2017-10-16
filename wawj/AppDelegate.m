@@ -99,21 +99,91 @@
 }
 
 -(void)setLocalNotification {
-
-    //iOS 10
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge | 
-    [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if (!error) {
-            NSLog(@"request authorization succeeded!");
-        }
-    }];
     
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    //iOS 10
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge |
+    __weak __typeof__(self) weakSelf = self;
+    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        
+        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+            [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                if (!error) {
+                    NSLog(@"request authorization succeeded!");
+                }
+            }];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [[strongSelf topViewController] showAlertViewWithTitle:@"提醒" message:@"您还没打开推送通知权限" buttonTitle:@"确定" clickBtn:^{
+            }];
+        }
+        
+    }];
     
     [AlarmClockItem cancelAllExpireAlarmClock];
 
 }
 
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    
+    completionHandler(UNNotificationPresentationOptionAlert|UNNotificationPresentationOptionSound);
+    
+    //播放声音
+    AudioServicesPlaySystemSound(1007);
+    //开启震动
+    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    NSString *body = notification.request.content.body ;
+    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
+        //关闭震动
+        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+    }];
+    
+    //    //删除已过期的闹钟
+    //    [AlarmClockItem cancelAllExpireAlarmClock];
+    
+}
+
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
+{
+    
+    //点击后台进入
+    if (application.applicationState == UIApplicationStateInactive) {
+        
+        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+        NSLog(@"UIApplicationStateInactive");
+    }else{
+        
+        //播放声音
+        AudioServicesPlaySystemSound(1007);
+        //开启震动
+        AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+            //关闭震动
+            AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+        }];
+        
+    }
+    //这里，你就可以通过notification的useinfo，干一些你想做的事情了
+    NSLog(@"info = %@",notification.userInfo);
+    //删除已过期的闹钟
+    [AlarmClockItem cancelAllExpireAlarmClock];
+    
+}
+void systemAudioCallback()
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
 
 -(void)setUMShare {
     
@@ -197,63 +267,9 @@
 //}
 
 
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    
-    //播放声音
-    AudioServicesPlaySystemSound(1007);
-    //开启震动
-    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
-    NSString *body = notification.request.content.body ;
-    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
-        //关闭震动
-        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-    }];
-    
-    //删除已过期的闹钟
-    [AlarmClockItem cancelAllExpireAlarmClock];
-}
 
--(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
-    
-}
 
-//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
-//{
-//    
-//    //点击后台进入
-//    if (application.applicationState == UIApplicationStateInactive) {
-//
-//        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-//     
-//        }];
-//        
-//        NSLog(@"UIApplicationStateInactive");
-//    }else{
-//        
-//        //播放声音
-//        AudioServicesPlaySystemSound(1007);
-//        //开启震动
-//        AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-//        
-//        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-//            //关闭震动
-//            AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-//        }];
-//        
-//    }
-//    //这里，你就可以通过notification的useinfo，干一些你想做的事情了
-//    NSLog(@"info = %@",notification.userInfo);
-//    //删除已过期的闹钟
-//    [AlarmClockItem cancelAllExpireAlarmClock];
-//    
-//}
-void systemAudioCallback()
-{
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-}
+
 
 - (UIViewController*)topViewController
 {

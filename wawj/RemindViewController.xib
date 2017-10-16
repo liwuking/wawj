@@ -35,11 +35,10 @@
                     <rect key="frame" x="0.0" y="557" width="375" height="110"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KaC-Fo-ZwT" userLabel="View - 话筒">
-                            <rect key="frame" x="157.5" y="36" width="60" height="60"/>
+                            <rect key="frame" x="142.5" y="21" width="90" height="90"/>
                             <subviews>
-                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-b1-kaS">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-b1-kaS">
+                                    <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                     <gestureRecognizers/>
                                     <connections>
                                         <outletCollection property="gestureRecognizers" destination="jdH-C2-Bnx" appends="YES" id="Lgn-gp-dL8"/>
@@ -49,12 +48,16 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="48K-tJ-7nB"/>
-                                <constraint firstAttribute="width" constant="60" id="O0u-vw-qSa"/>
+                                <constraint firstAttribute="height" constant="90" id="48K-tJ-7nB"/>
+                                <constraint firstAttribute="bottom" secondItem="IgU-b1-kaS" secondAttribute="bottom" id="BRD-Lh-9Wu"/>
+                                <constraint firstAttribute="width" constant="90" id="O0u-vw-qSa"/>
+                                <constraint firstAttribute="trailing" secondItem="IgU-b1-kaS" secondAttribute="trailing" id="g7f-u9-s3D"/>
+                                <constraint firstItem="IgU-b1-kaS" firstAttribute="leading" secondItem="KaC-Fo-ZwT" secondAttribute="leading" id="iAy-de-Kg3"/>
+                                <constraint firstItem="IgU-b1-kaS" firstAttribute="top" secondItem="KaC-Fo-ZwT" secondAttribute="top" id="kQR-E3-XXS"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按住说话" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-BI-COX">
-                            <rect key="frame" x="147.5" y="10" width="80" height="16"/>
+                            <rect key="frame" x="147.5" y="5" width="80" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="QiZ-Gd-Ti6"/>
                                 <constraint firstAttribute="width" constant="80" id="SEy-Iv-yZu"/>
@@ -66,9 +69,9 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="pIK-BI-COX" firstAttribute="top" secondItem="Nb1-yj-K1b" secondAttribute="top" constant="10" id="5ZU-15-tu4"/>
+                        <constraint firstItem="pIK-BI-COX" firstAttribute="top" secondItem="Nb1-yj-K1b" secondAttribute="top" constant="5" id="5ZU-15-tu4"/>
                         <constraint firstItem="pIK-BI-COX" firstAttribute="centerX" secondItem="Nb1-yj-K1b" secondAttribute="centerX" id="5j1-vX-auD"/>
-                        <constraint firstItem="KaC-Fo-ZwT" firstAttribute="top" secondItem="pIK-BI-COX" secondAttribute="bottom" constant="10" id="PF4-7e-UCV"/>
+                        <constraint firstItem="KaC-Fo-ZwT" firstAttribute="top" secondItem="pIK-BI-COX" secondAttribute="bottom" id="PF4-7e-UCV"/>
                         <constraint firstAttribute="height" constant="110" id="hqS-QQ-L4b"/>
                     </constraints>
                 </view>

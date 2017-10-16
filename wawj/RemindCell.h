@@ -2,9 +2,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class RemindCell;
+
 @protocol RemindCellDelegate <NSObject>
 
-- (void)RemindCell:(UITableViewCell *)cell AndIndexPath:(NSIndexPath*)indexPath;
+- (void)RemindCell:(RemindCell *)cell AndIndexPath:(NSIndexPath*)indexPath;
 @end
 
 

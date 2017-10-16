@@ -132,17 +132,9 @@
     
 }
 
-+ (void)cancelAllAlarmClock {
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-
-    [center removeAllPendingNotificationRequests];
-    [center removeAllDeliveredNotifications];
-    
-}
 + (void)cancelAlarmClockWithRemindItem:(RemindItem *)remindItem{
    
-    
-     NSMutableArray *identifiers = [@[] mutableCopy];
+    NSMutableArray *identifiers = [@[] mutableCopy];
     if ([remindItem.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
         for (NSInteger i = 1; i <= 7; i++) {
             [identifiers addObject:[NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,i]];
@@ -179,121 +171,141 @@
     
 }
 
++ (void)cancelAllAlarmClock {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    
+    [center removeAllPendingNotificationRequests];
+    [center removeAllDeliveredNotifications];
+    
+}
+
+
 +(void)cancelAllExpireAlarmClock {
     
-    return;
-    if (![CoreArchive dicForKey:USERINFO]) {
-        return;
-    }
-    NSString *databaseTableName = @"remindList";
-    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSString *userID = userInfo? userInfo[@"userId"] : @"";
-    databaseTableName = [databaseTableName stringByAppendingFormat:@"_%@",userID];
-    
-    NSDictionary *keys = @{@"remindtype"                 : @"string",
-                           @"remindtime"                 : @"string",
-                           @"createtimestamp"            : @"string",
-                           @"content"                    : @"string"};
-    
-//    __weak __typeof__(self) weakSelf = self;
-    [[DBManager defaultManager] createTableWithName:databaseTableName AndKeys:keys Result:^(BOOL isOK) {
-        
-    } FMDatabase:^(FMDatabase *database) {
-//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        //[strongSelf removeAllExpRemind:database andDatabaseName:databaseTableName];
-        
-        if ([database open]) {
-            
-            NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
-            NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",databaseTableName,nowSp];
-            NSLog(@"sql = %@",sql);
-            
-            NSMutableArray *dataArr = [[NSMutableArray alloc] init];
-            FMResultSet * res = [database executeQuery:sql];
-            
-            while ([res next]) {
-                RemindItem *item = [[RemindItem alloc] init];
-                item.remindtype = [res stringForColumn:@"remindtype"];
-                item.remindtime = [res stringForColumn:@"remindtime"];
-                item.content = [res stringForColumn:@"content"];
-                item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-                [dataArr addObject:item];
-            }
-            
-            NSMutableArray *identifiers = [@[] mutableCopy];
-            for (NSInteger i = 0; i < dataArr.count; i++) {
-                RemindItem *remindItem = dataArr[i];
-                
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                
-                NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp integerValue]];
-                NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
-                NSDateComponents *comps = [[NSDateComponents alloc] init];
-                NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
-                comps = [calendar components:unitFlags fromDate:remindDate];
-                
-                [identifiers addObject:[NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,comps.weekday]];
-                
-            }
-            
-            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-            [center removePendingNotificationRequestsWithIdentifiers:identifiers];
-            [center removeDeliveredNotificationsWithIdentifiers:identifiers];
-            
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
+        NSMutableArray *deliveredIdentifiers = [@[] mutableCopy];
+        for (UNNotification *notification in notifications) {
+            [deliveredIdentifiers addObject:notification.request.identifier];
         }
-
-        
-        
+        [center removeDeliveredNotificationsWithIdentifiers:deliveredIdentifiers];
     }];
+
+}
     
-}
+//    return;
+//    if (![CoreArchive dicForKey:USERINFO]) {
+//        return;
+//    }
+//    NSString *databaseTableName = @"remindList";
+//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+//    databaseTableName = [databaseTableName stringByAppendingFormat:@"_%@",userID];
+//
+//    NSDictionary *keys = @{@"remindtype"                 : @"string",
+//                           @"remindtime"                 : @"string",
+//                           @"createtimestamp"            : @"string",
+//                           @"content"                    : @"string"};
+//
+////    __weak __typeof__(self) weakSelf = self;
+//    [[DBManager defaultManager] createTableWithName:databaseTableName AndKeys:keys Result:^(BOOL isOK) {
+//
+//    } FMDatabase:^(FMDatabase *database) {
+////        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        //[strongSelf removeAllExpRemind:database andDatabaseName:databaseTableName];
+//
+//        if ([database open]) {
+//
+//            NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+//            NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",databaseTableName,nowSp];
+//            NSLog(@"sql = %@",sql);
+//
+//            NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+//            FMResultSet * res = [database executeQuery:sql];
+//
+//            while ([res next]) {
+//                RemindItem *item = [[RemindItem alloc] init];
+//                item.remindtype = [res stringForColumn:@"remindtype"];
+//                item.remindtime = [res stringForColumn:@"remindtime"];
+//                item.content = [res stringForColumn:@"content"];
+//                item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+//                [dataArr addObject:item];
+//            }
+//
+//            NSMutableArray *identifiers = [@[] mutableCopy];
+//            for (NSInteger i = 0; i < dataArr.count; i++) {
+//                RemindItem *remindItem = dataArr[i];
+//
+//
+//                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//
+//                NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp integerValue]];
+//                NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+//                NSDateComponents *comps = [[NSDateComponents alloc] init];
+//                NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
+//                comps = [calendar components:unitFlags fromDate:remindDate];
+//
+//                [identifiers addObject:[NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,comps.weekday]];
+//
+//            }
+//
+//            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//            [center removePendingNotificationRequestsWithIdentifiers:identifiers];
+//            [center removeDeliveredNotificationsWithIdentifiers:identifiers];
+//
+//        }
+//
+//
+//
+//    }];
+//
+//}
 
-- (void)removeAllExpRemind:(FMDatabase *)database andDatabaseName:(NSString *)databaseTableName {
-
-    if ([database open]) {
-        
-        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
-        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",databaseTableName,nowSp];
-        NSLog(@"sql = %@",sql);
-        
-        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
-        FMResultSet * res = [database executeQuery:sql];
-        
-        while ([res next]) {
-            RemindItem *item = [[RemindItem alloc] init];
-            item.remindtype = [res stringForColumn:@"remindtype"];
-            item.remindtime = [res stringForColumn:@"remindtime"];
-            item.content = [res stringForColumn:@"content"];
-            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-            [dataArr addObject:item];
-        }
-        
-        NSMutableArray *identifiers = [@[] mutableCopy];
-        for (NSInteger i = 0; i < dataArr.count; i++) {
-            RemindItem *remindItem = dataArr[i];
-            
-            
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-            
-            NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp integerValue]];
-            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
-            NSDateComponents *comps = [[NSDateComponents alloc] init];
-            NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
-            comps = [calendar components:unitFlags fromDate:remindDate];
-            
-            [identifiers addObject:[NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,comps.weekday]];
-            
-        }
-        
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center removePendingNotificationRequestsWithIdentifiers:identifiers];
-        [center removeDeliveredNotificationsWithIdentifiers:identifiers];
-        
-    }
-}
+//- (void)removeAllExpRemind:(FMDatabase *)database andDatabaseName:(NSString *)databaseTableName {
+//
+//    if ([database open]) {
+//
+//        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+//        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",databaseTableName,nowSp];
+//        NSLog(@"sql = %@",sql);
+//
+//        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+//        FMResultSet * res = [database executeQuery:sql];
+//
+//        while ([res next]) {
+//            RemindItem *item = [[RemindItem alloc] init];
+//            item.remindtype = [res stringForColumn:@"remindtype"];
+//            item.remindtime = [res stringForColumn:@"remindtime"];
+//            item.content = [res stringForColumn:@"content"];
+//            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+//            [dataArr addObject:item];
+//        }
+//
+//        NSMutableArray *identifiers = [@[] mutableCopy];
+//        for (NSInteger i = 0; i < dataArr.count; i++) {
+//            RemindItem *remindItem = dataArr[i];
+//
+//
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//
+//            NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp integerValue]];
+//            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+//            NSDateComponents *comps = [[NSDateComponents alloc] init];
+//            NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
+//            comps = [calendar components:unitFlags fromDate:remindDate];
+//
+//            [identifiers addObject:[NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,comps.weekday]];
+//
+//        }
+//
+//        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//        [center removePendingNotificationRequestsWithIdentifiers:identifiers];
+//        [center removeDeliveredNotificationsWithIdentifiers:identifiers];
+//
+//    }
+//}
 
 @end
 
