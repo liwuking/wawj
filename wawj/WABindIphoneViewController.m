@@ -16,13 +16,15 @@
 #import "WZLSerializeKit.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface WABindIphoneViewController ()<CLLocationManagerDelegate>
+@interface WABindIphoneViewController ()<CLLocationManagerDelegate,UITextFieldDelegate>
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *getVeryCodeGes;
 @property (nonatomic, strong) CLLocationManager* locationManager;
 
     @property (weak, nonatomic) IBOutlet UITextField *iphoneTextField;
     @property (weak, nonatomic) IBOutlet UITextField *msgTextField;
     @property (weak, nonatomic) IBOutlet UILabel *timeLab;
     @property (weak, nonatomic) IBOutlet UILabel *msgStatusLab;
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 @property(nonatomic, strong)NSTimer *timer;
 @property(nonatomic, assign)NSInteger fixedTime;
@@ -59,14 +61,35 @@
     self.navigationItem.leftBarButtonItem = backItem;
     
 }
+
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSLog(@"%@-- %@", self.iphoneTextField.text,self.msgTextField.text);
+    if (self.iphoneTextField.text.length > 1 && self.msgTextField.text.length > 1) {
+        self.nextBtn.enabled = YES;
+        self.nextBtn.backgroundColor = HEX_COLOR(0x219CE0);
+       
+    }else {
+        self.nextBtn.enabled = NO;
+        self.nextBtn.backgroundColor = HEX_COLOR(0xd1d1d8);
+    }
+    
+    return YES;
+}
+
 - (IBAction)clickSendVericode:(UITapGestureRecognizer *)sender {
     
-    NSDictionary *model = @{@"phone_no": self.iphoneTextField.text, @"message_type": @"login"};
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1002" andModel:model];
+    
+    self.getVeryCodeGes.enabled = NO;
+    
+    [MBProgressHUD showMessage:nil];
+    NSDictionary *model = @{@"phone_no": self.iphoneTextField.text, @"message_type": @"SMS_104815008"};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P9010" andModel:model];
     __weak __typeof__(self) weakSelf = self;
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-        [MBProgressHUD hideHUD];
         
+        [MBProgressHUD hideHUD];
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
@@ -74,22 +97,12 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            if ([CoreArchive strForKey:INTERFACE_NEW]) {
-                
-                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                WANewInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WANewInterfaceViewController"];
-                 [self.navigationController pushViewController:vc animated:YES];
-                
-            } else {
-                
-                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
-                [self.navigationController pushViewController:vc animated:YES];
-            }
+            [MBProgressHUD showSuccess:@"已发送成功"];
+            [strongSelf startTime];
 
             
         } else {
-            
+            strongSelf.getVeryCodeGes.enabled = YES;
             [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
                 
             }];
@@ -100,13 +113,12 @@
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
-        
+        strongSelf.getVeryCodeGes.enabled = YES;
         [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
             
         }];
         
     }];
-
 
 }
 
@@ -122,9 +134,13 @@
 -(void)timerReponse {
     
     if (self.fixedTime > 0) {
+//        self.getVeryCodeGes.enabled = NO;
         self.timeLab.text = [NSString stringWithFormat:@"%ldS", --self.fixedTime];
+        self.timeLab.textColor = [UIColor grayColor];
     } else {
-        self.msgStatusLab.text = @"获取验证码";
+        self.getVeryCodeGes.enabled = YES;
+        self.timeLab.text = @"获取验证码";
+        self.timeLab.textColor = HEX_COLOR(0x219ce0);
         [self.timer invalidate];
         self.timer = nil;
     }
@@ -202,6 +218,27 @@
 
 - (IBAction)clickNext:(id)sender {
     
+    if ([self.iphoneTextField.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"手机号不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if ([self.msgTextField.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"验证码不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if (self.msgTextField.text.length > 6) {
+        [self showAlertViewWithTitle:@"提示" message:@"验证码不能大于6位" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
     //手机号绑定（即登录注册）
     NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString *modal = [[UIDevice currentDevice] model];
@@ -215,8 +252,8 @@
                              @"bind_sn":uuid,
                              @"bind_lbs":self.locationString,
                              @"invite_code":@"",
-                             @"message_type":@"1",
-                             @"message_code":@"111111"
+                             @"message_type":@"SMS_104815008",
+                             @"message_code":self.msgTextField.text
                              
                              };
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1002" andModel:model];

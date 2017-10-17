@@ -165,9 +165,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WA6-zi-kWR">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WA6-zi-kWR">
                                 <rect key="frame" x="15" y="265" width="345" height="50"/>
-                                <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.81960784310000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="FEu-Dy-gOm"/>
                                 </constraints>
@@ -263,9 +263,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="getVeryCodeGes" destination="Y8w-Pu-8Gp" id="KxA-1r-Gfp"/>
                         <outlet property="iphoneTextField" destination="MYp-kd-wzx" id="cPV-PG-9OA"/>
                         <outlet property="msgStatusLab" destination="6Un-VF-exS" id="GMk-TM-guW"/>
                         <outlet property="msgTextField" destination="M2L-3C-6Jy" id="MRe-If-cC8"/>
+                        <outlet property="nextBtn" destination="WA6-zi-kWR" id="jdk-c9-7Wg"/>
                         <outlet property="timeLab" destination="8mZ-qN-oCp" id="95K-VA-qQ6"/>
                     </connections>
                 </viewController>

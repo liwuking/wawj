@@ -135,18 +135,39 @@
 //section头部间距
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return (SCREEN_WIDTH - 270)/3;//section头部高度
+    if (0 == self.dataArr.count) {
+        return (SCREEN_WIDTH - 135)/2;//section头部高度
+    } else {
+        return (SCREEN_WIDTH - 270)/3;//section头部高度
+    }
+    
 }
 
 //section底部间距
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (self.dataArr.count == section+1) {
-        return (SCREEN_WIDTH - 270)/3;//section尾部高度
+    if (self.dataArr.count < 6) {
+        if (self.dataArr.count == section) {
+            NSLog(@"section: %ld", section);
+            if (0 == self.dataArr.count) {
+                return (SCREEN_WIDTH - 135)/2;//section头部高度
+            } else {
+                return (SCREEN_WIDTH - 270)/3;//section头部高度
+            }
+        } else {
+            
+            return 1;
+        }
     } else {
-        
-        return 1;
+        if (self.dataArr.count == section+1) {
+            NSLog(@"section: %ld", section);
+            return (SCREEN_WIDTH - 270)/3;//section尾部高度
+        } else {
+            
+            return 1;
+        }
     }
+    
 }
 
 

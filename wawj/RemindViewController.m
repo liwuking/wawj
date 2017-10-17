@@ -392,6 +392,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
             [self.dataArr removeAllObjects];
             [self.dataArr addObjectsFromArray:recentlyDataArr];
             [self.tableView reloadData];
+        } else if(self.dataArr){
+            [self.dataArr removeAllObjects];
+            [self.tableView reloadData];
         }
         
         

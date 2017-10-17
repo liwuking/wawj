@@ -27,6 +27,41 @@
     return weekNumber;
 }
 
++ (void)scheduleNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockType:(NSString *)alarType fireDate:(NSDate*)remindDate
+{
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    //在选中的时间发出提醒
+    notification.fireDate = remindDate;
+    if ([alarType isEqualToString:REMINDTYPE_ONLYONCE]) {
+        //重复次数，一次
+        notification.repeatInterval = 0;
+    } else if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
+        //重复次数，一天一次
+        notification.repeatInterval = kCFCalendarUnitDay;
+    } else {
+        //重复次数，一周一次
+        notification.repeatInterval = kCFCalendarUnitWeekday;
+    }
+    
+    NSLog(@"本地推送时间: %@  类型: %@", remindDate,alarType);
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    //设置推送时的声音，一个30秒的音乐
+    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
+    notification.alertAction = @"确定";//改变提示框按钮文字
+    notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
+    notification.alertTitle = @"我爱我家";
+    notification.alertBody = alertContent;
+    //            //显示在icon上的红色圈中的数字,右上角数字加1
+    //            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+    
+    NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
+    //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
+    notification.userInfo = infoDict;
+    
+    //将这个notification添加到UIApplication中
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
+}
 
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
@@ -38,138 +73,65 @@
     NSArray *arr = [dateTime componentsSeparatedByString:@":"];
     NSInteger hour = [arr[0] integerValue];
     NSInteger minute = [arr[1] integerValue];
-    
+
     if (SYSTEM_VERSION < 10) {
         
-        if ([alarType isEqualToString:REMINDTYPE_ONLYONCE]) {
+        //取得系统的时间，并将其一个个赋值给变量
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+        calendar.timeZone = [NSTimeZone localTimeZone];
+        NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;//这句我也不明白具体时用来做什么。。。
+        NSDateComponents *comps = [[NSDateComponents alloc] init];
+        comps = [calendar components:unitFlags fromDate: [NSDate date]];
+        
+        if ([alarType isEqualToString:REMINDTYPE_ONLYONCE] || [alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             
-            NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.weekday = [self getCurrentWeekDay];
-            components.hour = hour;
-            components.minute = minute;
+            [comps setHour:hour];
+            [comps setMinute:minute];
+            [comps setSecond:0];
+            NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
             
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            //在选中的时间发出提醒
-            notification.fireDate = components.date;
-            NSLog(@"components.date: %@", components.date);
-            //重复次数，0一次
-            notification.repeatInterval = 0;
-            notification.timeZone = [NSTimeZone defaultTimeZone];
-            //设置推送时的声音，一个30秒的音乐
-            notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-            notification.alertAction = @"确定";//改变提示框按钮文字
-            notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-            notification.alertTitle = @"我爱我家";
-            notification.alertBody = content;
-//            //显示在icon上的红色圈中的数字,右上角数字加1
-//            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-            
-            NSDictionary *infoDict = @{@"requestIdentifier":clockIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
-            //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
-            notification.userInfo = infoDict;
-            
-            //将这个notification添加到UIApplication中
-            [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-            
-        } else  if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
-            
-            NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.weekday = [self getCurrentWeekDay];
-            components.hour = hour;
-            components.minute = minute;
-            
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            //在选中的时间发出提醒
-            notification.fireDate = components.date;
-            //重复次数，kCFCalendarUnitDay表示一天一次
-            notification.repeatInterval = kCFCalendarUnitDay;
-            notification.timeZone = [NSTimeZone defaultTimeZone];
-            //设置推送时的声音，一个30秒的音乐
-            notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-            notification.alertAction = @"确定";//改变提示框按钮文字
-            notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-            notification.alertTitle = @"我爱我家";
-            notification.alertBody = content;
-//            //显示在icon上的红色圈中的数字,右上角数字加1
-//            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-            
-            NSDictionary *infoDict = @{@"requestIdentifier":clockIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
-            //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
-            notification.userInfo = infoDict;
-            
-            //将这个notification添加到UIApplication中
-            [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+            [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
            
-        }else  if ([alarType isEqualToString:REMINDTYPE_WORKDAY]) {
-            
-            for (NSInteger i = 2; i <= 6; i++) {
-                NSDateComponents *components = [[NSDateComponents alloc] init];
-                components.weekday = i;
-                components.hour = hour;
-                components.minute = minute;
+        } else  if ([alarType isEqualToString:REMINDTYPE_WORKDAY]) {
+
+            for (NSInteger newWeekDay =2; newWeekDay<=6; newWeekDay++) {
                 
-                UILocalNotification *notification = [[UILocalNotification alloc] init];
-                //在选中的时间发出提醒
-                notification.fireDate = components.date;
-                //重复次数，kCFCalendarUnitWeekday表示一周一次
-                notification.repeatInterval = kCFCalendarUnitWeekday;
-                notification.timeZone = [NSTimeZone defaultTimeZone];
-                //设置推送时的声音，默认系统声音
-                //可以换成alarm.soundName = @"sound.wav"，可以换成一个30秒的音乐
-                notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-                //以下两句代码一起使用，改变推送“确定”按钮的文字
-                notification.alertAction = @"确定";//改变提示框按钮文字
-                notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-                notification.alertTitle = @"我爱我家";
-                notification.alertBody = content;
-                //显示在icon上的红色圈中的数字,右上角数字加1
-//                notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+                NSInteger temp = 0;
+                NSInteger days = 0;
                 
-                NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,[self getCurrentWeekDay]];
-                NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
-                //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
-                notification.userInfo = infoDict;
+                temp = newWeekDay - comps.weekday;
+                days = (temp >= 0 ? temp : temp + 7);
                 
-                //将这个notification添加到UIApplication中
-                [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                [comps setHour:hour];
+                [comps setMinute:minute];
+                [comps setSecond:0];
                 
-                
+                NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
+                clockIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
+                [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
             }
-            
-            
+
         } else {
             //周末
-            for (NSInteger i = 1; i <= 7; i++) {
+            for (NSInteger newWeekDay =1; newWeekDay<=7; newWeekDay++) {
                 
-                if (7 == i || 1 == i) {
-                    NSDateComponents *components = [[NSDateComponents alloc] init];
-                    components.weekday = i;
-                    components.hour = hour;
-                    components.minute = minute;
+                if (1== newWeekDay || 7 == newWeekDay) {
+                    NSInteger temp = 0;
+                    NSInteger days = 0;
                     
-                    UILocalNotification *notification = [[UILocalNotification alloc] init];
-                    //在选中的时间发出提醒
-                    notification.fireDate = components.date;
-                    //重复次数，kCFCalendarUnitWeekday表示一周一次
-                    notification.repeatInterval = kCFCalendarUnitWeekday;
-                    notification.timeZone = [NSTimeZone defaultTimeZone];
-                    //设置推送时的声音，一个30秒的音乐
-                    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-                    notification.alertAction = @"确定";//改变提示框按钮文字
-                    notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-                    notification.alertTitle = @"我爱我家";
-                    notification.alertBody = content;
-//                    //显示在icon上的红色圈中的数字,右上角数字加1
-//                    notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+                    temp = newWeekDay - comps.weekday;
+                    days = (temp >= 0 ? temp : temp + 7);
                     
-                    NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,[self getCurrentWeekDay]];
-                    NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
-                    //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
-                    notification.userInfo = infoDict;
+                    [comps setHour:hour];
+                    [comps setMinute:minute];
+                    [comps setSecond:0];
                     
-                    //将这个notification添加到UIApplication中
-                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                    NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
+                    
+                    clockIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
+                    [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
                 }
+                
             }
         }
         
@@ -281,7 +243,7 @@
                     [[UIApplication sharedApplication] cancelLocalNotification:notification];
                 }
             }
-            
+            NSLog(@"删除requestIdentifier： %@", requestIdentifier);
         } else  if ([remindItem.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
             for (NSInteger i = 2; i <= 6; i++) {
                 NSString *requestIdentifier = [NSString stringWithFormat:@"%@%@%ld",remindItem.remindtype,remindItem.remindtime,i];
@@ -292,7 +254,9 @@
                         [[UIApplication sharedApplication] cancelLocalNotification:notification];
                     }
                 }
+                NSLog(@"删除requestIdentifier： %@", requestIdentifier);
             }
+            
         } else  if ([remindItem.remindtype isEqualToString:REMINDTYPE_WEEKEND]) {
             for (NSInteger i = 1; i <= 7; i++) {
                 if (1 == i || 7 == i) {
@@ -304,6 +268,7 @@
                             [[UIApplication sharedApplication] cancelLocalNotification:notification];
                         }
                     }
+                    NSLog(@"删除requestIdentifier： %@", requestIdentifier);
                 }
             }
         }
@@ -338,6 +303,7 @@
             
         }
         
+        NSLog(@"删除requestIdentifiers[arr]： %@", identifiers);
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         [center removePendingNotificationRequestsWithIdentifiers:identifiers];
         [center removeDeliveredNotificationsWithIdentifiers:identifiers];
