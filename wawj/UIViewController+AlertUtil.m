@@ -10,7 +10,7 @@
 
 @implementation UIViewController (AlertUtil)
 
--(void)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message buttonTitle:(nullable NSString *)buttonTitle clickBtn:(void (^)())btnBlock {
+-(void)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message buttonTitle:(nullable NSString *)buttonTitle clickBtn:(void (^)(void))btnBlock {
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
@@ -23,7 +23,7 @@
     
 }
 
--(void)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle clickCancelBtn:(void (^)())cancelBlock otherButtonTitles:(nullable NSString *)otherButtonTitles clickOtherBtn:(void (^)())otherBlock{
+-(void)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle clickCancelBtn:(void (^)(void))cancelBlock otherButtonTitles:(nullable NSString *)otherButtonTitles clickOtherBtn:(void (^)(void))otherBlock{
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     

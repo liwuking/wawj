@@ -120,7 +120,7 @@ static NSString *LocalizedEvaString(NSString *key, NSString *comment) {
 	}
 #endif
 
-	CGRect frame = [[UIScreen mainScreen] applicationFrame];
+	CGRect frame = [[UIScreen mainScreen] bounds];
 	UIView *mainView = [[UIView alloc] initWithFrame:frame];
 	mainView.backgroundColor = [UIColor blackColor];
 	self.view = mainView;

@@ -64,7 +64,7 @@
 
 
 
-+(void)setUsableBankInfos:(NSArray *)usableBankInfos;
+//+(void)setUsableBankInfos:(NSArray *)usableBankInfos;
 
 +(NSArray *)getUsableBankInfos;
 

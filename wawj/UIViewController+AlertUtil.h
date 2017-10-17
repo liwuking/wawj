@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^CallBack)();
+typedef void (^CallBack)(void);
 
 NS_ASSUME_NONNULL_BEGIN
 @interface UIViewController (AlertUtil)

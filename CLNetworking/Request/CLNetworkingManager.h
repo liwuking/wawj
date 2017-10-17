@@ -83,7 +83,7 @@
                  parameters:(id)parameters
                       model:(CLImageModel *)model
                    progress:(void (^)(float writeKB, float totalKB)) progress
-                    succeed:(void (^)())succeed
+                    succeed:(void (^)(void))succeed
                        fail:(void (^)(NSError *error))fail;
 
 /**

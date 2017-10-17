@@ -25,6 +25,8 @@
 
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
+
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
 @end
@@ -85,7 +87,7 @@
     //设置科大讯飞
     [self iFlySet];
     //设置本地推送
-    [self setLocalNotification];
+    [self setLocalNotificationWithOptions:launchOptions];
     
     //获取通讯录授权
 //    [self requestAuthorizationAddressBook];
@@ -98,27 +100,43 @@
     
 }
 
--(void)setLocalNotification {
+-(void)setLocalNotificationWithOptions:(NSDictionary *)launchOptions {
+
+    if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+        // 这里添加处理代码
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+        
+    }
     
-    //iOS 10
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge |
-    __weak __typeof__(self) weakSelf = self;
-    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+    
+    if(SYSTEM_VERSION >= 10){
+        //iOS 10
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge |
+        __weak __typeof__(self) weakSelf = self;
+        [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            
+            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+                [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                    if (!error) {
+                        [[UIApplication sharedApplication] registerForRemoteNotifications];
+                        NSLog(@"request authorization succeeded!");
+                    }
+                }];
+                
+            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                [[strongSelf topViewController] showAlertViewWithTitle:@"提醒" message:@"您还没打开推送通知权限" buttonTitle:@"确定" clickBtn:^{
+                }];
+            }
+            
+        }];
         
-        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
-            [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                if (!error) {
-                    NSLog(@"request authorization succeeded!");
-                }
-            }];
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
-        } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            [[strongSelf topViewController] showAlertViewWithTitle:@"提醒" message:@"您还没打开推送通知权限" buttonTitle:@"确定" clickBtn:^{
-            }];
-        }
+    } else {
         
-    }];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeSound categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        
+    } 
     
     [AlarmClockItem cancelAllExpireAlarmClock];
 
@@ -128,20 +146,20 @@
     
     completionHandler(UNNotificationPresentationOptionAlert|UNNotificationPresentationOptionSound);
     
-    //播放声音
-    AudioServicesPlaySystemSound(1007);
-    //开启震动
-    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
-    NSString *body = notification.request.content.body ;
-    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
-        //关闭震动
-        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-    }];
-    
-    //    //删除已过期的闹钟
-    //    [AlarmClockItem cancelAllExpireAlarmClock];
+//    //播放声音
+//    AudioServicesPlaySystemSound(1007);
+//    //开启震动
+//    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+//    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//
+//    NSString *body = notification.request.content.body ;
+//    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
+//        //关闭震动
+//        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+//    }];
+//
+//    //    //删除已过期的闹钟
+//    //    [AlarmClockItem cancelAllExpireAlarmClock];
     
 }
 
@@ -180,6 +198,7 @@
     [AlarmClockItem cancelAllExpireAlarmClock];
     
 }
+
 void systemAudioCallback()
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);

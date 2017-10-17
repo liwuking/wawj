@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "NSString+Extension.h"
 
+#define SYSTEM_VERSION  [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] firstObject] integerValue]
+
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
 #define UNSHOWPHOTOS  @"unshowphotos"
