@@ -10,7 +10,7 @@
 #import <UIImageView+WebCache.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MessageUI/MessageUI.h>
-
+#import "WARemindFamilyViewController.h"
 @interface WACloseFamilyDetailViewController ()<CLLocationManagerDelegate,MFMessageComposeViewControllerDelegate>
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
@@ -176,6 +176,10 @@
 
 
 - (IBAction)clickRemind:(UIButton *)sender {
+    
+    WARemindFamilyViewController *vc = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
+    vc.closeFamilyItem = self.closeFamilyItem;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

@@ -212,7 +212,6 @@
 }
 
 
-
 -(void)clickAddContactWithCell:(WAAddContactTableViewCell *)cell {
     
     
