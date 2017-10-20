@@ -13,6 +13,10 @@
 #import "WAPreviewRecordViewController.h"
 #import "DatePickerView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "UpYun.h"
+#import "UpYunFormUploader.h"
+#import "UpYunBlockUpLoader.h"
+
 #define RECORD_TOTAL_TIME   10
 #define kRecordAudioFile @"myRecord.caf"
 
@@ -28,6 +32,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeOneLab;
 @property (weak, nonatomic) IBOutlet UILabel *timeTwoLab;
 @property (weak, nonatomic) IBOutlet UIButton *startStopBtn;
+
+@property(nonatomic,assign)NSInteger recordTimeStamp;
 
 //@property(nonatomic,strong)NSTimer *recordTimer;
 @property(nonatomic,assign)NSInteger recordedTime;
@@ -61,9 +67,8 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     [dateFormatter setDateFormat:@"HH:mm"];
-    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
-    self.timeOneLab.text = currentDateDD;;
-
+    NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
+    self.timeOneLab.text = currentDateMM;;
     
     self.cicularView.delegate = self;
     [self.startStopBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
@@ -76,6 +81,17 @@
     // Do any additional setup after loading the view from its nib.
     
     self.recordedTime = 0;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.timeOneLab.text];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *remindDatem = [dateFormatter dateFromString:remindDateMM];
+    NSInteger remindStamp = [remindDatem timeIntervalSince1970];
+    self.recordTimeStamp = remindStamp;
+    
     [self initViews];
     [self setAudioSession];
 
@@ -216,6 +232,7 @@
     WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
     vc.headUrl = self.closeFamilyItem.headUrl;
     vc.recordedTime = self.recordedTime;
+    vc.recordedDate = self.timeOneLab.text;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -311,6 +328,27 @@
     self.timeOneLab.text = time;
     self.timeTwoLab.text = day;
     
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSDate *remindDate;
+    if ([day isEqualToString:@"今天"]) {
+        remindDate = [NSDate dateWithTimeIntervalSinceNow:0*24*60*60];
+    } else if ([day isEqualToString:@"明天"]) {
+        remindDate = [NSDate dateWithTimeIntervalSinceNow:1*24*60*60];
+    }  else {
+        remindDate = [NSDate dateWithTimeIntervalSinceNow:2*24*60*60];
+    }
+    NSString *currentDateDD = [dateFormatter stringFromDate:remindDate];
+    NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,time];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *remindDatem = [dateFormatter dateFromString:remindDateMM];
+    NSInteger remindStamp = [remindDatem timeIntervalSince1970];
+    
+    self.recordTimeStamp = remindStamp;
+    
 }
 
 -(void)datePickerViewWithHidden {
@@ -323,6 +361,7 @@
     self.datePickerView = [[[NSBundle mainBundle] loadNibNamed:@"DatePickerView" owner:self options:nil] lastObject];
     self.datePickerView.delegate = self;
     self.datePickerView.currentTime = self.timeOneLab.text;
+    self.datePickerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     [self.view addSubview:self.datePickerView];
     
     
@@ -331,22 +370,109 @@
 
 - (IBAction)clickRemindBtn:(UIButton *)sender {
     
-    if ([self.timeTwoLab.text isEqualToString:@"今天"]) {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.timeZone = [NSTimeZone localTimeZone];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
-        NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.timeOneLab.text];
+//    if ([self.timeTwoLab.text isEqualToString:@"今天"]) {
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        dateFormatter.timeZone = [NSTimeZone localTimeZone];
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//        NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+//        NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.timeOneLab.text];
+//
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//        NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
+//        NSDate *validDate = [NSDate dateWithTimeIntervalSinceNow:5*60];
+//        if ([remindDate compare:validDate] == NSOrderedAscending ) {
+//            [MBProgressHUD showSuccess:@"请选择有效时间"];
+//            return;
+//        }
+//
+//    }
+    
+    //图片命名
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+    
+    UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
+    NSString *bucketName = @"wawj-test";
+    NSData *fileData = [NSData dataWithContentsOfURL:[self getSavePath]];
+    NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
+    NSString *imgName=[NSString stringWithFormat:@"audio/%@/%@/%@", currentDateString,uuid,kRecordAudioFile];
+    __weak __typeof__(self) weakSelf = self;
+    
+    [MBProgressHUD showMessage:nil];
+    [up uploadWithBucketName:bucketName
+                    operator:@"wawj2017"
+                    password:@"1+1=2yes"
+                    fileData:fileData
+                    fileName:nil
+                     saveKey:imgName
+             otherParameters:nil
+                     success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
+                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                         
+                         NSString *audioUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
+                         
+                         NSLog(@"photoUrl: %@", audioUrl);
+                         
+                         [strongSelf createRemindRequestWith:audioUrl];
+
+                         
+                     }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
+//                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                         NSLog(@"上传失败");
+                         [MBProgressHUD hideHUD];
+                         [MBProgressHUD showError:@"上传失败"];
+                         
+                     }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
+                         NSLog(@"totalBytesCount: %lld  completedBytesCount: %lld",totalBytesCount,completedBytesCount);
+                     }];
+    
+}
+
+-(void)createRemindRequestWith:(NSString *)audioUrl {
+
+    
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];//self.closeFamilyItem.qinmiUser
+    NSDictionary *model = @{@"remind_id": @" ",
+                            @"remind_user":@"12321321",
+                            @"remind_time":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
+                            @"remind_cycle": @"0",
+                            @"remind_audio":audioUrl,
+                            @"remind_seconds":remindTime,
+                            @"create_user":userInfo[USERID],
+                            };
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2004" andModel:model];
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
-        NSDate *validDate = [NSDate dateWithTimeIntervalSinceNow:5*60];
-        if ([remindDate compare:validDate] == NSOrderedAscending ) {
-            [MBProgressHUD showSuccess:@"请选择有效时间"];
-            return;
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        [MBProgressHUD hideHUD];
+        NSString *code = data[@"code"];
+        NSString *desc = data[@"desc"];
+        
+        if ([code isEqualToString:@"0000"]) {
+             [MBProgressHUD showError:@"已经提醒"];
+        } else {
+
+            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
         }
         
-    }
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];
     
 }
 

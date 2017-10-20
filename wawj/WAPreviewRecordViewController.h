@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface WAPreviewRecordViewController : UIViewController
+
 @property (strong, nonatomic)  NSString *headUrl;
-@property(nonatomic,assign)NSInteger recordedTime;
-@property(nonatomic,assign)NSString *recordedDate;
+@property(nonatomic,assign)    NSInteger recordedTime;
+@property(nonatomic,assign)    NSString *recordedDate;
 
 @end

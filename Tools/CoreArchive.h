@@ -14,6 +14,8 @@
 
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
+#define USERID  @"userId"
+
 #define UNSHOWPHOTOS  @"unshowphotos"
 
 #define USER_PHOTO_ARR  @"user_photo_ARR"

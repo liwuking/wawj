@@ -67,7 +67,7 @@
                                         <constraint firstAttribute="width" constant="30" id="4jD-Jj-iJV"/>
                                         <constraint firstAttribute="height" constant="30" id="YBB-gd-5sB"/>
                                     </constraints>
-                                    <state key="normal" image="logo"/>
+                                    <state key="normal" image="friends"/>
                                     <connections>
                                         <action selector="clickStartBtn:" destination="-1" eventType="touchUpInside" id="Phq-yN-VOm"/>
                                     </connections>
@@ -115,6 +115,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="40" height="40"/>
+        <image name="friends" width="45" height="45"/>
     </resources>
 </document>
