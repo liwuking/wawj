@@ -16,6 +16,7 @@
 #import "UpYun.h"
 #import "UpYunFormUploader.h"
 #import "UpYunBlockUpLoader.h"
+#import <JPUSHService.h>
 
 #define RECORD_TOTAL_TIME   10
 #define kRecordAudioFile @"myRecord.caf"
@@ -281,7 +282,6 @@
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = YES;
         
-        self.recordedTime = 0;
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
     }
@@ -432,16 +432,13 @@
 
 -(void)createRemindRequestWith:(NSString *)audioUrl {
 
-    
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];//self.closeFamilyItem.qinmiUser
-    NSDictionary *model = @{@"remind_id": @" ",
-                            @"remind_user":@"12321321",
-                            @"remind_time":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
-                            @"remind_cycle": @"0",
-                            @"remind_audio":audioUrl,
-                            @"remind_seconds":remindTime,
-                            @"create_user":userInfo[USERID],
+    NSDictionary *model = @{@"remindUser":self.closeFamilyItem.qinmiUser,
+                            @"remindTime":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
+                            @"remindAudio":audioUrl,
+                            @"remindSeconds":remindTime,
+                            @"createUser":userInfo[USERID],
                             };
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2004" andModel:model];
@@ -456,6 +453,7 @@
         
         if ([code isEqualToString:@"0000"]) {
              [MBProgressHUD showError:@"已经提醒"];
+            [strongSelf addNotificationWithRemindContent:nil];
         } else {
 
             [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
@@ -475,6 +473,66 @@
     }];
     
 }
+
+
+- (void)addNotificationWithRemindContent:(NSString *)remindContent {
+    
+    JPushNotificationContent *content = [[JPushNotificationContent alloc] init];
+    content.title = @"提醒";
+    content.subtitle = @"我爱我家";
+    content.body = @"This is a test code";
+    content.categoryIdentifier = @"Custom Category Name";
+    
+//    // 5s后提醒 iOS 10 以上支持
+//    JPushNotificationTrigger *trigger1 = [[JPushNotificationTrigger alloc] init];
+//    trigger1.timeInterval = 5;
+//    //每小时重复 1 次 iOS 10 以上支持
+//    JPushNotificationTrigger *trigger2 = [[JPushNotificationTrigger alloc] init];
+//    trigger2.timeInterval = 3600;
+//    trigger2.repeat = YES;
+//
+//    //每周一早上8：00提醒，iOS10以上支持
+//    NSDateComponents *components = [[NSDateComponents alloc] init];
+//    components.weekday = 2;
+//    components.hour = 8;
+//    JPushNotificationTrigger *trigger3 = [[JPushNotificationTrigger alloc] init];
+//    trigger3.dateComponents = components;
+//    trigger3.repeat = YES;
+//
+//    //#import <CoreLocation/CoreLocation.h>
+//    //一到某地点提醒，iOS8以上支持
+//    CLRegion *region = [[CLRegion alloc] initCircularRegionWithCenter:CLLocationCoordinate2DMake(0, 0) radius:0 identifier:@"test"];
+//    JPushNotificationTrigger *trigger4 = [[JPushNotificationTrigger alloc] init];
+//    trigger4.region = region;
+//
+//    //5s后提醒，iOS10以下支持
+//    JPushNotificationTrigger *trigger5 = [[JPushNotificationTrigger alloc] init];
+//    trigger5.fireDate = [NSDate dateWithTimeIntervalSinceNow:5];
+    
+    
+    JPushNotificationTrigger *trigger;
+    if (SYSTEM_VERSION >= 10) {
+        trigger = [[JPushNotificationTrigger alloc] init];
+        trigger.timeInterval = 1;
+    } else {
+        trigger = [[JPushNotificationTrigger alloc] init];
+        trigger.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+    }
+    
+    JPushNotificationRequest *request = [[JPushNotificationRequest alloc] init];
+    request.requestIdentifier = @"sampleRequest";
+    request.content = content;
+    request.trigger = trigger;
+    request.completionHandler = ^(id result) {
+        if (result) {
+            NSLog(@"推送结果返回：%@", result);
+        } else {
+            NSLog(@"推送失败");
+        }
+    };
+    [JPUSHService addNotification:request];
+}
+
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];

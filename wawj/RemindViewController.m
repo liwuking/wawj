@@ -94,6 +94,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
         self.buildRemindView.delegate = self;
         
         [self.view addSubview:self.buildRemindView];
+    }else {
+        [self.buildRemindView removeFromSuperview];
+        self.buildRemindView = nil;
     }
     
 }

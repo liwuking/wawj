@@ -531,19 +531,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mselected" translatesAutoresizingMaskIntoConstraints="NO" id="Exr-lf-iMe">
+                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mselected" translatesAutoresizingMaskIntoConstraints="NO" id="Exr-lf-iMe">
                                 <rect key="frame" x="24" y="114" width="160" height="160"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="CKk-Re-b6j"/>
                                     <constraint firstAttribute="width" constant="160" id="kTu-wc-Ej6"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="mOy-op-37I" appends="YES" id="Js3-4z-uRz"/>
+                                </connections>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WIFIUnselect" translatesAutoresizingMaskIntoConstraints="NO" id="m3Q-P9-eJr">
+                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WIFIUnselect" translatesAutoresizingMaskIntoConstraints="NO" id="m3Q-P9-eJr">
                                 <rect key="frame" x="196" y="114" width="160" height="160"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="9W3-nl-6RZ"/>
                                     <constraint firstAttribute="width" constant="160" id="Blh-v1-bA5"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bDB-Nc-fkv" appends="YES" id="oIe-uD-sdk"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手机流量" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rD-7L-ZnP">
                                 <rect key="frame" x="43" y="288" width="122" height="29"/>
@@ -638,6 +646,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rik-I4-tMt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="mOy-op-37I" userLabel="phoneGes">
+                    <connections>
+                        <action selector="clickPhoneGes:" destination="31F-aP-Vmd" id="kwx-A0-owe"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="bDB-Nc-fkv" userLabel="wifiGes">
+                    <connections>
+                        <action selector="clickWifiGes:" destination="31F-aP-Vmd" id="crv-gN-Aef"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2769" y="134"/>
         </scene>

@@ -23,6 +23,7 @@
 #import "WABindIphoneViewController.h"
 #import "AppDelegate.h"
 #import "AlarmClockItem.h"
+#import <JPUSHService.h>
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -130,6 +131,11 @@
         [AlarmClockItem cancelAllAlarmClock];
         //删除提醒数据库
         [[DBManager defaultManager] deleteSqlite];
+        
+        //删除别名
+        [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+            
+        } seq:[[NSDate date] timeIntervalSince1970]];
         
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];

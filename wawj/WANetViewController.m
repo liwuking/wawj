@@ -34,6 +34,7 @@
 }
 
 
+
 -(void)initViews {
     
     self.title = @"网络设置";
@@ -97,6 +98,32 @@
     [manager startMonitoring];
     
     
+}
+- (IBAction)clickPhoneGes:(UITapGestureRecognizer *)sender {
+    NSURL *url= [NSURL URLWithString:@"App-Prefs:root=MOBILE_DATA_SETTINGS_ID"];
+    if (SYSTEM_VERSION >= 10) {
+        if( [[UIApplication sharedApplication]canOpenURL:url] ) {
+            [[UIApplication sharedApplication]openURL:url options:@{}completionHandler:^(BOOL success) {
+            }];
+        }
+    } else {
+        if( [[UIApplication sharedApplication]canOpenURL:url] ) {
+            [[UIApplication sharedApplication]openURL:url];
+        }
+    }
+}
+- (IBAction)clickWifiGes:(UITapGestureRecognizer *)sender {
+    NSURL *url= [NSURL URLWithString:@"App-Prefs:root=WIFI"];
+    if (SYSTEM_VERSION >= 10) {
+        if( [[UIApplication sharedApplication] canOpenURL:url] ) {
+            [[UIApplication sharedApplication] openURL:url options:@{}completionHandler:^(BOOL  success) {
+            }];
+        }
+    } else {
+        if( [[UIApplication sharedApplication] canOpenURL:url] ) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
 }
 
 -(void)backAction {

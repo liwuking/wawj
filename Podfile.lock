@@ -14,6 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - JCore (1.1.5)
+  - JPush (3.0.6):
+    - JCore (~> 1.1.1)
   - LJContactManager (0.0.5)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
@@ -31,6 +34,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
+  - JPush
   - LJContactManager
   - MBProgressHUD (~> 1.0.0)
   - MJRefresh (~> 3.1.12)
@@ -41,6 +45,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  JCore: 9bd9c770c877c583d98b90a68792b8361974c231
+  JPush: c41be50eb1a574a66aeb68d237f00a4ec6ec3a82
   LJContactManager: d4af72e8cfc92728143d073fdb3c49eea722cb8d
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
@@ -48,6 +54,6 @@ SPEC CHECKSUMS:
   UMengUShare: a5711c54e640b04e3048e931d2b88d50f9cfa55c
   ZLPhotoBrowser: e3b90e4ab9ec5d19ba2ed2ef7c9ded654e1b1c8e
 
-PODFILE CHECKSUM: be9482b1fcdf42a52d77ca8e6932ed0c2a94487e
+PODFILE CHECKSUM: b838fdadf54c815566b9156b33f815f45b0f83aa
 
 COCOAPODS: 1.2.0

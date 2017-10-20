@@ -217,6 +217,7 @@
         /** 创建短信界面(控制器*/
         MFMessageComposeViewController *controller = [MFMessageComposeViewController new];
         //        controller.recipients = @[self.phoneTextField.text];//短信接受者为一个NSArray数组
+        controller.recipients = @[self.closeFamilyItem.qinmiPhone];
         controller.body = text;//短信内容
         controller.messageComposeDelegate = self;//设置代理,代理可不是 controller.delegate = self 哦!!!
         /** 取消按钮的颜色(附带,可不写) */

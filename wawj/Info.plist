@@ -165,6 +165,10 @@
 	<string>是否允许访问麦克风</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>是否允许访问相册</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

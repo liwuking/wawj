@@ -8,6 +8,8 @@
 
 #import "WAInternetViewController.h"
 #import <WebKit/WebKit.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+
 @interface WAInternetViewController ()<WKNavigationDelegate>
 
 @property (strong, nonatomic)WKWebView   *webView;
@@ -19,10 +21,32 @@
 - (BOOL)prefersStatusBarHidden{
     return YES;
 }
+- (NSString*)SSID {
+    NSArray* ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+    id info = nil;
+    for (NSString* ifnam in ifs) {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        if (info && [info count]) {
+            break;
+        }
+    }
+    
+    NSString *str = info[@"SSID"];
+    NSString *str2 = info[@"BSSID"];
+    NSString *str3 = [[ NSString alloc] initWithData:info[@"SSIDDATA"] encoding:NSUTF8StringEncoding];
+    
+    return info[@"SSID"];
+}
+
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    NSString *ssid = [self SSID];
+    
     // 创建配置
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     // 创建UserContentController（提供JavaScript向webView发送消息的方法）

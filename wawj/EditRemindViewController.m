@@ -120,13 +120,15 @@
         {
             self.title = @"新建提醒";
             self.datePicker.minimumDate = [NSDate date]; // 最小时间
+            
         }
             break;
         case EdRemind:
         case ExpRemind:
         {
             self.title = @"编辑提醒";
-           
+            self.datePicker.enabled = NO;
+            
             //right items
             UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"delegate"] style:UIBarButtonItemStyleDone target:self action:@selector(deleteRemind)];
             deleteItem.tintColor = HEX_COLOR(0x666666);
@@ -327,20 +329,47 @@
 
 -(void)deleteRemind {
     
-    NSString *sql =  [NSString stringWithFormat:
-                      @"delete from %@ where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime];
-    
-    NSLog(@"sql = %@",sql);
-    BOOL isCreate = [self.database executeUpdate:sql];
-    if (isCreate) {
-        //删除本地通知
-        [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
-        [MBProgressHUD showSuccess:@"删除成功"];
-        [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
-
-    } else {
-        [MBProgressHUD showSuccess:@"删除失败"];
+    if (self.eventType != ExpRemind) {
+        __weak __typeof__(self) weakSelf = self;
+        [self showAlertViewWithTitle:@"是否删除" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"确定" clickOtherBtn:^{
+            
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            NSString *sql =  [NSString stringWithFormat:
+                              @"delete from %@ where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime];
+            
+            NSLog(@"sql = %@",sql);
+            BOOL isCreate = [strongSelf.database executeUpdate:sql];
+            if (isCreate) {
+                //删除本地通知
+                [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
+                [MBProgressHUD showSuccess:@"删除成功"];
+                [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
+                
+            } else {
+                [MBProgressHUD showSuccess:@"删除失败"];
+            }
+        }];
+    }else {
+        NSString *sql =  [NSString stringWithFormat:
+                          @"delete from %@ where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime];
+        
+        NSLog(@"sql = %@",sql);
+        BOOL isCreate = [self.database executeUpdate:sql];
+        if (isCreate) {
+            //删除本地通知
+            [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
+            [MBProgressHUD showSuccess:@"删除成功"];
+            [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
+            
+        } else {
+            [MBProgressHUD showSuccess:@"删除失败"];
+        }
     }
+    
+    
+    
     
 }
 

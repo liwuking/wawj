@@ -15,7 +15,7 @@
 #import <objc/runtime.h>
 #import "WZLSerializeKit.h"
 #import <CoreLocation/CoreLocation.h>
-
+#import <JPUSHService.h>
 @interface WABindIphoneViewController ()<CLLocationManagerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *getVeryCodeGes;
 @property (nonatomic, strong) CLLocationManager* locationManager;
@@ -291,6 +291,20 @@
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
             [strongSelf.navigationController pushViewController:vc animated:YES];
+            
+            
+
+            
+            //设置别名
+            NSString *userid = [NSString stringWithFormat:@"%@", userInfo[USERID]];
+            [JPUSHService setAlias:userid completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+                if (0 == iResCode) {
+                    NSLog(@"设置别名成功: %@", iAlias);
+                } else {
+                    NSLog(@"设置别名失败");
+                }
+            } seq:[[NSDate date] timeIntervalSince1970]];
+            
             
         } else {
             
