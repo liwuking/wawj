@@ -1,1 +1,0 @@
-../../../LJContactManager/LJContactManager/LJPeoplePickerDelegate.h

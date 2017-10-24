@@ -34,6 +34,21 @@
 
 #pragma mark - CNContactPickerDelegate
 
+- (void)contactPicker:(CNContactPickerViewController *)picker didSelectContact:(CNContact *)contact {
+    NSString *name = [CNContactFormatter stringFromContact:contact style:CNContactFormatterStyleFullName];
+    
+    NSString *phoneNumber = @"";
+    if (contact.phoneNumbers.count) {
+        CNLabeledValue *labeledValue= contact.phoneNumbers[0];
+        phoneNumber = [labeledValue.value stringValue];
+    }
+    
+    
+    if (self.handler)
+    {
+        self.handler(name, phoneNumber);
+    }
+}
 - (void)contactPicker:(CNContactPickerViewController *)picker didSelectContactProperty:(CNContactProperty *)contactProperty
 {
     CNContact *contact = contactProperty.contact;
