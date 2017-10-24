@@ -18,6 +18,8 @@
     
     [CoreArchive setBool:sender.on key:ISZHENGDIAN_BAOSHI];
     
+    self.switchState(sender.on);
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

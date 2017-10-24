@@ -14,8 +14,13 @@
 
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
+#define HEADURL  @"headUrl"
 #define USERID  @"userId"
-
+#define USERNAME @"userName"
+#define BIRTHDAY @"birthday"
+#define BIRTHDAYTYPE @"birthdayType"
+#define GENDER @"gender"
+#define USERIPHONE @"phoneNo"
 #define UNSHOWPHOTOS  @"unshowphotos"
 
 #define USER_PHOTO_ARR  @"user_photo_ARR"
@@ -24,6 +29,7 @@
 #define PHOTO_LIST_DICT  @"user_photoList_ARR"
 
 
+#define REMINDTYPE_ONETIMEONCE      @"onetimeonce"
 #define REMINDTYPE_ONLYONCE      @"onlyonce"
 #define REMINDTYPE_EVERYDAY      @"everyday"
 #define REMINDTYPE_WORKDAY       @"workday"

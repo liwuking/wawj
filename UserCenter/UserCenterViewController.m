@@ -38,7 +38,7 @@
 }
 
 @property(nonatomic, strong)NSString *imageUrl;
-
+@property(nonatomic,assign)BOOL isChange;
 @end
 
 @implementation UserCenterViewController
@@ -70,23 +70,23 @@
     }
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    if (userInfo[@"headUrl"]) {
-        self.imageUrl = userInfo[@"headUrl"];
-        NSURL *imgurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderInfo",userInfo[@"headUrl"]]];
+    if (![userInfo[HEADURL] isEqualToString:@""]) {
+        self.imageUrl = userInfo[HEADURL];
+        NSURL *imgurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderInfo",userInfo[HEADURL]]];
         [_picImgView sd_setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
     }
     
-    if (userInfo[@"userName"]) {
-        nameTextField.text = userInfo[@"userName"];
+    if (![userInfo[USERNAME] isEqualToString:@""]) {
+        nameTextField.text = userInfo[USERNAME];
     }
     
-    if (userInfo[@"birthday"]) {
-        [_selectTimeButton setTitle:userInfo[@"birthday"] forState:UIControlStateNormal];
+    if (![userInfo[BIRTHDAY] isEqualToString:@""]) {
+        [_selectTimeButton setTitle:userInfo[BIRTHDAY] forState:UIControlStateNormal];
     }
-
+    
     UIButton *yangButton = [_calendarBGView viewWithTag:200];
     UIButton *yinButton = [_calendarBGView viewWithTag:201];
-    if ([userInfo[@"birthdayType"] isEqualToString:@"1"]) {
+    if ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"]) {
 
         yangButton.backgroundColor = blueColor;
         [yangButton setTitleColor:whiteColor forState:UIControlStateNormal];
@@ -107,7 +107,7 @@
     }
     
 
-    if ([userInfo[@"gender"] isEqualToString:@"1"]) {
+    if ([userInfo[GENDER] isEqualToString:@"1"]) {
         
         isSexWithMan = NO;
         UIView *womanBGView = _sexWomanBGView;//sender.view;
@@ -222,7 +222,38 @@
 
 
 - (void)backAction {
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    BOOL headUrlBool = [userInfo[HEADURL] isEqualToString:self.imageUrl] ;
+    BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
+    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:_selectTimeButton.titleLabel.text];
+    BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi);
+    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && !isSexWithMan) || ([userInfo[GENDER] isEqualToString:@"0"] && isSexWithMan);
+    
+    if (headUrlBool && userNameBool && birthdayBool && birthdayTypeBool && genderBool) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        __weak typeof(self) weakSelf = self;
+        [self showAlertViewWithTitle:@"您还没有保存信息，确定离开？" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"确定" clickOtherBtn:^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            [strongSelf.navigationController popViewControllerAnimated:YES];
+        }];
+    }
+    
+//
+//    if (self.isChange) {
+//        __weak typeof(self) weakSelf = self;
+//        [self showAlertViewWithTitle:@"您还没有保存信息，确定离开？" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+//
+//        } otherButtonTitles:@"确定" clickOtherBtn:^{
+//            __strong typeof(weakSelf) strongSelf = weakSelf;
+//            [strongSelf.navigationController popViewControllerAnimated:YES];
+//        }];
+//    }
+    
+    
 }
 
 - (IBAction)selectPic:(UITapGestureRecognizer *)sender {
@@ -239,28 +270,7 @@
             _picImgView.image = image;
             
             [strongSelf uploadImage];
-        
-            
-//            NSData *imgData =  UIImageJPEGRepresentation(image, 0.1);
-//            [userImage sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:image];
-//            
-//            boundary = @"----------V2ymHFg03ehbqgZCaKO6jy";
-//            fileParam = @"file";
-//            baseUrl = [NSString stringWithFormat:@"%@yh/n/uploadHeadPortrait",BASE_URL];
-//            fileName = @"image.png";//此文件提前放在可读写区域
-//            //此处首先指定了图片存取路径（默认写到应用程序沙盒中）
-//            NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-//            
-//            //并给文件起个文件名
-//            NSString *uniquePath=[[paths objectAtIndex:0] stringByAppendingPathComponent:@"image.png"];
-//            
-//            BOOL result=[imgData writeToFile:uniquePath atomically:YES];
-//            if(result){
-//                
-//            }else{
-//                
-//            }
-//            [self method4];
+
         }
         
         
@@ -283,7 +293,7 @@
 }
 
 - (IBAction)selectTime:(UIButton *)sender {
-    AppDelegate *app = [UIApplication sharedApplication].delegate;
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     UIView *allBGView = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     allBGView.opaque = NO;
@@ -430,7 +440,7 @@
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
-        
+        NSLog(@"更新成功： %@",data);
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
@@ -442,10 +452,11 @@
             [dict addEntriesFromDictionary:userInfo];
             [CoreArchive setDic:dict key:USERINFO];
             
-            [strongSelf.delegate userCenterViewControllerWithHeadImgRefresh:_picImgView.image];
+//            [strongSelf.delegate userCenterViewControllerWithHeadImgRefresh:_picImgView.image];
             
         } else {
             
+            _picImgView.image = nil;
             [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
                 
             }];
@@ -456,7 +467,8 @@
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
-        
+         _picImgView.image = nil;
+        NSLog(@"更新头像shibai");
         [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
             
         }];
@@ -500,11 +512,7 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            [MBProgressHUD showSuccess:@"保存成功"];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [strongSelf.navigationController popViewControllerAnimated:YES];
-            });
+            [strongSelf.navigationController popViewControllerAnimated:YES];
             
         } else {
             
@@ -545,6 +553,13 @@
 
     if ([_onDatePickerLabel.text isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"生日不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if ([self.imageUrl isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"头像不能为空" buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;

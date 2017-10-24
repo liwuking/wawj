@@ -227,6 +227,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     _iFlySpeechUnderstander = [IFlySpeechUnderstander sharedInstance];
     _iFlySpeechUnderstander.delegate = self;
     [self initRecognizer];
+    
     [self initSynthesizer];
     //pcm播放器初始化
     self.audioPlayer = [[PcmPlayer alloc] init];
@@ -268,7 +269,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark EditRemindViewControllerDelegate
 -(void)editRemindViewControllerWithNewAddRemind:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
     
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
@@ -297,7 +298,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 -(void)editRemindViewControllerWithEditRemind:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
     
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
@@ -370,8 +371,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 item.remindtime = [res stringForColumn:@"remindtime"];
                 item.content = [res stringForColumn:@"content"];
                 item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-                item.remindDate = [self showDateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
-                item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime];
+                item.remindDate = [self showDateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp];
+                item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp];
 
                 if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
                     item.content = [NSString stringWithFormat:@"每天 %@",item.content];
@@ -416,7 +417,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
--(NSDate *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+-(NSDate *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime andCreatetimestamp:(NSString *)createtimestamp{
     
     NSString *dateTime = @"";
     
@@ -432,7 +433,24 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     if ([remindType isEqualToString:REMINDTYPE_ONLYONCE]) {
-        dateTime = currentDateDD;
+        
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        
+        NSString *createDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[createtimestamp integerValue]]];
+        
+        NSString *today = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+        NSString *tomorrow = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+        NSString *afterday = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+        
+        if ([createDateStr isEqualToString:today]) {
+            dateTime = today;
+        } else if ([createDateStr isEqualToString:tomorrow]) {
+            dateTime = tomorrow;
+        } else {
+            dateTime = afterday;
+        }
+        
+        
     } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]){
         
         if ([weekDay isEqualToString:MONDAY]) {
@@ -492,7 +510,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return recentlyRemindDate;
 }
 
--(NSString *)showDateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+-(NSString *)showDateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime andCreatetimestamp:(NSString *)createtimestamp {
     
     NSString *dateTime = @"";
     
@@ -507,7 +525,25 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSString *weekDay = [Utility getDayWeek];
     
     if ([remindType isEqualToString:REMINDTYPE_ONLYONCE]) {
-        dateTime = @"今天";
+        
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        
+        NSString *createDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[createtimestamp integerValue]]];
+        
+        NSString *today = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+        NSString *tomorrow = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+//        NSString *afterday = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+        
+        if ([createDateStr isEqualToString:today]) {
+            dateTime = @"今天";
+        } else if ([createDateStr isEqualToString:tomorrow]) {
+            dateTime = @"明天";
+        } else {
+            dateTime = @"后天";
+        }
+        
+        
+        
     } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]){
         
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -597,23 +633,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
             return;
         }
         
-        
-        //        NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",self.databaseTableName,dateString,timeString,timeInterval,content,timeSp,data[@"text"],dateOrig,remindID,@"0",@"0",@"0",@"0",@"0",@"0",@"0"];
-        //        NSLog(@"sql = %@",sql);
         NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,remindTime,content,timeSp_f];
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {
             [MBProgressHUD showSuccess:@"创建成功"];
             [self getDataFromDatabase];
-            
-            //            //创建闹钟
-            //            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            //            dispatch_async(queue, ^{
-            //                [AlarmClockItem addAlarmClockWithAlarmClockID:timeSp AlarmClockContent:[content substringToIndex:content.length - 1]  AlarmClockDate:timeStr  AlarmClockType:AlarmTypeOnce];
-            //                NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",timeSp,content,timeStr);
-            //            });
-            
-            
             
         }else{
             [MBProgressHUD showSuccess:@"创建失败"];
@@ -688,29 +712,29 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }
     
     //合成服务单例
-    if (_iFlySpeechSynthesizer == nil) {
-        _iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance];
+    if (self.iFlySpeechSynthesizer == nil) {
+        self.iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance];
     }
     
-    _iFlySpeechSynthesizer.delegate = self;
+    self.iFlySpeechSynthesizer.delegate = self;
     
     //设置语速1-100
-    [_iFlySpeechSynthesizer setParameter:instance.speed forKey:[IFlySpeechConstant SPEED]];
+    [self.iFlySpeechSynthesizer setParameter:instance.speed forKey:[IFlySpeechConstant SPEED]];
     
     //设置音量1-100
-    [_iFlySpeechSynthesizer setParameter:instance.volume forKey:[IFlySpeechConstant VOLUME]];
+    [self.iFlySpeechSynthesizer setParameter:instance.volume forKey:[IFlySpeechConstant VOLUME]];
     
     //设置音调1-100
-    [_iFlySpeechSynthesizer setParameter:instance.pitch forKey:[IFlySpeechConstant PITCH]];
+    [self.iFlySpeechSynthesizer setParameter:instance.pitch forKey:[IFlySpeechConstant PITCH]];
     
     //设置采样率
-    [_iFlySpeechSynthesizer setParameter:instance.sampleRate forKey:[IFlySpeechConstant SAMPLE_RATE]];
+    [self.iFlySpeechSynthesizer setParameter:instance.sampleRate forKey:[IFlySpeechConstant SAMPLE_RATE]];
     
     //设置发音人
-    [_iFlySpeechSynthesizer setParameter:instance.vcnName forKey:[IFlySpeechConstant VOICE_NAME]];
+    [self.iFlySpeechSynthesizer setParameter:instance.vcnName forKey:[IFlySpeechConstant VOICE_NAME]];
     
     //设置文本编码格式
-    [_iFlySpeechSynthesizer setParameter:@"unicode" forKey:[IFlySpeechConstant TEXT_ENCODING]];
+    [self.iFlySpeechSynthesizer setParameter:@"unicode" forKey:[IFlySpeechConstant TEXT_ENCODING]];
     
     
     NSDictionary* languageDic=@{@"Guli":@"text_uighur", //维语
@@ -882,7 +906,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 -(void)addRemindItem:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
     
     if ([remindItem.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
         remindItem.content = [NSString stringWithFormat:@"每天 %@",remindItem.content];
@@ -892,7 +916,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         remindItem.content = [NSString stringWithFormat:@"周末 %@",remindItem.content];
     }
     
-    remindItem.remindDate = [self showDateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime];
+    remindItem.remindDate = [self showDateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
     
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
@@ -932,7 +956,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)RemindCell:(RemindCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
-        NSString *readText = cell.contentLab.text;
+        NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
         [self readTextWithString:readText];
         
     }else{
@@ -944,36 +968,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
-#pragma -mark 读出文字
-- (void)readTextWithString:(NSString *)str {
-    if ([str isEqualToString:@""]) {
-        return;
-    }
-    
-    [MBProgressHUD showMessage:@"正在合成..."];
-    if (!_listeningView) {
-        _listeningView = [[NSBundle mainBundle]loadNibNamed:@"ListeningView" owner:self options:nil][0];
-    }
-    
-    if (_audioPlayer != nil && _audioPlayer.isPlaying == YES) {
-        [_audioPlayer stop];
-    }
-    
-    _synType = NomalType;
-    
-    self.hasError = NO;
-    [NSThread sleepForTimeInterval:0.05];
-    
-    self.isSpeechCanceled = NO;
-    
-    _iFlySpeechSynthesizer.delegate = self;
-    
-    [_iFlySpeechSynthesizer startSpeaking:str];
-    if (_iFlySpeechSynthesizer.isSpeaking) {
-        _state = Playing;
-    }
-    
-}
+
 
 #pragma mark - iFly 语义理解 delegate
 - (void) onBeginOfSpeech
@@ -1092,6 +1087,23 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSLog(@"识别取消");
 }
 
+#pragma -mark 读出文字
+- (void)readTextWithString:(NSString *)str {
+    if ([str isEqualToString:@""]) {
+        return;
+    }
+    
+    if (self.audioPlayer != nil && self.audioPlayer.isPlaying == YES) {
+        [self.audioPlayer stop];
+    }
+
+    self.iFlySpeechSynthesizer.delegate = self;
+    
+    [MBProgressHUD showMessage:@"正在合成..."];
+    [self.iFlySpeechSynthesizer startSpeaking:str];
+    
+}
+
 #pragma mark - iFly 语音合成 delegate
 
 /**
@@ -1103,19 +1115,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakBegin
 {
     NSLog(@"%s",__func__);
-    self.isSpeechCanceled = NO;
-    if (_state  != Playing) {
-        NSLog(@"开始播放");
-    }
-    _state = Playing;
+//    self.isSpeechCanceled = NO;
+//    if (_state  != Playing) {
+//        NSLog(@"开始播放");
+//    }
+//    _state = Playing;
+//    [MBProgressHUD hideHUD];
+//
+//    if (!_myApp) {
+//
+//    }
+    
+    [self.listeningView setFrame:[UIScreen mainScreen].bounds];
+    [self.myApp.window addSubview:_listeningView];
+    
     [MBProgressHUD hideHUD];
-    
-    if (!_myApp) {
-        _myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    }
-    
-    [_listeningView setFrame:[UIScreen mainScreen].bounds];
-    [_myApp.window addSubview:_listeningView];
     
 }
 
@@ -1151,7 +1165,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onSpeakProgress:(int) progress beginPos:(int)beginPos endPos:(int)endPos
 {
     NSLog(@"%s",__func__);
-    _listeningView.progressLabel.text = [NSString stringWithFormat:@"%2d%%",progress];
+    self.listeningView.progressLabel.text = [NSString stringWithFormat:@"%2d%%",progress];
     
     //NSLog(@"speak progress %2d%%.", progress);
 }
@@ -1166,7 +1180,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakPaused
 {
     NSLog(@"%s",__func__);
-    _state = Paused;
+//    _state = Paused;
 }
 
 
@@ -1180,7 +1194,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakResumed
 {
     NSLog(@"%s",__func__);
-    _state = Playing;
+//    _state = Playing;
 }
 
 /**
@@ -1208,10 +1222,22 @@ typedef NS_OPTIONS(NSInteger, Status) {
     //        NSLog(@"%@",text);
     //    }
     
-    _state = NotStart;
-    [_iFlySpeechSynthesizer stopSpeaking];
-    [_listeningView removeFromSuperview];
-    _listeningView = nil;
+//    _state = NotStart;
+    
+    if (error.errorCode != 0) {
+        NSString *mes = [NSString stringWithFormat:@"错误码: %i\n错误描述: %@",error.errorCode,error.errorDesc];
+        [self showAlertViewWithTitle:@"语音播放出错" message:mes buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+    }
+    
+    [MBProgressHUD hideHUD];
+    [self.iFlySpeechSynthesizer stopSpeaking];
+    if (self.listeningView) {
+        [self.listeningView removeFromSuperview];
+        self.listeningView = nil;
+    }
+    
     
 }
 
@@ -1224,16 +1250,16 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakCancel
 {
     NSLog(@"%s",__func__);
-    if (_isViewDidDisappear) {
-        return;
-    }
-    self.isSpeechCanceled = YES;
-    
-    if (_synType == UriType) {
-        
-    }else if (_synType == NomalType) {
-        NSLog(@"取消中");
-    }
+//    if (_isViewDidDisappear) {
+//        return;
+//    }
+//    self.isSpeechCanceled = YES;
+//
+//    if (_synType == UriType) {
+//
+//    }else if (_synType == NomalType) {
+//        NSLog(@"取消中");
+//    }
     
 }
 

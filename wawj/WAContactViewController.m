@@ -30,7 +30,7 @@
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
-    self.title = [NSString stringWithFormat:@"选择%@", self.contacts];
+    self.title = [NSString stringWithFormat:@"添加%@", self.contacts];
     
 //    _titleArr = @[@"爸爸",@"妈妈",@"爷爷",                          @"奶奶",@"姥姥",@"姥爷",                          @"老公",@"老婆",@"其他"];
 //    _subTitleArr = @[@[@"儿子", @"女儿", @"孙子", @"孙女"],                     @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],                     @[@"岳父", @"岳母", @"公公", @"婆婆"],                     @[@"干妈", @"干爸", @"儿媳", @"女婿"],                     @[@"外孙", @"外孙女"]];
@@ -73,32 +73,8 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (image)
         {
-            
             [strongSelf.picImage setImage:image];
-            
-//                        NSData *imgData =  UIImageJPEGRepresentation(image, 0.1);
-//                        [userImage sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:image];
-//            
-//                        boundary = @"----------V2ymHFg03ehbqgZCaKO6jy";
-//                        fileParam = @"file";
-//                        baseUrl = [NSString stringWithFormat:@"%@yh/n/uploadHeadPortrait",BASE_URL];
-//                        fileName = @"image.png";//此文件提前放在可读写区域
-//                        //此处首先指定了图片存取路径（默认写到应用程序沙盒中）
-//                        NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-//            
-//                        //并给文件起个文件名
-//                        NSString *uniquePath=[[paths objectAtIndex:0] stringByAppendingPathComponent:@"image.png"];
-//            
-//                        BOOL result=[imgData writeToFile:uniquePath atomically:YES];
-//                        if(result){
-//                            
-//                        }else{
-//                            
-//                        }
-//                        [self method4];
         }
-        
-        
     }];
 
 }
@@ -132,9 +108,9 @@
         return;
     }
     
-    if (self.phoneTF.text.length > 20) {
+    if (self.phoneTF.text.length > 11) {
         
-        [self showAlertViewWithTitle:@"提示" message:@"请输入正确的电话号码" buttonTitle:@"确定" clickBtn:^{
+        [self showAlertViewWithTitle:@"请输入正确的电话号码" message:@"电话号码为11位" buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;
@@ -146,6 +122,14 @@
         }];
         return;
     }
+    
+    if ([self.nameTF.text lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > 12) {
+        [self showAlertViewWithTitle:@"姓名太长" message:@"姓名英文为12个字符，汉字为4个" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
     
     NSDictionary *userinfo = [CoreArchive dicForKey:USERINFO];
     if ([self.phoneTF.text isEqualToString:userinfo[@"phoneNo"]]) {

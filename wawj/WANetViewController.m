@@ -7,18 +7,22 @@
 //
 
 #import "WANetViewController.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 #import "WAInternetViewController.h"
 #import <AFNetworking.h>
 @interface WANetViewController ()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constantX;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mobileFlowImg;
 @property (weak, nonatomic) IBOutlet UIImageView *WIFIFlowImg;
 @property(nonatomic,assign)AFNetworkReachabilityStatus status;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *costantX;
-@property (weak, nonatomic) IBOutlet UILabel *jxLab;
-@property (weak, nonatomic) IBOutlet UIButton *jxImg;
+@property (weak, nonatomic) IBOutlet UILabel *wifiNameLab;
+@property (weak, nonatomic) IBOutlet UILabel *phoneLab;
 
+
+@property (weak, nonatomic) IBOutlet UIView *phoneDescView;
 @end
 
 @implementation WANetViewController
@@ -33,7 +37,23 @@
     [super viewWillDisappear:animated];
 }
 
-
+- (NSString*)SSID {
+    NSArray* ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+    id info = nil;
+    for (NSString* ifnam in ifs) {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        if (info && [info count]) {
+            break;
+        }
+    }
+    
+//    NSString *str = info[@"SSID"];
+//    NSString *str2 = info[@"BSSID"];
+//    NSString *str3 = [[ NSString alloc] initWithData:info[@"SSIDDATA"] encoding:NSUTF8StringEncoding];
+//
+    NSLog(@"wifi名称: %@", info[@"SSID"]);
+    return info[@"SSID"];
+}
 
 -(void)initViews {
     
@@ -75,9 +95,11 @@
                 NSLog(@"4G");
                 strongSelf.mobileFlowImg.image = [UIImage imageNamed:@"mselected"];
                 strongSelf.WIFIFlowImg.image = [UIImage imageNamed:@"WIFIUnselect"];
-                strongSelf.costantX.constant = 70;
-                self.jxImg.hidden = NO;
-                self.jxLab.hidden = NO;
+                strongSelf.costantX.constant = SCREEN_WIDTH/4 - 10;
+                self.phoneDescView.hidden = NO;
+                
+                strongSelf.phoneLab.hidden = NO;
+                strongSelf.wifiNameLab.hidden = YES;
                 
             }
                 break;
@@ -87,8 +109,10 @@
                 NSLog(@"wifi");
                 strongSelf.mobileFlowImg.image = [UIImage imageNamed:@"Umnselected"];
                 strongSelf.WIFIFlowImg.image = [UIImage imageNamed:@"WIFSelected"];
-                strongSelf.costantX.constant = SCREEN_WIDTH-130;
-                
+                strongSelf.costantX.constant = (SCREEN_WIDTH/4) * 3 +10;
+                strongSelf.phoneLab.hidden = YES;
+                strongSelf.wifiNameLab.hidden = NO;
+                strongSelf.wifiNameLab.text = [self SSID];
             }
                 break;
             default:

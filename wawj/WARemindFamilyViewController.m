@@ -359,13 +359,13 @@
 - (IBAction)clickSelectTimeView:(UITapGestureRecognizer *)sender {
     
     self.datePickerView = [[[NSBundle mainBundle] loadNibNamed:@"DatePickerView" owner:self options:nil] lastObject];
+    self.datePickerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     self.datePickerView.delegate = self;
+    self.datePickerView.dayTime = self.timeTwoLab.text;
     self.datePickerView.currentTime = self.timeOneLab.text;
     self.datePickerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     [self.view addSubview:self.datePickerView];
-    
-    
-    
+
 }
 
 - (IBAction)clickRemindBtn:(UIButton *)sender {

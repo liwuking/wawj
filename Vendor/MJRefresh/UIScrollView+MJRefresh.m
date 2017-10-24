@@ -53,12 +53,12 @@ static char MJRefreshFooterViewKey;
  *
  *  @param callback 回调
  */
-- (void)addHeaderWithCallback:(void (^)())callback
+- (void)addHeaderWithCallback:(void (^)(void))callback
 {
     [self addHeaderWithCallback:callback dateKey:nil];
 }
 
-- (void)addHeaderWithCallback:(void (^)())callback dateKey:(NSString*)dateKey
+- (void)addHeaderWithCallback:(void (^)(void))callback dateKey:(NSString*)dateKey
 {
     // 1.创建新的header
     if (!self.header) {

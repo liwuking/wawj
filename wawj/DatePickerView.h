@@ -20,4 +20,6 @@
 
 @property(nonatomic, weak)id<DatePickerViewDelegate> delegate;
 @property(nonatomic,strong)NSString *currentTime;
+@property(nonatomic,strong)NSString *dayTime;
+
 @end

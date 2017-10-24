@@ -215,9 +215,10 @@
     if (indexPath.section == self.dataArr.count) {
         
         __weak __typeof__(self) weakSelf = self;
-        if (![CoreArchive dicForKey:USERINFO][@"userName"]) {
+        NSString *userName = [CoreArchive dicForKey:USERINFO][@"userName"];
+        if ([userName isEqualToString:@""]) {
             
-            [self showAlertViewWithTitle:@"提示" message:@"请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            [self showAlertViewWithTitle:@"提示" message:@"您还没有设置个人信息，请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
                 
             } otherButtonTitles:@"确定" clickOtherBtn:^{
                 
@@ -230,7 +231,8 @@
             return;
         }
         
-        if (![CoreArchive dicForKey:USERINFO][@"headUrl"]) {
+        NSString *headUrl = [CoreArchive dicForKey:USERINFO][@"headUrl"];
+        if ([headUrl isEqualToString:@""]) {
             
             [self showAlertViewWithTitle:@"提示" message:@"请先上传个人头像" cancelButtonTitle:@"取消" clickCancelBtn:^{
                 

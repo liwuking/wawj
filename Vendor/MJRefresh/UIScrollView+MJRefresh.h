@@ -15,7 +15,7 @@
  *
  *  @param callback 回调
  */
-- (void)addHeaderWithCallback:(void (^)())callback;
+- (void)addHeaderWithCallback:(void (^)(void))callback;
 
 /**
  *  添加一个下拉刷新头部控件
@@ -23,7 +23,7 @@
  *  @param callback 回调
  *  @param dateKey 刷新时间保存的key值
  */
-- (void)addHeaderWithCallback:(void (^)())callback dateKey:(NSString*)dateKey;
+- (void)addHeaderWithCallback:(void (^)(void))callback dateKey:(NSString*)dateKey;
 
 /**
  *  添加一个下拉刷新头部控件

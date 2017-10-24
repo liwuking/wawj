@@ -22,4 +22,8 @@
 + (void)cancelAllExpireAlarmClock;
 + (void)cancelAlarmClockWithRemindItem:(RemindItem *)remindItem;
 
+
++(void)addWholePointTellTime;
++(void)cancelWholePointTellTime;
+
 @end

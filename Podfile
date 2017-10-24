@@ -12,10 +12,10 @@ pod 'UMengUShare/Social/ReducedQQ'
   # Pods for wawj
   pod 'AFNetworking', '~> 3.0'
   pod 'MBProgressHUD', '~> 1.0.0'
-  pod 'LJContactManager'
+  #pod 'LJContactManager'
   pod 'SDWebImage', '~> 4.0.0'
   pod 'MJRefresh', '~> 3.1.12'
-  pod 'ZLPhotoBrowser'
+  #pod 'ZLPhotoBrowser'
   pod 'JPush'
   target 'wawjTests' do
     inherit! :search_paths

@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^SwitchState)(BOOL state);
+
 @interface WASetTwoCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
-
 @property (weak, nonatomic) IBOutlet UISwitch *waSwitch;
-
+@property(nonatomic,copy)SwitchState  switchState;
 @end

@@ -36,10 +36,51 @@
     
     self.title = @"添加亲密人";
     
+//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    if ([userInfo[@"gender"] isEqualToString:@"1"]) {
+//        //女
+//        if ([btn.titleLabel.text isEqualToString:@"老婆"] || [btn.titleLabel.text isEqualToString:@"岳父"] || [btn.titleLabel.text isEqualToString:@"岳母"] ) {
+//            [self showAlertViewWithTitle:@"请选择正确角色" message:nil buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//            return;
+//        }
+//    } else {
+//        if ([btn.titleLabel.text isEqualToString:@"老公"] || [btn.titleLabel.text isEqualToString:@"公公"] || [btn.titleLabel.text isEqualToString:@"婆婆"] ) {
+//            [self showAlertViewWithTitle:@"请选择正确角色" message:nil buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//            return;
+//        }
+//    }
     
-    _titleArr = @[@"爸爸",@"妈妈",@"爷爷",
-                          @"奶奶",@"姥姥",@"姥爷",
-                          @"老公",@"老婆",@"其他"];
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    if ([userInfo[@"gender"] isEqualToString:@"1"]) {
+        //女
+        _titleArr = @[@"爸爸",@"妈妈",@"爷爷",
+                      @"奶奶",@"姥姥",@"姥爷",
+                      @"老公",@"儿子",@"其他"];
+        
+        _subTitleArr = @[@[@"女婿", @"女儿", @"孙子", @"孙女"],
+                         @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
+                         @[@"外孙", @"外孙女", @"公公", @"婆婆"],
+                         @[@"干妈", @"干爸", @"儿媳"]];
+        
+    } else {
+        //男
+        _titleArr = @[@"爸爸",@"妈妈",@"爷爷",
+                      @"奶奶",@"姥姥",@"姥爷",
+                      @"儿子",@"老婆",@"其他"];
+        
+        _subTitleArr = @[@[@"女婿", @"女儿", @"孙子", @"孙女"],
+                         @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
+                         @[@"岳父", @"岳母", @"外孙", @"外孙女"],
+                         @[@"干妈", @"干爸", @"儿媳"]];
+    }
+    
+//    _titleArr = @[@"爸爸",@"妈妈",@"爷爷",
+//                          @"奶奶",@"姥姥",@"姥爷",
+//                          @"老公",@"老婆",@"其他"];
     
     
     for (UIView *view in self.view.subviews) {
@@ -60,11 +101,11 @@
     }
     
     
-    _subTitleArr = @[@[@"儿子", @"女儿", @"孙子", @"孙女"],
-                     @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
-                     @[@"岳父", @"岳母", @"公公", @"婆婆"],
-                     @[@"干妈", @"干爸", @"儿媳", @"女婿"],
-                     @[@"外孙", @"外孙女"]];
+//    _subTitleArr = @[@[@"儿子", @"女儿", @"孙子", @"孙女"],
+//                     @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
+//                     @[@"岳父", @"岳母", @"公公", @"婆婆"],
+//                     @[@"干妈", @"干爸", @"儿媳", @"女婿"],
+//                     @[@"外孙", @"外孙女"]];
     
     _contactPersonView = [[[NSBundle mainBundle] loadNibNamed:@"ContactPersonView" owner:self options:nil] lastObject];
     _contactPersonView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.7f];
@@ -73,13 +114,14 @@
         
         for (NSInteger j = 0; j < titleArr.count; j++) {
             
-            NSInteger width = (280-50)/4;
+            NSInteger width = (300-50)/4;
             NSString *title = titleArr[j];
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(10*(j+1) + j* width, 10*(i+1) + 40*i, width, 40);
             [btn setTitle:title forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(clickSubTitleBtn:) forControlEvents:UIControlEventTouchUpInside];
             [btn setBackgroundImage:[UIImage imageNamed:@"borrow"] forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:20];
             btn.clipsToBounds = YES;
             btn.layer.cornerRadius = 5;
             [_contactPersonView.btnViews addSubview:btn];
@@ -95,6 +137,7 @@
 }
 
 -(void)clickSubTitleBtn:(UIButton *)btn {
+    
     
     NSLog(@"%@", btn.titleLabel.text);
     WAContactViewController *vc = [[WAContactViewController alloc] initWithNibName:@"WAContactViewController" bundle:nil];

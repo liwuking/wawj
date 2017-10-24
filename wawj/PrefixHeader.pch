@@ -22,7 +22,7 @@
 #import "MBProgressHUD+Extension.h"
 #import "NSDictionary+Util.h"
 // 测试URL
-#define KMain_URL   @"http://123.207.170.53/service"//@"10.61.33.27:8081/wawjapp/service"  //
+#define KMain_URL   @"http://123.207.170.53:8888/service"//@"10.61.33.27:8081/wawjapp/service"  //
 #define HTTP_IMAGE   @"http://wawj-test.b0.upaiyun.com"
 #define DATA_REMINDTABLENAME  [NSString stringWithFormat:@"remindList_%@", [CoreArchive dicForKey:USERINFO][@"userId"]]
 #endif /* PrefixHeader_pch */

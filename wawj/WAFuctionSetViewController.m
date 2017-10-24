@@ -32,11 +32,13 @@
 @end
 
 @implementation WAFuctionSetViewController
-{
-    NSString               *_tableName;
-    NSMutableArray         *_allDataArr;
-    FMDatabase             *_db;
+
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
+
 -(void)initView {
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
@@ -52,52 +54,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)createDatabaseTable {
-    
-    if (!_allDataArr) {
-        _allDataArr = [[NSMutableArray alloc]init];
-    }
-    [_allDataArr removeAllObjects];
-    
-    
-    NSDictionary *keys = @{@"date"                 : @"string",
-                           @"time"                 : @"string",
-                           @"time_interval"        : @"string",
-                           @"event"                : @"string",
-                           @"time_stamp"           : @"string",
-                           @"content"              : @"string",
-                           @"dateOrig"             : @"string",
-                           @"remind_ID"            : @"string",
-                           @"state"                : @"string",
-                           @"reserved_parameter_1" : @"string",
-                           @"reserved_parameter_2" : @"string",
-                           @"reserved_parameter_3" : @"string",
-                           @"reserved_parameter_4" : @"string",
-                           @"reserved_parameter_5" : @"string",
-                           @"reserved_parameter_6" : @"string"};
-    
-    _tableName = @"remindList";
-    
-    if ([CoreArchive dicForKey:USERINFO]) {
-        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-        NSString *userID = userInfo? userInfo[@"userId"] : @"";
-        _tableName = [_tableName stringByAppendingFormat:@"_%@",userID];
-    }
-    
-    
-    [[DBManager defaultManager] createTableWithName:_tableName AndKeys:keys Result:^(BOOL isOK) {
-        if (!isOK) {
-            //建表失败！
-            //[MBProgressHUD hideHUD];
-            //[self showNoRemindView];
-            return ;
-        }
-    } FMDatabase:^(FMDatabase *database) {
-        _db = database;
-        //[self loadData];
-    }];
-    
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -198,21 +155,36 @@
     
     if (0 == indexPath.section) {
         
+        NSDictionary *userDict = [CoreArchive dicForKey:USERINFO];
+        
         WASetOneCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetOneCell" owner:nil options:nil] lastObject];
         NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-        if (userInfo[@"headUrl"]) {
+        NSString *headurl = userInfo[@"headUrl"];
+        if (![headurl isEqualToString:@""]) {
 
-            [cell.imageView sd_setImageWithURL:userInfo[@"headUrl"] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:headurl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                 
             }];
         }
+        cell.userNameLab.text = userDict[USERNAME];
+        cell.userIphone.text = userDict[USERIPHONE];
         return cell;
         
     } else if(1 == indexPath.section && 0 == indexPath.row){
         
-        
         WASetTwoCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetTwoCell" owner:nil options:nil] lastObject];
         cell.waSwitch.on = [CoreArchive boolForKey:ISZHENGDIAN_BAOSHI];
+//        __weak typeof(self) weakSelf = self;
+        cell.switchState = ^(BOOL state) {
+//            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (state) {
+                [AlarmClockItem addWholePointTellTime];
+            } else {
+                [AlarmClockItem cancelWholePointTellTime];
+            }
+        };
+        
+        
         
         return cell;
         

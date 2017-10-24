@@ -10,9 +10,11 @@
 
 #import "DBManager.h"
 #import "AlarmClockItem.h"
+#import "TimePickerView.h"
 @interface EditRemindViewController ()
 
-@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UIView *timeView;
+@property (strong, nonatomic) TimePickerView *pickerView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIView *btnsView;
 @property (weak, nonatomic) IBOutlet UIButton *btnOne;
@@ -110,16 +112,24 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.datePicker.datePickerMode = UIDatePickerModeTime;
-    NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
-    self.datePicker.locale = locale;
-     self.datePicker.minimumDate = nil;
+//    self.datePicker.datePickerMode = UIDatePickerModeTime;
+//    NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
+//    self.datePicker.locale = locale;
+//     self.datePicker.minimumDate = nil;
+//
+    self.pickerView = [[[NSBundle mainBundle] loadNibNamed:@"TimePickerView" owner:nil options:nil] lastObject];
+    self.pickerView.frame = CGRectMake(0, 0, self.timeView.frame.size.width, self.timeView.frame.size.height);
+    [self.timeView addSubview:self.pickerView];
     
     switch (self.eventType) {
         case NRemind:
         {
             self.title = @"新建提醒";
-            self.datePicker.minimumDate = [NSDate date]; // 最小时间
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"HH:mm"];
+            NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
+            self.pickerView.currentTime = currentDateMM;
+//            self.datePicker.minimumDate = [NSDate date]; // 最小时间
             
         }
             break;
@@ -127,8 +137,8 @@
         case ExpRemind:
         {
             self.title = @"编辑提醒";
-            self.datePicker.enabled = NO;
-            
+//            self.datePicker.enabled = NO;
+            self.pickerView.isEnble = NO;
             //right items
             UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"delegate"] style:UIBarButtonItemStyleDone target:self action:@selector(deleteRemind)];
             deleteItem.tintColor = HEX_COLOR(0x666666);
@@ -157,8 +167,12 @@
                 [self clickBtnFour:self.btnFour];
             }
             
-            self.datePicker.minimumDate = nil; // 最小时间
-            self.datePicker.date = remindDate;
+//            self.datePicker.minimumDate = nil; // 最小时间
+//            self.datePicker.date = remindDate;
+            
+            [dateFormatter setDateFormat:@"HH:mm"];
+            NSString *currentDateMM = [dateFormatter stringFromDate:remindDate];
+            self.pickerView.currentTime = currentDateMM;
             
         }
             break;
@@ -224,7 +238,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     dateFormatter.dateFormat = @"HH:mm";
-    NSString *dateStrHourMinite = [dateFormatter stringFromDate:self.datePicker.date];
+    NSString *dateStrHourMinite = self.pickerView.selectedTime;//[dateFormatter stringFromDate:self.datePicker.date];
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
@@ -232,8 +246,14 @@
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
-    NSInteger createtimestamp = [remindDate timeIntervalSince1970];
-
+    
+    NSInteger createtimestamp;
+    if (self.eventType == NRemind || self.eventType == ExpRemind) {
+        createtimestamp = [remindDate timeIntervalSince1970];
+    } else {
+        createtimestamp = [self.remindItem.createtimestamp integerValue];
+    }
+    
     if ([self.alarmType isEqualToString:REMINDTYPE_ONLYONCE]) {
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
@@ -517,7 +537,7 @@
 
 - (IBAction)clickBtnOne:(UIButton *)sender {
     
-    self.datePicker.minimumDate = [NSDate date];
+//    self.datePicker.minimumDate = [NSDate date];
     self.alarmType = REMINDTYPE_ONLYONCE;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
@@ -536,7 +556,7 @@
 
 - (IBAction)clickBtnTwo:(UIButton *)sender {
 
-     self.datePicker.minimumDate = nil;
+//     self.datePicker.minimumDate = nil;
     self.alarmType = REMINDTYPE_EVERYDAY;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
@@ -553,7 +573,7 @@
 
 - (IBAction)clickBtnThree:(UIButton *)sender {
 
-    self.datePicker.minimumDate = nil;
+//    self.datePicker.minimumDate = nil;
     self.alarmType = REMINDTYPE_WEEKEND;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);
@@ -570,7 +590,7 @@
 
 - (IBAction)clickBtnFour:(UIButton *)sender {
 
-    self.datePicker.minimumDate = nil;
+//    self.datePicker.minimumDate = nil;
     self.alarmType = REMINDTYPE_WORKDAY;
     
     sender.backgroundColor = HEX_COLOR(0xfaa41c);

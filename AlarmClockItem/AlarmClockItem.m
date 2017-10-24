@@ -14,6 +14,105 @@
 
 @implementation AlarmClockItem
 
++(void)addWholePointTellTime {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
+    NSArray *times = [currentDateMM componentsSeparatedByString:@":"];
+    NSInteger hour = [times[0] integerValue];
+    NSInteger minute = [times[1] integerValue];
+    
+    if (minute > 0) {
+        hour = hour+1;
+    }
+
+    
+//    if (SYSTEM_VERSION < 10) {
+        
+        //取得系统的时间，并将其一个个赋值给变量
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+        calendar.timeZone = [NSTimeZone localTimeZone];
+        NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;//这句我也不明白具体时用来做什么。。。
+        NSDateComponents *comps = [[NSDateComponents alloc] init];
+        comps = [calendar components:unitFlags fromDate: [NSDate date]];
+        [comps setHour:hour];
+        [comps setMinute:0];
+        [comps setSecond:0];
+         NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
+        NSString *content = @"整点报时";
+        NSString *clockIdentifier = REMINDTYPE_ONETIMEONCE;
+        
+        [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:REMINDTYPE_ONETIMEONCE fireDate:newFireDate];
+        
+//    } else {
+//
+//        NSString *content = @"整点报时";
+//         NSString *clockIdentifier = REMINDTYPE_ONETIMEONCE;
+//
+//        //Local Notification
+//        UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
+//        notificationContent.title = @"提醒";
+//        notificationContent.subtitle = @"我爱我家";
+//        notificationContent.body = content;
+//        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.m4r"];
+//        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//        NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+//
+//        [dateFormatter setDateFormat:@"HH:mm"];
+//        NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
+//        NSArray *times = [currentDateMM componentsSeparatedByString:@":"];
+//        NSInteger hour = [times[0] integerValue];
+//        NSInteger minute = [times[1] integerValue];
+//
+//        if (minute > 0) {
+//            hour = hour+1;
+//        }
+//
+//        NSString *remindDateMM = [NSString stringWithFormat:@"%@ %ld:00",currentDateDD,hour];
+//
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//        NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
+//
+//        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:60 repeats:YES];
+//        trigger.nextTriggerDate = remindDate;
+//        NSString *requestIdentifier = [NSString stringWithFormat:@"%@",clockIdentifier];
+//        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier
+//                                                                              content:notificationContent
+//                                                                              trigger:trigger];
+//        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+//
+//        }];
+//    }
+}
++(void)cancelWholePointTellTime {
+    
+    NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSString *requestIdentifier = REMINDTYPE_ONETIMEONCE;
+    
+    if (SYSTEM_VERSION >= 10) {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center removePendingNotificationRequestsWithIdentifiers:@[requestIdentifier]];
+        [center removeDeliveredNotificationsWithIdentifiers:@[requestIdentifier]];
+    } else {
+        for (UILocalNotification *notification in notiArray) {
+            NSDictionary *info = notification.userInfo;
+            if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
+                //将这个notification从UIApplication中移除
+                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+            }
+        }
+    }
+
+}
+
+
 +(NSInteger)getCurrentWeekDay {
     NSDate *dateNow = [NSDate date];
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
@@ -38,6 +137,9 @@
     } else if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
         //重复次数，一天一次
         notification.repeatInterval = kCFCalendarUnitDay;
+    } else if ([alarType isEqualToString:REMINDTYPE_ONETIMEONCE]) {
+        //重复次数，一小时一次
+        notification.repeatInterval = kCFCalendarUnitHour;
     } else {
         //重复次数，一周一次
         notification.repeatInterval = kCFCalendarUnitWeekday;

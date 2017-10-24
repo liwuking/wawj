@@ -290,10 +290,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
                 [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
                     if (!error) {
-                        [[UIApplication sharedApplication] registerForRemoteNotifications];
                         NSLog(@"request authorization succeeded!");
                     }
                 }];
+                [[UIApplication sharedApplication] registerForRemoteNotifications];
                 
             } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
                 __strong __typeof__(weakSelf) strongSelf = weakSelf;
