@@ -84,6 +84,8 @@
     
 }
 
+
+
 /**
  *  设置音频会话
  */
@@ -95,18 +97,18 @@
     [audioSession setActive:YES error:nil];
 }
 
-/**
- *  取得录音文件保存路径
- *
- *  @return 录音文件路径
- */
--(NSURL *)getSavePath{
-    NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
-    NSLog(@"file path:%@",urlStr);
-    NSURL *url=[NSURL fileURLWithPath:urlStr];
-    return url;
-}
+///**
+// *  取得录音文件保存路径
+// *
+// *  @return 录音文件路径
+// */
+//-(NSURL *)getSavePath{
+//    NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
+//    NSLog(@"file path:%@",urlStr);
+//    NSURL *url=[NSURL fileURLWithPath:urlStr];
+//    return url;
+//}
 
 /**
  *  创建播放器
@@ -115,7 +117,7 @@
  */
 -(AVAudioPlayer *)audioPlayer{
     if (!_audioPlayer) {
-        NSURL *url=[self getSavePath];
+        NSURL *url= [NSURL URLWithString:self.audioUrl];//[self getSavePath];
         NSError *error=nil;
         _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
         _audioPlayer.numberOfLoops=0;

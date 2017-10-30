@@ -347,6 +347,7 @@
                                             <constraint firstAttribute="width" constant="58" id="2SI-ch-600"/>
                                             <constraint firstAttribute="height" constant="30" id="GWD-oe-KRK"/>
                                         </constraints>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickBOne:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="xoz-x5-0Fv"/>
                                         </connections>
@@ -357,7 +358,7 @@
                                             <constraint firstAttribute="width" constant="46" id="0BK-DT-VSM"/>
                                             <constraint firstAttribute="height" constant="35" id="Xgb-kW-SGM"/>
                                         </constraints>
-                                        <state key="normal" image="图层11"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickBTwo:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="4Mk-Bs-zWr"/>
                                         </connections>
@@ -368,7 +369,7 @@
                                             <constraint firstAttribute="height" constant="88" id="GCM-HI-iv9"/>
                                             <constraint firstAttribute="width" constant="100" id="r8t-Cg-7XO"/>
                                         </constraints>
-                                        <state key="normal" image="图层9"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickATwo:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="9kt-Fb-OrB"/>
                                         </connections>
@@ -379,7 +380,7 @@
                                             <constraint firstAttribute="width" constant="100" id="aCe-LT-hTo"/>
                                             <constraint firstAttribute="height" constant="88" id="o94-Z2-eaQ"/>
                                         </constraints>
-                                        <state key="normal" image="图层12"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickAFour:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="Zw5-JU-V0X"/>
                                         </connections>
@@ -390,7 +391,7 @@
                                             <constraint firstAttribute="width" constant="100" id="OJM-DT-wFH"/>
                                             <constraint firstAttribute="height" constant="88" id="sKW-TM-qtd"/>
                                         </constraints>
-                                        <state key="normal" image="图层10"/>
+                                        <state key="normal" backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickAOne:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="cWk-PW-3th"/>
                                         </connections>
@@ -401,7 +402,7 @@
                                             <constraint firstAttribute="height" constant="35" id="5EI-9L-cq7"/>
                                             <constraint firstAttribute="width" constant="46" id="vf7-pC-NoA"/>
                                         </constraints>
-                                        <state key="normal" image="图层13"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickBFour:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="2el-E1-BiJ"/>
                                         </connections>
@@ -412,7 +413,7 @@
                                             <constraint firstAttribute="width" constant="58" id="fW2-Ia-dRX"/>
                                             <constraint firstAttribute="height" constant="30" id="xbj-IU-Gem"/>
                                         </constraints>
-                                        <state key="normal" image="图层7"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickBThree:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="aAB-YU-R6W"/>
                                         </connections>
@@ -423,7 +424,7 @@
                                             <constraint firstAttribute="height" constant="88" id="8qS-oC-RS4"/>
                                             <constraint firstAttribute="width" constant="100" id="toI-jm-o8t"/>
                                         </constraints>
-                                        <state key="normal" image="图层8"/>
+                                        <state key="normal" image=" " backgroundImage=" "/>
                                         <connections>
                                             <action selector="clickAThree:" destination="WF9-3Q-1wW" eventType="touchUpInside" id="FAt-3L-tBw"/>
                                         </connections>
@@ -441,7 +442,7 @@
                                 <constraints>
                                     <constraint firstItem="T6Y-e9-Boh" firstAttribute="centerX" secondItem="koi-xD-I4a" secondAttribute="centerX" id="1nr-Aw-xaA"/>
                                     <constraint firstItem="OT7-fU-oPK" firstAttribute="centerX" secondItem="koi-xD-I4a" secondAttribute="centerX" id="7jJ-D6-oeH"/>
-                                    <constraint firstAttribute="height" constant="183" id="7vc-af-8D8"/>
+                                    <constraint firstAttribute="height" constant="183" id="7vc-af-8D8" userLabel="middleViewHeght"/>
                                     <constraint firstItem="8eW-r9-gAq" firstAttribute="centerX" secondItem="koi-xD-I4a" secondAttribute="centerX" id="8le-Vb-IDw"/>
                                     <constraint firstItem="rFC-bw-03A" firstAttribute="top" secondItem="koi-xD-I4a" secondAttribute="top" id="B1G-Ah-ZSV"/>
                                     <constraint firstAttribute="bottom" secondItem="JdZ-TA-xkH" secondAttribute="bottom" id="FRS-VL-bue"/>
@@ -465,22 +466,20 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGc-ZY-t2t">
-                                <rect key="frame" x="0.0" y="423" width="375" height="244"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="424" width="375" height="243"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eGc-ZY-t2t" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="23g-Hr-VWe"/>
                             <constraint firstItem="koi-xD-I4a" firstAttribute="top" secondItem="9Jp-b5-SdG" secondAttribute="bottom" id="3uc-5L-8T6"/>
-                            <constraint firstItem="uIs-Ri-6vO" firstAttribute="top" secondItem="eGc-ZY-t2t" secondAttribute="bottom" id="6z6-1V-RME"/>
-                            <constraint firstItem="9Jp-b5-SdG" firstAttribute="top" secondItem="hWy-Ix-ZWs" secondAttribute="top" id="ExB-AT-Yac"/>
+                            <constraint firstItem="9Jp-b5-SdG" firstAttribute="top" secondItem="hWy-Ix-ZWs" secondAttribute="top" id="ExB-AT-Yac" userLabel="constantHeadTop"/>
                             <constraint firstAttribute="trailing" secondItem="eGc-ZY-t2t" secondAttribute="trailing" id="GqP-os-AkE"/>
-                            <constraint firstItem="uIs-Ri-6vO" firstAttribute="top" secondItem="eGc-ZY-t2t" secondAttribute="bottom" id="VqY-xY-P01"/>
                             <constraint firstAttribute="trailing" secondItem="koi-xD-I4a" secondAttribute="trailing" id="buC-PA-HeO"/>
-                            <constraint firstItem="eGc-ZY-t2t" firstAttribute="top" secondItem="koi-xD-I4a" secondAttribute="bottom" id="cII-GL-S6B"/>
+                            <constraint firstItem="eGc-ZY-t2t" firstAttribute="top" secondItem="koi-xD-I4a" secondAttribute="bottom" constant="1" id="cII-GL-S6B"/>
                             <constraint firstItem="9Jp-b5-SdG" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="g1F-66-Heh"/>
-                            <constraint firstItem="eGc-ZY-t2t" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="hO8-3q-l9d"/>
+                            <constraint firstAttribute="bottom" secondItem="eGc-ZY-t2t" secondAttribute="bottom" id="rCh-B2-rEj"/>
                             <constraint firstAttribute="trailing" secondItem="9Jp-b5-SdG" secondAttribute="trailing" id="skq-yI-TFH"/>
                             <constraint firstItem="koi-xD-I4a" firstAttribute="leading" secondItem="hWy-Ix-ZWs" secondAttribute="leading" id="vWt-4S-CUH"/>
                         </constraints>
@@ -490,6 +489,8 @@
                     <connections>
                         <outlet property="backGroudImg" destination="JdZ-TA-xkH" id="tyy-BP-9wQ"/>
                         <outlet property="btnView" destination="eGc-ZY-t2t" id="RXe-Kp-Nyk"/>
+                        <outlet property="constantHeadTop" destination="ExB-AT-Yac" id="Nic-lF-SBs"/>
+                        <outlet property="middleViewHeght" destination="7vc-af-8D8" id="kh2-RR-AFb"/>
                         <outlet property="phoneText" destination="h76-Nd-kBq" id="Oh9-mc-PgL"/>
                         <outlet property="timeOne" destination="Wua-9c-Llv" id="Xha-gR-x2O"/>
                         <outlet property="timeTwo" destination="H9d-x1-TJf" id="AEp-pS-vnc"/>
@@ -520,7 +521,7 @@
                                 </constraints>
                                 <state key="normal" image="图层21"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbi-6f-PJC">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbi-6f-PJC">
                                 <rect key="frame" x="57.5" y="452" width="260" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
@@ -532,7 +533,7 @@
                                 <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <size key="titleShadowOffset" width="15" height="0.0"/>
                                 <state key="normal" title="继续上网" image="图层22">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="clickContinueNet:" destination="31F-aP-Vmd" eventType="touchUpInside" id="IZl-Ei-nNb"/>
@@ -556,10 +557,10 @@
                                                     <constraint firstAttribute="height" constant="30" id="VHf-Im-Q5n"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4G" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KI-Ol-KkU">
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4G" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KI-Ol-KkU">
                                                 <rect key="frame" x="0.0" y="118" width="167.5" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="t8l-LU-js5"/>
@@ -679,6 +680,7 @@
                         <outlet property="constantX" destination="hEf-1D-AcO" id="Qc6-hh-vim"/>
                         <outlet property="costantX" destination="hEf-1D-AcO" id="LHS-57-Nsf"/>
                         <outlet property="mobileFlowImg" destination="cmA-tj-XCc" id="kqf-ln-QaQ"/>
+                        <outlet property="netBtn" destination="Kbi-6f-PJC" id="KZh-gf-rGQ"/>
                         <outlet property="phoneDescView" destination="KKH-Uc-Lj3" id="TZj-xO-Za3"/>
                         <outlet property="phoneLab" destination="6KI-Ol-KkU" id="4eS-gJ-cX3"/>
                         <outlet property="wifiNameLab" destination="3Db-FC-s7f" id="vza-AY-Y1G"/>
@@ -797,22 +799,16 @@
         </scene>
     </scenes>
     <resources>
+        <image name=" " width="16" height="16"/>
         <image name="111" width="36" height="36"/>
         <image name="WIFSelected" width="175" height="175"/>
         <image name="bgTime" width="562" height="360"/>
         <image name="homeLightOff" width="562" height="273"/>
         <image name="iphone" width="23" height="36"/>
         <image name="mselected" width="175" height="175"/>
-        <image name="图层10" width="45" height="38"/>
-        <image name="图层11" width="35" height="35"/>
-        <image name="图层12" width="37" height="37"/>
-        <image name="图层13" width="36" height="28"/>
         <image name="图层21" width="35" height="35"/>
         <image name="图层22" width="32" height="28"/>
         <image name="图层26" width="31" height="31"/>
-        <image name="图层7" width="36" height="31"/>
-        <image name="图层8" width="37" height="38"/>
-        <image name="图层9" width="36" height="41"/>
         <image name="返回" width="23" height="36"/>
         <image name="验证码输入" width="26" height="21"/>
     </resources>

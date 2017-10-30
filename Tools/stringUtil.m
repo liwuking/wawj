@@ -8,6 +8,7 @@
 
 #import "stringUtil.h"
 #import "Utility.h"
+#import <sys/utsname.h>
 @implementation stringUtil
 #pragma mark - 输入是否为电子邮箱的验证
 + (BOOL)isValidateEmail:(NSString *)email

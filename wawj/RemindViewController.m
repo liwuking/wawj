@@ -14,7 +14,7 @@
 #import "iflyMSC/IFlyMSC.h"
 #import "PcmPlayer.h"
 #import <MJRefresh.h>
-
+#import <UIImageView+WebCache.h>
 #import "TTSConfig.h"
 #import "ListeningView.h"
 #import "DBManager.h"
@@ -28,6 +28,7 @@
 #import "EditRemindViewController.h"
 
 #import "RemindItem.h"
+#import <AVFoundation/AVFoundation.h>
 
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
@@ -52,14 +53,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
 //@property (nonatomic,strong) IFlyTextUnderstander *iFlyUnderStand;
 
 @property (nonatomic, copy)  NSString * defaultText;
-@property (nonatomic) BOOL isCanceled;
-@property (nonatomic,strong) NSString *result;
+@property (nonatomic) BOOL isCanceled;@property (nonatomic,strong) NSString *result;
 @property (nonatomic) BOOL isSpeechUnderstander;//当前状态是否是语音语义理解
+@property (nonatomic) BOOL isTextUnderstander;//当前状态是否是文本语义理解
 
 //语音合成对象
 @property (nonatomic, strong) IFlySpeechSynthesizer * iFlySpeechSynthesizer;
-@property (nonatomic, assign) BOOL isSpeechCanceled;
-@property (nonatomic, assign) BOOL hasError;
+//@property (nonatomic, assign) BOOL isSpeechCanceled;
+//@property (nonatomic, assign) BOOL hasError;
 @property (nonatomic, assign) BOOL isViewDidDisappear;
 @property (nonatomic, strong) PcmPlayer *audioPlayer;
 @property (nonatomic, assign) Status state;
@@ -72,6 +73,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property(nonatomic, strong)NSString               *databaseTableName;
 @property(nonatomic, strong)ListeningView          *listeningView;
 @property(nonatomic, strong)BuildRemindView *buildRemindView;
+
+@property (nonatomic,strong) AVAudioPlayer *audioFilePlayer;//音频播放器，用于播放录音文件
+
+
 @end
 
 
@@ -223,7 +228,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     //讯飞初始化
-    self.isSpeechUnderstander = NO;
     _iFlySpeechUnderstander = [IFlySpeechUnderstander sharedInstance];
     _iFlySpeechUnderstander.delegate = self;
     [self initRecognizer];
@@ -241,6 +245,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
     //创建数据库表
     [self createDatabaseTable];
 
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    
+    self.isSpeechUnderstander = NO;
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -269,7 +279,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark EditRemindViewControllerDelegate
 -(void)editRemindViewControllerWithNewAddRemind:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp isOhter:NO];
     
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
@@ -298,7 +308,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 -(void)editRemindViewControllerWithEditRemind:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp isOhter:NO];
     
     NSIndexPath *indexPath;
     NSMutableArray *oriDataArr = [[NSMutableArray alloc] initWithArray:self.dataArr];
@@ -331,7 +341,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSDictionary *keys = @{@"remindtype"                 : @"string",
                            @"remindtime"                 : @"string",
                            @"createtimestamp"            : @"string",
-                           @"content"                    : @"string"};
+                           @"content"                    : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string"
+                           };
     
     __weak __typeof__(self) weakSelf = self;
     [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
@@ -371,8 +384,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 item.remindtime = [res stringForColumn:@"remindtime"];
                 item.content = [res stringForColumn:@"content"];
                 item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+                item.headurl = [res stringForColumn:@"headurl"];
+                item.audiourl = [res stringForColumn:@"audiourl"];
                 item.remindDate = [self showDateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp];
-                item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp];
+                item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp isOhter:![item.audiourl isEqualToString:@""]];
 
                 if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
                     item.content = [NSString stringWithFormat:@"每天 %@",item.content];
@@ -417,7 +432,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
--(NSDate *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime andCreatetimestamp:(NSString *)createtimestamp{
+-(NSDate *)dateTimeWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime andCreatetimestamp:(NSString *)createtimestamp isOhter:(BOOL)isOther{
     
     NSString *dateTime = @"";
     
@@ -449,8 +464,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         } else {
             dateTime = afterday;
         }
-        
-        
+    
     } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]){
         
         if ([weekDay isEqualToString:MONDAY]) {
@@ -503,7 +517,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     NSLog(@"dateTime: %@", dateTime);
     
-    dateTime = [NSString stringWithFormat:@"%@ %@:00",dateTime,remindTime];
+    if (isOther) {
+        dateTime = [NSString stringWithFormat:@"%@ %@:30",dateTime,remindTime];
+    } else {
+        dateTime = [NSString stringWithFormat:@"%@ %@:00",dateTime,remindTime];
+    }
+    
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *recentlyRemindDate = [dateFormatter dateFromString:dateTime];
     
@@ -633,7 +652,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
             return;
         }
         
-        NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,remindTime,content,timeSp_f];
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,remindTime,content,@"",@"",timeSp_f];
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {
             [MBProgressHUD showSuccess:@"创建成功"];
@@ -828,21 +847,19 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 开始录音
 - (void)beginDistinguish {
     
-    if (self.isSpeechUnderstander){
-        return;
-    }
-    
     //设置为麦克风输入语音
     [self.iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
     
-    bool ret = [self.iFlySpeechUnderstander startListening];
+    BOOL ret = [self.iFlySpeechUnderstander startListening];
     
     if (ret) {
-        
+
         self.isSpeechUnderstander = YES;
         self.isCanceled = NO;
-        
+
     } else {
+        
+        [MBProgressHUD showError:@"启动服务失败"];
         
     }
     
@@ -868,6 +885,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
     cell.contentLab.text = remindItem.content;
     cell.remindTimeLab.text = remindItem.remindtime;
     cell.remindDateLab.text = remindItem.remindDate;
+    cell.cellIndexPath = indexPath;
+    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"friends"]];
     
     return cell;
 }
@@ -876,12 +895,20 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    
+    if (![remindItem.audiourl isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+        return;
+    }
+    
     EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
     vc.eventType = EdRemind;
-    vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    vc.remindItem = remindItem;
     vc.database = self.db;
-//    vc.delegate = self;
-    
     [self.navigationController pushViewController:vc animated:YES];
     
     __weak __typeof__(self) weakSelf = self;
@@ -906,7 +933,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 -(void)addRemindItem:(RemindItem *)remindItem {
     
-    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp];
+    remindItem.recentlyRemindDate = [self dateTimeWithRemindType:remindItem.remindtype andRemindTime:remindItem.remindtime andCreatetimestamp:remindItem.createtimestamp isOhter:NO];
     
     if ([remindItem.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
         remindItem.content = [NSString stringWithFormat:@"每天 %@",remindItem.content];
@@ -951,13 +978,99 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
+#pragma -mark 播放本地音频
+-(void)playAudioWithFilePath:(NSString *)audioFilePath {
+    
+    
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
+    if (!exists) {
+        [MBProgressHUD showError:@"播放失败"];
+        return;
+    }
+    
+     NSData *data = [[NSFileManager defaultManager] contentsAtPath:audioFilePath];
+    
+//    NSURL *url= [NSURL URLWithString:audioFilePath];
+    
+    NSError *error=nil;
+    self.audioFilePlayer=[[AVAudioPlayer alloc] initWithData:data error:&error];
+    self.audioFilePlayer.numberOfLoops=0;
+    self.audioFilePlayer.volume = 1;
+    [self.audioFilePlayer prepareToPlay];
+    if (error) {
+        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
+        [MBProgressHUD showError:@"播放失败"];
+        return ;
+    }
+    
+    [self.audioPlayer play];
+    
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    
+}
+
+/* if an error occurs while decoding it will be reported to the delegate. */
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error {
+    
+}
+
 
 #pragma mark - RemindCell delegate
-- (void)RemindCell:(RemindCell *)cell AndIndexPath:(NSIndexPath *)indexPath {
+- (void)RemindCell:(RemindCell *)cell clickedIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
-        NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
-        [self readTextWithString:readText];
+        
+        RemindItem *remindItem = self.dataArr[indexPath.row];
+        if (![remindItem.audiourl isEqualToString:@""]) {
+            
+            [self playAudioWithFilePath:remindItem.audiourl];
+            
+//            if ([[remindItem.audiourl componentsSeparatedByString:@":"][0] isEqualToString:@"file"]) {
+//                [self playAudioWithFilePath:remindItem.audiourl];
+//            } else {
+//                NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+//                AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+//
+//                NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
+//                NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+//
+//                [MBProgressHUD showMessage:nil];
+//                __weak __typeof__(self) weakSelf = self;
+//                NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+//
+//                    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//                    //            NSURL *str = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+//                    NSURL *str = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%ld.caf",(unsigned long)[remindItem.audiourl hash]]];
+//
+//                    return str;
+//
+//                } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+//                    NSLog(@"File downloaded to: %@", filePath);
+//                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//                    [MBProgressHUD hideHUD];
+//
+//                    if (!error) {
+//                        [MBProgressHUD showError:@"播放失败"];
+//                    }else {
+//                        [strongSelf playAudioWithFilePath:filePath.absoluteString];
+//                    }
+//
+//                }];
+//                [downloadTask resume];
+//
+//            }
+            
+        } else {
+            
+            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+            [self readTextWithString:readText];
+            
+        }
+        
+        
         
     }else{
 
@@ -973,7 +1086,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma mark - iFly 语义理解 delegate
 - (void) onBeginOfSpeech
 {
-    //[_popUpView showText: @"正在录音"];
+//    [_popUpView showText: @"正在录音"];
     NSLog(@"%s",__func__);
 }
 
@@ -982,7 +1095,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onEndOfSpeech
 {
-    // [_popUpView showText: @"停止录音"];
+//     [_popUpView showText: @"停止录音"];
     NSLog(@"%s",__func__);
 }
 
@@ -993,13 +1106,13 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onVolumeChanged: (int)volume
 {
     NSLog(@"%s",__func__);
-    //    if (self.isCanceled) {
-    //        [_popUpView removeFromSuperview];
-    //        return;
-    //    }
-    //
-    //    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
-    //    [_popUpView showText: vol];
+//    if (self.isCanceled) {
+//        [_popUpView removeFromSuperview];
+//        return;
+//    }
+//
+//    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
+//    [_popUpView showText: vol];
 }
 
 /**
@@ -1010,29 +1123,23 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onError:(IFlySpeechError *) error
 {
-    NSLog(@"%s",__func__);
+    NSLog(@"%s %d %@ %@",__func__,error.errorCode,error.errorDesc,_result);
     
     NSString *text ;
-    if (self.isCanceled) {
-        text = @"语义取消";
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showSuccess:@"录音取消"];
-    }
-    else if (error.errorCode ==0 ) {
+    if (error.errorCode ==0 ) {
         if (_result.length == 0) {
             text = @"无识别结果";
             [MBProgressHUD hideHUD];
             [MBProgressHUD showSuccess:@"说话时间过短或不太清晰"];
         }
-    }
-    else
-    {
+    }else {
+        [MBProgressHUD hideHUD];
         if (_result.length == 0) {
             [MBProgressHUD hideHUD];
-            [MBProgressHUD showSuccess:@"error.errorDesc"];
+            [MBProgressHUD showSuccess:[NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc]];
         }
     }
-    
+
     self.isSpeechUnderstander = NO;
     
     [_listeningView removeFromSuperview];
@@ -1055,7 +1162,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     for (NSString *key in dic) {
         [result appendFormat:@"%@",key];
     }
-    
+
     NSLog(@"听写结果：%@",result);
     if (result.length == 0) {
         _result = @"nil";
@@ -1068,7 +1175,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSLog(@"responseJSON = %@",responseJsonDic);
     
     if (responseJsonDic[@"semantic"]) {
-        //        [_noRemindView removeFromSuperview];
+
         [self insertRemindWithData:responseJsonDic];
         
     }else{
@@ -1127,7 +1234,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 //    }
     
     [self.listeningView setFrame:[UIScreen mainScreen].bounds];
-    [self.myApp.window addSubview:_listeningView];
+    [self.myApp.window addSubview:self.listeningView];
     
     [MBProgressHUD hideHUD];
     

@@ -218,6 +218,8 @@
 
 - (IBAction)clickNext:(id)sender {
     
+    [self.view endEditing:YES];
+    
     if ([self.iphoneTextField.text isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"手机号不能为空" buttonTitle:@"确定" clickBtn:^{
             

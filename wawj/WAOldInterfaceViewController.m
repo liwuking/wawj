@@ -19,11 +19,14 @@
 #import "WANewInterfaceViewController.h"
 
 #import <JPUSHService.h>
-
+#import <sys/utsname.h>
 #define ChineseMonths @[@"正月", @"二月", @"三月", @"四月", @"五月", @"六月", @"七月", @"八月",@"九月", @"十月", @"冬月", @"腊月"]
 #define ChineseDays @[@"初一", @"初二", @"初三", @"初四", @"初五", @"初六", @"初七", @"初八", @"初九", @"初十",@"十一", @"十二", @"十三", @"十四", @"十五", @"十六", @"十七", @"十八", @"十九", @"二十", @"廿一", @"廿二", @"廿三", @"廿四", @"廿五", @"廿六", @"廿七", @"廿八", @"廿九", @"三十"]
 
 @interface WAOldInterfaceViewController ()<MFMessageComposeViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnViewConstant;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleViewHeght;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constantHeadTop;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backGroudImg;
 @property (weak, nonatomic) IBOutlet UIView *btnView;
@@ -44,6 +47,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -56,11 +60,43 @@
 }
 
 
+-(BOOL)isIphone5 {
+    //需要导入头文件：
+    
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString*platform = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
+    
+    if([platform isEqualToString:@"iPhone5,1"]
+       || [platform isEqualToString:@"iPhone5,2"]
+       || [platform isEqualToString:@"iPhone5,3"]
+       || [platform isEqualToString:@"iPhone5,4"]
+       || [platform isEqualToString:@"iPhone6,1"]
+       || [platform isEqualToString:@"iPhone6,2"]) {
+        return YES;
+    }
+    return NO;
+    
+}
+
 
 
 -(void)initViews {
     
     self.arrText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"后退"];
+    CGFloat height = (SCREEN_HEIGHT- 423 - 1 - 1.5)/4;
+    if ([self isIphone5]) {
+        self.constantHeadTop.constant = -50;
+        self.middleViewHeght.constant = 160;
+        height = (SCREEN_HEIGHT-350 - 1 - 1.5)/4;
+    }
+    CGFloat width = (SCREEN_WIDTH-1)/3;
+    UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 1, 1);
+    UIImage *bgImage = [UIImage imageNamed:@"grayBg"];
+    bgImage = [bgImage resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeTile];
+    
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 3; j++) {
             
@@ -68,18 +104,18 @@
             NSInteger index = i*3+j;
             [btn setTitle:self.arrText[index] forState:UIControlStateNormal];
             btn.titleLabel.textColor = [UIColor whiteColor];
-            btn.titleLabel.font = [UIFont systemFontOfSize:40];
+            btn.titleLabel.font = [UIFont systemFontOfSize:35];
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
-            NSInteger height = (SCREEN_HEIGHT-420)/4;
-            NSInteger width = SCREEN_WIDTH/3;
-            btn.frame = CGRectMake(j*width, i*height, width, height);
-            btn.backgroundColor = [UIColor clearColor];
+            btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
+//            NSLog(@"btn.frame: %@", NSStringFromCGRect(btn.frame));
+            [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
             btn.tag = index;
             [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self.btnView addSubview:btn];
             
         }
     }
+    
     
     device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
@@ -146,6 +182,10 @@
     
     
     self.phoneView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
+    
+    
+    
+    
 }
 
 -(void)timeUp {
@@ -229,8 +269,11 @@
 - (IBAction)clickAFour:(UIButton *)sender {
     
     if ([self.phoneText.text isEqualToString:@""]) {
-        WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
-        [self.navigationController pushViewController:vc animated:YES];
+//        WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
+//        [self.navigationController pushViewController:vc animated:YES];
+        [self showAlertViewWithTitle:@"您还未拨号" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
     } else {
         
         [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@",self.phoneText.text] cancelButtonTitle:@"取消" clickCancelBtn:^{

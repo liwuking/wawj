@@ -17,9 +17,6 @@
 +(void)addWholePointTellTime {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-//    NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
-    
     [dateFormatter setDateFormat:@"HH:mm"];
     NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
     NSArray *times = [currentDateMM componentsSeparatedByString:@":"];
@@ -148,7 +145,9 @@
     NSLog(@"本地推送时间: %@  类型: %@", remindDate,alarType);
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
-    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
+//    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
+    NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
+    notification.soundName = soundPath;
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我爱我家";
@@ -165,11 +164,19 @@
     
 }
 
++ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
+                        AlarmClockDateTime:(NSString *)dateTime
+                            AlarmClockType:(NSString *)alarType
+                      AlarmClockIdentifier:(NSString *)clockIdentifier
+                   AlarmClockAudioFilePath:(NSString *)audioFilePath {
+    
+}
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
                             AlarmClockDateTime:(NSString *)dateTime
                             AlarmClockType:(NSString *)alarType
                             AlarmClockIdentifier:(NSString *)clockIdentifier
+                                  isOhters:(BOOL)isOther
 {
     
     NSArray *arr = [dateTime componentsSeparatedByString:@":"];
@@ -189,8 +196,17 @@
             
             [comps setHour:hour];
             [comps setMinute:minute];
-            [comps setSecond:0];
+            if (isOther && [alarType isEqualToString:REMINDTYPE_ONLYONCE]) {//他人设置提醒+30s
+                [comps setSecond:30];
+            } else {
+                [comps setSecond:0];
+            }
+            
             NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            
+            NSLog(@"newFireDate: %@", [formatter stringFromDate:newFireDate]);
             
             [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
            
@@ -243,7 +259,10 @@
         notificationContent.title = @"提醒";
         notificationContent.subtitle = @"我爱我家";
         notificationContent.body = content;
-        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.m4r"];
+//        NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
+//        notificationContent.sound = [UNNotificationSound soundNamed:soundPath];
+
+        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.caf"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             
@@ -340,6 +359,7 @@
             NSString *requestIdentifier = [NSString stringWithFormat:@"%@%@",remindItem.remindtype,remindItem.remindtime];
             for (UILocalNotification *notification in notiArray) {
                 NSDictionary *info = notification.userInfo;
+                
                 if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
                     //将这个notification从UIApplication中移除
                     [[UIApplication sharedApplication] cancelLocalNotification:notification];

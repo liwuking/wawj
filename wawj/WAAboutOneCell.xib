@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WAAboutOneCell" id="KGk-i7-Jjw" customClass="WAAboutOneCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlJ-Dl-K9b">
+                        <rect key="frame" x="10" y="7" width="115" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="6hu-ff-IVT"/>
+                            <constraint firstAttribute="width" constant="115" id="8au-kx-XgT"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="向右" translatesAutoresizingMaskIntoConstraints="NO" id="R5m-Du-I4V">
+                        <rect key="frame" x="288" y="18" width="14" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="YDK-dm-hzG"/>
+                            <constraint firstAttribute="width" constant="14" id="d5K-Fb-GEm"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LlJ-Dl-K9b" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="STS-GI-VBy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="R5m-Du-I4V" secondAttribute="trailing" constant="10" id="Vxw-BV-FDe"/>
+                    <constraint firstItem="R5m-Du-I4V" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="WuL-za-YLi"/>
+                    <constraint firstItem="LlJ-Dl-K9b" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="ccS-IL-cFY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="titleLab" destination="LlJ-Dl-K9b" id="J15-BM-JUb"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="向右" width="14" height="21"/>
+    </resources>
+</document>

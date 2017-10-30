@@ -12,6 +12,10 @@
 
 #define SYSTEM_VERSION  [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] firstObject] integerValue]
 
+#define USER_APP_ARR  @"user_app_arr"
+
+
+
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
 #define HEADURL  @"headUrl"

@@ -30,7 +30,7 @@
 #endif
 // 如果需要使用idfa功能所需要引入的头文件（可选）
 #import <AdSupport/AdSupport.h>
-
+#import "WAPreviewRecordViewController.h"
 
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
@@ -49,8 +49,13 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    
+
+    
     [CoreArchive setBool:YES key:FIRST_ENTER];
     if ([CoreArchive dicForKey:USERINFO]) {
+        
+        
         
         if ([CoreArchive boolForKey:INTERFACE_NEW]) {
             
@@ -102,9 +107,7 @@
     //设置本地推送
     [self setLocalNotificationWithOptions:launchOptions];
     [self setJPush:launchOptions];//设置极光推送
- 
 
-    
     //获取通讯录授权
 //    [self requestAuthorizationAddressBook];
     //网络监控
@@ -112,10 +115,34 @@
     //设置友盟
     [self setUMShare];
     
+//    [self copyFileToDocuments:@"ThunderSong"];
 
+//    [self downloadCaf];
+    
     return YES;
     
 }
+
+//-(void)downloadCaf {
+//    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+//    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+//    NSURL *URL = [NSURL URLWithString:@"http://wawj-test.b0.upaiyun.com/audio/20171029/1509273420.caf"];
+//    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+//
+//    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+//        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+//    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+//        NSLog(@"File downloaded to: %@", filePath);
+//        if (!error) {
+//        }
+//
+//        NSLog(@"添加远程提醒成功");
+//
+//    }];
+//
+//    [downloadTask resume];
+//}
 
 
 -(void)setJPush:(NSDictionary *)launchOptions {
@@ -184,8 +211,43 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //                    green:122.0 / 255
 //                     blue:255.0 / 255
 //                    alpha:1];
+    
+    NSDictionary *dictionary =[NSJSONSerialization JSONObjectWithData:deviceToken options:NSJSONReadingMutableContainers error:nil];
+    NSLog(@"NSData 转 NSDictionary =%@",dictionary);
+    
     NSLog(@"%@", [NSString stringWithFormat:@"Device Token: %@", deviceToken]);
     [JPUSHService registerDeviceToken:deviceToken];
+}
+
+- (void)createDatabaseTable {
+    
+    if (![CoreArchive dicForKey:USERINFO]) return;
+    
+    self.databaseTableName = @"remindList";
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSString *userID = userInfo? userInfo[@"userId"] : @"";
+    self.databaseTableName = [self.databaseTableName stringByAppendingFormat:@"_%@",userID];
+    
+    NSDictionary *keys = @{@"remindtype"                 : @"string",
+                           @"remindtime"                 : @"string",
+                           @"createtimestamp"            : @"string",
+                           @"content"                    : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string"
+                           };
+    
+    
+    __weak __typeof__(self) weakSelf = self;
+    
+    [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
+        //        if (!isOK) {
+        //            return ;
+        //        }
+    } FMDatabase:^(FMDatabase *database) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.database = database;
+    }];
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -196,54 +258,219 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+    
+////    //移除通知推送
+//    JPushNotificationIdentifier *d = [[JPushNotificationIdentifier alloc] init];
+//    d.identifiers = @[notification.request.identifier];
+//    [JPUSHService removeNotification:d];
+
     NSDictionary * userInfo = notification.request.content.userInfo;
-    
-    UNNotificationRequest *request = notification.request; // 收到推送的请求
-    UNNotificationContent *content = request.content; // 收到推送的消息内容
-    
-    NSNumber *badge = content.badge;  // 推送消息的角标
-    NSString *body = content.body;    // 推送消息体
-    UNNotificationSound *sound = content.sound;  // 推送消息的声音
-    NSString *subtitle = content.subtitle;  // 推送消息的副标题
-    NSString *title = content.title;  // 推送消息的标题
+    NSString *title = userInfo[@"aps"][@"alert"];//content.title;  // 推送消息的标题
     
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
-//        NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
+        NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
+
+        //创建数据库
+        [self createDatabaseTable];
+        
+     NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
+        NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
+        NSString *headUrl = @"";
+        NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+        for (NSDictionary *dict in arr) {
+            if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",remindUser]]) {
+                headUrl = dict[@"headUrl"];
+                break;
+            }
+        }
+        
+        NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.timeZone = [NSTimeZone localTimeZone];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
+        NSString *recordTime = [dateFormatter stringFromDate:date];
+    
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+        NSURL *URL = [NSURL URLWithString:audioUrl];
+        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+        
+        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+            
+            NSLog(@"File downloaded to: %@", filePath);
+            if (!error) return ;
+            NSString *url = [filePath.absoluteString substringFromIndex:8];
+            NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,recordTime,title,url,headUrl,remindTimeStamp+30];
+            NSLog(@"sql: %@",sql);
+            if ([self.database executeUpdate:sql]) {
+                //添加一个新的闹钟
+                NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,recordTime];
+                [AlarmClockItem addAlarmClockWithAlarmClockContent:title AlarmClockDateTime:recordTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
+                
+                NSLog(@"添加远程提醒成功");
+            }
+
+        }];
+        [downloadTask resume];
+        
+        if (SYSTEM_VERSION < 10) {
+            NSInteger remindSeconds = [userInfo[@"nativeData"][@"remindSeconds"] integerValue];
+            __weak __typeof__(self) weakSelf = self;
+            [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                
+                WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
+                vc.audioUrl = audioUrl;
+                vc.recordedTime = remindSeconds;
+                vc.headUrl = headUrl;
+                vc.recordedDate = recordTime;
+                
+                [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
+                
+            }];
+        }
+        
+        
+//        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
 //
-//        [rootViewController addNotificationCount];
+////            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+////
+////            NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
 //
-    }
-    else {
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//            NSString *documentPath = [paths objectAtIndex:0];
+//
+//            //使用建议的路径
+//            NSString *sourcePath = [documentPath stringByAppendingPathComponent:response.suggestedFilename];
+//
+//            NSLog(@"%@",documentPath);
+//
+//            NSUInteger hashStr = [audioUrl hash];
+//            NSString *destinationFilePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%lu.caf",hashStr]];
+//
+//            NSError *error;
+////            [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&error];
+//            [[NSFileManager defaultManager] moveItemAtPath:sourcePath toPath:destinationFilePath error:&error];
+//
+//            if (error) {
+//                NSLog(@"转移出错: %@", error.description);
+//            }
+//            return [NSURL fileURLWithPath:destinationFilePath];
+//
+//        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+//
+//            NSLog(@"File downloaded to: %@", filePath.absoluteString);
+//
+//            if (!error) {
+//                audioUrl = filePath.absoluteString;//[filePath.absoluteString substringFromIndex:8];
+//            }
+//            NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,recordTime,title,audioUrl,headUrl,remindTimeStamp+30];
+//            NSLog(@"sql: %@",sql);
+//            if ([self.database executeUpdate:sql]) {
+//
+//                //添加一个新的闹钟
+//                NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,recordTime];
+//                [AlarmClockItem addAlarmClockWithAlarmClockContent:title AlarmClockDateTime:recordTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
+//
+//                NSLog(@"添加远程提醒成功");
+//
+//            }
+//        }];
+        
+        
+    } else {
         // 判断为本地通知
-        NSLog(@"iOS10 前台收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+        NSLog(@"iOS10 前台收到本地通知:%@\n}",userInfo);
     }
-    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
+    
+    completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
 }
 
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     NSDictionary * userInfo = response.notification.request.content.userInfo;
-    UNNotificationRequest *request = response.notification.request; // 收到推送的请求
-    UNNotificationContent *content = request.content; // 收到推送的消息内容
     
-    NSNumber *badge = content.badge;  // 推送消息的角标
-    NSString *body = content.body;    // 推送消息体
-    UNNotificationSound *sound = content.sound;  // 推送消息的声音
-    NSString *subtitle = content.subtitle;  // 推送消息的副标题
-    NSString *title = content.title;  // 推送消息的标题
+    NSString *title = userInfo[@"aps"][@"alert"];// 推送消息的标题
     
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
-//        NSLog(@"iOS10 收到远程通知:%@", [self logDic:userInfo]);
-//        [rootViewController addNotificationCount];
+        NSLog(@"iOS10 收到远程通知:%@", [self logDic:userInfo]);
+        //创建数据库
+        [self createDatabaseTable];
+        
+        NSInteger remindSeconds = [userInfo[@"nativeData"][@"remindSeconds"] integerValue];
+        NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
+        NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
+        
+        NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.timeZone = [NSTimeZone localTimeZone];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
+        NSString *recordTime = [dateFormatter stringFromDate:date];
+        
+        NSString *headUrl = @"";
+        NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+        for (NSDictionary *dict in arr) {
+            if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",remindUser]]) {
+                headUrl = dict[@"headUrl"];
+                break;
+            }
+        }
+        
+        __weak __typeof__(self) weakSelf = self;
+        [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            
+            WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
+            vc.audioUrl = audioUrl;
+            vc.recordedTime = remindSeconds;
+            vc.headUrl = headUrl;
+            vc.recordedDate = recordTime;
+            
+            [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
+            
+        }];
+
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+        
+        NSURL *URL = [NSURL URLWithString:audioUrl];
+        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+        
+        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+            
+            NSLog(@"File downloaded to: %@", filePath);
+            if (!error) return ;
+            NSString *url = [filePath.absoluteString substringFromIndex:8];
+            NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,recordTime,title,url,headUrl,remindTimeStamp+30];
+            NSLog(@"sql: %@",sql);
+            if ([self.database executeUpdate:sql]) {
+                
+                //添加一个新的闹钟
+                NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,recordTime];
+                [AlarmClockItem addAlarmClockWithAlarmClockContent:title AlarmClockDateTime:recordTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
+                
+                NSLog(@"添加远程提醒成功");
+                
+            }
+   
+        }];
+        [downloadTask resume];
         
     }
     else {
         // 判断为本地通知
-        NSLog(@"iOS10 收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+        NSLog(@"iOS10 收到本地通知:userInfo：%@\n}",userInfo);
     }
-    
     completionHandler();  // 系统要求执行这个方法
 }
 #endif
@@ -564,6 +791,145 @@ void systemAudioCallback()
     return str;
 }
 
+
+-(BOOL)adjustRemindRepeatWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
+    
+    NSInteger remindTimeHash = [remindTime hash];
+    
+    if ([self.database open]) {
+        
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype != 'onlyonce' or createtimestamp > %ld",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        FMResultSet * res = [self.database executeQuery:sql];
+        
+        NSMutableArray *dataArrOnlyOnce = [@[] mutableCopy];
+        NSMutableArray *dataArrEveryDay = [@[] mutableCopy];
+        NSMutableArray *dataArrWeekend = [@[] mutableCopy];
+        NSMutableArray *dataArrWorkDay = [@[] mutableCopy];
+        
+        while ([res next]) {
+            RemindItem *item = [[RemindItem alloc] init];
+            item.remindtype = [res stringForColumn:@"remindtype"];
+            item.remindtime = [res stringForColumn:@"remindtime"];
+            item.content = [res stringForColumn:@"content"];
+            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            
+            if ([item.remindtype isEqualToString:REMINDTYPE_ONLYONCE]) {
+                [dataArrOnlyOnce addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
+                [dataArrEveryDay addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_WEEKEND]) {
+                [dataArrWeekend addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
+                [dataArrWorkDay addObject:item.remindtime];
+            }
+        }
+        
+        NSString *weekDay = [Utility getDayWeek];
+        BOOL isWeekend =
+        [weekDay isEqualToString:SATURDAY] ||
+        [weekDay isEqualToString:SUNDAY];
+        
+        //比较是否有重复
+        if ([remindType isEqualToString:REMINDTYPE_ONLYONCE]) {
+            
+            for (NSString *remindtimeStr in dataArrOnlyOnce) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            if (isWeekend) {
+                
+                for (NSString *remindtimeStr in dataArrWeekend) {
+                    if ([remindtimeStr hash] == remindTimeHash) {
+                        return NO;
+                    }
+                }
+                
+            } else {
+                
+                for (NSString *remindtimeStr in dataArrWorkDay) {
+                    if ([remindtimeStr hash] == remindTimeHash) {
+                        return NO;
+                    }
+                }
+                
+            }
+            
+            
+            
+        } else if ([remindType isEqualToString:REMINDTYPE_EVERYDAY]) {
+            
+            for (NSString *remindtimeStr in dataArrOnlyOnce) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            for (NSString *remindtimeStr in dataArrWeekend) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            for (NSString *remindtimeStr in dataArrWorkDay) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            
+        } else if ([remindType isEqualToString:REMINDTYPE_WEEKEND]) {
+            
+            for (NSString *remindtimeStr in dataArrWeekend) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            if (isWeekend) {
+                for (NSString *remindtimeStr in dataArrOnlyOnce) {
+                    if ([remindtimeStr hash] == remindTimeHash) {
+                        return NO;
+                    }
+                }
+            }
+            
+        } else if ([remindType isEqualToString:REMINDTYPE_WORKDAY]) {
+            
+            for (NSString *remindtimeStr in dataArrWorkDay) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+            if (!isWeekend) {
+                for (NSString *remindtimeStr in dataArrOnlyOnce) {
+                    if ([remindtimeStr hash] == remindTimeHash) {
+                        return NO;
+                    }
+                }
+            }
+            
+        }
+        
+        
+        for (NSString *remindtimeStr in dataArrEveryDay) {
+            if ([remindtimeStr hash] == remindTimeHash) {
+                return NO;
+            }
+        }
+        
+        return YES;
+    }
+    
+    return YES;
+    
+}
+
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -577,6 +943,16 @@ void systemAudioCallback()
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+        //移除通知栏所有推送
+    JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];
+    identifier.identifiers = nil;
+    identifier.delivered = YES;  //iOS10以上有效，等于YES则查找所有在通知中心显示的，等于NO则为查找所有待推送的；iOS10以下无效
+    identifier.findCompletionHandler = ^(NSArray *results) {
+        NSLog(@"返回结果为：%@", results); // iOS10以下返回UILocalNotification对象数组，iOS10以上根据delivered传入值返回UNNotification或UNNotificationRequest对象数组
+    };
+    [JPUSHService findNotification:identifier];
+    
 }
 
 

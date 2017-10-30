@@ -15,7 +15,9 @@
 #define NavigationBarHeight 44
 
 
-#define APP_VERSION           @"1.0.0"
+#define APP_VERSION           @"1"
+#define APP_VERSION_DESC      @"appversiondesc"
+
 
 #define APPID_VALUE           @"5834ff2b"
 #define URL_VALUE             @""                 // url

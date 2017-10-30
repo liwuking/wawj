@@ -13,6 +13,7 @@
 #import <AFNetworking.h>
 @interface WANetViewController ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constantX;
+@property (weak, nonatomic) IBOutlet UIButton *netBtn;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mobileFlowImg;
 @property (weak, nonatomic) IBOutlet UIImageView *WIFIFlowImg;
@@ -86,7 +87,6 @@
                 NSLog(@"unconnect");
                 strongSelf.mobileFlowImg.image = [UIImage imageNamed:@"Umnselected"];
                 strongSelf.WIFIFlowImg.image = [UIImage imageNamed:@"WIFIUnselect"];
-                
             }
                 break;
                 
@@ -100,7 +100,8 @@
                 
                 strongSelf.phoneLab.hidden = NO;
                 strongSelf.wifiNameLab.hidden = YES;
-                
+                self.netBtn.enabled = YES;
+                self.netBtn.titleLabel.textColor = [UIColor blackColor];
             }
                 break;
                 
@@ -113,6 +114,8 @@
                 strongSelf.phoneLab.hidden = YES;
                 strongSelf.wifiNameLab.hidden = NO;
                 strongSelf.wifiNameLab.text = [self SSID];
+                self.netBtn.enabled = YES;
+                self.netBtn.titleLabel.textColor = [UIColor blackColor];
             }
                 break;
             default:

@@ -24,6 +24,8 @@
 #import "AppDelegate.h"
 #import "AlarmClockItem.h"
 #import <JPUSHService.h>
+#import "WAHelpViewController.h"
+#import "WAAboutMeViewController.h"
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -62,7 +64,7 @@
     
     NSString *interFace = [CoreArchive boolForKey:INTERFACE_NEW]? @"拟物界面" : @"老年界面";
     
-    self.arrTitles = @[@[@"我的头像"],@[@"整点报时",interFace],@[@"分享下载",@"关于我们"]];
+    self.arrTitles = @[@[@"我的头像"],@[interFace,@"整点报时"],@[@"帮助中心"],@[@"分享下载",@"关于我们"]];
     
     [self initView];
     
@@ -91,7 +93,7 @@
         
         //删除别名
         [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-            
+            NSLog(@"删除别名: %@",iAlias);
         } seq:[[NSDate date] timeIntervalSince1970]];
         
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -170,7 +172,7 @@
         cell.userIphone.text = userDict[USERIPHONE];
         return cell;
         
-    } else if(1 == indexPath.section && 0 == indexPath.row){
+    } else if(1 == indexPath.section && 1 == indexPath.row){
         
         WASetTwoCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetTwoCell" owner:nil options:nil] lastObject];
         cell.waSwitch.on = [CoreArchive boolForKey:ISZHENGDIAN_BAOSHI];
@@ -208,7 +210,7 @@
         
     } else if (1 == indexPath.section) {
         
-        if (0 == indexPath.row) {
+        if (1 == indexPath.row) {
             
             WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             cell.waSwitch.on = !cell.waSwitch.on;
@@ -224,13 +226,19 @@
         
     } else if (2 == indexPath.section) {
         
+        WAHelpViewController *vc = [[WAHelpViewController alloc] initWithNibName:@"WAHelpViewController" bundle:nil];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    } else if (3 == indexPath.section) {
+        
         if (0 == indexPath.row) {
             
             WAShareViewController *vc = [[WAShareViewController alloc] initWithNibName:@"WAShareViewController" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
             
         } else {
-            
+            WAAboutMeViewController *vc = [[WAAboutMeViewController alloc] initWithNibName:@"WAAboutMeViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
         }
         
     }
@@ -238,7 +246,7 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -247,8 +255,10 @@
         return 1;
     } else if(1 == section){
         return 2;
-    } else {
+    } else if(2 == section){
         return 1;
+    } else {
+        return 2;
     }
     
 }

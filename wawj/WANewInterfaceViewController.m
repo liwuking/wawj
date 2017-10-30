@@ -14,13 +14,15 @@
 #import "WACommonlyAPPViewController.h"
 #import<AVFoundation/AVFoundation.h>
 #import <MessageUI/MessageUI.h>
-
+#import "UIButton+BtnCategory.h"
 #define ChineseMonths @[@"正月", @"二月", @"三月", @"四月", @"五月", @"六月", @"七月", @"八月",@"九月", @"十月", @"冬月", @"腊月"]
 #define ChineseDays @[@"初一", @"初二", @"初三", @"初四", @"初五", @"初六", @"初七", @"初八", @"初九", @"初十",@"十一", @"十二", @"十三", @"十四", @"十五", @"十六", @"十七", @"十八", @"十九", @"二十", @"廿一", @"廿二", @"廿三", @"廿四", @"廿五", @"廿六", @"廿七", @"廿八", @"廿九", @"三十"]
 
 
 @interface WANewInterfaceViewController ()<MFMessageComposeViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *headBgImgView;
 
+@property (weak, nonatomic) IBOutlet UIView *btnView;
 @property (weak, nonatomic) IBOutlet UIImageView *bgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLab;
 @property (weak, nonatomic) IBOutlet UILabel *dateLab;
@@ -44,7 +46,110 @@
     [super viewWillDisappear:animated];
 }
 
+-(void)clickBtn:(UIButton *)btn {
+    
+    switch (btn.tag) {
+        case 0:
+        {
+            WAHomeViewController *vc = [[WAHomeViewController alloc] initWithNibName:@"WAHomeViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case 1:
+        {
+//            WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
+//            [self.navigationController pushViewController:vc animated:YES];
+            [self showAlertViewWithTitle:@"此功能暂未开放" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+        }
+            break;
+        case 2:
+        {
+            UIStoryboard *sb=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            [self.navigationController pushViewController:[sb instantiateViewControllerWithIdentifier:@"WANetViewController"] animated:YES];
+        }
+            break;
+        case 3:
+        {
+            [self handlePhoto];
+        }
+            break;
+        case 4:
+        {
+            if (![device hasTorch]) {
+                
+                return;
+                
+            }
+            
+            LightOn = !LightOn;
+            
+            if (LightOn) {
+
+                [self turnOn];
+                UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 0, 0);
+                UIImage *bgImage = [UIImage imageNamed:@"yellowBg"];
+                bgImage = [bgImage resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeTile];
+                [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
+            }else{
+                [self turnOff];
+                UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 0, 0);
+                UIImage *bgImage = [UIImage imageNamed:@"grayBg"];
+                bgImage = [bgImage resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeTile];
+                [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
+                
+            }
+        }
+            break;
+        case 5:
+        {
+            WACommonlyAPPViewController *vc = [[WACommonlyAPPViewController alloc] initWithNibName:@"WACommonlyAPPViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        default:
+            break;
+    }
+    
+}
+
 -(void)initViews {
+    
+    UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 0, 0);
+    UIImage *bgImage = [UIImage imageNamed:@"grayBg"];
+    bgImage = [bgImage resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeTile];
+    
+    self.headBgImgView.image = bgImage;
+    
+    NSArray *imageArr = @[@"我家",@"电话",@"上网副本",@"相机",@"手电筒",@"应用"];
+    NSArray *titleArr = @[@"我家",@"电话本",@"上网",@"相机",@"手电筒",@"应用"];
+    
+    CGFloat height = (SCREEN_HEIGHT-190 - 1.5)/3;
+    CGFloat width = (SCREEN_WIDTH-0.5)/2;
+    for (NSInteger i = 0; i < 3; i++) {
+        for (NSInteger j = 0; j < 2;  j++) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            NSInteger index = i*2+j;
+            [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:imageArr[index]] forState:UIControlStateNormal];
+            [btn setTitle:titleArr[index] forState:UIControlStateNormal];
+//            [btn verticalImageAndTitle:5];
+            [btn setContentMode:UIViewContentModeCenter];
+            btn.titleLabel.textColor = [UIColor whiteColor];
+            btn.titleLabel.font = [UIFont systemFontOfSize:35];
+            btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+            btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
+            NSLog(@"btn.frame: %@", NSStringFromCGRect(btn.frame));
+            [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
+            btn.tag = index;
+            [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
+            [btn verticalImageAndTitle:5];
+            
+            [self.btnView addSubview:btn];
+        }
+    }
+    
     
     NSString *weekDay;
     NSDate *dateNow;
@@ -125,50 +230,8 @@
     [self initViews];
     
 }
-- (IBAction)clickMyHome:(UIButton *)sender {
-    
-    WAHomeViewController *vc = [[WAHomeViewController alloc] initWithNibName:@"WAHomeViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
 
-- (IBAction)clickPhone:(UIButton *)sender {
-    WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
-- (IBAction)clickWebBtn:(UIButton *)sender {
-
-    UIStoryboard *sb=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    [self.navigationController pushViewController:[sb instantiateViewControllerWithIdentifier:@"WANetViewController"] animated:YES];
-    
-}
-
-- (IBAction)clickCameraBtn:(UIButton *)sender {
-    [self handlePhoto];
-}
-
-- (IBAction)clickLightBtn:(UIButton *)sender  {
-    
-    if (![device hasTorch]) {
-        
-        return;
-        
-    }
-    
-    LightOn = !LightOn;
-    
-    if (LightOn) {
-        
-        [self turnOn];
-        
-    }else{
-        
-        [self turnOff];
-        
-    }
-    
-}
 
 -(void) turnOn
 

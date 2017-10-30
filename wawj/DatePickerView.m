@@ -61,10 +61,10 @@
      
      self.dataArr = @[arrOne,arrTwo,arrThree];
      
-     [self.pickerView.subviews objectAtIndex:1].layer.borderWidth = 0.5f;
-     [self.pickerView.subviews objectAtIndex:2].layer.borderWidth = 0.5f;
-     [self.pickerView.subviews objectAtIndex:1].layer.borderColor = HEX_COLOR(0x219CE0).CGColor;
-     [self.pickerView.subviews objectAtIndex:2].layer.borderColor = HEX_COLOR(0x219CE0).CGColor;
+//     [self.pickerView.subviews objectAtIndex:1].layer.borderWidth = 0.5f;
+//     [self.pickerView.subviews objectAtIndex:2].layer.borderWidth = 0.5f;
+//     [self.pickerView.subviews objectAtIndex:1].layer.borderColor = HEX_COLOR(0x219CE0).CGColor;
+//     [self.pickerView.subviews objectAtIndex:2].layer.borderColor = HEX_COLOR(0x219CE0).CGColor;
      
      self.pickerView.delegate = self;
      self.pickerView.dataSource = self;

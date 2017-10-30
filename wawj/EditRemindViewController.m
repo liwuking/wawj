@@ -138,7 +138,7 @@
         {
             self.title = @"编辑提醒";
 //            self.datePicker.enabled = NO;
-            self.pickerView.isEnble = NO;
+//            self.pickerView.isEnble = NO;
             //right items
             UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"delegate"] style:UIBarButtonItemStyleDone target:self action:@selector(deleteRemind)];
             deleteItem.tintColor = HEX_COLOR(0x666666);
@@ -206,7 +206,10 @@
     NSDictionary *keys = @{@"remindtype"                 : @"string",
                            @"remindtime"                 : @"string",
                            @"createtimestamp"            : @"string",
-                           @"content"                    : @"string"};
+                           @"content"                    : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string"
+                           };
     
     
     __weak __typeof__(self) weakSelf = self;
@@ -255,88 +258,128 @@
     }
     
     if ([self.alarmType isEqualToString:REMINDTYPE_ONLYONCE]) {
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
-        currentDateStr = [NSString stringWithFormat:@"%@:00",currentDateStr];
         
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *currentDate = [[dateFormatter dateFromString:currentDateStr] dateByAddingTimeInterval:60];
-        NSInteger currentDateStamp = [currentDate timeIntervalSince1970];
-        
-        if (createtimestamp < currentDateStamp) {
-            [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
-                
-            }];
-            return;
+        if (self.eventType == NRemind || self.eventType == ExpRemind) {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+            NSString *currentDateStr = [formatter stringFromDate:[NSDate date]];
+            currentDateStr = [NSString stringWithFormat:@"%@:00",currentDateStr];
+            
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *currentDate = [[formatter dateFromString:currentDateStr] dateByAddingTimeInterval:60];
+            NSInteger currentDateStamp = [currentDate timeIntervalSince1970];
+            
+            if (createtimestamp < currentDateStamp) {
+                [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
+                    
+                }];
+                return;
+            }
+            
+        } else {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            NSString *currentDateStr;
+            NSString *currentDateDD;
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            if ([self.remindItem.remindDate isEqualToString:@"今天"]) {
+                currentDateDD = [formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+            } else if ([self.remindItem.remindDate isEqualToString:@"明天"]) {
+                currentDateDD = [formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+            } else {
+                currentDateDD = [formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+            }
+            
+            currentDateStr = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,dateStrHourMinite];
+            
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *createDate = [formatter dateFromString:currentDateStr];
+            createtimestamp = [createDate timeIntervalSince1970];
+            
+            NSInteger currentDateStamp = [[NSDate dateWithTimeIntervalSinceNow:60] timeIntervalSince1970];
+            
+            if (createtimestamp < currentDateStamp) {
+                [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
+                    
+                }];
+                return;
+            }
         }
-        
+    
     }
    
-    BOOL isRepet = [self adjustRemindRepeatWithRemindType:self.alarmType andRemindTime:dateStrHourMinite];
-    if (!isRepet) {
-        [self showAlertViewWithTitle:@"提示" message:@"存在重复提醒" buttonTitle:@"知道了" clickBtn:^{
-            
-        }];
-        return;
-    }
+   
    
     RemindItem *remindItem = [[RemindItem alloc] init];
     NSString *sql;
     if (self.eventType == NRemind) {
         
-        sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,createtimestamp) values ('%@','%@','%@','%ld')",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp];
+        BOOL isRepet = [self adjustRemindRepeatWithRemindType:self.alarmType andRemindTime:dateStrHourMinite];
+        if (!isRepet) {
+            [self showAlertViewWithTitle:@"提示" message:@"存在重复提醒" buttonTitle:@"知道了" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
+        sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,@"",@"",createtimestamp];
         
         remindItem.remindtype = self.alarmType;
         remindItem.remindtime = dateStrHourMinite;
         remindItem.content = remindContent;
         remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
+        
+        if ([self.database executeUpdate:sql]) {
+            //添加一个新的闹钟
+            NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
+            [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
+            
+            NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",remindContent,dateStrHourMinite,self.alarmType);
+            [MBProgressHUD showSuccess:@"创建成功"];
+            [self performSelector:@selector(backActionWithEditAddRefresh:) withObject:remindItem afterDelay:1];
+            
+            
+        } else {
+            [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
+            [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+        }
+        
+        
     } else {
         
         sql =  [NSString stringWithFormat:
                 @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,self.remindItem.remindtype,self.remindItem.remindtime];
         
-        remindItem.remindtype = self.alarmType;
-        remindItem.remindtime = dateStrHourMinite;
-        remindItem.content = remindContent;
-        remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
-        
+         if ([self.database executeUpdate:sql]) {
+             [MBProgressHUD showSuccess:@"编辑成功"];
+             
+             [AlarmClockItem cancelAlarmClockWithRemindItem:remindItem];
+             
+             NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
+             [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
+             
+             remindItem.remindtype = self.alarmType;
+             remindItem.remindtime = dateStrHourMinite;
+             remindItem.content = remindContent;
+             remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
+             [self performSelector:@selector(backActionWithEditRefresh:) withObject:remindItem afterDelay:1];
+             
+         }else {
+             [MBProgressHUD showSuccess:@"由于数据库问题，编辑失败"];
+             [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+         }
     }
 
     
     NSLog(@"sql = %@",sql);
-    BOOL isCreate = [self.database executeUpdate:sql];
-    if (isCreate) {
-        
-        //添加一个新的闹钟
-        NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
-        [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier];
-        
-        NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",remindContent,dateStrHourMinite,self.alarmType);
-        
-        
-        if (self.eventType == NRemind) {
-            [MBProgressHUD showSuccess:@"创建成功"];
-            [self performSelector:@selector(backActionWithEditAddRefresh:) withObject:remindItem afterDelay:1];
-        } else {
-            [MBProgressHUD showSuccess:@"编辑成功"];
-            [self performSelector:@selector(backActionWithEditRefresh:) withObject:remindItem afterDelay:1];
-        }
-        
-        
-    }else{
-        [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
-        [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
-    }
+ 
 }
 
 -(void)backActionWithEditRefresh:(RemindItem *)remindItem {
-//    [self.delegate editRemindViewControllerWithEditRemind:remindItem];
     self.editRemindViewControllerWithEditRemind(remindItem);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)backActionWithEditAddRefresh:(RemindItem *)remindItem {
-//    [self.delegate editRemindViewControllerWithNewAddRemind:remindItem];
     self.editRemindViewControllerWithAddRemind(remindItem);
     [self.navigationController popViewControllerAnimated:YES];
 }

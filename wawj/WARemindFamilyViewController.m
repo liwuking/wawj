@@ -18,7 +18,7 @@
 #import "UpYunBlockUpLoader.h"
 #import <JPUSHService.h>
 
-#define RECORD_TOTAL_TIME   10
+#define RECORD_TOTAL_TIME   30
 #define kRecordAudioFile @"myRecord.caf"
 
 @interface WARemindFamilyViewController ()<UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate,CircularViewDelegate,DatePickerViewDelegate>
@@ -36,18 +36,18 @@
 
 @property(nonatomic,assign)NSInteger recordTimeStamp;
 
-//@property(nonatomic,strong)NSTimer *recordTimer;
 @property(nonatomic,assign)NSInteger recordedTime;
 @property(nonatomic,strong)DatePickerView *datePickerView;
 
 @property (nonatomic,strong) AVAudioRecorder *audioRecorder;//音频录音机
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
-//@property (nonatomic,strong) NSTimer *timer;//录音声波监控（注意这里暂时不对播放进行监控）
 @end
 //219CE0
 @implementation WARemindFamilyViewController
 
 -(void)backAction {
+    
+    [self removeRecordFile];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)initViews {
@@ -114,12 +114,24 @@
  *
  *  @return 录音文件路径
  */
--(NSURL *)getSavePath{
+-(NSString *)getSavePath{
+    
+
+    NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
+    
+    NSLog(@"file path:%@",urlStr);
+//    NSURL *url=[NSURL fileURLWithPath:urlStr];
+    return urlStr;
+}
+
+-(void)removeRecordFile {
     NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
     NSLog(@"file path:%@",urlStr);
     NSURL *url=[NSURL fileURLWithPath:urlStr];
-    return url;
+    
+    [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
 }
 
 /**
@@ -134,7 +146,7 @@
     //设置录音采样率，8000是电话采样率，对于一般录音已经够了
     [dicM setObject:@(8000) forKey:AVSampleRateKey];
     //设置通道,这里采用单声道
-    [dicM setObject:@(1) forKey:AVNumberOfChannelsKey];
+    [dicM setObject:@(2) forKey:AVNumberOfChannelsKey];
     //每个采样点位数,分为8、16、24、32
     [dicM setObject:@(8) forKey:AVLinearPCMBitDepthKey];
     //是否使用浮点数采样
@@ -151,14 +163,14 @@
 -(AVAudioRecorder *)audioRecorder{
     if (!_audioRecorder) {
         //创建录音文件保存路径
-        NSURL *url=[self getSavePath];
+        NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
         //创建录音格式设置
         NSDictionary *setting=[self getAudioSetting];
         //创建录音机
         NSError *error=nil;
         _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
         _audioRecorder.delegate=self;
-        _audioRecorder.meteringEnabled=YES;//如果要监控声波则必须设置为YES
+//        _audioRecorder.meteringEnabled=YES;//如果要监控声波则必须设置为YES
         if (error) {
             NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
             return nil;
@@ -174,7 +186,7 @@
  */
 -(AVAudioPlayer *)audioPlayer{
     if (!_audioPlayer) {
-        NSURL *url=[self getSavePath];
+        NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
         NSError *error=nil;
         _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
         _audioPlayer.numberOfLoops=0;
@@ -234,6 +246,7 @@
     vc.headUrl = self.closeFamilyItem.headUrl;
     vc.recordedTime = self.recordedTime;
     vc.recordedDate = self.timeOneLab.text;
+    vc.audioUrl = [self getSavePath];
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -395,9 +408,9 @@
     
     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
     NSString *bucketName = @"wawj-test";
-    NSData *fileData = [NSData dataWithContentsOfURL:[self getSavePath]];
+    NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[self getSavePath]]];
     NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
-    NSString *imgName=[NSString stringWithFormat:@"audio/%@/%@/%@", currentDateString,uuid,kRecordAudioFile];
+    NSString *imgName=[NSString stringWithFormat:@"audio/%@/%@.caf", currentDateString,uuid];
     __weak __typeof__(self) weakSelf = self;
     
     [MBProgressHUD showMessage:nil];
@@ -421,8 +434,13 @@
                      }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
 //                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
                          NSLog(@"上传失败");
-                         [MBProgressHUD hideHUD];
-                         [MBProgressHUD showError:@"上传失败"];
+                         
+                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                             [MBProgressHUD hideHUD];
+                             [MBProgressHUD showError:@"上传失败"];
+                         });
+                         
+                        
                          
                      }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
                          NSLog(@"totalBytesCount: %lld  completedBytesCount: %lld",totalBytesCount,completedBytesCount);
@@ -451,9 +469,9 @@
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         
-        if ([code isEqualToString:@"0000"]) {
-             [MBProgressHUD showError:@"已经提醒"];
-            [strongSelf addNotificationWithRemindContent:nil];
+        if ([code isEqualToString:@"1"]) {
+//             [MBProgressHUD showError:@"已经提醒"];
+//            [strongSelf addNotificationWithRemindContent:nil];
         } else {
 
             [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
@@ -474,7 +492,7 @@
     
 }
 
-
+/*
 - (void)addNotificationWithRemindContent:(NSString *)remindContent {
     
     JPushNotificationContent *content = [[JPushNotificationContent alloc] init];
@@ -532,7 +550,7 @@
     };
     [JPUSHService addNotification:request];
 }
-
+*/
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];

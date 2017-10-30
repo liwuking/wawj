@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DBManager.h"
 
 static NSString *appKey = @"a41b7660ab31fe36f0005e35";
 static NSString *channel = @"Publish channel";
@@ -15,6 +16,8 @@ static BOOL isProduction = FALSE;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic , strong)FMDatabase         *database;
+@property(nonatomic, strong)NSString               *databaseTableName;
 
 
 @end

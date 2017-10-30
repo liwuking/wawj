@@ -7,9 +7,10 @@
 //
 
 #import "WACommonlyAPPViewController.h"
-#import "WACommonlyAppCell.h"
-#import "WACommonlyAppCell2.h"
-
+#import "WAAppCollectionViewCell.h"
+#import "WAAppAddCollectionViewCell.h"
+#import "WAAppListViewController.h"
+#import "AppItem.h"
 @interface WACommonlyAPPViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -26,7 +27,7 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.title = @"常用应用(APP)";
+    self.title = @"常用应用APP";
     
     //此处必须要有创见一个UICollectionViewFlowLayout的对象
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
@@ -39,10 +40,10 @@
      *这是重点 必须注册cell
      */
     //这种是xib建的cell 需要这么注册
-    UINib *cellNib=[UINib nibWithNibName:@"WACommonlyAppCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"WACommonlyAppCell"];
-    UINib *cellAddNib=[UINib nibWithNibName:@"WACommonlyAppCell2" bundle:nil];
-    [_collectionView registerNib:cellAddNib forCellWithReuseIdentifier:@"WACommonlyAppCell2"];
+    UINib *cellNib=[UINib nibWithNibName:@"WAAppCollectionViewCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"WAAppCollectionViewCell"];
+    UINib *cellAddNib=[UINib nibWithNibName:@"WAAppAddCollectionViewCell" bundle:nil];
+    [_collectionView registerNib:cellAddNib forCellWithReuseIdentifier:@"WAAppAddCollectionViewCell"];
     
     //这种是自定义cell不带xib的注册
     //   [_collectionView registerClass:[CollectionViewCell1 class] forCellWithReuseIdentifier:@"myheheIdentifier"];
@@ -55,30 +56,30 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)clickPhoneNumber {
-    
-//    __weak WACommonlyPhoneViewController *weakObject = self;
-//    [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone) {
-//        __strong WACommonlyPhoneViewController *strongObject = weakObject;
-//        
-//        ContactItem *item = [[ContactItem alloc] init];
-//        item.name = name;
-//        item.phone = phone;
-//        
-//        [strongObject.dataArr addObject:item];
-//        
-//        [strongObject.collectionView reloadData];
-//        
-//    }];
-    
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+
     self.dataArr = [@[] mutableCopy];
+    if ([CoreArchive arrForKey:USER_APP_ARR]) {
+        NSArray *selectedAppDictArr = [CoreArchive arrForKey:USER_APP_ARR];
+        
+        for (NSDictionary *subDict in selectedAppDictArr) {
+            
+            AppItem *item = [[AppItem alloc] init];
+            item.appDownloadUrl = subDict[@"appDownloadUrl"];
+            item.appIcoUrl = subDict[@"appIcoUrl"];
+            item.appName = subDict[@"appName"];
+            item.createTime = subDict[@"createTime"];
+            item.channel = subDict[@"channel"];
+            item.mId = subDict[@"id"];
+            [self.dataArr addObject:item];
+        }
+    }
     [self initView];
+    
+    
     
 }
 
@@ -89,22 +90,21 @@
 
 //每一组有多少个cell
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5+1;
+    return self.dataArr.count+1;
 }
 
 //每一个cell是什么
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (!(indexPath.row % 2)) {
-        WACommonlyAppCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonlyAppCell" forIndexPath:indexPath];
+    if (indexPath.row == self.dataArr.count) {
+        WAAppAddCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppAddCollectionViewCell" forIndexPath:indexPath];
         return cell;
     } else {
-        WACommonlyAppCell2 *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonlyAppCell2" forIndexPath:indexPath];
-        if (indexPath.row == 5) {
-            [cell.imageView setImage:[UIImage imageNamed:@"bigAdd"]];
-        } else {
-            
-        }
+        
+        AppItem *appItem = self.dataArr[indexPath.row];
+        
+        WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
+        cell.appItem = appItem;
         return cell;
     }
     
@@ -139,26 +139,59 @@
     //cell被电击后移动的动画
     [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionTop];
     
-//    if (self.dataArr.count == indexPath.row) {
-//        [self clickPhoneNumber];
-//    } else {
-//
-//        ContactItem *item = self.dataArr[indexPath.row];
-//        
-//        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",item.name] cancelButtonTitle:@"取消" clickCancelBtn:^{
-//            
-//        } otherButtonTitles:@"拨打" clickOtherBtn:^{
-//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",item.phone];
-//            //            NSLog(@"str======%@",str);
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//        }];
-//    }
+    if (self.dataArr.count == indexPath.row) {
+        
+        [self clickCommonAppBtn:nil];
+        
+    } else {
+
+        AppItem *item = self.dataArr[indexPath.row];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item.appDownloadUrl]];
+        
+    }
     
 }
     
 - (IBAction)clickCommonAppBtn:(UIButton *)sender {
     
+    WAAppListViewController *vc = [[WAAppListViewController alloc] initWithNibName:@"WAAppListViewController" bundle:nil];
+    vc.selectedAppItem = [[NSArray alloc] initWithArray:self.dataArr];
+    [self.navigationController pushViewController:vc animated:YES];
     
+    __weak __typeof__(self) weakSelf = self;
+    vc.wAAppListViewControllerWithAddApp = ^(AppItem *appItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        if (!appItem.isAdd) {
+            [strongSelf.dataArr addObject:appItem];
+            [strongSelf.collectionView reloadData];
+        }else {
+            for (NSInteger i = 0; i < strongSelf.dataArr.count;i++) {
+                AppItem *appItemed = strongSelf.dataArr[i];
+                if ([appItem.mId isEqualToString:appItemed.mId]) {
+                    [strongSelf.dataArr removeObjectAtIndex:i];
+                    [strongSelf.collectionView reloadData];
+                    break;
+                }
+            }
+        }
+        
+        NSMutableArray *cacheArr = [@[] mutableCopy];
+        for (AppItem *appItem in self.dataArr) {
+            
+            NSDictionary *dict = @{@"appDownloadUrl":appItem.appDownloadUrl,
+                                   @"appIcoUrl":appItem.appIcoUrl,
+                                   @"appName":appItem.appName,
+                                   @"channel":appItem.channel,
+                                   @"createTime":appItem.createTime,
+                                   @"id":appItem.mId
+                                   };
+            [cacheArr addObject:dict];
+            
+        }
+        [CoreArchive setArr:cacheArr key:USER_APP_ARR];
+        
+    };
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
     

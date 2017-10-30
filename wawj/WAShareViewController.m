@@ -64,9 +64,9 @@
     UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
     
     //创建网页内容对象
-    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"下载我爱我家" thumImage:[UIImage imageNamed:@"logo"]];
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"老年桌面，爸妈超喜欢" descr:@"智能手机秒变老人机，开启爸妈网络新生活，还有家庭相册和语音提醒功能~" thumImage:[UIImage imageNamed:@"logo"]];
     //设置网页地址
-    shareObject.webpageUrl =@"https://itunes.apple.com/us/app/我爱我家app/id1209731951?l=zh&ls=1&mt=8";
+    shareObject.webpageUrl = @"http://www.wawjapp.com/download.html";//@"https://itunes.apple.com/us/app/我爱我家app/id1209731951?l=zh&ls=1&mt=8";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;

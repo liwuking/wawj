@@ -6,7 +6,7 @@
 
 @protocol RemindCellDelegate <NSObject>
 
-- (void)RemindCell:(RemindCell *)cell AndIndexPath:(NSIndexPath*)indexPath;
+- (void)RemindCell:(RemindCell *)cell clickedIndexPath:(NSIndexPath*)indexPath;
 @end
 
 

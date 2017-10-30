@@ -108,6 +108,28 @@
 		7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */; };
 		7788D3521F8CC9A800F3512A /* EditRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D3501F8CC9A800F3512A /* EditRemindViewController.m */; };
 		7788D3531F8CC9A800F3512A /* EditRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */; };
+		778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */; };
+		778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */; };
+		778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */; };
+		778EF8061FA0622D005CDD82 /* WAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8041FA0622D005CDD82 /* WAHelpViewController.m */; };
+		778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */; };
+		778EF80B1FA063D6005CDD82 /* WAAboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8091FA063D6005CDD82 /* WAAboutMeViewController.m */; };
+		778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF80A1FA063D6005CDD82 /* WAAboutMeViewController.xib */; };
+		778EF8101FA06D71005CDD82 /* WAAboutOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF80E1FA06D71005CDD82 /* WAAboutOneCell.m */; };
+		778EF8111FA06D71005CDD82 /* WAAboutOneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF80F1FA06D71005CDD82 /* WAAboutOneCell.xib */; };
+		778EF8151FA06D81005CDD82 /* WAAboutTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8131FA06D81005CDD82 /* WAAboutTwoCell.m */; };
+		778EF8161FA06D81005CDD82 /* WAAboutTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8141FA06D81005CDD82 /* WAAboutTwoCell.xib */; };
+		778EF81A1FA06D8F005CDD82 /* WAAboutThreeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8181FA06D8F005CDD82 /* WAAboutThreeCell.m */; };
+		778EF81B1FA06D8F005CDD82 /* WAAboutThreeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8191FA06D8F005CDD82 /* WAAboutThreeCell.xib */; };
+		778EF81F1FA32129005CDD82 /* WAAppListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF81D1FA32128005CDD82 /* WAAppListViewController.m */; };
+		778EF8201FA32129005CDD82 /* WAAppListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF81E1FA32128005CDD82 /* WAAppListViewController.xib */; };
+		778EF8241FA3221C005CDD82 /* WAAppTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8221FA3221C005CDD82 /* WAAppTableViewCell.m */; };
+		778EF8251FA3221C005CDD82 /* WAAppTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8231FA3221C005CDD82 /* WAAppTableViewCell.xib */; };
+		778EF82B1FA32394005CDD82 /* AppItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF82A1FA32394005CDD82 /* AppItem.m */; };
+		778EF82F1FA32DDB005CDD82 /* WAAppCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF82D1FA32DDB005CDD82 /* WAAppCollectionViewCell.m */; };
+		778EF8301FA32DDB005CDD82 /* WAAppCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF82E1FA32DDB005CDD82 /* WAAppCollectionViewCell.xib */; };
+		778EF8341FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8321FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m */; };
+		778EF8351FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8331FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib */; };
 		77931ED61F9738430051D8BC /* CircularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77931ED51F9738430051D8BC /* CircularView.m */; };
 		77931EDA1F987C0A0051D8BC /* WAPreviewRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77931ED81F987C0A0051D8BC /* WAPreviewRecordViewController.m */; };
 		77931EDB1F987C0A0051D8BC /* WAPreviewRecordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77931ED91F987C0A0051D8BC /* WAPreviewRecordViewController.xib */; };
@@ -180,7 +202,7 @@
 		77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */; };
 		77A67D101F43DC59000DFD88 /* WAFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */; };
 		77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */; };
-		77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* ThunderSong.m4r */; };
+		77A67D131F452EF4000DFD88 /* ThunderSong.caf in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* ThunderSong.caf */; };
 		77A67D1D1F4AB3A1000DFD88 /* WARemindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */; };
 		77A67D1E1F4AB3A1000DFD88 /* WARemindListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D1C1F4AB3A1000DFD88 /* WARemindListCell.xib */; };
 		77A67D2B1F4BD5C6000DFD88 /* RemindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D271F4BD5C6000DFD88 /* RemindCell.m */; };
@@ -495,6 +517,40 @@
 		7788D34F1F8CC9A800F3512A /* EditRemindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditRemindViewController.h; sourceTree = "<group>"; };
 		7788D3501F8CC9A800F3512A /* EditRemindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditRemindViewController.m; sourceTree = "<group>"; };
 		7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditRemindViewController.xib; sourceTree = "<group>"; };
+		778EF7FB1FA0238D005CDD82 /* UIButton+BtnCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+BtnCategory.h"; sourceTree = "<group>"; };
+		778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+BtnCategory.m"; sourceTree = "<group>"; };
+		778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAValidIphoneViewController.h; sourceTree = "<group>"; };
+		778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAValidIphoneViewController.m; sourceTree = "<group>"; };
+		778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAValidIphoneViewController.xib; sourceTree = "<group>"; };
+		778EF8031FA0622D005CDD82 /* WAHelpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAHelpViewController.h; sourceTree = "<group>"; };
+		778EF8041FA0622D005CDD82 /* WAHelpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAHelpViewController.m; sourceTree = "<group>"; };
+		778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAHelpViewController.xib; sourceTree = "<group>"; };
+		778EF8081FA063D6005CDD82 /* WAAboutMeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAboutMeViewController.h; sourceTree = "<group>"; };
+		778EF8091FA063D6005CDD82 /* WAAboutMeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAboutMeViewController.m; sourceTree = "<group>"; };
+		778EF80A1FA063D6005CDD82 /* WAAboutMeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAboutMeViewController.xib; sourceTree = "<group>"; };
+		778EF80D1FA06D71005CDD82 /* WAAboutOneCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAboutOneCell.h; sourceTree = "<group>"; };
+		778EF80E1FA06D71005CDD82 /* WAAboutOneCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAboutOneCell.m; sourceTree = "<group>"; };
+		778EF80F1FA06D71005CDD82 /* WAAboutOneCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAboutOneCell.xib; sourceTree = "<group>"; };
+		778EF8121FA06D81005CDD82 /* WAAboutTwoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAboutTwoCell.h; sourceTree = "<group>"; };
+		778EF8131FA06D81005CDD82 /* WAAboutTwoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAboutTwoCell.m; sourceTree = "<group>"; };
+		778EF8141FA06D81005CDD82 /* WAAboutTwoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAboutTwoCell.xib; sourceTree = "<group>"; };
+		778EF8171FA06D8F005CDD82 /* WAAboutThreeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAboutThreeCell.h; sourceTree = "<group>"; };
+		778EF8181FA06D8F005CDD82 /* WAAboutThreeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAboutThreeCell.m; sourceTree = "<group>"; };
+		778EF8191FA06D8F005CDD82 /* WAAboutThreeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAboutThreeCell.xib; sourceTree = "<group>"; };
+		778EF81C1FA32128005CDD82 /* WAAppListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppListViewController.h; sourceTree = "<group>"; };
+		778EF81D1FA32128005CDD82 /* WAAppListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppListViewController.m; sourceTree = "<group>"; };
+		778EF81E1FA32128005CDD82 /* WAAppListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAppListViewController.xib; sourceTree = "<group>"; };
+		778EF8211FA3221C005CDD82 /* WAAppTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppTableViewCell.h; sourceTree = "<group>"; };
+		778EF8221FA3221C005CDD82 /* WAAppTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppTableViewCell.m; sourceTree = "<group>"; };
+		778EF8231FA3221C005CDD82 /* WAAppTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAppTableViewCell.xib; sourceTree = "<group>"; };
+		778EF8291FA32394005CDD82 /* AppItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppItem.h; sourceTree = "<group>"; };
+		778EF82A1FA32394005CDD82 /* AppItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppItem.m; sourceTree = "<group>"; };
+		778EF82C1FA32DDB005CDD82 /* WAAppCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppCollectionViewCell.h; sourceTree = "<group>"; };
+		778EF82D1FA32DDB005CDD82 /* WAAppCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppCollectionViewCell.m; sourceTree = "<group>"; };
+		778EF82E1FA32DDB005CDD82 /* WAAppCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAppCollectionViewCell.xib; sourceTree = "<group>"; };
+		778EF8311FA32FB1005CDD82 /* WAAppAddCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppAddCollectionViewCell.h; sourceTree = "<group>"; };
+		778EF8321FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppAddCollectionViewCell.m; sourceTree = "<group>"; };
+		778EF8331FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAppAddCollectionViewCell.xib; sourceTree = "<group>"; };
 		77931ED41F9738430051D8BC /* CircularView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularView.h; sourceTree = "<group>"; };
 		77931ED51F9738430051D8BC /* CircularView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircularView.m; sourceTree = "<group>"; };
 		77931ED71F987C0A0051D8BC /* WAPreviewRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAPreviewRecordViewController.h; sourceTree = "<group>"; };
@@ -617,7 +673,7 @@
 		77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFeedbackViewController.h; sourceTree = "<group>"; };
 		77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFeedbackViewController.m; sourceTree = "<group>"; };
 		77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFeedbackViewController.xib; sourceTree = "<group>"; };
-		77A67D121F452EF4000DFD88 /* ThunderSong.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThunderSong.m4r; sourceTree = "<group>"; };
+		77A67D121F452EF4000DFD88 /* ThunderSong.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThunderSong.caf; sourceTree = "<group>"; };
 		77A67D141F452F0C000DFD88 /* wawj.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wawj.entitlements; sourceTree = "<group>"; };
 		77A67D1A1F4AB3A1000DFD88 /* WARemindListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemindListCell.h; sourceTree = "<group>"; };
 		77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemindListCell.m; sourceTree = "<group>"; };
@@ -1038,9 +1094,6 @@
 				7701045F1F31AAA000F723A2 /* WACommonlyPhoneViewController.h */,
 				770104601F31AAA000F723A2 /* WACommonlyPhoneViewController.m */,
 				770104611F31AAA000F723A2 /* WACommonlyPhoneViewController.xib */,
-				770104771F37FD2E00F723A2 /* WACommonlyAPPViewController.h */,
-				770104781F37FD2E00F723A2 /* WACommonlyAPPViewController.m */,
-				770104791F37FD2E00F723A2 /* WACommonlyAPPViewController.xib */,
 			);
 			name = StartPage;
 			sourceTree = "<group>";
@@ -1191,9 +1244,26 @@
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
 				772B48DA1F78E53200007701 /* WZLSerializeKit.h */,
-				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
+				77A67D121F452EF4000DFD88 /* ThunderSong.caf */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
+				778EF8311FA32FB1005CDD82 /* WAAppAddCollectionViewCell.h */,
+				778EF8321FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m */,
+				778EF8331FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib */,
+				778EF82C1FA32DDB005CDD82 /* WAAppCollectionViewCell.h */,
+				778EF82D1FA32DDB005CDD82 /* WAAppCollectionViewCell.m */,
+				778EF82E1FA32DDB005CDD82 /* WAAppCollectionViewCell.xib */,
+				770104771F37FD2E00F723A2 /* WACommonlyAPPViewController.h */,
+				770104781F37FD2E00F723A2 /* WACommonlyAPPViewController.m */,
+				770104791F37FD2E00F723A2 /* WACommonlyAPPViewController.xib */,
+				778EF8291FA32394005CDD82 /* AppItem.h */,
+				778EF82A1FA32394005CDD82 /* AppItem.m */,
+				778EF8211FA3221C005CDD82 /* WAAppTableViewCell.h */,
+				778EF8221FA3221C005CDD82 /* WAAppTableViewCell.m */,
+				778EF8231FA3221C005CDD82 /* WAAppTableViewCell.xib */,
+				778EF81C1FA32128005CDD82 /* WAAppListViewController.h */,
+				778EF81D1FA32128005CDD82 /* WAAppListViewController.m */,
+				778EF81E1FA32128005CDD82 /* WAAppListViewController.xib */,
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
 				77A67D091F429500000DFD88 /* WANewInterfaceViewController.m */,
 				77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */,
@@ -1419,6 +1489,21 @@
 				770104491F30770B00F723A2 /* WAFuctionSetViewController.h */,
 				7701044A1F30770B00F723A2 /* WAFuctionSetViewController.m */,
 				7701044B1F30770B00F723A2 /* WAFuctionSetViewController.xib */,
+				778EF8031FA0622D005CDD82 /* WAHelpViewController.h */,
+				778EF8041FA0622D005CDD82 /* WAHelpViewController.m */,
+				778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */,
+				778EF80D1FA06D71005CDD82 /* WAAboutOneCell.h */,
+				778EF80E1FA06D71005CDD82 /* WAAboutOneCell.m */,
+				778EF80F1FA06D71005CDD82 /* WAAboutOneCell.xib */,
+				778EF8121FA06D81005CDD82 /* WAAboutTwoCell.h */,
+				778EF8131FA06D81005CDD82 /* WAAboutTwoCell.m */,
+				778EF8141FA06D81005CDD82 /* WAAboutTwoCell.xib */,
+				778EF8171FA06D8F005CDD82 /* WAAboutThreeCell.h */,
+				778EF8181FA06D8F005CDD82 /* WAAboutThreeCell.m */,
+				778EF8191FA06D8F005CDD82 /* WAAboutThreeCell.xib */,
+				778EF8081FA063D6005CDD82 /* WAAboutMeViewController.h */,
+				778EF8091FA063D6005CDD82 /* WAAboutMeViewController.m */,
+				778EF80A1FA063D6005CDD82 /* WAAboutMeViewController.xib */,
 				77A67F1A1F54069F000DFD88 /* UserCenterViewController.h */,
 				77A67F1B1F54069F000DFD88 /* UserCenterViewController.m */,
 				77A67F1C1F54069F000DFD88 /* UserCenterViewController.xib */,
@@ -1436,6 +1521,9 @@
 			isa = PBXGroup;
 			children = (
 				771F95871F0F276300B4D016 /* WAGuideViewController.h */,
+				778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */,
+				778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */,
+				778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */,
 				771F95851F0F276300B4D016 /* WABindIphoneViewController.h */,
 				771F95861F0F276300B4D016 /* WABindIphoneViewController.m */,
 			);
@@ -1977,6 +2065,8 @@
 				77A67E901F4C15AB000DFD88 /* ZQCycleCell.xib */,
 				77A67E911F4C15AB000DFD88 /* ZQCycleScroView.h */,
 				77A67E921F4C15AB000DFD88 /* ZQCycleScroView.m */,
+				778EF7FB1FA0238D005CDD82 /* UIButton+BtnCategory.h */,
+				778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -2174,6 +2264,7 @@
 				77A67D3B1F4C0614000DFD88 /* ListeningView.xib in Resources */,
 				770104681F32B68B00F723A2 /* WACommonCell.xib in Resources */,
 				775410F51F9DE3870005C3AE /* btn_unselected@3x.png in Resources */,
+				778EF8251FA3221C005CDD82 /* WAAppTableViewCell.xib in Resources */,
 				770104801F38321100F723A2 /* WACommonlyAppCell.xib in Resources */,
 				779CF4231F68FDD100DBEE44 /* HomeCell.xib in Resources */,
 				775410F81F9DE3870005C3AE /* navBackBtn@2x.png in Resources */,
@@ -2187,6 +2278,7 @@
 				779CF4171F62863F00DBEE44 /* WAAddContactTableViewCell.xib in Resources */,
 				775410AA1F9DCD160005C3AE /* TimePickerView.xib in Resources */,
 				775410F71F9DE3870005C3AE /* lock.png in Resources */,
+				778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */,
 				77A67E441F4C0EE1000DFD88 /* grammar_sample.abnf in Resources */,
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
 				77CABE701F96EAF4000097A2 /* WARemindFamilyViewController.xib in Resources */,
@@ -2202,16 +2294,19 @@
 				7788D2FA1F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib in Resources */,
 				779CF47A1F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib in Resources */,
 				775410FC1F9DE3870005C3AE /* ZLPhotoBrowser.bundle in Resources */,
+				778EF8111FA06D71005CDD82 /* WAAboutOneCell.xib in Resources */,
 				77A67F231F551319000DFD88 /* WAShareViewController.xib in Resources */,
 				779CF41E1F67C43600DBEE44 /* contactView.xib in Resources */,
 				7754111D1F9F2C060005C3AE /* LICENSE in Resources */,
 				775410EF1F9DE3870005C3AE /* btn_original_circle@3x.png in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
 				770104481F2F15A200F723A2 /* WAHomeViewController.xib in Resources */,
+				778EF8351FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib in Resources */,
 				779CF4281F6900AF00DBEE44 /* HomeCellTwo.xib in Resources */,
 				775410EB1F9DE3870005C3AE /* btn_circle@2x.png in Resources */,
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
-				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
+				77A67D131F452EF4000DFD88 /* ThunderSong.caf in Resources */,
+				778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
@@ -2231,15 +2326,20 @@
 				775410F21F9DE3870005C3AE /* btn_selected@3x.png in Resources */,
 				775410F61F9DE3870005C3AE /* defaultphoto.png in Resources */,
 				775410F91F9DE3870005C3AE /* ZLCollectionCell.xib in Resources */,
+				778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */,
 				779CF4851F72468900DBEE44 /* WAPhotosUploadViewController.xib in Resources */,
 				779CF4121F626F2600DBEE44 /* WAContactViewController.xib in Resources */,
+				778EF8301FA32DDB005CDD82 /* WAAppCollectionViewCell.xib in Resources */,
 				7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */,
 				775410FE1F9DE3870005C3AE /* ZLThumbnailViewController.xib in Resources */,
 				77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */,
 				779CF48A1F724D1000DBEE44 /* PhotoCell.xib in Resources */,
+				778EF81B1FA06D8F005CDD82 /* WAAboutThreeCell.xib in Resources */,
 				775410F01F9DE3870005C3AE /* btn_selected.png in Resources */,
 				775411101F9DE3870005C3AE /* README.md in Resources */,
+				778EF8201FA32129005CDD82 /* WAAppListViewController.xib in Resources */,
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
+				778EF8161FA06D81005CDD82 /* WAAboutTwoCell.xib in Resources */,
 				7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
@@ -2446,6 +2546,7 @@
 				77A67E581F4C0EE1000DFD88 /* MJRefreshFooterView.m in Sources */,
 				77A67E421F4C0EE1000DFD88 /* TTSUIController.m in Sources */,
 				77A67E401F4C0EE1000DFD88 /* TTSConfig.m in Sources */,
+				778EF82F1FA32DDB005CDD82 /* WAAppCollectionViewCell.m in Sources */,
 				771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */,
 				775411061F9DE3870005C3AE /* ZLPhotoBrowser.m in Sources */,
 				779CF4641F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.m in Sources */,
@@ -2455,7 +2556,9 @@
 				77A67E1A1F4C0EE1000DFD88 /* UIAlertView+Extension.m in Sources */,
 				779CF4541F6A27C000DBEE44 /* NSData+MD5Digest.m in Sources */,
 				77A67E9E1F4C15AB000DFD88 /* UIColor+BeeExtension.m in Sources */,
+				778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */,
 				77A67E2E1F4C0EE1000DFD88 /* ISESettingViewController.m in Sources */,
+				778EF82B1FA32394005CDD82 /* AppItem.m in Sources */,
 				77A67E151F4C0EE1000DFD88 /* NSData+Extension.m in Sources */,
 				779CF4221F68FDD100DBEE44 /* HomeCell.m in Sources */,
 				775411211F9F2C060005C3AE /* LJPickerDetailDelegate.m in Sources */,
@@ -2466,6 +2569,7 @@
 				779CF4691F6FA93C00DBEE44 /* PhotoCollectionViewCell.m in Sources */,
 				770104671F32B68B00F723A2 /* WACommonCell.m in Sources */,
 				77A67E601F4C0EE1000DFD88 /* ITTPullTableView.m in Sources */,
+				778EF81F1FA32129005CDD82 /* WAAppListViewController.m in Sources */,
 				779CF44F1F6A27C000DBEE44 /* UpApiUtils.m in Sources */,
 				77A67E5D1F4C0EE1000DFD88 /* OpenUDID.m in Sources */,
 				77A67E3F1F4C0EE1000DFD88 /* UnderstandViewController.m in Sources */,
@@ -2483,6 +2587,7 @@
 				774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */,
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
 				77A67E131F4C0EE1000DFD88 /* BMChineseSort.m in Sources */,
+				778EF8341FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m in Sources */,
 				77A67E301F4C0EE1000DFD88 /* ISEResult.m in Sources */,
 				7788D3521F8CC9A800F3512A /* EditRemindViewController.m in Sources */,
 				775410A81F9DCD0B0005C3AE /* TimePickerView.m in Sources */,
@@ -2504,12 +2609,15 @@
 				77A67E951F4C15AB000DFD88 /* CoreArchive.m in Sources */,
 				77A67E3D1F4C0EE1000DFD88 /* IATViewController.m in Sources */,
 				77A67E271F4C0EE1000DFD88 /* UIView+Shadow.m in Sources */,
+				778EF8061FA0622D005CDD82 /* WAHelpViewController.m in Sources */,
 				7754110A1F9DE3870005C3AE /* ZLProgressHUD.m in Sources */,
 				77A67D0B1F429500000DFD88 /* WANewInterfaceViewController.m in Sources */,
 				77931EDE1F9886BF0051D8BC /* DatePickerView.m in Sources */,
 				77A67D4C1F4C0D97000DFD88 /* FMDatabase.m in Sources */,
 				77A67E211F4C0EE1000DFD88 /* EWLabel.m in Sources */,
+				778EF80B1FA063D6005CDD82 /* WAAboutMeViewController.m in Sources */,
 				77A67E521F4C0EE1000DFD88 /* SBJson4StreamWriter.m in Sources */,
+				778EF8151FA06D81005CDD82 /* WAAboutTwoCell.m in Sources */,
 				779CF3FB1F5F9FC000DBEE44 /* CLImageModel.m in Sources */,
 				77A67EA21F4C15AB000DFD88 /* ZJSwitch.m in Sources */,
 				779CF4571F6A27C000DBEE44 /* UpYun.m in Sources */,
@@ -2520,6 +2628,7 @@
 				77A67E541F4C0EE1000DFD88 /* SBJson4Writer.m in Sources */,
 				77931EDA1F987C0A0051D8BC /* WAPreviewRecordViewController.m in Sources */,
 				775411041F9DE3870005C3AE /* ZLNoAuthorityViewController.m in Sources */,
+				778EF8101FA06D71005CDD82 /* WAAboutOneCell.m in Sources */,
 				77A67E161F4C0EE1000DFD88 /* NSDate+Extension.m in Sources */,
 				7788D33C1F7F669400F3512A /* UploadPhotoNullView.m in Sources */,
 				7754110B1F9DE3870005C3AE /* ZLShowBigImgViewController.m in Sources */,
@@ -2560,6 +2669,7 @@
 				779CF4161F62863F00DBEE44 /* WAAddContactTableViewCell.m in Sources */,
 				775411091F9DE3870005C3AE /* ZLPhotoModel.m in Sources */,
 				77A67D3A1F4C0614000DFD88 /* ListeningView.m in Sources */,
+				778EF8241FA3221C005CDD82 /* WAAppTableViewCell.m in Sources */,
 				775411081F9DE3870005C3AE /* ZLPhotoManager.m in Sources */,
 				770104621F31AAA000F723A2 /* WACommonlyPhoneViewController.m in Sources */,
 				77A67E1C1F4C0EE1000DFD88 /* UIImage+Extension.m in Sources */,
@@ -2581,7 +2691,9 @@
 				77A67E531F4C0EE1000DFD88 /* SBJson4StreamWriterState.m in Sources */,
 				770104471F2F15A200F723A2 /* WAHomeViewController.m in Sources */,
 				775411031F9DE3870005C3AE /* ZLForceTouchPreviewController.m in Sources */,
+				778EF81A1FA06D8F005CDD82 /* WAAboutThreeCell.m in Sources */,
 				779CF48D1F724E1600DBEE44 /* PhotoItem.m in Sources */,
+				778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */,
 				77A67E511F4C0EE1000DFD88 /* SBJson4StreamTokeniser.m in Sources */,
 				77A67E481F4C0EE1000DFD88 /* AKPickerView.m in Sources */,
 				770104841F38509F00F723A2 /* WACommonlyAppCell2.m in Sources */,

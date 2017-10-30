@@ -27,6 +27,8 @@
 
 @property(nonatomic,strong)NSMutableArray *dataArr;
 @property(nonatomic,strong)NSString *shareUrl;
+@property(nonatomic,strong)NSString *shareContent;
+@property(nonatomic,strong)NSString *shareTitle;
 
 @property(nonatomic,strong)UIView *hudView;
 @property(nonatomic,strong)NSMutableDictionary *cacheImags;
@@ -58,45 +60,56 @@
 
 
 - (IBAction)clickShareWXFriend:(UITapGestureRecognizer *)sender {
-     [self hideShareHudView];
+//     [self hideShareHudView];
     [self shareWebPageToPlatformType:UMSocialPlatformType_WechatSession];
     
 }
 - (IBAction)clickWXFriends:(UITapGestureRecognizer *)sender {
-     [self hideShareHudView];
+//     [self hideShareHudView];
     [self shareWebPageToPlatformType:UMSocialPlatformType_WechatTimeLine];
 }
 - (IBAction)clickQQFriend:(UITapGestureRecognizer *)sender {
-     [self hideShareHudView];
+//     [self hideShareHudView];
     [self shareWebPageToPlatformType:UMSocialPlatformType_QQ];
 }
 - (IBAction)clickQZone:(UITapGestureRecognizer *)sender {
-     [self hideShareHudView];
+//     [self hideShareHudView];
     [self shareWebPageToPlatformType:UMSocialPlatformType_Qzone];
 }
 
 - (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
 {
 
-//    //创建分享消息对象
-//    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
-//    
-//    //创建网页内容对象
-//    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"我爱我家" descr:@"相册" thumImage:[UIImage imageNamed:@"hzph"]];
-//    //设置网页地址
-//    shareObject.webpageUrl =self.shareUrl;
-//    
-//    //分享消息对象设置分享内容对象
-//    messageObject.shareObject = shareObject;
-//    
-//    //调用分享接口
-//    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
-//        if (error) {
-//            NSLog(@"************Share fail with error %@*********",error);
-//        }else{
-//            NSLog(@"response data is %@",data);
-//        }
-//    }];
+    if (self.shareUrl) {
+//        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+        //创建分享消息对象
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        
+//        NSString *desc = [NSString stringWithFormat:@"%@创建了YYY相册，快来看啊~",userInfo[USERNAME]];
+//        NSString *title = [NSString stringWithFormat:@"邀请你欣赏我的家庭相册“%@相册名称”",userInfo[USERNAME]];
+        //创建网页内容对象
+        UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:self.shareTitle descr:self.shareContent thumImage:[UIImage imageNamed:@"logo"]];
+        //设置网页地址
+        shareObject.webpageUrl = self.shareUrl;
+        
+        //分享消息对象设置分享内容对象
+        messageObject.shareObject = shareObject;
+        
+        //调用分享接口
+        [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+            if (error) {
+                NSLog(@"************Share fail with error %@*********",error);
+            }else{
+                NSLog(@"response data is %@",data);
+            }
+        }];
+        
+        [self hideShareHudView];
+    }else {
+        [self sharePhotosData];
+    }
+    
+   
 }
 
 -(void)initView {
@@ -184,6 +197,7 @@
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanLight"] forState:UIControlStateSelected];
     [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"zanGray"] forState:UIControlStateNormal];
     
+    [self sharePhotosData];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -593,37 +607,35 @@
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
+//        [MBProgressHUD hideHUD];
         
         NSString *code = data[@"code"];
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            strongSelf.shareUrl = data[@"body"][@"album_url"];
-            if ([strongSelf.shareUrl isEqualToString: @"request"]) {
-            }
+            strongSelf.shareUrl = data[@"body"][@"url"];
+            strongSelf.shareContent = data[@"body"][@"content"];
+            strongSelf.shareTitle = data[@"body"][@"title"];
             
         } else {
             
-            if ([strongSelf.shareUrl isEqualToString: @"request"]) {
-                [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                    
-                }];
-            }
-            
-            
+//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+            [MBProgressHUD showError:desc];
+        
         }
         
     } fail:^(NSError *error) {
-        [MBProgressHUD hideHUD];
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
-        if ([strongSelf.shareUrl isEqualToString: @"request"]) {
-            [strongSelf showAlertViewWithTitle:@"提示" message:@"分享失败" buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-        }
-        
+//        [MBProgressHUD hideHUD];
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//        if ([strongSelf.shareUrl isEqualToString: @"request"]) {
+//            [strongSelf showAlertViewWithTitle:@"提示" message:@"分享失败" buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//        }
+        [MBProgressHUD showError:error.localizedDescription];
         
     }];
     

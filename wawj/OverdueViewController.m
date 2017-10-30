@@ -19,7 +19,8 @@
 #import "RemindItem.h"
 #import <MJRefresh.h>
 #import "EditRemindViewController.h"
-
+#import <UIImageView+WebCache.h>
+#import <AVFoundation/AVFoundation.h>
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
     UriType             = 6, //uri合成
@@ -45,6 +46,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property (nonatomic, assign) Status state;
 
 @property (nonatomic, assign) BOOL isChange;
+
+@property (nonatomic,strong) AVAudioPlayer *audioFilePlayer;//音频播放器，用于播放录音文件
 
 
 @end
@@ -174,7 +177,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSDictionary *keys = @{@"remindtype"                 : @"string",
                            @"remindtime"                 : @"string",
                            @"createtimestamp"            : @"string",
-                           @"content"                    : @"string"};
+                           @"content"                    : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string"
+                           };
     
     __weak __typeof__(self) weakSelf = self;
     [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
@@ -206,6 +212,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
             item.remindtime = [res stringForColumn:@"remindtime"];
             item.content = [res stringForColumn:@"content"];
             item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            item.headurl = [res stringForColumn:@"headurl"];
+            item.audiourl = [res stringForColumn:@"audiourl"];
+            
             item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
             item.recentlyRemindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
             
@@ -314,6 +323,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     cell.contentLab.text = remindItem.content;
     cell.remindTimeLab.text = remindItem.remindtime;
     cell.remindDateLab.text = remindItem.remindDate;
+    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"friends"]];
     
     return cell;
 }
@@ -329,11 +339,22 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    
+    if (![remindItem.headurl isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+        return;
+    }
+    
     EditRemindViewController *vc = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
     vc.eventType = ExpRemind;
-    vc.remindItem = [self.dataArr objectAtIndex:indexPath.row];
+    vc.remindItem = remindItem;
     vc.database = self.db;
-//    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+    
     __weak __typeof__(self) weakSelf = self;
     vc.editRemindViewControllerWithDelRemind = ^(RemindItem *remindItem) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
@@ -348,10 +369,29 @@ typedef NS_OPTIONS(NSInteger, Status) {
         [strongSelf.navigationController popViewControllerAnimated:YES];        
     };
     
-    [self.navigationController pushViewController:vc animated:YES];
+    
     
 }
 
+#pragma -mark 播放本地音频
+-(void)playAudioWithFilePath:(NSString *)audioFilePath {
+    
+    NSURL *url= [NSURL URLWithString:audioFilePath];
+    NSError *error=nil;
+    self.audioFilePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.audioFilePlayer.numberOfLoops=0;
+    self.audioFilePlayer.volume = 1;
+//    self.audioFilePlayer.delegate = self;
+    [self.audioFilePlayer prepareToPlay];
+    if (error) {
+//        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
+        [MBProgressHUD showError:@"播放失败"];
+        return ;
+    }
+    
+    [self.audioPlayer play];
+    
+}
 
 #pragma mark - cell delegate
 - (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
@@ -359,9 +399,51 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     if ([self isReachable]) {
         
-//        RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
-        NSString *readText = cell.contentLab.text;
-        [self readTextWithString:readText];
+        RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
+        
+        if (![remindItem.headurl isEqualToString:@""]) {
+            
+            if ([remindItem.headurl.pathComponents[0] isEqualToString:@"file"]) {
+                [self playAudioWithFilePath:remindItem.headurl];
+            } else {
+                NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+                AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+                
+                NSURL *URL = [NSURL URLWithString:remindItem.headurl];
+                NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+                
+                [MBProgressHUD showMessage:nil];
+                __weak __typeof__(self) weakSelf = self;
+                NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+                    
+                    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+                    NSURL *str = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+                    return str;
+                    
+                } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+                    NSLog(@"File downloaded to: %@", filePath);
+                     __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                    
+                    [MBProgressHUD hideHUD];
+                    
+                    if (!error) {
+                        [MBProgressHUD showError:@"播放失败"];
+                    }else {
+                        [strongSelf playAudioWithFilePath:filePath.absoluteString];
+                    }
+
+                }];
+                [downloadTask resume];
+                
+            }
+
+        } else {
+            
+            NSString *readText = cell.contentLab.text;
+            [self readTextWithString:readText];
+        }
+        
+        
         
     }else{
         
