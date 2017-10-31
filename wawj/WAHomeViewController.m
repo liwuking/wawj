@@ -195,6 +195,12 @@
         }
         cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
         cell.closeFamilyItem = item;
+        
+        
+//        CGFloat fixelW = CGImageGetWidth(cell.headImageView.image.CGImage);
+//        CGFloat fixelH = CGImageGetHeight(cell.headImageView.image.CGImage);
+//        NSLog(@"fixelW: %f %f", fixelW,fixelH);
+        
         return cell;
         
     } else {

@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#include <CoreGraphics/CGGeometry.h>
 @interface stringUtil : NSObject
+
++(NSString *)calculateImageRatioWithShowSize:(CGSize)showSize actualSize:(CGSize)actualSize andPhotoUrl:(NSString *)photoUrl;
 
 #pragma mark - 输入是否为电子邮箱的验证
 + (BOOL)isValidateEmail:(NSString *)email;

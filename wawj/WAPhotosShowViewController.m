@@ -9,6 +9,7 @@
 #import "WAPhotosShowViewController.h"
 #import "PhotoItem.h"
 #import <UIImageView+WebCache.h>
+#import "stringUtil.h"
 @interface WAPhotosShowViewController ()<UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -41,13 +42,18 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     
+     NSLog(@"actualSize: %lf %lf", SCREEN_WIDTH,self.scrollView.frame.size.height);
     for (NSInteger i = 0; i < self.photoItemArr.count; i++) {
         
         PhotoItem *item = self.photoItemArr[i];
+        
+        NSString *thumbUrl = [stringUtil calculateImageRatioWithShowSize:CGSizeMake(SCREEN_WIDTH, self.scrollView.frame.size.height) actualSize:CGSizeMake([item.photoWidth floatValue], [item.photoHeight floatValue]) andPhotoUrl:item.photoUrl];
+        NSLog(@"thumbUrl: %@", thumbUrl);
+        
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width*i, 0, SCREEN_WIDTH, self.scrollView.frame.size.height)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.clipsToBounds = YES;
-        [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!PhotoThumb30",item.photoUrl]] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:thumbUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
         
         [self.scrollView addSubview:imageView];
     }

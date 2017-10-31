@@ -18,6 +18,7 @@ static BOOL isProduction = FALSE;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic , strong)FMDatabase         *database;
 @property(nonatomic, strong)NSString               *databaseTableName;
+@property(nonatomic, strong)NSMutableArray               *databaseArr;
 
 
 @end

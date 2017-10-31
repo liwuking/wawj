@@ -177,7 +177,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  */
 - (void)setupRefresh
 {
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+//    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
     // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing),dateKey用于存储刷新时间，可以保证不同界面拥有不同的刷新时间
     __weak __typeof__(self) weakSelf = self;
@@ -187,6 +187,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [strongSelf getDataFromDatabase];
     }];
+    
+//    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [strongSelf getDataFromDatabase];
+//    }];
     
 }
 
@@ -245,6 +251,92 @@ typedef NS_OPTIONS(NSInteger, Status) {
     //创建数据库表
     [self createDatabaseTable];
 
+    [MBProgressHUD showMessage:nil];
+    [self getRemoteRemindData];
+    
+}
+
+-(void)getRemoteRemindData {
+    
+    /*
+    NSString *pageNum = [NSString stringWithFormat:@"%ld",self.pageNum];
+    NSDictionary *model  = @{
+                             @"pageNum":pageNum,
+                             @"pageSize":@"10",
+                             };
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0005" andModel:model];
+    
+    
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        [MBProgressHUD hideHUD];
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        if ([data[@"code"] isEqualToString:@"0000"]) {
+            
+            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
+                
+                NSDictionary *bodyDict = data[@"body"];
+                NSMutableArray *tempArr = [@[] mutableCopy];
+                for (NSDictionary *subDict in bodyDict) {
+                    
+                    NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
+                    NSLog(@"dictTrans: %@", dictTrans);
+                    AppItem *item = [[AppItem alloc] init];
+                    item.appDownloadUrl = dictTrans[@"appDownloadUrl"];
+                    item.appIcoUrl = dictTrans[@"appIcoUrl"];
+                    item.appName = dictTrans[@"appName"];
+                    item.createTime = dictTrans[@"createTime"];
+                    item.channel = dictTrans[@"channel"];
+                    item.mId = dictTrans[@"id"];
+                    item.isAdd = [self adjustAddedWithAppId:item.mId];
+                    [tempArr addObject:item];
+                }
+                
+                if (1 == strongSelf.pageNum) {
+                    strongSelf.pageNum = strongSelf.pageNum+1;
+                    [strongSelf.dataArr removeAllObjects];
+                }
+                [strongSelf.dataArr addObjectsFromArray:tempArr];
+                [strongSelf.tableView reloadData];
+                
+                if (strongSelf.dataArr.count >= 10) {
+                    [strongSelf setupFooterRefresh];
+                }
+                
+                if ([strongSelf.tableView.mj_header isRefreshing]) {
+                    [strongSelf.tableView.mj_header endRefreshing];
+                } else if([strongSelf.tableView.mj_footer isRefreshing]){
+                    if (tempArr.count < 10) {
+                        [strongSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }else {
+                        [strongSelf.tableView.mj_footer endRefreshing];
+                    }
+                }
+                
+            }
+            
+        } else {
+            
+            [strongSelf showAlertViewWithTitle:@"提示" message:data[@"desc"] buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD hideHUD];
+        
+        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+    }];*/
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -981,15 +1073,20 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 播放本地音频
 -(void)playAudioWithFilePath:(NSString *)audioFilePath {
     
-    
-    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
-    if (!exists) {
-        [MBProgressHUD showError:@"播放失败"];
+    if (self.audioFilePlayer.isPlaying) {
+        [MBProgressHUD showSuccess:@"正在播放"];
         return;
     }
     
-     NSData *data = [[NSFileManager defaultManager] contentsAtPath:audioFilePath];
+    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioPath];
+    if (!exists) {
+        [MBProgressHUD showSuccess:@"播放失败"];
+        return;
+    }
     
+     NSData *data = [[NSFileManager defaultManager] contentsAtPath:audioPath];
 //    NSURL *url= [NSURL URLWithString:audioFilePath];
     
     NSError *error=nil;
@@ -1003,7 +1100,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         return ;
     }
     
-    [self.audioPlayer play];
+    [self.audioFilePlayer play];
     
 }
 

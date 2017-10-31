@@ -72,7 +72,7 @@
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     if (![userInfo[HEADURL] isEqualToString:@""]) {
         self.imageUrl = userInfo[HEADURL];
-        NSURL *imgurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderInfo",userInfo[HEADURL]]];
+        NSURL *imgurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",userInfo[HEADURL],WEBP_HEADER_INFO]];
         [_picImgView sd_setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
     }
     

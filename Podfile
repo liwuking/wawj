@@ -17,6 +17,7 @@ pod 'UMengUShare/Social/ReducedQQ'
   pod 'MJRefresh', '~> 3.1.12'
   #pod 'ZLPhotoBrowser'
   pod 'JPush'
+  pod'SDWebImage/WebP'
   target 'wawjTests' do
     inherit! :search_paths
     # Pods for testing

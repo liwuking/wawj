@@ -376,10 +376,23 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 播放本地音频
 -(void)playAudioWithFilePath:(NSString *)audioFilePath {
     
+    if (self.audioFilePlayer.isPlaying) {
+        [MBProgressHUD showSuccess:@"正在播放"];
+        return;
+    }
+    
+    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioPath];
+    if (!exists) {
+        [MBProgressHUD showSuccess:@"播放失败"];
+        return;
+    }
+    
     NSURL *url= [NSURL URLWithString:audioFilePath];
     NSError *error=nil;
     self.audioFilePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    self.audioFilePlayer.numberOfLoops=0;
+   self.audioFilePlayer.numberOfLoops=0;
     self.audioFilePlayer.volume = 1;
 //    self.audioFilePlayer.delegate = self;
     [self.audioFilePlayer prepareToPlay];
@@ -389,7 +402,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         return ;
     }
     
-    [self.audioPlayer play];
+    [self.audioFilePlayer play];
     
 }
 

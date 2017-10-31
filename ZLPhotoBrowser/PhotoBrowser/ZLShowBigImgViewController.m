@@ -205,7 +205,7 @@
 - (void)btnOriginalImage_Click:(UIButton *)btn
 {
     ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
-    nav.isSelectOriginalPhoto = btn.selected = !btn.selected;
+    nav.isSelectOriginalPhoto = YES;//btn.selected = !btn.selected;
     if (btn.selected) {
         [self getPhotosBytes];
         if (!_navRightBtn.isSelected) {

@@ -17,6 +17,7 @@
 #import "NewRemindOrEditRmindViewController.h"
 #import "WAShareViewController.h"
 #import <UIImageView+WebCache.h>
+#import <UIImage+WebP.h>
 #import "DBManager.h"
 #import "FMDatabase.h"
 #import "CoreArchive.h"
@@ -96,6 +97,10 @@
             NSLog(@"删除别名: %@",iAlias);
         } seq:[[NSDate date] timeIntervalSince1970]];
         
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *myRecordPath = [NSString stringWithFormat:@"%@/MyRecored", documentPath];
+        [[NSFileManager defaultManager] removeItemAtPath:myRecordPath error:nil];
+        
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -161,12 +166,15 @@
         
         WASetOneCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetOneCell" owner:nil options:nil] lastObject];
         NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-        NSString *headurl = userInfo[@"headUrl"];
+        NSString *headurl = [NSString stringWithFormat:@"%@!%@",userInfo[@"headUrl"],WEBP_HEADER_INFO];
         if (![headurl isEqualToString:@""]) {
 
             [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:headurl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                 
             }];
+            
+            
+//            cell.headImageView sd_setImageWithURL:@"" placeholderImage:nil options:(SDWebImageOptions)
         }
         cell.userNameLab.text = userDict[USERNAME];
         cell.userIphone.text = userDict[USERIPHONE];
@@ -176,14 +184,13 @@
         
         WASetTwoCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetTwoCell" owner:nil options:nil] lastObject];
         cell.waSwitch.on = [CoreArchive boolForKey:ISZHENGDIAN_BAOSHI];
-//        __weak typeof(self) weakSelf = self;
         cell.switchState = ^(BOOL state) {
-//            __strong typeof(weakSelf) strongSelf = weakSelf;
             if (state) {
                 [AlarmClockItem addWholePointTellTime];
             } else {
                 [AlarmClockItem cancelWholePointTellTime];
             }
+             [CoreArchive setBool:state key:ISZHENGDIAN_BAOSHI];
         };
         
         
@@ -212,10 +219,10 @@
         
         if (1 == indexPath.row) {
             
-            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            cell.waSwitch.on = !cell.waSwitch.on;
-            
-            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
+//            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            cell.waSwitch.on = !cell.waSwitch.on;
+//
+//            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
             
         } else {
             

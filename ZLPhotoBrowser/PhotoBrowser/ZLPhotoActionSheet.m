@@ -695,7 +695,7 @@ double const ScalePhotoWidth = 1000;
     [svc setBtnBackBlock:^(NSArray<ZLPhotoModel *> *selectedModels, BOOL isOriginal) {
         strongify(weakSelf);
         [ZLPhotoManager markSelcectModelInArr:strongSelf.arrDataSources selArr:selectedModels];
-        strongSelf.isSelectOriginalPhoto = isOriginal;
+        strongSelf.isSelectOriginalPhoto = YES;//isOriginal;
         [strongSelf.arrSelectedModels removeAllObjects];
         [strongSelf.arrSelectedModels addObjectsFromArray:selectedModels];
         [strongSelf.collectionView reloadData];

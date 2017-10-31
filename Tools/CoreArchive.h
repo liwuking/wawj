@@ -12,9 +12,24 @@
 
 #define SYSTEM_VERSION  [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] firstObject] integerValue]
 
+#define  WEBP_HEADER_FAMILY    @"HeaderFamilyWebp"
+#define  WEBP_HEADERF_APP      @"HeaderApplyWebp"
+#define  WEBP_HEADER_INFO      @"HeaderInfoWebp"
+
+#define  RATIO_IMAGE_30      @"webp30"
+#define  RATIO_IMAGE_40      @"webp40"
+#define  RATIO_IMAGE_50      @"webp50"
+#define  RATIO_IMAGE_60      @"webp60"
+#define  RATIO_IMAGE_70      @"webp70"
+#define  RATIO_IMAGE_80      @"webp80"
+#define  RATIO_IMAGE_90      @"webp90"
+#define  RATIO_IMAGE_100      @"webp100"
+
+
 #define USER_APP_ARR  @"user_app_arr"
 
 
+#define USER_DATAIDENTIFIER_ARR  @"user_dataIdentifier_ARR"
 
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"

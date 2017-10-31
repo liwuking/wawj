@@ -140,7 +140,7 @@
         self.headTitle.text = @"我";
         
         if (![userInfo[@"headUrl"] isKindOfClass:[NSNull class]]) {
-            [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderApply",userInfo[@"headUrl"]]] placeholderImage:nil];
+            [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",userInfo[@"headUrl"],WEBP_HEADERF_APP]] placeholderImage:nil];
         }
         
     } else {
@@ -155,7 +155,7 @@
                 self.headTitle.text = dict[@"qinmiName"];
                 
                 if (![dict[@"headUrl"] isKindOfClass:[NSNull class]]) {
-                    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderApply",dict[@"headUrl"]]] placeholderImage:nil];
+                    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",dict[@"headUrl"],WEBP_HEADERF_APP]] placeholderImage:nil];
                 }
             }
   
@@ -340,6 +340,10 @@
     ZLPhotoActionSheet *actionSheet = [[ZLPhotoActionSheet alloc] init];
     //设置照片最大预览数
     actionSheet.maxPreviewCount = 100;
+    //
+    actionSheet.allowTakePhotoInLibrary = NO;
+//    //是否选择原图
+//    actionSheet.isSelectOriginalPhoto = YES;
     //设置照片最大选择数
     actionSheet.maxSelectCount = 25 - self.dataArr.count;
     actionSheet.sender = self;
@@ -349,6 +353,10 @@
         //your codes
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [strongSelf uploadImage:images];
+        
+        CGFloat fixelW = CGImageGetWidth(images[0].CGImage);
+        CGFloat fixelH = CGImageGetHeight(images[0].CGImage);
+        NSLog(@"fixelW: %f %f", fixelH,fixelW);
         
     }];
     
@@ -587,6 +595,7 @@
         
     } fail:^(NSError *error) {
         
+            [MBProgressHUD hideHUD];
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
     
             [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
@@ -651,6 +660,7 @@
              [self.collectionView.mj_header endRefreshing];
         }
        
+        [MBProgressHUD hideHUD];
         [MBProgressHUD showSuccess:@"网络未开启"];
 
         return;
@@ -836,7 +846,7 @@
         self.isChange = YES;
     } else {
         
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderFamily",item.photoUrl]] placeholderImage:[UIImage imageNamed:@""]];
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",item.photoUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@""]];
     }
     
     return cell;

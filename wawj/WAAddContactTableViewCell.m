@@ -18,7 +18,7 @@
 -(void)setApplyItem:(ApplyItem *)applyItem {
     _applyItem = applyItem;
     
-    [self.headImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!HeaderFamily",applyItem.headUrl]] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
+    [self.headImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",applyItem.headUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"]];
     self.titleLab.text = [NSString stringWithFormat:@"%@(%@)", applyItem.applyRole,applyItem.applyName];
 }
 

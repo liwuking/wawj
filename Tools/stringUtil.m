@@ -10,6 +10,39 @@
 #import "Utility.h"
 #import <sys/utsname.h>
 @implementation stringUtil
+
++(NSString *)calculateImageRatioWithShowSize:(CGSize)showSize actualSize:(CGSize)actualSize andPhotoUrl:(NSString *)photoUrl {
+    
+    NSString *thumbUrl = [NSString stringWithFormat:@"%@!webp100",photoUrl];
+    /**
+     * 计算宽,高比例
+     */
+    float widthRatio = actualSize.width / showSize.width;
+    float heightRatio = actualSize.height / showSize.height;
+//    NSLog(@"fixelW: %@ %@ 比例： %f  %f", item.photoWidth,item.photoHeight,widthRatio,heightRatio);
+    float inSampleSize = 1;
+    if (widthRatio > 1 || heightRatio > 1) {
+        if (widthRatio > heightRatio) {
+            inSampleSize = widthRatio;
+        } else {
+            inSampleSize = heightRatio;
+        }
+//        NSLog(@"10/inSampleSize: %f", 10/inSampleSize);
+        
+        NSInteger floSampleSize = (NSInteger)(10/inSampleSize * 10) % 10;
+        floSampleSize = floSampleSize > 4 ? 1 : 0;
+        
+        NSInteger bill = (NSInteger)1*10/inSampleSize ;
+        bill = bill < 1 ? 1 : bill;
+        bill = bill + floSampleSize;
+        
+        thumbUrl = [NSString stringWithFormat:@"%@!webp%ld",photoUrl,bill*10];
+//        NSLog(@"bill --- %ld", bill*10);
+    }
+    
+    return thumbUrl;
+}
+
 #pragma mark - 输入是否为电子邮箱的验证
 + (BOOL)isValidateEmail:(NSString *)email
 {

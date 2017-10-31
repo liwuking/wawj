@@ -14,6 +14,7 @@
 
 #define VERSIONNUM   @"1"
 
+#import "stringUtil.h"
 #import "WACommon.h"
 #import "Utility.h"
 #import "Definition.h"
