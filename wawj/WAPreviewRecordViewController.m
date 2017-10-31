@@ -61,6 +61,7 @@
     [self initViews];
     [self setAudioSession];
     
+   
     
 }
 
@@ -79,9 +80,60 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.cicularView startCircleWithTimeLength:self.recordedTime];
-    [self.audioPlayer play];
-    
+    if ([self.audioUrl hasPrefix:@"http"]) {
+        
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+        NSURL *URL = [NSURL URLWithString:self.audioUrl];
+        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+        
+        [MBProgressHUD showMessage:nil];
+        __weak __typeof__(self) weakSelf = self;
+        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+           
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+            
+        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [MBProgressHUD hideHUD];
+            
+            if (error) {
+                [MBProgressHUD showError:@"音频播放出错"];
+                return ;
+            }
+            
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+            NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+            
+            
+            NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+            NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+            
+            NSError *errordd;
+            [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+            
+            
+            NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
+            NSLog(@"File downloaded to: %@", downLoadAudioUrl);
+            
+            strongSelf.audioUrl = downLoadAudioUrl;
+            [strongSelf.cicularView startCircleWithTimeLength:self.recordedTime];
+            [strongSelf.audioPlayer play];
+            
+        }];
+        [downloadTask resume];
+
+    } else {
+        [self.cicularView startCircleWithTimeLength:self.recordedTime];
+        [self.audioPlayer play];
+    }
+   
 }
 
 
@@ -97,18 +149,6 @@
     [audioSession setActive:YES error:nil];
 }
 
-///**
-// *  取得录音文件保存路径
-// *
-// *  @return 录音文件路径
-// */
-//-(NSURL *)getSavePath{
-//    NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
-//    NSLog(@"file path:%@",urlStr);
-//    NSURL *url=[NSURL fileURLWithPath:urlStr];
-//    return url;
-//}
 
 /**
  *  创建播放器
@@ -133,21 +173,11 @@
 }
 
 
-#pragma mark - 录音机代理方法
-/**
- *  录音完成，录音完成后播放录音
- *
- *  @param recorder 录音机对象
- *  @param flag     是否成功
- */
--(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
-    
-    NSLog(@"录音完成!");
-}
+#pragma mark - 播放代理方法
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag{
     //播放结束时执行的动作
-    self.startStopBtn.selected = NO;
+    
 }
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer*)player error:(NSError *)error{
     //解码错误执行的动作

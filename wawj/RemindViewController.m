@@ -251,22 +251,16 @@ typedef NS_OPTIONS(NSInteger, Status) {
     //创建数据库表
     [self createDatabaseTable];
 
-    [MBProgressHUD showMessage:nil];
+    
     [self getRemoteRemindData];
     
 }
 
 -(void)getRemoteRemindData {
     
-    /*
-    NSString *pageNum = [NSString stringWithFormat:@"%ld",self.pageNum];
-    NSDictionary *model  = @{
-                             @"pageNum":pageNum,
-                             @"pageSize":@"10",
-                             };
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0005" andModel:model];
+    [MBProgressHUD showMessage:nil];
     
-    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2005" andModel:nil];
     __weak __typeof__(self) weakSelf = self;
     [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
@@ -284,37 +278,34 @@ typedef NS_OPTIONS(NSInteger, Status) {
                     
                     NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
                     NSLog(@"dictTrans: %@", dictTrans);
-                    AppItem *item = [[AppItem alloc] init];
-                    item.appDownloadUrl = dictTrans[@"appDownloadUrl"];
-                    item.appIcoUrl = dictTrans[@"appIcoUrl"];
-                    item.appName = dictTrans[@"appName"];
-                    item.createTime = dictTrans[@"createTime"];
-                    item.channel = dictTrans[@"channel"];
-                    item.mId = dictTrans[@"id"];
-                    item.isAdd = [self adjustAddedWithAppId:item.mId];
+                    
+                    RemindItem *item = [[RemindItem alloc] init];
+                    item.remindtype = REMINDTYPE_ONLYONCE;
+                    item.content = dictTrans[@"remindContent"];
+                    item.createtimestamp = dictTrans[@"remindTime"];
+                    item.audiourl = dictTrans[@"remindAudio"];
+                    
+                    NSInteger remindTimeStamp = [dictTrans[@"remindTime"] integerValue];
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+                    [dateFormatter setDateFormat:@"HH:mm"];
+                    NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
+                    item.remindtime = [dateFormatter stringFromDate:date];
+                    
+                    NSInteger createUser = [dictTrans[@"createUser"] integerValue];
+                    NSString *headUrl = @"";
+                    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+                    for (NSDictionary *dict in arr) {
+                        if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",createUser]]) {
+                            headUrl = dict[@"headUrl"];
+                            break;
+                        }
+                    }
+                    item.headurl = headUrl;
+                    
                     [tempArr addObject:item];
                 }
                 
-                if (1 == strongSelf.pageNum) {
-                    strongSelf.pageNum = strongSelf.pageNum+1;
-                    [strongSelf.dataArr removeAllObjects];
-                }
-                [strongSelf.dataArr addObjectsFromArray:tempArr];
-                [strongSelf.tableView reloadData];
-                
-                if (strongSelf.dataArr.count >= 10) {
-                    [strongSelf setupFooterRefresh];
-                }
-                
-                if ([strongSelf.tableView.mj_header isRefreshing]) {
-                    [strongSelf.tableView.mj_header endRefreshing];
-                } else if([strongSelf.tableView.mj_footer isRefreshing]){
-                    if (tempArr.count < 10) {
-                        [strongSelf.tableView.mj_footer endRefreshingWithNoMoreData];
-                    }else {
-                        [strongSelf.tableView.mj_footer endRefreshing];
-                    }
-                }
                 
             }
             
@@ -335,7 +326,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
             
         }];
         
-    }];*/
+    }];
     
 }
 
@@ -745,10 +736,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         
         NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,remindTime,content,@"",@"",timeSp_f];
+        NSLog(@"语音提醒sql: %@",sql);
         BOOL isCreate = [_db executeUpdate:sql];
         if (isCreate) {
             [MBProgressHUD showSuccess:@"创建成功"];
             [self getDataFromDatabase];
+            
+             NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindTime];
+            [AlarmClockItem addAlarmClockWithAlarmClockContent:content AlarmClockDateTime:remindTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
             
         }else{
             [MBProgressHUD showSuccess:@"创建失败"];
@@ -989,7 +984,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
     
-    if (![remindItem.audiourl isEqualToString:@""]) {
+    if (remindItem.audiourl && ![remindItem.audiourl isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
             
         }];
@@ -1232,7 +1227,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }else {
         [MBProgressHUD hideHUD];
         if (_result.length == 0) {
-            [MBProgressHUD hideHUD];
             [MBProgressHUD showSuccess:[NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc]];
         }
     }

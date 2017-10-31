@@ -146,8 +146,8 @@
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
 //    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-    NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
-    notification.soundName = soundPath;
+    //NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
+    notification.soundName = @"ThunderSong.m4r";
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我爱我家";
@@ -256,13 +256,13 @@
     } else {
         //Local Notification
         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
-        notificationContent.title = @"提醒";
-        notificationContent.subtitle = @"我爱我家";
-        notificationContent.body = content;
+        notificationContent.title = @"我的提醒";
+        notificationContent.subtitle = content;//@"我爱我家";
+        //notificationContent.body = content;
 //        NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
 //        notificationContent.sound = [UNNotificationSound soundNamed:soundPath];
 
-        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.caf"];
+        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.m4r"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             

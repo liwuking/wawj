@@ -374,6 +374,48 @@
  
 }
 
+-(void)uploadRemindData {
+//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];//self.closeFamilyItem.qinmiUser
+//    NSDictionary *model = @{@"create_user":self.closeFamilyItem.qinmiUser,
+//                            @"remind_time":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
+//                            @"remind_content":audioUrl,
+//                            @"remind_content":remindTime,
+//                            @"createUser":userInfo[USERID],
+//                            };
+//    
+//    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2004" andModel:model];
+//    __weak __typeof__(self) weakSelf = self;
+//    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+//        
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        
+//        [MBProgressHUD hideHUD];
+//        NSString *code = data[@"code"];
+//        NSString *desc = data[@"desc"];
+//        
+//        if ([code isEqualToString:@"1"]) {
+//            //             [MBProgressHUD showError:@"已经提醒"];
+//            //            [strongSelf addNotificationWithRemindContent:nil];
+//        } else {
+//            
+//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//                
+//            }];
+//            
+//        }
+//        
+//    } fail:^(NSError *error) {
+//        
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [MBProgressHUD hideHUD];
+//        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+//            
+//        }];
+//        
+//    }];
+}
+
 -(void)backActionWithEditRefresh:(RemindItem *)remindItem {
     self.editRemindViewControllerWithEditRemind(remindItem);
     [self.navigationController popViewControllerAnimated:YES];

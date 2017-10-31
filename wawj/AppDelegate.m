@@ -116,6 +116,12 @@
     
 //    [self copyFileToDocuments:@"ThunderSong"];
 
+    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+    NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+
 //    [self downloadCaf];
     
     return YES;
@@ -123,6 +129,8 @@
 }
 
 -(void)downloadCaf {
+    
+    
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     NSURL *URL = [NSURL URLWithString:@"http://wawj-test.b0.upaiyun.com/audio/20171029/1509273420.caf"];
@@ -132,27 +140,27 @@
         
         
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
         
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
         NSLog(@"File downloaded to: %@", filePath);
         
         
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-        NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-        
-        
-        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-        NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-        if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-            [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-        
-        NSError *errordd;
-        [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-        
-        NSLog(@"添加远程提醒成功");
+//        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//        NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+//        NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+//
+//
+//        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//        NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+//        if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+//            [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+//        }
+//
+//        NSError *errordd;
+//        [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+//
+//        NSLog(@"添加远程提醒成功");
 
     }];
 
@@ -230,146 +238,71 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSDictionary *dictionary =[NSJSONSerialization JSONObjectWithData:deviceToken options:NSJSONReadingMutableContainers error:nil];
     NSLog(@"NSData 转 NSDictionary =%@",dictionary);
     
-    NSLog(@"%@", [NSString stringWithFormat:@"Device Token: %@", deviceToken]);
+    NSLog(@"%s  %@", __func__,[NSString stringWithFormat:@"Device Token: %@", deviceToken]);
     [JPUSHService registerDeviceToken:deviceToken];
 }
 
-- (void)createDatabaseTable {
-    
-    if (![CoreArchive dicForKey:USERINFO]) return;
-    
-    self.databaseTableName = @"remindList";
-    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSString *userID = userInfo? userInfo[@"userId"] : @"";
-    self.databaseTableName = [self.databaseTableName stringByAppendingFormat:@"_%@",userID];
-    
-    NSDictionary *keys = @{@"remindtype"                 : @"string",
-                           @"remindtime"                 : @"string",
-                           @"createtimestamp"            : @"string",
-                           @"content"                    : @"string",
-                           @"audiourl"                   : @"string",
-                           @"headurl"                    : @"string"
-                           };
-    
-    
-    __weak __typeof__(self) weakSelf = self;
-    
-    [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
-        //        if (!isOK) {
-        //            return ;
-        //        }
-    } FMDatabase:^(FMDatabase *database) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        strongSelf.database = database;
-    }];
-    
-}
+
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     //Optional
     NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
 }
+
+-(void)handleRemoteNotificationWithUserInfo:(NSDictionary *)userInfo {
+    
+    NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
+//    NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
+    NSInteger createUser = [userInfo[@"nativeData"][@"createUser"] integerValue];
+    NSString *headUrl = @"";
+    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+    for (NSDictionary *dict in arr) {
+        if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",createUser]]) {
+            headUrl = dict[@"headUrl"];
+            break;
+        }
+    }
+    
+    NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
+    NSString *recordTime = [dateFormatter stringFromDate:date];
+    
+    NSInteger remindSeconds = [userInfo[@"nativeData"][@"remindSeconds"] integerValue];
+    
+    WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
+    vc.audioUrl = audioUrl;
+    vc.recordedTime = remindSeconds;
+    vc.headUrl = headUrl;
+    vc.recordedDate = recordTime;
+    
+    [[[self topViewController] navigationController] pushViewController:vc animated:YES];
+    
+}
+
 #pragma mark- JPUSHRegisterDelegate
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
    
     NSLog(@"%s -- identifier: %@", __FUNCTION__, notification.request.identifier);
-    NSString *identifierStr = notification.request.identifier;
-    
     NSDictionary * userInfo = notification.request.content.userInfo;
-    NSString *title = userInfo[@"aps"][@"alert"];//content.title;  // 推送消息的标题
-    
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
-
-        //创建数据库
-        [self createDatabaseTable];
         
-       NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
-        NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
-        NSString *headUrl = @"";
-        NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
-        for (NSDictionary *dict in arr) {
-            if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",remindUser]]) {
-                headUrl = dict[@"headUrl"];
-                break;
-            }
-        }
-        
-        NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.timeZone = [NSTimeZone localTimeZone];
-        [dateFormatter setDateFormat:@"HH:mm"];
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
-        NSString *recordTime = [dateFormatter stringFromDate:date];
-    
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-        NSURL *URL = [NSURL URLWithString:audioUrl];
-        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-        
-        __block NSString *downLoadAudioUrl;
-        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-            return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        NSString *title = userInfo[@"aps"][@"alert"];
+        __weak __typeof__(self) weakSelf = self;
+        [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
             
-            BOOL isExits = [self.databaseArr containsObject:identifierStr];
-            if (error || isExits) return ;
-            [self.databaseArr addObject:identifierStr];
+            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
             
-            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-            NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-            NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-            
-            
-            NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-            NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-            if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-                [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            
-            NSError *errordd;
-            [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-            
-            
-            NSLog(@"File downloaded to: %@", filePath);
-            NSString *audioPath = [NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]];
-    
-            
-//            downLoadAudioUrl = [filePath.absoluteString substringFromIndex:8];
-            NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,recordTime,title,audioPath,headUrl,remindTimeStamp+30];
-            NSLog(@"sql: %@",sql);
-            if ([self.database executeUpdate:sql]) {
-                //添加一个新的闹钟
-                NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,recordTime];
-                [AlarmClockItem addAlarmClockWithAlarmClockContent:title AlarmClockDateTime:recordTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
-                
-                NSLog(@"添加远程提醒成功");
-            }
-
         }];
-        [downloadTask resume];
         
-        if (SYSTEM_VERSION < 10) {
-            NSInteger remindSeconds = [userInfo[@"nativeData"][@"remindSeconds"] integerValue];
-            __weak __typeof__(self) weakSelf = self;
-            [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
-                __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                
-                WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
-                vc.audioUrl = downLoadAudioUrl;
-                vc.recordedTime = remindSeconds;
-                vc.headUrl = headUrl;
-                vc.recordedDate = recordTime;
-                
-                [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
-                
-            }];
-        }
 
     } else {
         // 判断为本地通知
@@ -382,99 +315,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     
-    
     NSLog(@"%s -- identifier: %@", __FUNCTION__, response.notification.request.identifier);
-    NSString *identifierStr = response.notification.request.identifier;
-    
     NSDictionary * userInfo = response.notification.request.content.userInfo;
-    NSString *title = userInfo[@"aps"][@"alert"];// 推送消息的标题
-    
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
       
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
-        
-        //创建数据库
-        [self createDatabaseTable];
-        
-        NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
-        NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
-        NSString *headUrl = @"";
-        NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
-        for (NSDictionary *dict in arr) {
-            if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",remindUser]]) {
-                headUrl = dict[@"headUrl"];
-                break;
-            }
-        }
-        
-        NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.timeZone = [NSTimeZone localTimeZone];
-        [dateFormatter setDateFormat:@"HH:mm"];
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
-        NSString *recordTime = [dateFormatter stringFromDate:date];
-        
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-        NSURL *URL = [NSURL URLWithString:audioUrl];
-        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-        
-        __block NSString *downLoadAudioUrl;
-        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-            return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-        } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-            
-            BOOL isExits = [self.databaseArr containsObject:identifierStr];
-            if (error || isExits) return ;
-            [self.databaseArr addObject:identifierStr];
-            
-            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-            NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-            NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-            
-            
-            NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-            NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-            if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-                [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            
-            NSError *errordd;
-            [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-            
-            
-            NSLog(@"File downloaded to: %@", filePath);
-            NSString *audioPath = [NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]];
-        
-            NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDTYPE_ONLYONCE,recordTime,title,audioPath,headUrl,remindTimeStamp+30];
-            NSLog(@"sql: %@",sql);
-            if ([self.database executeUpdate:sql]) {
-                //添加一个新的闹钟
-                NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,recordTime];
-                [AlarmClockItem addAlarmClockWithAlarmClockContent:title AlarmClockDateTime:recordTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
-                
-                NSLog(@"添加远程提醒成功");
-            }
-            
-        }];
-        [downloadTask resume];
-        
-        NSInteger remindSeconds = [userInfo[@"nativeData"][@"remindSeconds"] integerValue];
-        __weak __typeof__(self) weakSelf = self;
-        [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            
-            WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
-            vc.audioUrl = downLoadAudioUrl;
-            vc.recordedTime = remindSeconds;
-            vc.headUrl = headUrl;
-            vc.recordedDate = recordTime;
-            
-            [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
-            
-        }];
+        [self handleRemoteNotificationWithUserInfo:userInfo];
         
     } else {
         // 判断为本地通知
@@ -589,14 +436,16 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else{
         
         //播放声音
-        AudioServicesPlaySystemSound(1007);
-        //开启震动
+//        AudioServicesPlaySystemSound(1007);
+//        //开启震动
         AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        [self playRemindAudio];
         
         [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
             //关闭震动
             AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+            [self.audioFilePlayer stop];
         }];
         
     }
@@ -604,6 +453,40 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"info = %@",notification.userInfo);
     //删除已过期的闹钟
     [AlarmClockItem cancelAllExpireAlarmClock];
+    
+}
+
+#pragma -mark 播放本地音频
+-(void)playRemindAudio {
+    
+    if (self.audioFilePlayer.isPlaying) {
+        [MBProgressHUD showSuccess:@"正在播放"];
+        return;
+    }
+    
+//    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
+//    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioPath];
+//    if (!exists) {
+//        [MBProgressHUD showSuccess:@"播放失败"];
+//        return;
+//    }
+    
+    NSData *data = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"m4r"]];
+    //    NSURL *url= [NSURL URLWithString:audioFilePath];
+    
+    NSError *error=nil;
+    self.audioFilePlayer=[[AVAudioPlayer alloc] initWithData:data error:&error];
+    self.audioFilePlayer.numberOfLoops=0;
+    self.audioFilePlayer.volume = 1;
+    [self.audioFilePlayer prepareToPlay];
+    if (error) {
+        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
+//        [MBProgressHUD showError:@"播放失败"];
+        return ;
+    }
+    
+    [self.audioFilePlayer play];
     
 }
 

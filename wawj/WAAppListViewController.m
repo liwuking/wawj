@@ -98,7 +98,7 @@
                              @"pageNum":pageNum,
                              @"pageSize":@"10",
                              };
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0005" andModel:model];
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0006" andModel:model];
     
     
     __weak __typeof__(self) weakSelf = self;
@@ -112,9 +112,9 @@
             
             if (![data[@"body"] isKindOfClass:[NSNull class]]) {
                 
-                NSDictionary *bodyDict = data[@"body"];
+                NSArray *bodyLists = data[@"body"][@"userCommonAppList"];
                 NSMutableArray *tempArr = [@[] mutableCopy];
-                for (NSDictionary *subDict in bodyDict) {
+                for (NSDictionary *subDict in bodyLists) {
                     
                     NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
                     NSLog(@"dictTrans: %@", dictTrans);

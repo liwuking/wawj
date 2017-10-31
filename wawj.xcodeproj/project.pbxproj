@@ -202,7 +202,7 @@
 		77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */; };
 		77A67D101F43DC59000DFD88 /* WAFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */; };
 		77A67D111F43DC59000DFD88 /* WAFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */; };
-		77A67D131F452EF4000DFD88 /* ThunderSong.caf in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* ThunderSong.caf */; };
+		77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D121F452EF4000DFD88 /* ThunderSong.m4r */; };
 		77A67D1D1F4AB3A1000DFD88 /* WARemindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */; };
 		77A67D1E1F4AB3A1000DFD88 /* WARemindListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67D1C1F4AB3A1000DFD88 /* WARemindListCell.xib */; };
 		77A67D2B1F4BD5C6000DFD88 /* RemindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67D271F4BD5C6000DFD88 /* RemindCell.m */; };
@@ -673,7 +673,7 @@
 		77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFeedbackViewController.h; sourceTree = "<group>"; };
 		77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFeedbackViewController.m; sourceTree = "<group>"; };
 		77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFeedbackViewController.xib; sourceTree = "<group>"; };
-		77A67D121F452EF4000DFD88 /* ThunderSong.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThunderSong.caf; sourceTree = "<group>"; };
+		77A67D121F452EF4000DFD88 /* ThunderSong.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThunderSong.m4r; sourceTree = "<group>"; };
 		77A67D141F452F0C000DFD88 /* wawj.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wawj.entitlements; sourceTree = "<group>"; };
 		77A67D1A1F4AB3A1000DFD88 /* WARemindListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemindListCell.h; sourceTree = "<group>"; };
 		77A67D1B1F4AB3A1000DFD88 /* WARemindListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemindListCell.m; sourceTree = "<group>"; };
@@ -1244,7 +1244,7 @@
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
 				772B48DA1F78E53200007701 /* WZLSerializeKit.h */,
-				77A67D121F452EF4000DFD88 /* ThunderSong.caf */,
+				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
 				778EF8311FA32FB1005CDD82 /* WAAppAddCollectionViewCell.h */,
@@ -2305,7 +2305,7 @@
 				779CF4281F6900AF00DBEE44 /* HomeCellTwo.xib in Resources */,
 				775410EB1F9DE3870005C3AE /* btn_circle@2x.png in Resources */,
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
-				77A67D131F452EF4000DFD88 /* ThunderSong.caf in Resources */,
+				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
 				778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
