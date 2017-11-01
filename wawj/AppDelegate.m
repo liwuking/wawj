@@ -107,8 +107,7 @@
     [self setLocalNotificationWithOptions:launchOptions];
     [self setJPush:launchOptions];//设置极光推送
 
-    //获取通讯录授权
-//    [self requestAuthorizationAddressBook];
+
     //网络监控
     [self netMonitor];
     //设置友盟
@@ -122,6 +121,11 @@
         [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
 
+    NSString *contactPath = [documentPath stringByAppendingPathComponent:@"MyContact"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:contactPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
 //    [self downloadCaf];
     
     return YES;
@@ -252,7 +256,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 -(void)handleRemoteNotificationWithUserInfo:(NSDictionary *)userInfo {
     
     NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
-//    NSInteger remindUser = [userInfo[@"nativeData"][@"remindUser"] integerValue];
     NSInteger createUser = [userInfo[@"nativeData"][@"createUser"] integerValue];
     NSString *headUrl = @"";
     NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
@@ -263,7 +266,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }
     }
     
-    NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue];
+    NSInteger remindTimeStamp = [userInfo[@"nativeData"][@"remindTime"] integerValue]/1000;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     [dateFormatter setDateFormat:@"HH:mm"];
@@ -296,11 +299,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         NSString *title = userInfo[@"aps"][@"alert"];
         __weak __typeof__(self) weakSelf = self;
-        [self.window.rootViewController showAlertViewWithTitle:title message:nil buttonTitle:@"确定" clickBtn:^{
+        [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"确定" clickOtherBtn:^{
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             
             [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
-            
         }];
         
 
@@ -560,21 +564,6 @@ void systemAudioCallback()
 
 
 
-//- (void)requestAuthorizationAddressBook {
-//    // 判断是否授权
-//    ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
-//    if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
-//        // 请求授权
-//        ABAddressBookRef addressBookRef = ABAddressBookCreate();
-//        ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
-//            if (granted) { // 授权成功
-//                NSLog(@"授权成功！");
-//            } else {  // 授权失败
-//                NSLog(@"授权失败！");
-//            }
-//        });
-//    }
-//}
 
 
 

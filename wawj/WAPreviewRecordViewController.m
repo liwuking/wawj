@@ -49,8 +49,8 @@
     self.cicularView.delegate = self;
     
     self.startStopBtn.selected = YES;
-    [self.startStopBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
-    [self.startStopBtn setImage:[UIImage imageNamed:@"friends"] forState:UIControlStateSelected];
+    [self.startStopBtn setImage:[UIImage imageNamed:@"audioStart"] forState:UIControlStateNormal];
+    [self.startStopBtn setImage:[UIImage imageNamed:@"audioStop"] forState:UIControlStateSelected];
     
 }
 

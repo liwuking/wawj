@@ -11,12 +11,20 @@
 #import "WACommonAddCell.h"
 #import "LJContactManager.h"
 #import "ContactItem.h"
-@interface WACommonlyPhoneViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+#import "WAContactDetailViewController.h"
+#import <AddressBook/AddressBook.h>
+
+@interface WACommonlyPhoneViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property(nonatomic,strong)NSMutableArray *dataArr;
 @end
 
 @implementation WACommonlyPhoneViewController
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 -(void)initView {
     
@@ -30,7 +38,7 @@
     [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    self.title = @"常用电话";
+    self.title = @"常用联系人";
     
     
     //此处必须要有创见一个UICollectionViewFlowLayout的对象
@@ -48,17 +56,35 @@
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"WACommonCell"];
     UINib *cellAddNib=[UINib nibWithNibName:@"WACommonAddCell" bundle:nil];
     [_collectionView registerNib:cellAddNib forCellWithReuseIdentifier:@"WACommonAddCell"];
-
-    //这种是自定义cell不带xib的注册
-    //   [_collectionView registerClass:[CollectionViewCell1 class] forCellWithReuseIdentifier:@"myheheIdentifier"];
-    //这种是原生cell的注册
-    //    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
     
 }
 
--(void)backAction {
-    [self.navigationController popViewControllerAnimated:YES];
+
+//cell的点击事件
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //cell被电击后移动的动画
+    [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionTop];
+    if (self.dataArr.count == indexPath.row) {
+        [self clickPhoneNumber];
+    } else {
+        
+        ContactItem *item = self.dataArr[indexPath.row];
+        WAContactDetailViewController *vc = [[WAContactDetailViewController alloc] initWithNibName:@"WAContactDetailViewController" bundle:nil];
+        vc.contactItem = item;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+//        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",item.name] cancelButtonTitle:@"取消" clickCancelBtn:^{
+//
+//        } otherButtonTitles:@"拨打" clickOtherBtn:^{
+//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",item.phone];
+//            //NSLog(@"str======%@",str);
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//        }];
+    }
+    
 }
+
 
 -(void)clickPhoneNumber {
     
@@ -68,23 +94,85 @@
         
         ContactItem *item = [[ContactItem alloc] init];
         item.name = name;
-        item.phone = phone;
+        [item.phoneArr addObject:phone];
         
         [strongObject.dataArr addObject:item];
         
         [strongObject.collectionView reloadData];
         
+        
+        NSDictionary *contactDict = @{@"contactName":name,
+                                      @"phoneArr":item.phoneArr
+                                      };
+        NSMutableArray *contactArrs = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
+        [contactArrs addObject:contactDict];
+        [CoreArchive setArr:contactArrs key:USER_CONTACT_ARR];
+        
     }];
     
-    
 }
+
+- (void)requestAuthorizationAddressBook {
+    // 判断是否授权
+    ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
+    if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
+        // 请求授权
+        ABAddressBookRef addressBookRef = ABAddressBookCreate();
+        ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+            if (granted) { // 授权成功
+                NSLog(@"授权成功！");
+            } else {  // 授权失败
+                NSLog(@"授权失败！");
+            }
+        });
+    }
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
     self.dataArr = [@[] mutableCopy];
+    NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
+    for (NSDictionary *dict in contactArr) {
+        ContactItem *item = [[ContactItem alloc] init];
+        item.name = dict[@"name"];
+        item.phoneArr = [[NSMutableArray alloc] initWithArray:dict[@"phoneArr"]];
+        [self.dataArr addObject:item];
+    }
     [self initView];
+    
+    [self.collectionView reloadData];
+    
+    //获取通讯录授权
+     [self requestAuthorizationAddressBook];
+    
+}
+
+
+//每一个cell是什么
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (self.dataArr.count == indexPath.row) {
+        WACommonAddCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonAddCell" forIndexPath:indexPath];
+        return cell;
+    } else {
+        WACommonCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonCell" forIndexPath:indexPath];
+        ContactItem *item = self.dataArr[indexPath.row];
+        cell.titleLab.text= item.name;
+        
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",item.phoneArr[0]]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
+            [cell.bgImg setImage:[UIImage imageWithContentsOfFile:contactPath]];
+        }else {
+            [cell.bgImg setImage:[UIImage imageNamed:@"oldFather"]];
+        }
+        
+        
+        return cell;
+    }
     
 }
 
@@ -98,55 +186,30 @@
     return self.dataArr.count+1;
 }
 
-//每一个cell是什么
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (self.dataArr.count == indexPath.row) {
-        WACommonAddCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonAddCell" forIndexPath:indexPath];
-        return cell;
-    } else {
-        WACommonCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WACommonCell" forIndexPath:indexPath];
-        ContactItem *item = self.dataArr[indexPath.row];
-        cell.titleLab.text= item.name;
-        [cell.bgImg setImage:[UIImage imageNamed:@"oldFather"]];
-        return cell;
-    }
-    
+-(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
 }
-
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
+}
 //每一个分组的上左下右间距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(5, 5, 5, 5);
 }
 
+
 //定义每一个cell的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(115, 115);
+    CGFloat width = (SCREEN_WIDTH-20)/2;
+//    CGFloat height = (width/140) * 170;
+    NSLog(@"width: %lf",width);
+    return CGSizeMake(width, width);
 }
 
-//cell的点击事件
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //cell被电击后移动的动画
-    [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionTop];
-    if (self.dataArr.count == indexPath.row) {
-        [self clickPhoneNumber];
-    } else {
-        
-         ContactItem *item = self.dataArr[indexPath.row];
-        
-        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",item.name] cancelButtonTitle:@"取消" clickCancelBtn:^{
-            
-        } otherButtonTitles:@"拨打" clickOtherBtn:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",item.phone];
-            //NSLog(@"str======%@",str);
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }];
-    }
-    
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

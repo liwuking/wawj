@@ -10,4 +10,14 @@
 
 @implementation ContactItem
 
+-(id)init {
+    
+    self = [super init];
+    if (self) {
+        _phoneArr = [@[] mutableCopy];
+    }
+    
+    return self;
+}
+
 @end

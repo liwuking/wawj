@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAContactDetailViewController">
+            <connections>
+                <outlet property="headImageView" destination="w8p-c3-dEo" id="LuA-X3-HCg"/>
+                <outlet property="photoStackView" destination="Mma-IG-z8u" id="iMJ-br-8AU"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Mma-IG-z8u">
+                    <rect key="frame" x="0.0" y="567" width="375" height="100"/>
+                    <color key="backgroundColor" red="1" green="0.34726706299999999" blue="0.29105530499999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="rZ4-mZ-AoX"/>
+                    </constraints>
+                </stackView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w8p-c3-dEo">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="w8p-c3-dEo" secondAttribute="trailing" id="4jm-1J-zYv"/>
+                <constraint firstItem="Mma-IG-z8u" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="P4c-8u-u2b"/>
+                <constraint firstItem="Mma-IG-z8u" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="VDX-RR-N7p"/>
+                <constraint firstItem="Mma-IG-z8u" firstAttribute="top" secondItem="w8p-c3-dEo" secondAttribute="bottom" id="VEm-sU-guG"/>
+                <constraint firstItem="w8p-c3-dEo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ebR-lC-zHh"/>
+                <constraint firstItem="w8p-c3-dEo" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="uwz-vg-uca"/>
+                <constraint firstItem="Mma-IG-z8u" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="wIy-36-Thj"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="78.5" y="54.5"/>
+        </view>
+    </objects>
+</document>

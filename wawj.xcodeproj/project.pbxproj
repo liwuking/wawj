@@ -87,6 +87,18 @@
 		775411201F9F2C060005C3AE /* LJPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 775411191F9F2C050005C3AE /* LJPerson.m */; };
 		775411211F9F2C060005C3AE /* LJPickerDetailDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7754111B1F9F2C050005C3AE /* LJPickerDetailDelegate.m */; };
 		775411221F9F2C060005C3AE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7754111C1F9F2C050005C3AE /* README.md */; };
+		776272EA1FA9A8FD006EE231 /* WAContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776272E81FA9A8FD006EE231 /* WAContactDetailViewController.m */; };
+		776272EB1FA9A8FD006EE231 /* WAContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776272E91FA9A8FD006EE231 /* WAContactDetailViewController.xib */; };
+		776272EF1FA9ABAD006EE231 /* WAContactEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776272ED1FA9ABAD006EE231 /* WAContactEditViewController.m */; };
+		776272F01FA9ABAD006EE231 /* WAContactEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776272EE1FA9ABAD006EE231 /* WAContactEditViewController.xib */; };
+		776272F41FA9C75A006EE231 /* EditHeadImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 776272F21FA9C75A006EE231 /* EditHeadImageTableViewCell.m */; };
+		776272F51FA9C75A006EE231 /* EditHeadImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776272F31FA9C75A006EE231 /* EditHeadImageTableViewCell.xib */; };
+		776272F91FA9C770006EE231 /* EditNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 776272F71FA9C770006EE231 /* EditNameTableViewCell.m */; };
+		776272FA1FA9C770006EE231 /* EditNameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776272F81FA9C770006EE231 /* EditNameTableViewCell.xib */; };
+		776272FE1FA9C782006EE231 /* EditPhoneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 776272FC1FA9C782006EE231 /* EditPhoneTableViewCell.m */; };
+		776272FF1FA9C782006EE231 /* EditPhoneTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776272FD1FA9C782006EE231 /* EditPhoneTableViewCell.xib */; };
+		776273031FA9C79D006EE231 /* EditAddTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 776273011FA9C79D006EE231 /* EditAddTableViewCell.m */; };
+		776273041FA9C79D006EE231 /* EditAddTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 776273021FA9C79D006EE231 /* EditAddTableViewCell.xib */; };
 		77832DE31F0CB3600009F004 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE21F0CB3600009F004 /* main.m */; };
 		77832DE61F0CB3600009F004 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77832DE51F0CB3600009F004 /* AppDelegate.m */; };
 		77832DEC1F0CB3600009F004 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77832DEA1F0CB3600009F004 /* Main.storyboard */; };
@@ -482,6 +494,24 @@
 		7754111A1F9F2C050005C3AE /* LJPickerDetailDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJPickerDetailDelegate.h; sourceTree = "<group>"; };
 		7754111B1F9F2C050005C3AE /* LJPickerDetailDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJPickerDetailDelegate.m; sourceTree = "<group>"; };
 		7754111C1F9F2C050005C3AE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		776272E71FA9A8FD006EE231 /* WAContactDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAContactDetailViewController.h; sourceTree = "<group>"; };
+		776272E81FA9A8FD006EE231 /* WAContactDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAContactDetailViewController.m; sourceTree = "<group>"; };
+		776272E91FA9A8FD006EE231 /* WAContactDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAContactDetailViewController.xib; sourceTree = "<group>"; };
+		776272EC1FA9ABAD006EE231 /* WAContactEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAContactEditViewController.h; sourceTree = "<group>"; };
+		776272ED1FA9ABAD006EE231 /* WAContactEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAContactEditViewController.m; sourceTree = "<group>"; };
+		776272EE1FA9ABAD006EE231 /* WAContactEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAContactEditViewController.xib; sourceTree = "<group>"; };
+		776272F11FA9C75A006EE231 /* EditHeadImageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditHeadImageTableViewCell.h; sourceTree = "<group>"; };
+		776272F21FA9C75A006EE231 /* EditHeadImageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditHeadImageTableViewCell.m; sourceTree = "<group>"; };
+		776272F31FA9C75A006EE231 /* EditHeadImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditHeadImageTableViewCell.xib; sourceTree = "<group>"; };
+		776272F61FA9C770006EE231 /* EditNameTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditNameTableViewCell.h; sourceTree = "<group>"; };
+		776272F71FA9C770006EE231 /* EditNameTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditNameTableViewCell.m; sourceTree = "<group>"; };
+		776272F81FA9C770006EE231 /* EditNameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditNameTableViewCell.xib; sourceTree = "<group>"; };
+		776272FB1FA9C782006EE231 /* EditPhoneTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditPhoneTableViewCell.h; sourceTree = "<group>"; };
+		776272FC1FA9C782006EE231 /* EditPhoneTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditPhoneTableViewCell.m; sourceTree = "<group>"; };
+		776272FD1FA9C782006EE231 /* EditPhoneTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPhoneTableViewCell.xib; sourceTree = "<group>"; };
+		776273001FA9C79D006EE231 /* EditAddTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditAddTableViewCell.h; sourceTree = "<group>"; };
+		776273011FA9C79D006EE231 /* EditAddTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditAddTableViewCell.m; sourceTree = "<group>"; };
+		776273021FA9C79D006EE231 /* EditAddTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditAddTableViewCell.xib; sourceTree = "<group>"; };
 		77832DDE1F0CB3600009F004 /* wawj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wawj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77832DE21F0CB3600009F004 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		77832DE41F0CB3600009F004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1081,9 +1111,6 @@
 				77A67D371F4C0614000DFD88 /* ListeningView.h */,
 				77A67D381F4C0614000DFD88 /* ListeningView.m */,
 				77A67D391F4C0614000DFD88 /* ListeningView.xib */,
-				779CF4181F67C21500DBEE44 /* contactView.h */,
-				779CF4191F67C21500DBEE44 /* contactView.m */,
-				779CF41D1F67C43600DBEE44 /* contactView.xib */,
 				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 				77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */,
 				77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */,
@@ -1091,9 +1118,6 @@
 				77A67CED1F3C3190000DFD88 /* WAPersonSetViewController.h */,
 				77A67CEE1F3C3190000DFD88 /* WAPersonSetViewController.m */,
 				77A67CEF1F3C3190000DFD88 /* WAPersonSetViewController.xib */,
-				7701045F1F31AAA000F723A2 /* WACommonlyPhoneViewController.h */,
-				770104601F31AAA000F723A2 /* WACommonlyPhoneViewController.m */,
-				770104611F31AAA000F723A2 /* WACommonlyPhoneViewController.xib */,
 			);
 			name = StartPage;
 			sourceTree = "<group>";
@@ -1205,6 +1229,30 @@
 			path = LJContactManager;
 			sourceTree = "<group>";
 		};
+		776272E61FA9A50B006EE231 /* AppList */ = {
+			isa = PBXGroup;
+			children = (
+				778EF8311FA32FB1005CDD82 /* WAAppAddCollectionViewCell.h */,
+				778EF8321FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m */,
+				778EF8331FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib */,
+				778EF82C1FA32DDB005CDD82 /* WAAppCollectionViewCell.h */,
+				778EF82D1FA32DDB005CDD82 /* WAAppCollectionViewCell.m */,
+				778EF82E1FA32DDB005CDD82 /* WAAppCollectionViewCell.xib */,
+				770104771F37FD2E00F723A2 /* WACommonlyAPPViewController.h */,
+				770104781F37FD2E00F723A2 /* WACommonlyAPPViewController.m */,
+				770104791F37FD2E00F723A2 /* WACommonlyAPPViewController.xib */,
+				778EF8291FA32394005CDD82 /* AppItem.h */,
+				778EF82A1FA32394005CDD82 /* AppItem.m */,
+				778EF8211FA3221C005CDD82 /* WAAppTableViewCell.h */,
+				778EF8221FA3221C005CDD82 /* WAAppTableViewCell.m */,
+				778EF8231FA3221C005CDD82 /* WAAppTableViewCell.xib */,
+				778EF81C1FA32128005CDD82 /* WAAppListViewController.h */,
+				778EF81D1FA32128005CDD82 /* WAAppListViewController.m */,
+				778EF81E1FA32128005CDD82 /* WAAppListViewController.xib */,
+			);
+			name = AppList;
+			sourceTree = "<group>";
+		};
 		77832DD51F0CB3600009F004 = {
 			isa = PBXGroup;
 			children = (
@@ -1247,26 +1295,34 @@
 				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
-				778EF8311FA32FB1005CDD82 /* WAAppAddCollectionViewCell.h */,
-				778EF8321FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m */,
-				778EF8331FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib */,
-				778EF82C1FA32DDB005CDD82 /* WAAppCollectionViewCell.h */,
-				778EF82D1FA32DDB005CDD82 /* WAAppCollectionViewCell.m */,
-				778EF82E1FA32DDB005CDD82 /* WAAppCollectionViewCell.xib */,
-				770104771F37FD2E00F723A2 /* WACommonlyAPPViewController.h */,
-				770104781F37FD2E00F723A2 /* WACommonlyAPPViewController.m */,
-				770104791F37FD2E00F723A2 /* WACommonlyAPPViewController.xib */,
-				778EF8291FA32394005CDD82 /* AppItem.h */,
-				778EF82A1FA32394005CDD82 /* AppItem.m */,
-				778EF8211FA3221C005CDD82 /* WAAppTableViewCell.h */,
-				778EF8221FA3221C005CDD82 /* WAAppTableViewCell.m */,
-				778EF8231FA3221C005CDD82 /* WAAppTableViewCell.xib */,
-				778EF81C1FA32128005CDD82 /* WAAppListViewController.h */,
-				778EF81D1FA32128005CDD82 /* WAAppListViewController.m */,
-				778EF81E1FA32128005CDD82 /* WAAppListViewController.xib */,
+				779CF4181F67C21500DBEE44 /* contactView.h */,
+				779CF4191F67C21500DBEE44 /* contactView.m */,
+				779CF41D1F67C43600DBEE44 /* contactView.xib */,
+				7701045F1F31AAA000F723A2 /* WACommonlyPhoneViewController.h */,
+				770104601F31AAA000F723A2 /* WACommonlyPhoneViewController.m */,
+				770104611F31AAA000F723A2 /* WACommonlyPhoneViewController.xib */,
+				776272E71FA9A8FD006EE231 /* WAContactDetailViewController.h */,
+				776272E81FA9A8FD006EE231 /* WAContactDetailViewController.m */,
+				776272F11FA9C75A006EE231 /* EditHeadImageTableViewCell.h */,
+				776272F21FA9C75A006EE231 /* EditHeadImageTableViewCell.m */,
+				776272F31FA9C75A006EE231 /* EditHeadImageTableViewCell.xib */,
+				776272F61FA9C770006EE231 /* EditNameTableViewCell.h */,
+				776272F71FA9C770006EE231 /* EditNameTableViewCell.m */,
+				776272F81FA9C770006EE231 /* EditNameTableViewCell.xib */,
+				776272FB1FA9C782006EE231 /* EditPhoneTableViewCell.h */,
+				776272FC1FA9C782006EE231 /* EditPhoneTableViewCell.m */,
+				776272FD1FA9C782006EE231 /* EditPhoneTableViewCell.xib */,
+				776273001FA9C79D006EE231 /* EditAddTableViewCell.h */,
+				776273011FA9C79D006EE231 /* EditAddTableViewCell.m */,
+				776273021FA9C79D006EE231 /* EditAddTableViewCell.xib */,
+				776272E91FA9A8FD006EE231 /* WAContactDetailViewController.xib */,
+				776272EC1FA9ABAD006EE231 /* WAContactEditViewController.h */,
+				776272ED1FA9ABAD006EE231 /* WAContactEditViewController.m */,
+				776272EE1FA9ABAD006EE231 /* WAContactEditViewController.xib */,
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
 				77A67D091F429500000DFD88 /* WANewInterfaceViewController.m */,
 				77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */,
+				776272E61FA9A50B006EE231 /* AppList */,
 				7788D33F1F8C580600F3512A /* MyRemind */,
 				779CF45F1F6F658700DBEE44 /* AccountMainPage */,
 				779CF45E1F6B7D3000DBEE44 /* LoginAndRegister */,
@@ -2272,15 +2328,18 @@
 				77A67CF11F3C3190000DFD88 /* WAPersonSetViewController.xib in Resources */,
 				77A67D001F3C3803000DFD88 /* WAEditRemindTwoCell.xib in Resources */,
 				775410ED1F9DE3870005C3AE /* btn_original_circle.png in Resources */,
+				776273041FA9C79D006EE231 /* EditAddTableViewCell.xib in Resources */,
 				77A67D341F4BD8CC000DFD88 /* SpeakingView.xib in Resources */,
 				77931EDB1F987C0A0051D8BC /* WAPreviewRecordViewController.xib in Resources */,
 				77A67E431F4C0EE1000DFD88 /* call.bnf in Resources */,
 				779CF4171F62863F00DBEE44 /* WAAddContactTableViewCell.xib in Resources */,
 				775410AA1F9DCD160005C3AE /* TimePickerView.xib in Resources */,
+				776272FA1FA9C770006EE231 /* EditNameTableViewCell.xib in Resources */,
 				775410F71F9DE3870005C3AE /* lock.png in Resources */,
 				778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */,
 				77A67E441F4C0EE1000DFD88 /* grammar_sample.abnf in Resources */,
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
+				776272F51FA9C75A006EE231 /* EditHeadImageTableViewCell.xib in Resources */,
 				77CABE701F96EAF4000097A2 /* WARemindFamilyViewController.xib in Resources */,
 				775410FD1F9DE3870005C3AE /* ZLPhotoBrowserCell.xib in Resources */,
 				770104631F31AAA000F723A2 /* WACommonlyPhoneViewController.xib in Resources */,
@@ -2300,11 +2359,13 @@
 				7754111D1F9F2C060005C3AE /* LICENSE in Resources */,
 				775410EF1F9DE3870005C3AE /* btn_original_circle@3x.png in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
+				776272EB1FA9A8FD006EE231 /* WAContactDetailViewController.xib in Resources */,
 				770104481F2F15A200F723A2 /* WAHomeViewController.xib in Resources */,
 				778EF8351FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib in Resources */,
 				779CF4281F6900AF00DBEE44 /* HomeCellTwo.xib in Resources */,
 				775410EB1F9DE3870005C3AE /* btn_circle@2x.png in Resources */,
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
+				776272F01FA9ABAD006EE231 /* WAContactEditViewController.xib in Resources */,
 				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
 				778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
@@ -2340,6 +2401,7 @@
 				778EF8201FA32129005CDD82 /* WAAppListViewController.xib in Resources */,
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
 				778EF8161FA06D81005CDD82 /* WAAboutTwoCell.xib in Resources */,
+				776272FF1FA9C782006EE231 /* EditPhoneTableViewCell.xib in Resources */,
 				7788D3491F8CA9EC00F3512A /* OverdueViewController.xib in Resources */,
 				7701047B1F37FD2E00F723A2 /* WACommonlyAPPViewController.xib in Resources */,
 				77A67E461F4C0EE1000DFD88 /* eva.strings in Resources */,
@@ -2522,6 +2584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7754110C1F9DE3870005C3AE /* ZLShowGifViewController.m in Sources */,
+				776272EF1FA9ABAD006EE231 /* WAContactEditViewController.m in Sources */,
 				779CF4511F6A27C000DBEE44 /* UPHTTPBodyPart.m in Sources */,
 				77D75DEA1F0F6CBE00E46D15 /* WANetViewController.m in Sources */,
 				77A67E331F4C0EE1000DFD88 /* ISEResultReadSentence.m in Sources */,
@@ -2531,6 +2594,7 @@
 				77A67E961F4C15AB000DFD88 /* HMBannerView.m in Sources */,
 				77A67E191F4C0EE1000DFD88 /* NSTimer+Extension.m in Sources */,
 				77A67E361F4C0EE1000DFD88 /* ISEResultSentence.m in Sources */,
+				776272F41FA9C75A006EE231 /* EditHeadImageTableViewCell.m in Sources */,
 				77A67E291F4C0EE1000DFD88 /* EWLocationManager.m in Sources */,
 				77A67D501F4C0D97000DFD88 /* FMResultSet.m in Sources */,
 				77A67E561F4C0EE1000DFD88 /* MJRefreshBaseView.m in Sources */,
@@ -2682,9 +2746,11 @@
 				77A67F1D1F54069F000DFD88 /* UserCenterViewController.m in Sources */,
 				77A67E5A1F4C0EE1000DFD88 /* UIScrollView+MJExtension.m in Sources */,
 				770104711F34105300F723A2 /* ContactItem.m in Sources */,
+				776273031FA9C79D006EE231 /* EditAddTableViewCell.m in Sources */,
 				779CF44E1F6A27C000DBEE44 /* UpYunFormUploader.m in Sources */,
 				77A67E181F4C0EE1000DFD88 /* NSString+Extension.m in Sources */,
 				779CF4271F6900AF00DBEE44 /* HomeCellTwo.m in Sources */,
+				776272F91FA9C770006EE231 /* EditNameTableViewCell.m in Sources */,
 				77A67D4E1F4C0D97000DFD88 /* FMDatabasePool.m in Sources */,
 				77A67E941F4C15AB000DFD88 /* ImagePicker.m in Sources */,
 				775411011F9DE3870005C3AE /* ZLCollectionCell.m in Sources */,
@@ -2696,6 +2762,7 @@
 				778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */,
 				77A67E511F4C0EE1000DFD88 /* SBJson4StreamTokeniser.m in Sources */,
 				77A67E481F4C0EE1000DFD88 /* AKPickerView.m in Sources */,
+				776272FE1FA9C782006EE231 /* EditPhoneTableViewCell.m in Sources */,
 				770104841F38509F00F723A2 /* WACommonlyAppCell2.m in Sources */,
 				77A67E171F4C0EE1000DFD88 /* NSJSONSerialization+Extension.m in Sources */,
 				77A67E5E1F4C0EE1000DFD88 /* ITTLoadMoreTableFooterView.m in Sources */,
@@ -2729,6 +2796,7 @@
 				775411021F9DE3870005C3AE /* ZLEditViewController.m in Sources */,
 				77A67E281F4C0EE1000DFD88 /* WDLabel.m in Sources */,
 				77A67E9D1F4C15AB000DFD88 /* stringUtil.m in Sources */,
+				776272EA1FA9A8FD006EE231 /* WAContactDetailViewController.m in Sources */,
 				775411051F9DE3870005C3AE /* ZLPhotoActionSheet.m in Sources */,
 				7788D34D1F8CAAFD00F3512A /* OverdueRemindCell.m in Sources */,
 				77A67E351F4C0EE1000DFD88 /* ISEResultReadWord.m in Sources */,

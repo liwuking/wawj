@@ -98,7 +98,7 @@
                              @"pageNum":pageNum,
                              @"pageSize":@"10",
                              };
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0006" andModel:model];
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0005" andModel:model];
     
     
     __weak __typeof__(self) weakSelf = self;

@@ -72,8 +72,8 @@
     self.timeOneLab.text = currentDateMM;;
     
     self.cicularView.delegate = self;
-    [self.startStopBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
-    [self.startStopBtn setImage:[UIImage imageNamed:@"friends"] forState:UIControlStateSelected];
+    [self.startStopBtn setImage:[UIImage imageNamed:@"audioStart"] forState:UIControlStateNormal];
+    [self.startStopBtn setImage:[UIImage imageNamed:@"audioStop"] forState:UIControlStateSelected];
     
 }
 
@@ -451,9 +451,9 @@
 -(void)createRemindRequestWith:(NSString *)audioUrl {
 
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];//self.closeFamilyItem.qinmiUser
+    NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];
     NSDictionary *model = @{@"remindUser":self.closeFamilyItem.qinmiUser,
-                            @"remindTime":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
+                            @"remindTime":[NSString stringWithFormat:@"%ld000",self.recordTimeStamp],
                             @"remindAudio":audioUrl,
                             @"remindSeconds":remindTime,
                             @"createUser":userInfo[USERID],

@@ -203,12 +203,14 @@
 
 - (void)createDatabaseTable {
     
-    NSDictionary *keys = @{@"remindtype"                 : @"string",
+    NSDictionary *keys = @{@"remindorigintype"           : @"string",
+                           @"remindid"                   : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string",
+                           @"remindtype"                 : @"string",
                            @"remindtime"                 : @"string",
                            @"createtimestamp"            : @"string",
-                           @"content"                    : @"string",
-                           @"audiourl"                   : @"string",
-                           @"headurl"                    : @"string"
+                           @"content"                    : @"string"
                            };
     
     
@@ -321,7 +323,7 @@
             return;
         }
         
-        sql = [NSString stringWithFormat:@"insert into %@ (remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%ld')",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,@"",@"",createtimestamp];
+        sql = [NSString stringWithFormat:@"insert into %@ (remindorigintype,remindid, remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%@','%@','%ld')",self.databaseTableName,REMINDORIGINTYPE_LOCAL,@"",self.alarmType,dateStrHourMinite,remindContent,@"",@"",createtimestamp];
         
         remindItem.remindtype = self.alarmType;
         remindItem.remindtime = dateStrHourMinite;
@@ -347,7 +349,7 @@
     } else {
         
         sql =  [NSString stringWithFormat:
-                @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,self.remindItem.remindtype,self.remindItem.remindtime];
+                @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindorigintype = '%@', and remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,REMINDORIGINTYPE_LOCAL,self.remindItem.remindtype,self.remindItem.remindtime];
         
          if ([self.database executeUpdate:sql]) {
              [MBProgressHUD showSuccess:@"编辑成功"];
@@ -442,7 +444,7 @@
             
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             NSString *sql =  [NSString stringWithFormat:
-                              @"delete from %@ where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime];
+                              @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = %@",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,REMINDORIGINTYPE_LOCAL];
             
             NSLog(@"sql = %@",sql);
             BOOL isCreate = [strongSelf.database executeUpdate:sql];
@@ -458,7 +460,7 @@
         }];
     }else {
         NSString *sql =  [NSString stringWithFormat:
-                          @"delete from %@ where remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime];
+                          @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = %@",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,REMINDORIGINTYPE_LOCAL];
         
         NSLog(@"sql = %@",sql);
         BOOL isCreate = [self.database executeUpdate:sql];

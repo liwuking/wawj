@@ -88,7 +88,7 @@
         
         ContactItem *item = [[ContactItem alloc] init];
         item.name = name;
-        item.phone = phone;
+        [item.phoneArr addObject:phone];
         
         strongObject.phoneTF.text = phone;
         strongObject.nameTF.text = name;

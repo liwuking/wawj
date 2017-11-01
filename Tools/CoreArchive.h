@@ -25,9 +25,10 @@
 #define  RATIO_IMAGE_90      @"webp90"
 #define  RATIO_IMAGE_100      @"webp100"
 
+#define USER_CONTACT_ARR  @"user_contact_ARR"
+
 
 #define USER_APP_ARR  @"user_app_arr"
-
 
 #define USER_DATAIDENTIFIER_ARR  @"user_dataIdentifier_ARR"
 
@@ -53,6 +54,9 @@
 #define REMINDTYPE_EVERYDAY      @"everyday"
 #define REMINDTYPE_WORKDAY       @"workday"
 #define REMINDTYPE_WEEKEND       @"weekend"
+
+#define  REMINDORIGINTYPE_LOCAL       @"remind_local"
+#define  REMINDORIGINTYPE_REMOTE       @"remind_remote"
 
 #define MONDAY      @"Monday"
 #define TUESDAY @   "Tuesday"

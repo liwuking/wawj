@@ -276,11 +276,6 @@
                 NSDictionary *dict = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
                 
                 NSDictionary *item = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":dict[@"qinmiRole"]};
-//                item.headUrl = dict[@"headUrl"];
-//                item.qinmiName = dict[@"qinmiName"];
-//                item.qinmiPhone = dict[@"qinmiPhone"];
-//                item.qinmiUser = dict[@"qinmiUser"];
-//                item.qinmiRole = dict[@"qinmiRole"];
                 [qimiArr addObject:item];
             }
 
@@ -288,7 +283,6 @@
             
             NSDictionary *userInfo = data[@"body"][@"userInfo"];
             [CoreArchive setDic:[userInfo transforeNullValueToEmptyStringInSimpleDictionary] key:USERINFO];
-            //[CoreArchive setStr:userInfo[@"userId"] key:USERID];
             
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];

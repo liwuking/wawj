@@ -86,6 +86,7 @@
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
+        [CoreArchive removeStrForKey:USER_CONTACT_ARR];
         
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];

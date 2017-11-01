@@ -174,12 +174,14 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)createDatabaseTable {
     
     
-    NSDictionary *keys = @{@"remindtype"                 : @"string",
+    NSDictionary *keys = @{@"remindorigintype"           : @"string",
+                           @"remindid"                   : @"string",
+                           @"audiourl"                   : @"string",
+                           @"headurl"                    : @"string",
+                           @"remindtype"                 : @"string",
                            @"remindtime"                 : @"string",
                            @"createtimestamp"            : @"string",
-                           @"content"                    : @"string",
-                           @"audiourl"                   : @"string",
-                           @"headurl"                    : @"string"
+                           @"content"                    : @"string"
                            };
     
     __weak __typeof__(self) weakSelf = self;
@@ -200,36 +202,40 @@ typedef NS_OPTIONS(NSInteger, Status) {
     if ([self.db open]) {
         
         NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
-        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld",self.databaseTableName,nowSp];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld order by createtimestamp desc",self.databaseTableName,nowSp];
         NSLog(@"sql = %@",sql);
         
         NSMutableArray *dataArr = [[NSMutableArray alloc] init];
         FMResultSet * res = [self.db executeQuery:sql];
         
         while ([res next]) {
+      
             RemindItem *item = [[RemindItem alloc] init];
+            item.remindorigintype = [res stringForColumn:@"remindorigintype"];
             item.remindtype = [res stringForColumn:@"remindtype"];
             item.remindtime = [res stringForColumn:@"remindtime"];
             item.content = [res stringForColumn:@"content"];
             item.createtimestamp = [res stringForColumn:@"createtimestamp"];
-            item.headurl = [res stringForColumn:@"headurl"];
-            item.audiourl = [res stringForColumn:@"audiourl"];
+            if ([item.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
+                item.headurl = [res stringForColumn:@"headurl"];
+                item.audiourl = [res stringForColumn:@"audiourl"];
+            }
             
             item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
             item.recentlyRemindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
-            
+            NSLog(@"item.recentlyRemindDate = %@",item.recentlyRemindDate);
             [dataArr addObject:item];
         }
-        NSLog(@"arr = %@",dataArr);
+        
         
         if (dataArr.count) {
-            NSArray *recentlyDataArr = [dataArr sortedArrayUsingComparator:^NSComparisonResult(RemindItem *obj1, RemindItem *obj2) {
-                NSLog(@"obj1: %@",obj1.recentlyRemindDate);
-                return [obj1.recentlyRemindDate compare:obj2.recentlyRemindDate];
-            }];
-            
+//            NSArray *recentlyDataArr = [dataArr sortedArrayUsingComparator:^NSComparisonResult(RemindItem *obj1, RemindItem *obj2) {
+//                NSLog(@"obj1: %@",obj1.recentlyRemindDate);
+//                return [obj2.recentlyRemindDate compare:obj1.recentlyRemindDate];
+//            }];
+//
             [self.dataArr removeAllObjects];
-            [self.dataArr addObjectsFromArray:recentlyDataArr];
+            [self.dataArr addObjectsFromArray:dataArr];
             [self.tableView reloadData];
         }
         
@@ -323,6 +329,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     cell.contentLab.text = remindItem.content;
     cell.remindTimeLab.text = remindItem.remindtime;
     cell.remindDateLab.text = remindItem.remindDate;
+    cell.cellIndexPath = indexPath;
     [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"friends"]];
     
     return cell;
@@ -341,7 +348,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
     
-    if (![remindItem.headurl isEqualToString:@""]) {
+    if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
         [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
             
         }];
@@ -381,9 +388,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
         return;
     }
     
-    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
-    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioPath];
+//    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
     if (!exists) {
         [MBProgressHUD showSuccess:@"播放失败"];
         return;
@@ -409,51 +416,62 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma mark - cell delegate
 - (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
     
-    
     if ([self isReachable]) {
         
-        RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
-        
-        if (![remindItem.headurl isEqualToString:@""]) {
+        RemindItem *remindItem = self.dataArr[indexPath.row];
+        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
             
-            if ([remindItem.headurl.pathComponents[0] isEqualToString:@"file"]) {
-                [self playAudioWithFilePath:remindItem.headurl];
-            } else {
-                NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-                AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
+            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+            
+            [MBProgressHUD showMessage:nil];
+            __weak __typeof__(self) weakSelf = self;
+            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
                 
-                NSURL *URL = [NSURL URLWithString:remindItem.headurl];
-                NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
                 
-                [MBProgressHUD showMessage:nil];
-                __weak __typeof__(self) weakSelf = self;
-                NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-                    
-                    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-                    NSURL *str = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-                    return str;
-                    
-                } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-                    NSLog(@"File downloaded to: %@", filePath);
-                     __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                    
-                    [MBProgressHUD hideHUD];
-                    
-                    if (!error) {
-                        [MBProgressHUD showError:@"播放失败"];
-                    }else {
-                        [strongSelf playAudioWithFilePath:filePath.absoluteString];
-                    }
-
-                }];
-                [downloadTask resume];
+            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                [MBProgressHUD hideHUD];
                 
-            }
-
+                if (error) {
+                    [MBProgressHUD showError:@"音频播放出错"];
+                    return ;
+                }
+                
+                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+                
+                
+                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+                }
+                
+                NSError *errordd;
+                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+                
+                
+                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
+                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
+                
+                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
+                
+            }];
+            [downloadTask resume];
+            
+            
         } else {
             
-            NSString *readText = cell.contentLab.text;
+            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
             [self readTextWithString:readText];
+            
         }
         
         

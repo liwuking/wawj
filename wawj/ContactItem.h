@@ -11,6 +11,6 @@
 @interface ContactItem : NSObject
 
 @property(nonatomic, strong)NSString *name;
-@property(nonatomic, strong)NSString *phone;
+@property(nonatomic, strong)NSMutableArray *phoneArr;
 
 @end
