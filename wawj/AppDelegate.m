@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "iflyMSC/IFlyMSC.h"
-#import <AddressBook/AddressBook.h>
 #import "AlarmClockItem.h"
 #import "UIAlertView+Extension.h"
 #import "CoreArchive.h"

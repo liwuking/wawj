@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "ContactItem.h"
 
+typedef void (^WAContactDetailChange) (ContactItem *contactItem);
+typedef void (^WAContactDetailDel) (ContactItem *contactItem);
+
+
 @interface WAContactDetailViewController : UIViewController
 @property(nonatomic,strong)ContactItem *contactItem;
+@property(nonatomic,copy)WAContactDetailChange waContactDetailChange;
+@property(nonatomic,copy)WAContactDetailDel waContactDetailDel;
+
 @end

@@ -10,7 +10,8 @@
 
 @interface ContactItem : NSObject
 
+@property(nonatomic, strong)NSString *imageName;
 @property(nonatomic, strong)NSString *name;
-@property(nonatomic, strong)NSMutableArray *phoneArr;
+@property(nonatomic, strong)NSMutableArray <NSString *>*phoneArr;
 
 @end

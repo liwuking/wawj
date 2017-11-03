@@ -43,6 +43,11 @@
         phoneNumber = [labeledValue.value stringValue];
     }
     
+    //缩略图Data
+    if ([contact isKeyAvailable:CNContactThumbnailImageDataKey])
+    {
+        NSData * thumImageData = contact.thumbnailImageData;
+    }
     
     if (self.handler)
     {

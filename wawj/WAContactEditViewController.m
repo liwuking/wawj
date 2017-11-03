@@ -11,12 +11,15 @@
 #import "EditNameTableViewCell.h"
 #import "EditPhoneTableViewCell.h"
 #import "EditHeadImageTableViewCell.h"
-@interface WAContactEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+#import "WACommonlyPhoneViewController.h"
+#import <Contacts/Contacts.h>
+@interface WAContactEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *delBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewConstant;
 @property (weak, nonatomic) IBOutlet UIView *headView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
-
+@property(nonatomic,assign)BOOL isChangeHeadImage;
 @end
 
 @implementation WAContactEditViewController
@@ -25,15 +28,344 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (NSArray *)queryContactWithName:(NSString *)name{
+    
+    CNContactStore *store = [[CNContactStore alloc] init];
+    //检索条件
+    NSPredicate *predicate = [CNContact predicateForContactsMatchingName:name];
+    
+    //过滤的条件，也可以过滤时候格式化
+    NSArray *keysToFetch = @[CNContactEmailAddressesKey, [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]];
+    
+    NSArray *contact = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keysToFetch error:nil];
+    return contact;
+}
+
+-(void)updateContactsName:(NSString *)givenName andNewName: (NSString *)newName imageName:(NSString *)imageName phoneNumber:(NSArray <NSString *>*)phoneNumbers {
+    
+    CNMutableContact * contact = [[[self queryContactWithName:givenName] objectAtIndex:0] mutableCopy];
+    
+    //名字
+    contact.givenName = newName;
+    
+//    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//    NSString *imageContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:imageContactPath]) {
+//        //头像
+//        contact.imageData = [NSData dataWithContentsOfFile:imageContactPath];
+//    }
+//
+//    NSMutableArray <CNLabeledValue<CNPhoneNumber*>*>  *nums = [@[] mutableCopy];
+//    for (NSString *phone in phoneNumbers) {
+//        CNLabeledValue *value = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberiPhone value:[CNPhoneNumber phoneNumberWithStringValue:phone]];
+//        [nums addObject:value];
+//
+//    }
+//    //电话号码
+//    contact.phoneNumbers = [NSArray arrayWithArray:nums];
+    
+    //保存请求
+    CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
+    [saveRequest updateContact:contact];
+    //上下文
+    CNContactStore * store = [[CNContactStore alloc] init];
+    NSError *error;
+    [store executeSaveRequest:saveRequest error:&error];
+    
+    if (error) {
+        NSLog(@"error.localizedDescription: %@",error.localizedDescription);
+    }
+    
+}
+
+-(void)addContactsName:(NSString *)givenName imageName:(NSString *)imageName phoneNumber:(NSArray <NSString *>*)phoneNumbers {
+    
+    //生成联系人
+    CNMutableContact * contact = [[CNMutableContact alloc] init];
+    //名字
+    contact.givenName = givenName;
+    //头像
+    contact.imageData = UIImagePNGRepresentation(self.headImageView.image);
+    
+    NSMutableArray <CNLabeledValue<CNPhoneNumber*>*>  *nums = [@[] mutableCopy];
+    for (NSString *phone in phoneNumbers) {
+        CNLabeledValue *value = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberiPhone value:[CNPhoneNumber phoneNumberWithStringValue:phone]];
+        [nums addObject:value];
+        
+    }
+    //电话号码
+    contact.phoneNumbers = [NSArray arrayWithArray:nums];
+    
+    //保存请求
+    CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
+    [saveRequest addContact:contact toContainerWithIdentifier:nil];
+    //上下文
+    CNContactStore * store = [[CNContactStore alloc] init];
+    [store executeSaveRequest:saveRequest error:nil];
+    
+
+}
+
 -(void)clickSave {
     
+   [self.view endEditing:YES];
+    
+    if (self.waContactEditType == WAContactEditAdd && !self.isChangeHeadImage) {
+        [self showAlertViewWithTitle:@"您还没有添加头像" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    EditNameTableViewCell *cellName = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if (!cellName.textField.text.length) {
+        [self showAlertViewWithTitle:@"请输入姓名" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
+    NSInteger repeatCout = 0;
+    for (NSDictionary *dict in contactArr) {
+        
+        if ([dict[@"contactName"] isEqualToString:cellName.textField.text]) {
+            repeatCout = repeatCout + 1;
+        }
+        
+        if (2 == repeatCout) {
+           
+            [self showAlertViewWithTitle:@"已存在相同姓名" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+    }
+    
+    BOOL ischange = [cellName.textField.text isEqualToString:self.contactItem.name];
+    EditPhoneTableViewCell *cellPhone1 = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    if (!cellPhone1.textField.text.length) {
+        [self showAlertViewWithTitle:@"请输入电话号码1" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if (![self deptNumInputShouldNumber:cellPhone1.textField.text]) {
+        [self showAlertViewWithTitle:@"电话号码只允许输入数字" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if (![self valiMobile:cellPhone1.textField.text]) {
+        [self showAlertViewWithTitle:@"请输入正确的电话号码1" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    ischange = [cellPhone1.textField.text isEqualToString:self.contactItem.phoneArr[0]] && ischange;
+     self.contactItem.phoneArr[0] = cellPhone1.textField.text;
+    
+
+    if (self.contactItem.phoneArr.count == 2) {
+        EditPhoneTableViewCell *cellPhone2 = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+        
+        if (!cellPhone2.textField.text.length) {
+            [self showAlertViewWithTitle:@"请输入电话号码2" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        if (![self deptNumInputShouldNumber:cellPhone2.textField.text]) {
+            [self showAlertViewWithTitle:@"电话号码只允许输入数字" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        if (![self valiMobile:cellPhone2.textField.text]) {
+            [self showAlertViewWithTitle:@"请输入正确的电话号码2" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
+        ischange = [cellPhone2.textField.text isEqualToString:self.contactItem.phoneArr[0]] && ischange;
+        self.contactItem.phoneArr[1] = cellPhone2.textField.text;
+        
+    }
+   
+    
+   
+    if (self.isChangeHeadImage) {
+        
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *oldContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:oldContactPath]) {
+            [[NSFileManager defaultManager] removeItemAtPath:oldContactPath error:nil];
+        }
+        
+        
+        self.contactItem.imageName = [NSString stringWithFormat:@"%ld",(NSInteger)[[NSDate date] timeIntervalSince1970]];
+        NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
+        [[NSFileManager defaultManager] createFileAtPath:contactPath contents:UIImageJPEGRepresentation(self.headImageView.image,0.5) attributes:nil];
+    }
+    ischange = ischange && !self.isChangeHeadImage;
+    
+    
+    [MBProgressHUD showMessage:nil];
+    NSString *originContactName =  self.contactItem.name;
+    self.contactItem.name = cellName.textField.text;
+    if (!ischange && WAContactEditEdit == self.waContactEditType) {
+        
+        self.waContactEditChange(self.contactItem);
+        
+        //创建一个串行队列
+        dispatch_queue_t queue = dispatch_queue_create("xxxx", DISPATCH_QUEUE_SERIAL);
+        //使用异步函数封装三个任务
+        __weak __typeof__(self) weakSelf = self;
+        dispatch_async(queue, ^{
+            [MBProgressHUD hideHUD];
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [strongSelf updateContactsName:originContactName andNewName:strongSelf.contactItem.name imageName:strongSelf.contactItem.imageName phoneNumber:strongSelf.contactItem.phoneArr];
+            });
+            
+        });
+        
+        dispatch_async(queue, ^{
+            [MBProgressHUD hideHUD];
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [strongSelf.navigationController popViewControllerAnimated:YES];
+            });
+        });
+        
+    } else if (WAContactEditAdd == self.waContactEditType) {
+        self.waContactEditAddChange(self.contactItem);
+        
+        //创建一个串行队列
+        dispatch_queue_t queue = dispatch_queue_create("xxxx", DISPATCH_QUEUE_SERIAL);
+        //使用异步函数封装三个任务
+        __weak __typeof__(self) weakSelf = self;
+        dispatch_async(queue, ^{
+            [MBProgressHUD hideHUD];
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [strongSelf addContactsName:strongSelf.contactItem.name imageName:strongSelf.contactItem.imageName phoneNumber:strongSelf.contactItem.phoneArr];
+        });
+        
+//        [self.navigationController popViewControllerAnimated:YES];
+        
+        dispatch_async(queue, ^{
+            [MBProgressHUD hideHUD];
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [strongSelf.navigationController popViewControllerAnimated:YES];
+            });
+           
+        });
+       
+    }
+    
+}
+
+- (BOOL) deptNumInputShouldNumber:(NSString *)str
+{
+    NSString *regex = @"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([pred evaluateWithObject:str]) {
+        return YES;
+    }
+    return NO;
+}
+
+-(void)delContactWithName:(NSString *)name {
+    CNMutableContact * contact = [[[self queryContactWithName:name] objectAtIndex:0] mutableCopy];
+    //保存请求
+    CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
+    [saveRequest deleteContact:contact];
+    //上下文
+    CNContactStore * store = [[CNContactStore alloc] init];
+    NSError *error;
+    [store executeSaveRequest:saveRequest error:&error];
+    
+    if (error) {
+        NSLog(@"error.localizedDescription: %@",error.localizedDescription);
+    }
+}
+
+- (IBAction)clickDel:(UIButton *)sender {
+    
+    if (self.waContactEditType == WAContactEditEdit) {
+        
+        
+        [MBProgressHUD showSuccess:nil];
+        //创建一个串行队列
+        dispatch_queue_t queue = dispatch_queue_create("xxxx", DISPATCH_QUEUE_SERIAL);
+        //使用异步函数封装三个任务
+        __weak __typeof__(self) weakSelf = self;
+        dispatch_async(queue, ^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+             [strongSelf delContactWithName:strongSelf.contactItem.name];
+        });
+        
+        NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
+        for (NSInteger i = 0; i < contactArr.count; i++) {
+            NSDictionary *dict = contactArr[i];
+            if ([dict[@"contactName"] isEqualToString:self.contactItem.name]) {
+                
+                [contactArr removeObjectAtIndex:i];
+                
+                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+                NSString *oldContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
+                [[NSFileManager defaultManager] removeItemAtPath:oldContactPath error:nil];
+                
+                break;
+            }
+        }
+        
+        [CoreArchive setArr:contactArr key:USER_CONTACT_ARR];
+        
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[WACommonlyPhoneViewController class]]) {
+                
+                self.waContactDelChange(self.contactItem);
+                [self.navigationController popToViewController:temp animated:YES];
+            }
+        }
+        
+       
+        
+        
+    } else {
+        [self clickSave];
+    }
+    
+}
+
+//判断手机号码格式是否正确
+- (BOOL)valiMobile:(NSString *)mobile
+{
+    if ([mobile hasPrefix:@"0"] && mobile.length <= 12) {
+        return YES;
+    }else if( mobile.length <= 11) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 -(void)initView {
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
-    self.title = self.contactItem.name;
+    if (self.waContactEditType == WAContactEditAdd) {
+        [self.delBtn setTitle:@"添加联系人" forState:UIControlStateNormal];
+    } else {
+        self.title = @"编辑联系人";
+    }
     
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(clickCancel)];
     [leftItem setTintColor:HEX_COLOR(0x666666)];
@@ -46,10 +378,21 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     self.headView.layer.borderWidth = 1;
-    self.headView.layer.borderColor = [UIColor grayColor].CGColor;
+    self.headView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+    NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
+        [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
+    }else {
+        [self.headImageView setImage:[UIImage imageNamed:@"oldFather"]];
+    }
+    
     
     self.tableView.layer.borderWidth = 1;
-    self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
+    self.tableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+ 
     
     [self.tableView reloadData];
 }
@@ -57,15 +400,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if (self.waContactEditType == WAContactEditAdd) {
+        self.contactItem = [[ContactItem alloc] init];
+        [self.contactItem.phoneArr addObject:@""];
+    }
+    
     [self initView];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self resignFirstResponder];
+    return YES;
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
 - (IBAction)clickChangeHead:(UITapGestureRecognizer *)sender {
-    // UIImagePickerControllerCameraDeviceRear 后置摄像头
-    // UIImagePickerControllerCameraDeviceFront 前置摄像头
 
     //初始化图片选择控制器
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
@@ -111,6 +462,8 @@
     //    CGFloat fixelH = CGImageGetHeight(images.CGImage);
     //    NSLog(@"fixelW: %f %f", fixelH,fixelW);
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+    self.isChangeHeadImage = YES;
 }
 
 //当用户取消相册时, 调用该方法
@@ -120,13 +473,16 @@
     }];
 }
 
-- (IBAction)clickDel:(UIButton *)sender {
-}
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (2 == indexPath.row && 1 == self.contactItem.phoneArr.count) {
-        [self.contactItem.phoneArr addObject:@""];
+    if (2 == indexPath.row) {
+        
+        if (self.contactItem.phoneArr.count == 1) {
+            [self.contactItem.phoneArr addObject:@""];
+        }
+        
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
@@ -135,16 +491,31 @@
     
     if(0 == indexPath.row){
         EditNameTableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"EditNameTableViewCell" owner:self options:nil] lastObject];
+        cell.textField.delegate = self;
+        if (self.contactItem.name.length) {
+            cell.textField.text = self.contactItem.name;
+        }
          return cell;
     }
     
     if(1 == indexPath.row){
         EditPhoneTableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"EditPhoneTableViewCell" owner:self options:nil] lastObject];
+        cell.textField.delegate = self;
+        cell.textField.placeholder = @"电话号码1";
+        if (self.waContactEditType == WAContactEditEdit && self.contactItem.phoneArr[0].length) {
+            cell.textField.text = self.contactItem.phoneArr[0];
+        }
+        
         return cell;
     }
     
     if(2 == self.contactItem.phoneArr.count && 2 == indexPath.row){
        EditPhoneTableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"EditPhoneTableViewCell" owner:self options:nil] lastObject];
+        cell.textField.delegate = self;
+        cell.textField.placeholder = @"电话号码2";
+        if (self.waContactEditType == WAContactEditEdit && self.contactItem.phoneArr[1].length) {
+            cell.textField.text = self.contactItem.phoneArr[1];
+        }
         return cell;
     } else {
         EditAddTableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"EditAddTableViewCell" owner:self options:nil] lastObject];

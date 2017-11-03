@@ -15,6 +15,7 @@
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
+@property (weak, nonatomic) IBOutlet UIButton *sendMesBtn;
 
 @property (nonatomic, strong) NSString* locationString;
 @property (nonatomic, assign) BOOL isSendMessage;
@@ -33,6 +34,8 @@
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
+    self.title = self.closeFamilyItem.qinmiName;
+    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
@@ -40,7 +43,7 @@
     
     self.title = self.closeFamilyItem.qinmiName;
     [self.phoneBtn setTitle:self.closeFamilyItem.qinmiPhone forState:UIControlStateNormal];
-    if (self.closeFamilyItem.headUrl) {
+    if (![self.closeFamilyItem.headUrl isEqualToString:@""]) {
         NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",self.closeFamilyItem.headUrl,RATIO_IMAGE_100];
         [self.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
     }
@@ -132,20 +135,20 @@
         // 提示用户出错原因，可按住Option键点击 KCLErrorDenied的查看更多出错信息，可打印error.code值查找原因所在
     }
 }
+- (IBAction)clickSendMessageBtn:(UIButton *)sender {
+    
+    NSString *message = [NSString stringWithFormat:@"%@,我正在使用我爱我家APP，有家庭相册，提醒，还内置老年桌面，挺好的，你快下载安装吧http://wawjapp.com",self.closeFamilyItem.qinmiRoleName];
+    [self sendMessage:message];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    if (!self.closeFamilyItem.headUrl || [self.closeFamilyItem.headUrl isEqualToString:@""]) {
-//
-//    }
-    
-    [self getFamilyDetail];
-    
+
     [self initView];
-    
-    
-    
+
+    [self getFamilyDetail];
+
     if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
     {
         [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
@@ -177,6 +180,12 @@
 
 
 - (IBAction)clickRemind:(UIButton *)sender {
+    if ([self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"对方还未添加你为亲密家人,请先添加" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
     
     WARemindFamilyViewController *vc = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
     vc.closeFamilyItem = self.closeFamilyItem;
@@ -185,6 +194,13 @@
 
 
 - (IBAction)clickSendLocation:(UIButton *)sender {
+    
+    if ([self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"对方还未添加你为亲密家人,请先添加" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
     
     if (self.locationString) {
         [self sendMessageBut:self.locationString];
@@ -213,6 +229,14 @@
 
 /** 点击发送短信按钮*/
 - (void)sendMessageBut:(NSString *)text {
+    
+    
+    
+    [self sendMessage:text];
+   
+}
+
+-(void)sendMessage:(NSString *)text {
     /** 如果可以发送文本消息(不在模拟器情况下*/
     if ([MFMessageComposeViewController canSendText]) {
         /** 创建短信界面(控制器*/
@@ -285,11 +309,14 @@
                     }
                 }
                 
-                UIImage *img = strongSelf.headImageView.image;
-                NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",body[@"headUrl"],RATIO_IMAGE_100];
-                [strongSelf.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:img];
-                strongSelf.title = body[@"qinmiName"];
+                if ([body[@"qinmiUser"] isEqualToString:@""]) {
+                    strongSelf.sendMesBtn.hidden = NO;
+                } else {
+                    NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",body[@"headUrl"],RATIO_IMAGE_100];
+                    [strongSelf.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
+                }
                 
+                strongSelf.title = body[@"qinmiName"];
 
             }
             

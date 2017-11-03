@@ -55,6 +55,7 @@
         item.qinmiPhone = dict[@"qinmiPhone"];
         item.qinmiUser = dict[@"qinmiUser"];
         item.qinmiRole = dict[@"qinmiRole"];
+         item.qinmiRoleName = dict[@"qinmiRoleName"];
         [datas addObject:item];
         
     }
@@ -77,6 +78,7 @@
     item.qinmiPhone = dict[@"qinmiPhone"];
     item.qinmiUser = dict[@"qinmiUser"];
     item.qinmiRole = dict[@"qinmiRole"];
+     item.qinmiRoleName = dict[@"qinmiRoleName"];
     
     [self.dataArr replaceObjectAtIndex:index withObject:item];
     
@@ -223,8 +225,8 @@
         __weak __typeof__(self) weakSelf = self;
         NSString *userName = [CoreArchive dicForKey:USERINFO][@"userName"];
         if ([userName isEqualToString:@""]) {
-            
-            [self showAlertViewWithTitle:@"提示" message:@"您还没有设置个人信息，请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [strongSelf showAlertViewWithTitle:@"提示" message:@"您还没有设置个人信息，请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
                 
             } otherButtonTitles:@"确定" clickOtherBtn:^{
                 

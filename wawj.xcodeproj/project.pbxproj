@@ -200,6 +200,8 @@
 		779CF48D1F724E1600DBEE44 /* PhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF48C1F724E1600DBEE44 /* PhotoItem.m */; };
 		779CF4911F72571400DBEE44 /* WAPhotosShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */; };
 		779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */; };
+		77A005BF1FAB0C28008BF5EE /* AddContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A005BE1FAB0C28008BF5EE /* AddContactView.m */; };
+		77A005C11FAB0C3D008BF5EE /* AddContactView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C01FAB0C3D008BF5EE /* AddContactView.xib */; };
 		77A67CEB1F399329000DFD88 /* WAReplaceUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */; };
 		77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */; };
 		77A67CF01F3C3190000DFD88 /* WAPersonSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CEE1F3C3190000DFD88 /* WAPersonSetViewController.m */; };
@@ -682,6 +684,9 @@
 		779CF48E1F72571400DBEE44 /* WAPhotosShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotosShowViewController.h; sourceTree = "<group>"; };
 		779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotosShowViewController.m; sourceTree = "<group>"; };
 		779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotosShowViewController.xib; sourceTree = "<group>"; };
+		77A005BD1FAB0C28008BF5EE /* AddContactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddContactView.h; sourceTree = "<group>"; };
+		77A005BE1FAB0C28008BF5EE /* AddContactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddContactView.m; sourceTree = "<group>"; };
+		77A005C01FAB0C3D008BF5EE /* AddContactView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddContactView.xib; sourceTree = "<group>"; };
 		77A67CE81F399329000DFD88 /* WAReplaceUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReplaceUIViewController.h; sourceTree = "<group>"; };
 		77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReplaceUIViewController.m; sourceTree = "<group>"; };
 		77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAReplaceUIViewController.xib; sourceTree = "<group>"; };
@@ -1059,12 +1064,6 @@
 				779CF4131F62863F00DBEE44 /* WAAddContactTableViewCell.h */,
 				779CF4141F62863F00DBEE44 /* WAAddContactTableViewCell.m */,
 				779CF4151F62863F00DBEE44 /* WAAddContactTableViewCell.xib */,
-				770104641F32B68A00F723A2 /* WACommonCell.h */,
-				770104651F32B68A00F723A2 /* WACommonCell.m */,
-				770104661F32B68A00F723A2 /* WACommonCell.xib */,
-				770104721F34143F00F723A2 /* WACommonAddCell.h */,
-				770104731F34143F00F723A2 /* WACommonAddCell.m */,
-				770104741F34143F00F723A2 /* WACommonAddCell.xib */,
 				7701047C1F38321100F723A2 /* WACommonlyAppCell.h */,
 				7701047D1F38321100F723A2 /* WACommonlyAppCell.m */,
 				7701047E1F38321100F723A2 /* WACommonlyAppCell.xib */,
@@ -1295,14 +1294,24 @@
 				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
+				77A005BD1FAB0C28008BF5EE /* AddContactView.h */,
+				77A005BE1FAB0C28008BF5EE /* AddContactView.m */,
+				77A005C01FAB0C3D008BF5EE /* AddContactView.xib */,
 				779CF4181F67C21500DBEE44 /* contactView.h */,
 				779CF4191F67C21500DBEE44 /* contactView.m */,
 				779CF41D1F67C43600DBEE44 /* contactView.xib */,
+				770104641F32B68A00F723A2 /* WACommonCell.h */,
+				770104651F32B68A00F723A2 /* WACommonCell.m */,
+				770104661F32B68A00F723A2 /* WACommonCell.xib */,
+				770104721F34143F00F723A2 /* WACommonAddCell.h */,
+				770104731F34143F00F723A2 /* WACommonAddCell.m */,
+				770104741F34143F00F723A2 /* WACommonAddCell.xib */,
 				7701045F1F31AAA000F723A2 /* WACommonlyPhoneViewController.h */,
 				770104601F31AAA000F723A2 /* WACommonlyPhoneViewController.m */,
 				770104611F31AAA000F723A2 /* WACommonlyPhoneViewController.xib */,
 				776272E71FA9A8FD006EE231 /* WAContactDetailViewController.h */,
 				776272E81FA9A8FD006EE231 /* WAContactDetailViewController.m */,
+				776272E91FA9A8FD006EE231 /* WAContactDetailViewController.xib */,
 				776272F11FA9C75A006EE231 /* EditHeadImageTableViewCell.h */,
 				776272F21FA9C75A006EE231 /* EditHeadImageTableViewCell.m */,
 				776272F31FA9C75A006EE231 /* EditHeadImageTableViewCell.xib */,
@@ -1315,7 +1324,6 @@
 				776273001FA9C79D006EE231 /* EditAddTableViewCell.h */,
 				776273011FA9C79D006EE231 /* EditAddTableViewCell.m */,
 				776273021FA9C79D006EE231 /* EditAddTableViewCell.xib */,
-				776272E91FA9A8FD006EE231 /* WAContactDetailViewController.xib */,
 				776272EC1FA9ABAD006EE231 /* WAContactEditViewController.h */,
 				776272ED1FA9ABAD006EE231 /* WAContactEditViewController.m */,
 				776272EE1FA9ABAD006EE231 /* WAContactEditViewController.xib */,
@@ -1601,14 +1609,14 @@
 				779CF4731F70B87E00DBEE44 /* CloseFamilyItem.h */,
 				779CF4741F70B87E00DBEE44 /* CloseFamilyItem.m */,
 				77CABE6B1F96EA29000097A2 /* RemindCloseFamily */,
-				779CF4601F6F966200DBEE44 /* CloseFamilyPhoto */,
-				779CF47D1F71FEE400DBEE44 /* FamilyPhotos */,
+				779CF4601F6F966200DBEE44 /* CloseFamily */,
+				779CF47D1F71FEE400DBEE44 /* CloseFamilyPhotos */,
 				779CF45D1F6B6D6400DBEE44 /* PersonalSet */,
 			);
 			name = AccountMainPage;
 			sourceTree = "<group>";
 		};
-		779CF4601F6F966200DBEE44 /* CloseFamilyPhoto */ = {
+		779CF4601F6F966200DBEE44 /* CloseFamily */ = {
 			isa = PBXGroup;
 			children = (
 				779CF4041F612B8300DBEE44 /* WAAddFamilyViewController.h */,
@@ -1623,10 +1631,10 @@
 				779CF4771F71108F00DBEE44 /* WACloseFamilyDetailViewController.m */,
 				779CF4781F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib */,
 			);
-			name = CloseFamilyPhoto;
+			name = CloseFamily;
 			sourceTree = "<group>";
 		};
-		779CF47D1F71FEE400DBEE44 /* FamilyPhotos */ = {
+		779CF47D1F71FEE400DBEE44 /* CloseFamilyPhotos */ = {
 			isa = PBXGroup;
 			children = (
 				779CF47E1F7238C800DBEE44 /* PhotosItem.h */,
@@ -1661,7 +1669,7 @@
 				779CF48F1F72571400DBEE44 /* WAPhotosShowViewController.m */,
 				779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */,
 			);
-			name = FamilyPhotos;
+			name = CloseFamilyPhotos;
 			sourceTree = "<group>";
 		};
 		77A67D3C1F4C0D97000DFD88 /* Database */ = {
@@ -2338,6 +2346,7 @@
 				775410F71F9DE3870005C3AE /* lock.png in Resources */,
 				778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */,
 				77A67E441F4C0EE1000DFD88 /* grammar_sample.abnf in Resources */,
+				77A005C11FAB0C3D008BF5EE /* AddContactView.xib in Resources */,
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
 				776272F51FA9C75A006EE231 /* EditHeadImageTableViewCell.xib in Resources */,
 				77CABE701F96EAF4000097A2 /* WARemindFamilyViewController.xib in Resources */,
@@ -2766,6 +2775,7 @@
 				770104841F38509F00F723A2 /* WACommonlyAppCell2.m in Sources */,
 				77A67E171F4C0EE1000DFD88 /* NSJSONSerialization+Extension.m in Sources */,
 				77A67E5E1F4C0EE1000DFD88 /* ITTLoadMoreTableFooterView.m in Sources */,
+				77A005BF1FAB0C28008BF5EE /* AddContactView.m in Sources */,
 				77A67E571F4C0EE1000DFD88 /* MJRefreshConst.m in Sources */,
 				7701047A1F37FD2E00F723A2 /* WACommonlyAPPViewController.m in Sources */,
 				77A67E5C1F4C0EE1000DFD88 /* UIView+MJExtension.m in Sources */,

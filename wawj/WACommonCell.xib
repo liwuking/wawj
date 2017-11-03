@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,9 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="115" height="115"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7vc-bU-lw1">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7vc-bU-lw1">
                         <rect key="frame" x="0.0" y="0.0" width="115" height="115"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="5"/>
@@ -27,15 +27,26 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="爷爷" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fdx-uR-kzR">
-                        <rect key="frame" x="0.0" y="79" width="115" height="36"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="爷爷" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fdx-uR-kzR">
+                        <rect key="frame" x="0.0" y="75" width="115" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="j4s-er-kPD"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="7vc-bU-lw1" secondAttribute="trailing" id="2Nb-8x-aOq"/>
+                <constraint firstItem="fdx-uR-kzR" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ABv-3C-3Z2"/>
+                <constraint firstItem="7vc-bU-lw1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="FAE-Ex-eec"/>
+                <constraint firstAttribute="bottom" secondItem="fdx-uR-kzR" secondAttribute="bottom" id="adA-J2-sGh"/>
+                <constraint firstAttribute="trailing" secondItem="fdx-uR-kzR" secondAttribute="trailing" id="iS0-O7-J89"/>
+                <constraint firstAttribute="bottom" secondItem="7vc-bU-lw1" secondAttribute="bottom" id="p6S-bQ-6FA"/>
+                <constraint firstItem="7vc-bU-lw1" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="tEH-St-PaF"/>
+            </constraints>
             <connections>
                 <outlet property="bgImg" destination="7vc-bU-lw1" id="QCx-GO-y49"/>
                 <outlet property="titleLab" destination="fdx-uR-kzR" id="09n-d1-SP0"/>

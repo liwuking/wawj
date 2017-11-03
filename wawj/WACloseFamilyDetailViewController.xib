@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="headImageView" destination="OUa-kd-ov3" id="ytG-Yr-dKT"/>
                 <outlet property="phoneBtn" destination="Kcf-UI-f8c" id="bdx-gK-CFO"/>
+                <outlet property="sendMesBtn" destination="dJp-XK-qnV" id="B4N-Fh-kzw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,6 +34,16 @@
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="3hU-1x-79E"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BX2-fD-qzG">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="3D6-Lh-Dbn"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
@@ -73,7 +84,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="提现她" image="Megaphone">
+                            <state key="normal" title="提醒她" image="Megaphone">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -101,6 +112,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="120" id="0lG-Zq-MC4"/>
                         <constraint firstItem="fkl-L1-shq" firstAttribute="leading" secondItem="odQ-Kj-AKl" secondAttribute="leading" id="8FS-Ae-ioS"/>
+                        <constraint firstAttribute="trailing" secondItem="BX2-fD-qzG" secondAttribute="trailing" id="9x2-D8-kPc"/>
                         <constraint firstItem="bxv-Tc-A8e" firstAttribute="top" secondItem="fkl-L1-shq" secondAttribute="bottom" constant="10" id="Gml-qL-x1g"/>
                         <constraint firstItem="Kcf-UI-f8c" firstAttribute="centerX" secondItem="odQ-Kj-AKl" secondAttribute="centerX" id="NnM-RP-mZE"/>
                         <constraint firstItem="9c8-GX-WZM" firstAttribute="top" secondItem="fkl-L1-shq" secondAttribute="bottom" constant="10" id="OWk-14-S11"/>
@@ -108,20 +120,45 @@
                         <constraint firstItem="fTT-s6-wOq" firstAttribute="centerX" secondItem="odQ-Kj-AKl" secondAttribute="centerX" id="U0e-zh-nbq"/>
                         <constraint firstAttribute="trailing" secondItem="bxv-Tc-A8e" secondAttribute="trailing" constant="19" id="aB2-pA-aGN"/>
                         <constraint firstAttribute="bottom" secondItem="fTT-s6-wOq" secondAttribute="bottom" id="arm-2s-9xi"/>
+                        <constraint firstItem="BX2-fD-qzG" firstAttribute="leading" secondItem="odQ-Kj-AKl" secondAttribute="leading" id="hqG-06-ucM"/>
                         <constraint firstAttribute="trailing" secondItem="fkl-L1-shq" secondAttribute="trailing" id="kV6-V8-Ko4"/>
+                        <constraint firstItem="BX2-fD-qzG" firstAttribute="top" secondItem="odQ-Kj-AKl" secondAttribute="top" id="kgu-pE-wbn"/>
                         <constraint firstItem="Kcf-UI-f8c" firstAttribute="top" secondItem="odQ-Kj-AKl" secondAttribute="top" constant="10" id="oW9-4a-Jeq"/>
                         <constraint firstItem="9c8-GX-WZM" firstAttribute="leading" secondItem="odQ-Kj-AKl" secondAttribute="leading" constant="20" id="p2k-WR-8YS"/>
                     </constraints>
                 </view>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dJp-XK-qnV">
+                    <rect key="frame" x="10" y="254" width="300" height="60"/>
+                    <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="2MZ-GX-cVt"/>
+                        <constraint firstAttribute="width" constant="300" id="TDj-wp-oRv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                    <state key="normal" title="发条短信告诉她">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="clickSendMessageBtn:" destination="-1" eventType="touchUpInside" id="uPP-GT-akC"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="OUa-kd-ov3" secondAttribute="trailing" id="4R4-hn-DWQ"/>
+                <constraint firstItem="dJp-XK-qnV" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="FmJ-Um-Hgb"/>
                 <constraint firstItem="OUa-kd-ov3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="I7K-53-PjB"/>
                 <constraint firstItem="odQ-Kj-AKl" firstAttribute="top" secondItem="OUa-kd-ov3" secondAttribute="bottom" id="Ig5-kg-8jx"/>
                 <constraint firstItem="odQ-Kj-AKl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dJD-8f-uNP"/>
                 <constraint firstItem="OUa-kd-ov3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="enf-3X-c0d"/>
                 <constraint firstAttribute="bottom" secondItem="odQ-Kj-AKl" secondAttribute="bottom" id="l6y-JS-rjp"/>
+                <constraint firstItem="dJp-XK-qnV" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="mgY-tY-GfI"/>
                 <constraint firstAttribute="trailing" secondItem="odQ-Kj-AKl" secondAttribute="trailing" id="qr4-wx-Dnk"/>
             </constraints>
         </view>

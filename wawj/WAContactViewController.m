@@ -169,14 +169,13 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-//            CloseFamilyItem *item = [[CloseFamilyItem alloc] init];
-//            item.headUrl = @"";
-//            item.qinmiName = strongSelf.nameTF.text;
-//            item.qinmiPhone = strongSelf.phoneTF.text;
-//            item.qinmiUser = @"";
-//            item.qinmiRole = model[@"acceptRole"];
-            
-            NSDictionary *subDict = @{@"headUrl":@"",@"qinmiName":strongSelf.nameTF.text,@"qinmiPhone":strongSelf.phoneTF.text,@"qinmiUser":@"",@"qinmiRole":model[@"acceptRole"]};
+            NSDictionary *subDict = @{@"headUrl":@"",
+                                      @"qinmiName":strongSelf.nameTF.text,
+                                      @"qinmiPhone":strongSelf.phoneTF.text,
+                                      @"qinmiUser":@"",
+                                      @"qinmiRole":model[@"acceptRole"],
+                                      @"qinmiRoleName":strongSelf.contacts
+                                      };
             NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
             
             [qimiArr addObject:subDict];

@@ -17,6 +17,7 @@
                 <outlet property="previewBtn" destination="BgV-BZ-lZ0" id="Qaf-OU-OZv"/>
                 <outlet property="recordTimeLab" destination="kht-UR-gXM" id="DiB-aQ-f6c"/>
                 <outlet property="recordbtn" destination="Iph-il-DXZ" id="vKw-96-9sx"/>
+                <outlet property="remindBtn" destination="gfp-OO-bTL" id="HwN-AD-CML"/>
                 <outlet property="startStopBtn" destination="Roe-vg-1aa" id="Yzy-eo-ayq"/>
                 <outlet property="timeOneLab" destination="JTr-Yz-3sJ" id="HSO-rr-LHc"/>
                 <outlet property="timeTwoLab" destination="o0M-Bj-da6" id="gmy-04-roS"/>
@@ -137,9 +138,9 @@
                         <constraint firstAttribute="height" constant="200" id="tzf-Fg-FA2"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-OO-bTL">
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-OO-bTL">
                     <rect key="frame" x="15" y="300" width="345" height="50"/>
-                    <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.47450980390000003" green="0.77647058820000003" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="5XW-x6-WrY"/>
                     </constraints>

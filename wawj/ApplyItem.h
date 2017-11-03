@@ -15,5 +15,6 @@
 @property(nonatomic, strong)NSString *applyPhone;
 @property(nonatomic, strong)NSString *applyRole;
 @property(nonatomic, strong)NSString *headUrl;
+@property(nonatomic, strong)NSString *qinmiRoleName;
 
 @end

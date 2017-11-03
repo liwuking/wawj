@@ -275,7 +275,12 @@
                 
                 NSDictionary *dict = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
                 
-                NSDictionary *item = @{@"headUrl":dict[@"headUrl"],@"qinmiName":dict[@"qinmiName"],@"qinmiPhone":dict[@"qinmiPhone"],@"qinmiUser":dict[@"qinmiUser"],@"qinmiRole":dict[@"qinmiRole"]};
+                NSDictionary *item = @{@"headUrl":dict[@"headUrl"],
+                                       @"qinmiName":dict[@"qinmiName"],
+                                       @"qinmiPhone":dict[@"qinmiPhone"],
+                                       @"qinmiUser":dict[@"qinmiUser"],
+                                       @"qinmiRole":dict[@"qinmiRole"],
+                                       @"qinmiRoleName":dict[@"qinmiRoleName"]};
                 [qimiArr addObject:item];
             }
 

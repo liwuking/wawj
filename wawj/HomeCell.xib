@@ -28,28 +28,38 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="哥哥" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M99-BC-00M">
-                        <rect key="frame" x="0.0" y="104.5" width="135" height="30"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJX-Ai-ra8">
+                        <rect key="frame" x="0.0" y="84.5" width="135" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="gBi-St-cyY"/>
+                            <constraint firstAttribute="height" constant="50" id="Wgk-en-VJ7"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="哥哥" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M99-BC-00M">
+                        <rect key="frame" x="0.0" y="84.5" width="135" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="gBi-St-cyY"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="HJX-Ai-ra8" secondAttribute="bottom" id="6o3-00-KIC"/>
                     <constraint firstAttribute="trailing" secondItem="M99-BC-00M" secondAttribute="trailing" id="JGx-jX-Xy1"/>
+                    <constraint firstItem="HJX-Ai-ra8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WZo-UT-bQ7"/>
                     <constraint firstAttribute="bottom" secondItem="hVG-d6-Ndi" secondAttribute="bottom" id="be9-yM-ELw"/>
                     <constraint firstItem="hVG-d6-Ndi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="opR-4g-sLw"/>
                     <constraint firstItem="M99-BC-00M" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qRq-6L-HlO"/>
                     <constraint firstItem="hVG-d6-Ndi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="uhd-ci-YdI"/>
                     <constraint firstAttribute="trailing" secondItem="hVG-d6-Ndi" secondAttribute="trailing" id="vJn-jR-3uv"/>
                     <constraint firstAttribute="bottom" secondItem="M99-BC-00M" secondAttribute="bottom" id="yDT-rY-qg7"/>
+                    <constraint firstAttribute="trailing" secondItem="HJX-Ai-ra8" secondAttribute="trailing" id="z1j-pB-dIb"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="bgView" destination="HJX-Ai-ra8" id="IbF-lf-BEz"/>
                 <outlet property="headImageView" destination="hVG-d6-Ndi" id="aw4-bU-Art"/>
                 <outlet property="title" destination="M99-BC-00M" id="0tQ-1m-93n"/>
             </connections>

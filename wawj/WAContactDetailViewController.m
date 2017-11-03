@@ -38,7 +38,7 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-     NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.phoneArr[0]]];
+     NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
         [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
     }else {
@@ -80,9 +80,52 @@
 }
 
 -(void)clickEdit {
-    WAContactEditViewController *vc = [[WAContactEditViewController alloc] initWithNibName:@"WAContactEditViewController" bundle:nil];
-    vc.contactItem = self.contactItem;
-    [self.navigationController pushViewController:vc animated:YES];
+   
+    WAContactEditViewController *waContactEditViewController = [[WAContactEditViewController alloc] initWithNibName:@"WAContactEditViewController" bundle:nil];
+    waContactEditViewController.waContactEditType = WAContactEditEdit;
+    waContactEditViewController.contactItem = self.contactItem;
+    [self.navigationController pushViewController:waContactEditViewController animated:YES];
+    
+    __weak __typeof__(self) weakSelf = self;
+    waContactEditViewController.waContactEditChange = ^(ContactItem *contactItem) {
+      __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        strongSelf.title = contactItem.name;
+        
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",contactItem.imageName]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
+            [strongSelf.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
+        }else {
+            [strongSelf.headImageView setImage:[UIImage imageNamed:@"oldFather"]];
+        }
+        
+        
+        for (UIView *view in self.photoStackView.arrangedSubviews) {
+            [self.photoStackView removeArrangedSubview:view];
+        }
+        for (NSInteger i = 0; i < self.contactItem.phoneArr.count; i++) {
+            
+            NSString *phone = self.contactItem.phoneArr[i];
+            UIButton *phoneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            phoneBtn.tag = i;
+            [phoneBtn setTitle:phone forState:UIControlStateNormal];
+            [phoneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [phoneBtn setImage:[UIImage imageNamed:@"phone_x"] forState:UIControlStateNormal];
+            [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -20, 0, 0)];
+            [phoneBtn addTarget:self action:@selector(clickPhone:) forControlEvents:UIControlEventTouchUpInside];
+            [self.photoStackView addArrangedSubview:phoneBtn];
+            
+        }
+        
+        strongSelf.waContactDetailChange(strongSelf.contactItem);
+        
+    };
+    
+    waContactEditViewController.waContactDelChange = ^(ContactItem *contactItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        strongSelf.waContactDetailDel(strongSelf.contactItem);
+    };
     
 }
 

@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *title;
 
 @property (strong, nonatomic)  CloseFamilyItem *closeFamilyItem;
+@property (weak, nonatomic) IBOutlet UIView *bgView;
 
 @end

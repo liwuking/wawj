@@ -15,6 +15,8 @@
     self = [super init];
     if (self) {
         _phoneArr = [@[] mutableCopy];
+//        [_phoneArr addObject:@""];
+//        [_phoneArr addObject:@""];
     }
     
     return self;

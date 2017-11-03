@@ -23,6 +23,7 @@
 
 @interface WARemindFamilyViewController ()<UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate,CircularViewDelegate,DatePickerViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *remindBtn;
 @property (weak, nonatomic) IBOutlet UILabel *recordTimeLab;
 @property (weak, nonatomic) IBOutlet UIButton *previewBtn;
 
@@ -230,13 +231,16 @@
 
 - (IBAction)clickStartBtn:(UIButton *)sender {
     
+    
     sender.selected = !sender.selected;
     if (sender.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
         [self.audioPlayer play];
+        self.previewBtn.hidden = YES;
     } else {
         [self.cicularView endCircle];
         [self.audioPlayer stop];
+        self.previewBtn.hidden = NO;
     }
 }
 
@@ -258,7 +262,7 @@
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
-        self.previewBtn.hidden = NO;
+        self.previewBtn.hidden = YES;
         self.startStopBtn.hidden = YES;
         
         self.recordedTime = 0;
@@ -278,11 +282,11 @@
         [self.recordbtn setTitle:@"重新录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.text =  [NSString stringWithFormat:@"已录音%lds",  self.recordedTime];
-        self.previewBtn.hidden = NO;
+        
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
-         self.startStopBtn.selected = NO;
-        
+        self.startStopBtn.selected = NO;
+  
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"重新录音"]) {
         
         if (![self.audioRecorder isRecording]) {
@@ -292,11 +296,13 @@
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
-        self.previewBtn.hidden = NO;
+        self.previewBtn.hidden = YES;
         self.startStopBtn.hidden = YES;
         
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
+        self.remindBtn.enabled = NO;
+        [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
     }
     
 }
@@ -312,6 +318,12 @@
     if ([self.audioRecorder isRecording]) {
         self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  RECORD_TOTAL_TIME-progress];
         self.recordedTime = progress;
+        
+        if (self.recordedTime >= 5) {
+            self.remindBtn.enabled = YES;
+            [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+        }
+        
     }
 
 }
@@ -383,22 +395,32 @@
 
 - (IBAction)clickRemindBtn:(UIButton *)sender {
     
-//    if ([self.timeTwoLab.text isEqualToString:@"今天"]) {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        dateFormatter.timeZone = [NSTimeZone localTimeZone];
-//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-//        NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
-//        NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.timeOneLab.text];
-//
-//        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//        NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
-//        NSDate *validDate = [NSDate dateWithTimeIntervalSinceNow:5*60];
-//        if ([remindDate compare:validDate] == NSOrderedAscending ) {
-//            [MBProgressHUD showSuccess:@"请选择有效时间"];
-//            return;
-//        }
-//
-//    }
+    if (self.recordedTime < 5) {
+        [self showAlertViewWithTitle:@"录音时间不得小于5s" message:nil buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    if ([self.timeTwoLab.text isEqualToString:@"今天"]) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.timeZone = [NSTimeZone localTimeZone];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
+        NSString *remindDateMM = [NSString stringWithFormat:@"%@ %@:00",currentDateDD,self.timeOneLab.text];
+
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *remindDate = [dateFormatter dateFromString:remindDateMM];
+        
+        NSDate *validDate = [NSDate dateWithTimeIntervalSinceNow:1*60];
+        if ([remindDate compare:validDate] == NSOrderedAscending ) {
+//            [MBProgressHUD showSuccess:@"请选择有效提醒时间"];
+            [self showAlertViewWithTitle:@"请选择有效提醒时间,超出当前时间1分钟" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+    }
     
     //图片命名
     NSDate *currentDate = [NSDate date];

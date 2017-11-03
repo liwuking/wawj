@@ -15,6 +15,8 @@
     [super awakeFromNib];
     // Initialization code
     
+    self.bgView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.title.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     maskLayer.frame = self.title.bounds;

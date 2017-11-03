@@ -224,7 +224,7 @@
 - (void)backAction {
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    BOOL headUrlBool = [userInfo[HEADURL] isEqualToString:self.imageUrl] ;
+    BOOL headUrlBool = self.imageUrl ? [userInfo[HEADURL] isEqualToString:self.imageUrl] : YES;
     BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
     BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:_selectTimeButton.titleLabel.text];
     BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi);
