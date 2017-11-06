@@ -83,7 +83,7 @@
 - (IBAction)clickPhone:(UIButton *)sender {
     
     __weak WAContactViewController *weakObject = self;
-    [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone) {
+    [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone,NSData *imageData) {
         __strong WAContactViewController *strongObject = weakObject;
         
         ContactItem *item = [[ContactItem alloc] init];
@@ -92,6 +92,7 @@
         
         strongObject.phoneTF.text = phone;
         strongObject.nameTF.text = name;
+        
         
     }];
 

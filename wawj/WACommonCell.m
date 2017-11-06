@@ -13,6 +13,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    self.titleLab.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 }
 
 @end

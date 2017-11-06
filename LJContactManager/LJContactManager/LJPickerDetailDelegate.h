@@ -12,6 +12,6 @@
 
 @interface LJPickerDetailDelegate : NSObject <ABPeoplePickerNavigationControllerDelegate,CNContactPickerDelegate>
 
-@property (nonatomic, copy) void (^handler) (NSString *name, NSString *phoneNum);
+@property (nonatomic, copy) void (^handler) (NSString *name, NSString *phoneNum,NSData *imageData);
 
 @end

@@ -56,7 +56,7 @@
                         <constraint firstAttribute="height" constant="60" id="NjK-y3-xJX"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="31"/>
-                    <state key="normal" title="删除联系人">
+                    <state key="normal" title="保存联系人">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -66,7 +66,7 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="clickDel:" destination="-1" eventType="touchUpInside" id="qVz-dR-CeT"/>
+                        <action selector="clickSave:" destination="-1" eventType="touchUpInside" id="vLh-sQ-FZd"/>
                     </connections>
                 </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7TU-SR-GNY">

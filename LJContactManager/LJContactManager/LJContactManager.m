@@ -19,7 +19,7 @@
 
 @interface LJContactManager () <ABNewPersonViewControllerDelegate, CNContactViewControllerDelegate>
 
-@property (nonatomic, copy) void (^handler) (NSString *, NSString *);
+@property (nonatomic, copy) void (^handler) (NSString *, NSString *, NSData *imageData);
 @property (nonatomic, assign) BOOL isAdd;
 @property (nonatomic, copy) NSArray *keys;
 @property (nonatomic, strong) LJPeoplePickerDelegate *pickerDelegate;
@@ -104,8 +104,8 @@
     {
         _pickerDetailDelegate = [LJPickerDetailDelegate new];
         __weak typeof(self) weakSelf = self;
-        _pickerDetailDelegate.handler = ^(NSString *name, NSString *phoneNum) {
-            weakSelf.handler(name, phoneNum);
+        _pickerDetailDelegate.handler = ^(NSString *name, NSString *phoneNum, NSData *imageData) {
+           weakSelf.handler(name, phoneNum,imageData);
         };
     }
     return _pickerDetailDelegate;
@@ -114,16 +114,16 @@
 #pragma mark - Public
 
 - (void)selectContactAtController:(UIViewController *)controller
-                      complection:(void (^)(NSString *, NSString *))completcion
+                      complection:(void (^)(NSString *, NSString *,NSData *))completcion
 {
     self.isAdd = NO;
     [self _presentFromController:controller];
     
-    self.handler = ^(NSString *name, NSString *phone){
+    self.handler = ^(NSString *name, NSString *phone,NSData *imageData){
         
         if (completcion)
         {
-            completcion(name, phone);
+            completcion(name, phone,imageData);
         }
     };
 }

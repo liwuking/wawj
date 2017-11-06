@@ -284,7 +284,7 @@
 -(void)clickPhoneNumber {
     
     __weak WACommonlyPhoneViewController *weakObject = self;
-    [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone) {
+    [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone,NSData *imageData) {
         __strong WACommonlyPhoneViewController *strongObject = weakObject;
         
         for (ContactItem *item in self.dataArr) {
@@ -304,14 +304,17 @@
         
         }
         
-        ContactItem *item = [[ContactItem alloc] init];
-        item.name = name;
-        [item.phoneArr addObject:[phone stringByReplacingOccurrencesOfString:@"-" withString:@""]];
-        
-        [strongObject.dataArr addObject:item];
-        [strongObject.collectionView reloadData];
         
         NSString *imageName = [NSString stringWithFormat:@"%ld", (NSInteger)[[NSDate date] timeIntervalSince1970]];
+        ContactItem *item = [[ContactItem alloc] init];
+        item.name = name;
+        item.imageName = imageName;
+        [item.phoneArr addObject:[phone stringByReplacingOccurrencesOfString:@"-" withString:@""]];
+        [strongObject.dataArr addObject:item];
+        
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
+        [[NSFileManager defaultManager] createFileAtPath:contactPath contents:imageData attributes:nil];
         
         NSDictionary *contactDict = @{@"contactName":name,
                                       @"phoneArr":item.phoneArr,
@@ -320,6 +323,9 @@
         NSMutableArray *contactArrs = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
         [contactArrs addObject:contactDict];
         [CoreArchive setArr:contactArrs key:USER_CONTACT_ARR];
+        
+        
+        [strongObject.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:strongObject.dataArr.count-1 inSection:0]]];
         
     }];
     

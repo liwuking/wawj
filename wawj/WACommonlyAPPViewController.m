@@ -146,7 +146,7 @@
     } else {
 
         AppItem *item = self.dataArr[indexPath.row];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item.appDownloadUrl]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/wei/id414478124"]];
         
     }
     

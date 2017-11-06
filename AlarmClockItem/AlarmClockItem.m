@@ -16,35 +16,35 @@
 
 +(void)addWholePointTellTime {
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm"];
-    NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
-    NSArray *times = [currentDateMM componentsSeparatedByString:@":"];
-    NSInteger hour = [times[0] integerValue];
-    NSInteger minute = [times[1] integerValue];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"HH:mm"];
+//    NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
+//    NSArray *times = [currentDateMM componentsSeparatedByString:@":"];
+//    NSInteger hour = [times[0] integerValue];
+//    NSInteger minute = [times[1] integerValue];
     
-    if (minute > 0) {
-        hour = hour+1;
-    }
+//    if (minute > 0) {
+//        hour = hour+1;
+//    }
 
     
 //    if (SYSTEM_VERSION < 10) {
-        
-        //取得系统的时间，并将其一个个赋值给变量
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
-        calendar.timeZone = [NSTimeZone localTimeZone];
-        NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;//这句我也不明白具体时用来做什么。。。
-        NSDateComponents *comps = [[NSDateComponents alloc] init];
-        comps = [calendar components:unitFlags fromDate: [NSDate date]];
-        [comps setHour:hour];
-        [comps setMinute:0];
-        [comps setSecond:0];
-         NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
-        NSString *content = @"整点报时";
-        NSString *clockIdentifier = REMINDTYPE_ONETIMEONCE;
-        
-        [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:REMINDTYPE_ONETIMEONCE fireDate:newFireDate];
-        
+//
+//        //取得系统的时间，并将其一个个赋值给变量
+//        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+//        calendar.timeZone = [NSTimeZone localTimeZone];
+//        NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;//这句我也不明白具体时用来做什么。。。
+//        NSDateComponents *comps = [[NSDateComponents alloc] init];
+//        comps = [calendar components:unitFlags fromDate: [NSDate date]];
+//        [comps setHour:5];
+//        [comps setMinute:0];
+//        [comps setSecond:0];
+//         NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
+//        NSString *content = @"整点报时";
+//        NSString *clockIdentifier = REMINDTYPE_ONETIMEONCE;
+//
+//        [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:REMINDTYPE_ONETIMEONCE fireDate:newFireDate];
+//
 //    } else {
 //
 //        NSString *content = @"整点报时";
@@ -87,17 +87,57 @@
 //
 //        }];
 //    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *todayStr = [dateFormatter stringFromDate:[NSDate date]];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    for (NSInteger i = 5; i <= 21; i++) {
+        
+        NSString *hourStr;
+        if (i < 10) {
+            hourStr = [NSString stringWithFormat:@"0%ld",i];
+        } else {
+            hourStr = [NSString stringWithFormat:@"%ld",i];
+        }
+        NSDate *remindDate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ %@:00:00",todayStr,hourStr]];
+
+         NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
+        NSString *content = @"整点报时";
+        [self scheduleWholeNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockSoundName:hourStr fireDate:remindDate];
+        
+    }
+    
+    
+//    //取得系统的时间，并将其一个个赋值给变量
+//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+//    calendar.timeZone = [NSTimeZone localTimeZone];
+//    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;//这句我也不明白具体时用来做什么。。。
+//    NSDateComponents *comps = [[NSDateComponents alloc] init];
+//    comps = [calendar components:unitFlags fromDate: [NSDate date]];
+//    [comps setHour:5];
+//    [comps setMinute:0];
+//    [comps setSecond:0];
+//    NSDate *newFireDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
+//    NSString *content = @"整点报时";
+//    NSString *clockIdentifier = REMINDTYPE_ONETIMEONCE;
+    
+    
+    
 }
 +(void)cancelWholePointTellTime {
     
     NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    NSString *requestIdentifier = REMINDTYPE_ONETIMEONCE;
-    
-    if (SYSTEM_VERSION >= 10) {
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center removePendingNotificationRequestsWithIdentifiers:@[requestIdentifier]];
-        [center removeDeliveredNotificationsWithIdentifiers:@[requestIdentifier]];
-    } else {
+    for (NSInteger i = 5; i <= 21; i++) {
+        
+        NSString *hourStr;
+        if (i < 10) {
+            hourStr = [NSString stringWithFormat:@"0%ld",i];
+        } else {
+            hourStr = [NSString stringWithFormat:@"%ld",i];
+        }
+        
+        NSString *requestIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
         for (UILocalNotification *notification in notiArray) {
             NSDictionary *info = notification.userInfo;
             if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
@@ -105,7 +145,27 @@
                 [[UIApplication sharedApplication] cancelLocalNotification:notification];
             }
         }
+
     }
+    
+    
+    
+//    NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
+//    NSString *requestIdentifier = REMINDTYPE_ONETIMEONCE;
+//
+//    if (SYSTEM_VERSION >= 10) {
+//        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//        [center removePendingNotificationRequestsWithIdentifiers:@[requestIdentifier]];
+//        [center removeDeliveredNotificationsWithIdentifiers:@[requestIdentifier]];
+//    } else {
+//        for (UILocalNotification *notification in notiArray) {
+//            NSDictionary *info = notification.userInfo;
+//            if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
+//                //将这个notification从UIApplication中移除
+//                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+//            }
+//        }
+//    }
 
 }
 
@@ -121,6 +181,34 @@
     long weekNumber = [comps weekday]; //获取星期对应的长整形字符串
     
     return weekNumber;
+}
+
++ (void)scheduleWholeNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockSoundName:(NSString *)soundName fireDate:(NSDate*)remindDate {
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    //在选中的时间发出提醒
+    notification.fireDate = remindDate;
+    //重复次数，一天一次
+    notification.repeatInterval = kCFCalendarUnitDay;
+    
+    NSLog(@"本地推送时间: %@  soundName: %@", remindDate,soundName);
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    //设置推送时的声音，一个30秒的音乐
+    //    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
+    //NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
+    notification.soundName = soundName;
+    notification.alertAction = @"确定";//改变提示框按钮文字
+    notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
+    notification.alertTitle = @"我爱我家";
+    notification.alertBody = alertContent;
+    //            //显示在icon上的红色圈中的数字,右上角数字加1
+    //            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+    
+    NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
+    //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
+    notification.userInfo = infoDict;
+    
+    //将这个notification添加到UIApplication中
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 + (void)scheduleNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockType:(NSString *)alarType fireDate:(NSDate*)remindDate

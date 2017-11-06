@@ -102,6 +102,10 @@
         NSString *myRecordPath = [NSString stringWithFormat:@"%@/MyRecored", documentPath];
         [[NSFileManager defaultManager] removeItemAtPath:myRecordPath error:nil];
         
+        NSString *myContactPath = [NSString stringWithFormat:@"%@/MyContact", documentPath];
+        [[NSFileManager defaultManager] removeItemAtPath:myContactPath error:nil];
+        
+        
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];

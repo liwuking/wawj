@@ -50,6 +50,8 @@
 
 
 #define REMINDTYPE_ONETIMEONCE      @"onetimeonce"
+
+
 #define REMINDTYPE_ONLYONCE      @"onlyonce"
 #define REMINDTYPE_EVERYDAY      @"everyday"
 #define REMINDTYPE_WORKDAY       @"workday"

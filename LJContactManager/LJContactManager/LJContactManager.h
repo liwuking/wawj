@@ -55,7 +55,7 @@ typedef void (^LJSectionContactChangeHanlder) (BOOL succeed, NSArray <LJSectionP
  @param completcion 回调
  */
 - (void)selectContactAtController:(UIViewController *)controller
-                      complection:(void (^)(NSString *name, NSString *phone))completcion;
+                      complection:(void (^)(NSString *name, NSString *phone,NSData *))completcion;
 
 /**
  创建新联系人

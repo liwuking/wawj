@@ -434,7 +434,7 @@
 
                     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
                     NSString *bucketName = @"wawj-test";
-                    
+                    NSDictionary *parameters = @{@"expiration":[NSNumber numberWithLong:1920597071]};
                     __weak __typeof__(self) weakSelf = self;
                     [up uploadWithBucketName:bucketName
                                     operator:@"wawj2017"
@@ -442,7 +442,7 @@
                                     fileData:pngData
                                     fileName:nil
                                      saveKey:imgName
-                             otherParameters:nil
+                             otherParameters:parameters
                                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
                                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
                                          

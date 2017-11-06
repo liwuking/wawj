@@ -24,9 +24,13 @@
     NSString *phone = CFBridgingRelease(ABMultiValueCopyValueAtIndex(multi, index));
     CFRelease(multi);
     
+    CFDataRef imageDataRef = ABPersonCopyImageDataWithFormat(person,kABPersonImageFormatThumbnail);
+    
+    NSData *imageData = (__bridge NSData*)imageDataRef;
+    
     if (self.handler)
     {
-        self.handler(name, phone);
+        self.handler(name, phone,imageData);
     }
     
     [peoplePicker dismissViewControllerAnimated:YES completion:nil];
@@ -44,14 +48,15 @@
     }
     
     //缩略图Data
+    NSData * thumImageData = nil;
     if ([contact isKeyAvailable:CNContactThumbnailImageDataKey])
     {
-        NSData * thumImageData = contact.thumbnailImageData;
+        thumImageData = contact.thumbnailImageData;
     }
     
     if (self.handler)
     {
-        self.handler(name, phoneNumber);
+        self.handler(name, phoneNumber,thumImageData);
     }
 }
 - (void)contactPicker:(CNContactPickerViewController *)picker didSelectContactProperty:(CNContactProperty *)contactProperty
@@ -63,7 +68,7 @@
     
     if (self.handler)
     {
-        self.handler(name, phoneNumber);
+        self.handler(name, phoneNumber,contact.imageData);
     }
 }
 

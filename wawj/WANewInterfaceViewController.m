@@ -57,11 +57,9 @@
             break;
         case 1:
         {
-//            WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
-//            [self.navigationController pushViewController:vc animated:YES];
-            [self showAlertViewWithTitle:@"此功能暂未开放" message:nil buttonTitle:@"确定" clickBtn:^{
-                
-            }];
+            WACommonlyPhoneViewController *vc = [[WACommonlyPhoneViewController alloc] initWithNibName:@"WACommonlyPhoneViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+
         }
             break;
         case 2:
