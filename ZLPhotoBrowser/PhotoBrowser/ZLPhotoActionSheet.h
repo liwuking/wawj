@@ -59,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**控制单选模式下，是否显示选择按钮，默认 NO，多选模式不受控制*/
 @property (nonatomic, assign) BOOL showSelectBtn;
+/**
+ 是否选择了原图
+ */
+@property (nonatomic, assign) BOOL isSelectOriginalPhoto;
 
 /**已选择的asset对象数组*/
 @property (nonatomic, strong) NSMutableArray<PHAsset *> *arrSelectedAssets;

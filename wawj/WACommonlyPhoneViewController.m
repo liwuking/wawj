@@ -238,10 +238,7 @@
     
 }
 
-
-
-
-- (void)requestAuthorizationAddressBook {
+- (BOOL)requestAuthorizationAddressBook {
     // 判断是否授权
     CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     if (authorizationStatus == CNAuthorizationStatusNotDetermined) {
@@ -250,12 +247,33 @@
         [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (granted) { // 授权成功
                 NSLog(@"授权成功！");
+               
             } else {  // 授权失败
                 NSLog(@"授权失败！");
+                
             }
             
         }];
+        return NO;
+    } else if(authorizationStatus == CNAuthorizationStatusDenied || authorizationStatus == CNAuthorizationStatusRestricted){
+        //设置-隐私-通讯录
+        
+        [self showAlertViewWithTitle:@"未开启通讯录权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        return NO;
+        
     }
+    
+    return YES;
 }
 
 
@@ -283,38 +301,39 @@
 
 -(void)clickPhoneNumber {
     
+    if (![self requestAuthorizationAddressBook]) {
+        return;
+    }
+    
     __weak WACommonlyPhoneViewController *weakObject = self;
     [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone,NSData *imageData) {
         __strong WACommonlyPhoneViewController *strongObject = weakObject;
         
         for (ContactItem *item in self.dataArr) {
-            
             if ([item.name isEqualToString:name]) {
-                
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [strongObject showAlertViewWithTitle:@"已存在相同姓名" message:nil buttonTitle:@"确定" clickBtn:^{
-                        
                     }];
                 });
-               
-                
                 return;
                 break;
             }
-        
         }
         
         
-        NSString *imageName = [NSString stringWithFormat:@"%ld", (NSInteger)[[NSDate date] timeIntervalSince1970]];
         ContactItem *item = [[ContactItem alloc] init];
         item.name = name;
+        NSString *imageName = [NSString stringWithFormat:@"%ld", (NSInteger)[[NSDate date] timeIntervalSince1970]];
         item.imageName = imageName;
         [item.phoneArr addObject:[phone stringByReplacingOccurrencesOfString:@"-" withString:@""]];
         [strongObject.dataArr addObject:item];
         
-        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-        NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
-        [[NSFileManager defaultManager] createFileAtPath:contactPath contents:imageData attributes:nil];
+        if (imageData) {
+            NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+            NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
+            
+            [[NSFileManager defaultManager] createFileAtPath:contactPath contents:imageData attributes:nil];
+        }
         
         NSDictionary *contactDict = @{@"contactName":name,
                                       @"phoneArr":item.phoneArr,

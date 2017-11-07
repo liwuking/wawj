@@ -11,22 +11,6 @@
 
 @interface AlarmClockItem : NSObject
 
-//+ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
-//                        AlarmClockDateTime:(NSString *)dateTime
-//                            AlarmClockType:(NSString *)alarType
-//                      AlarmClockIdentifier:(NSString *)clockIdentifier
-//                                  isOhters:(BOOL)isOther;
-//+ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
-//                        AlarmClockDateTime:(NSString *)dateTime
-//                            AlarmClockType:(NSString *)alarType
-//                      AlarmClockIdentifier:(NSString *)clockIdentifier;
-//
-//+ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
-//                        AlarmClockDateTime:(NSString *)dateTime
-//                            AlarmClockType:(NSString *)alarType
-//                      AlarmClockIdentifier:(NSString *)clockIdentifier
-//                   AlarmClockAudioFilePath:(NSString *)audioFilePath;
-//delete
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
                         AlarmClockDateTime:(NSString *)dateTime

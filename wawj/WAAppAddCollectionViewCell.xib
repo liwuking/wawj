@@ -19,16 +19,29 @@
                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add" translatesAutoresizingMaskIntoConstraints="NO" id="pAr-sn-g6v">
-                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add" translatesAutoresizingMaskIntoConstraints="NO" id="pAr-sn-g6v">
+                        <rect key="frame" x="20" y="10" width="110" height="100"/>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加应用" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQE-nl-0zB">
+                        <rect key="frame" x="20" y="115" width="110" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="o9P-Kg-dMD"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="pAr-sn-g6v" secondAttribute="trailing" id="E6K-m0-V3X"/>
-                <constraint firstItem="pAr-sn-g6v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="PLm-Ui-T8L"/>
-                <constraint firstAttribute="bottom" secondItem="pAr-sn-g6v" secondAttribute="bottom" id="WWz-2u-Npa"/>
-                <constraint firstItem="pAr-sn-g6v" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="nmw-M6-9tJ"/>
+                <constraint firstItem="JQE-nl-0zB" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="2nG-g0-R9U"/>
+                <constraint firstItem="JQE-nl-0zB" firstAttribute="top" secondItem="pAr-sn-g6v" secondAttribute="bottom" constant="5" id="545-h1-bKV"/>
+                <constraint firstItem="JQE-nl-0zB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="CPO-ea-3ZM"/>
+                <constraint firstAttribute="trailing" secondItem="pAr-sn-g6v" secondAttribute="trailing" constant="20" id="E6K-m0-V3X"/>
+                <constraint firstItem="pAr-sn-g6v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="PLm-Ui-T8L"/>
+                <constraint firstAttribute="trailing" secondItem="JQE-nl-0zB" secondAttribute="trailing" constant="20" id="Ten-nj-cvy"/>
+                <constraint firstAttribute="bottom" secondItem="pAr-sn-g6v" secondAttribute="bottom" constant="40" id="WWz-2u-Npa"/>
+                <constraint firstItem="pAr-sn-g6v" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="nmw-M6-9tJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
         </collectionViewCell>

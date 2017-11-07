@@ -163,15 +163,15 @@
                         <constraint firstItem="0oe-b9-kOo" firstAttribute="top" secondItem="t4T-48-NOo" secondAttribute="top" id="uP3-S8-hId"/>
                     </constraints>
                 </stackView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="downloadQR" translatesAutoresizingMaskIntoConstraints="NO" id="aYr-xf-BOQ">
-                    <rect key="frame" x="43" y="30" width="235" height="235"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareImg" translatesAutoresizingMaskIntoConstraints="NO" id="aYr-xf-BOQ">
+                    <rect key="frame" x="60" y="30" width="200" height="200"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="235" id="V8p-BK-NNj"/>
-                        <constraint firstAttribute="width" constant="235" id="qJx-o2-Q6Y"/>
+                        <constraint firstAttribute="height" constant="200" id="V8p-BK-NNj"/>
+                        <constraint firstAttribute="width" constant="200" id="qJx-o2-Q6Y"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请家人、好友直接扫描二维码，下载二维码安装APP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MBV-kA-QNJ">
-                    <rect key="frame" x="10" y="281" width="300" height="21"/>
+                    <rect key="frame" x="10" y="246" width="300" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="251-4Y-F7r"/>
                         <constraint firstAttribute="width" constant="300" id="oF1-pJ-g0N"/>
@@ -181,7 +181,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="好东西,要大家一起分享" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-4M-Gde">
-                    <rect key="frame" x="69" y="374" width="183" height="21"/>
+                    <rect key="frame" x="69" y="339" width="183" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="183" id="Gh4-Ko-YLT"/>
                         <constraint firstAttribute="height" constant="21" id="lZS-ZJ-tEW"/>
@@ -191,7 +191,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_____" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyC-hr-Dhw">
-                    <rect key="frame" x="33" y="367" width="40" height="21"/>
+                    <rect key="frame" x="33" y="332" width="40" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="bpq-dL-NIC"/>
                         <constraint firstAttribute="height" constant="21" id="pxK-Oc-ylk"/>
@@ -201,7 +201,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="____" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFe-RQ-Mk7">
-                    <rect key="frame" x="256" y="367" width="42" height="21"/>
+                    <rect key="frame" x="256" y="332" width="42" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="42" id="Qep-Hg-yUy"/>
                         <constraint firstAttribute="height" constant="21" id="X0B-eh-8hy"/>
@@ -251,9 +251,9 @@
     </objects>
     <resources>
         <image name="QZone" width="45" height="45"/>
-        <image name="downloadQR" width="250" height="250"/>
         <image name="friends" width="45" height="45"/>
         <image name="qqFriends" width="45" height="45"/>
+        <image name="shareImg" width="200" height="200"/>
         <image name="wxFriends" width="45" height="45"/>
     </resources>
 </document>

@@ -158,15 +158,15 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>是否允许访问摄像头</string>
+	<string></string>
 	<key>NSContactsUsageDescription</key>
-	<string>需要访问你的通讯录</string>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>需要定位</string>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>是否允许访问麦克风</string>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>是否允许访问相册</string>
+	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

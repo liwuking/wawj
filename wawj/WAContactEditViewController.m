@@ -115,45 +115,59 @@
 
 }
 
+-(void)delContact {
+    
+    NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
+    for (NSInteger i = 0; i < contactArr.count; i++) {
+        NSDictionary *dict = contactArr[i];
+        if ([dict[@"contactName"] isEqualToString:self.contactItem.name]) {
+            [contactArr removeObjectAtIndex:i];
+            break;
+        }
+    }
+    [CoreArchive setArr:contactArr key:USER_CONTACT_ARR];
+    
+    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+    NSString *oldContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
+    [[NSFileManager defaultManager] removeItemAtPath:oldContactPath error:nil];
+    
+    [MBProgressHUD showMessage:nil];
+    //创建一个串行队列
+    dispatch_queue_t queue = dispatch_queue_create("xxxx", DISPATCH_QUEUE_SERIAL);
+    //使用异步函数封装三个任务
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(queue, ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf delContactWithName:strongSelf.contactItem.name];
+    });
+
+    dispatch_async(queue, ^{
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            for (UIViewController *temp in strongSelf.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[WACommonlyPhoneViewController class]]) {
+            
+                    strongSelf.waContactDelChange(strongSelf.contactItem);
+                    [strongSelf.navigationController popToViewController:temp animated:YES];
+                    
+                }
+            }
+        });
+        
+    });
+}
+
 -(void)clickDel {
     
     if (self.waContactEditType == WAContactEditEdit) {
         
-        [MBProgressHUD showSuccess:nil];
-        //创建一个串行队列
-        dispatch_queue_t queue = dispatch_queue_create("xxxx", DISPATCH_QUEUE_SERIAL);
-        //使用异步函数封装三个任务
         __weak __typeof__(self) weakSelf = self;
-        dispatch_async(queue, ^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            [strongSelf delContactWithName:strongSelf.contactItem.name];
-        });
-        
-        NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
-        for (NSInteger i = 0; i < contactArr.count; i++) {
-            NSDictionary *dict = contactArr[i];
-            if ([dict[@"contactName"] isEqualToString:self.contactItem.name]) {
-                
-                [contactArr removeObjectAtIndex:i];
-                
-                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-                NSString *oldContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",self.contactItem.imageName]];
-                [[NSFileManager defaultManager] removeItemAtPath:oldContactPath error:nil];
-                
-                break;
-            }
-        }
-        
-        [CoreArchive setArr:contactArr key:USER_CONTACT_ARR];
-        
-        for (UIViewController *temp in self.navigationController.viewControllers) {
-            if ([temp isKindOfClass:[WACommonlyPhoneViewController class]]) {
-                
-                self.waContactDelChange(self.contactItem);
-                [self.navigationController popToViewController:temp animated:YES];
-            }
-        }
-   
+        [self showAlertViewWithTitle:@"确定删除" message:@"通讯录中联系人会同步删除" buttonTitle:@"确定" clickBtn:^{
+           __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [strongSelf delContact];
+        }];
+
     } else {
         [self clickSave:self.delBtn];
     }
@@ -221,13 +235,6 @@
             }];
             return;
         }
-    }
-    
-    if ([self queryContactWithName:cellName.textField.text].count > 0) {
-        [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        return;
     }
     
     BOOL ischange = [cellName.textField.text isEqualToString:self.contactItem.name];
@@ -304,6 +311,13 @@
     self.contactItem.name = cellName.textField.text;
     if (!ischange && WAContactEditEdit == self.waContactEditType) {
         
+        if ([self queryContactWithName:cellName.textField.text].count > 0) {
+            [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
         self.waContactEditChange(self.contactItem);
         
         //创建一个串行队列
@@ -327,7 +341,18 @@
             });
         });
         
-    } else if (WAContactEditAdd == self.waContactEditType) {
+    }else if (ischange && WAContactEditEdit == self.waContactEditType) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (WAContactEditAdd == self.waContactEditType) {
+        
+        if ([self queryContactWithName:cellName.textField.text].count > 0) {
+            [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
         self.waContactEditAddChange(self.contactItem);
         
         //创建一个串行队列
@@ -347,6 +372,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUD];
                 [strongSelf.navigationController popViewControllerAnimated:YES];
+                
             });
             
         });

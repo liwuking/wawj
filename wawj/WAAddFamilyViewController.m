@@ -36,23 +36,7 @@
     
     self.title = @"添加亲密人";
     
-//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-//    if ([userInfo[@"gender"] isEqualToString:@"1"]) {
-//        //女
-//        if ([btn.titleLabel.text isEqualToString:@"老婆"] || [btn.titleLabel.text isEqualToString:@"岳父"] || [btn.titleLabel.text isEqualToString:@"岳母"] ) {
-//            [self showAlertViewWithTitle:@"请选择正确角色" message:nil buttonTitle:@"确定" clickBtn:^{
-//
-//            }];
-//            return;
-//        }
-//    } else {
-//        if ([btn.titleLabel.text isEqualToString:@"老公"] || [btn.titleLabel.text isEqualToString:@"公公"] || [btn.titleLabel.text isEqualToString:@"婆婆"] ) {
-//            [self showAlertViewWithTitle:@"请选择正确角色" message:nil buttonTitle:@"确定" clickBtn:^{
-//
-//            }];
-//            return;
-//        }
-//    }
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     if ([userInfo[@"gender"] isEqualToString:@"1"]) {

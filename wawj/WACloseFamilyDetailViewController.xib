@@ -15,6 +15,7 @@
                 <outlet property="phoneBtn" destination="Kcf-UI-f8c" id="bdx-gK-CFO"/>
                 <outlet property="sendMesBtn" destination="dJp-XK-qnV" id="B4N-Fh-kzw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="wenhaoBtn" destination="jbv-Lf-0bw" id="b9R-XL-geZ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -136,7 +137,7 @@
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="35"/>
                     <state key="normal" title="发条短信告诉她">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -148,10 +149,20 @@
                         <action selector="clickSendMessageBtn:" destination="-1" eventType="touchUpInside" id="uPP-GT-akC"/>
                     </connections>
                 </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbv-Lf-0bw">
+                    <rect key="frame" x="85" y="134" width="150" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="2dP-yX-ecg"/>
+                        <constraint firstAttribute="height" constant="80" id="wEr-Fl-k3l"/>
+                    </constraints>
+                    <state key="normal" image="wenhao"/>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="dJp-XK-qnV" firstAttribute="top" secondItem="jbv-Lf-0bw" secondAttribute="bottom" constant="40" id="3ew-rG-7VI"/>
                 <constraint firstAttribute="trailing" secondItem="OUa-kd-ov3" secondAttribute="trailing" id="4R4-hn-DWQ"/>
+                <constraint firstItem="jbv-Lf-0bw" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Bxr-kR-PvV"/>
                 <constraint firstItem="dJp-XK-qnV" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="FmJ-Um-Hgb"/>
                 <constraint firstItem="OUa-kd-ov3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="I7K-53-PjB"/>
                 <constraint firstItem="odQ-Kj-AKl" firstAttribute="top" secondItem="OUa-kd-ov3" secondAttribute="bottom" id="Ig5-kg-8jx"/>
@@ -167,5 +178,6 @@
         <image name="BoPhone" width="43" height="38"/>
         <image name="Marker" width="43" height="38"/>
         <image name="Megaphone" width="43" height="38"/>
+        <image name="wenhao" width="75" height="75"/>
     </resources>
 </document>

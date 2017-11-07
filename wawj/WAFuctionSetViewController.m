@@ -224,10 +224,10 @@
         
         if (1 == indexPath.row) {
             
-//            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//            cell.waSwitch.on = !cell.waSwitch.on;
-//
-//            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
+            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            cell.waSwitch.on = !cell.waSwitch.on;
+
+            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
             
         } else {
             

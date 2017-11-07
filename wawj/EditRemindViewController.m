@@ -11,6 +11,7 @@
 #import "DBManager.h"
 #import "AlarmClockItem.h"
 #import "TimePickerView.h"
+#import "RemindViewController.h"
 @interface EditRemindViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *timeView;
@@ -347,9 +348,9 @@
         
         
     } else {
-        
+ 
         sql =  [NSString stringWithFormat:
-                @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindorigintype = '%@', and remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,REMINDORIGINTYPE_LOCAL,self.remindItem.remindtype,self.remindItem.remindtime];
+                @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindorigintype = '%@' and remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,REMINDORIGINTYPE_LOCAL,self.remindItem.remindtype,self.remindItem.remindtime];
         
          if ([self.database executeUpdate:sql]) {
              [MBProgressHUD showSuccess:@"编辑成功"];
@@ -419,8 +420,19 @@
 }
 
 -(void)backActionWithEditRefresh:(RemindItem *)remindItem {
-    self.editRemindViewControllerWithEditRemind(remindItem);
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[RemindViewController class]]) {
+            
+            RemindViewController *vc = (RemindViewController *)temp;
+            vc.remindViewControllerWithRefreshRemind(remindItem);
+            [self.navigationController popToViewController:vc animated:YES];
+            
+        }
+    }
+//    
+//    self.editRemindViewControllerWithEditRemind(remindItem);
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)backActionWithEditAddRefresh:(RemindItem *)remindItem {

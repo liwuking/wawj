@@ -23,7 +23,7 @@
 #define  RATIO_IMAGE_70      @"webp70"
 #define  RATIO_IMAGE_80      @"webp80"
 #define  RATIO_IMAGE_90      @"webp90"
-#define  RATIO_IMAGE_100      @"webp100"
+#define  RATIO_IMAGE_100     @"webp100"
 
 #define USER_CONTACT_ARR  @"user_contact_ARR"
 

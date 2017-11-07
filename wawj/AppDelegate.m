@@ -112,7 +112,6 @@
     //设置友盟
     [self setUMShare];
     
-//    [self copyFileToDocuments:@"ThunderSong"];
 
     NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
     NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
@@ -290,6 +289,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
    
     NSLog(@"%s -- identifier: %@", __FUNCTION__, notification.request.identifier);
+    
     NSDictionary * userInfo = notification.request.content.userInfo;
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         
@@ -317,7 +317,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 // iOS 10 Support
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    
+    NSLog(@"%s", __FUNCTION__);
     NSLog(@"%s -- identifier: %@", __FUNCTION__, response.notification.request.identifier);
     NSDictionary * userInfo = response.notification.request.content.userInfo;
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
@@ -329,6 +329,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     } else {
         // 判断为本地通知
         NSLog(@"iOS10 收到本地通知:userInfo：%@\n}",userInfo);
+        
+        
+        
+        
     }
     completionHandler();  // 系统要求执行这个方法
 }
@@ -423,6 +427,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     NSLog(@"%s", __FUNCTION__);
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
@@ -439,11 +444,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     }else{
         
         //播放声音
-//        AudioServicesPlaySystemSound(1007);
-//        //开启震动
+        //开启震动
         AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        [self playRemindAudio];
+        [self playRemindAudioWithSoundName:notification.soundName];
         
         [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
             //关闭震动
@@ -460,23 +464,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 #pragma -mark 播放本地音频
--(void)playRemindAudio {
+-(void)playRemindAudioWithSoundName:(NSString *)soundName {
     
     if (self.audioFilePlayer.isPlaying) {
         [MBProgressHUD showSuccess:@"正在播放"];
         return;
     }
-    
-//    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-//    NSString *audioPath = [NSString stringWithFormat:@"%@/%@", documentPath,audioFilePath];
-//    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioPath];
-//    if (!exists) {
-//        [MBProgressHUD showSuccess:@"播放失败"];
-//        return;
-//    }
-    
-    NSData *data = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"m4r"]];
-    //    NSURL *url= [NSURL URLWithString:audioFilePath];
+
+    NSArray *audioNames = [soundName componentsSeparatedByString:@"."];
+    NSData *data = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:audioNames[0] ofType:audioNames[1]]];
     
     NSError *error=nil;
     self.audioFilePlayer=[[AVAudioPlayer alloc] initWithData:data error:&error];

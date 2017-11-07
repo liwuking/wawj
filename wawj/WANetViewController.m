@@ -101,7 +101,7 @@
                 strongSelf.phoneLab.hidden = NO;
                 strongSelf.wifiNameLab.hidden = YES;
                 self.netBtn.enabled = YES;
-                self.netBtn.titleLabel.textColor = [UIColor blackColor];
+                [self.netBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             }
                 break;
                 
@@ -115,7 +115,7 @@
                 strongSelf.wifiNameLab.hidden = NO;
                 strongSelf.wifiNameLab.text = [self SSID];
                 self.netBtn.enabled = YES;
-                self.netBtn.titleLabel.textColor = [UIColor blackColor];
+                [self.netBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             }
                 break;
             default:

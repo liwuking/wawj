@@ -44,12 +44,7 @@
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"WAAppCollectionViewCell"];
     UINib *cellAddNib=[UINib nibWithNibName:@"WAAppAddCollectionViewCell" bundle:nil];
     [_collectionView registerNib:cellAddNib forCellWithReuseIdentifier:@"WAAppAddCollectionViewCell"];
-    
-    //这种是自定义cell不带xib的注册
-    //   [_collectionView registerClass:[CollectionViewCell1 class] forCellWithReuseIdentifier:@"myheheIdentifier"];
-    //这种是原生cell的注册
-    //    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-    
+
 }
 
 -(void)backAction {
@@ -77,9 +72,8 @@
             [self.dataArr addObject:item];
         }
     }
+    
     [self initView];
-    
-    
     
 }
 
@@ -90,22 +84,37 @@
 
 //每一组有多少个cell
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.dataArr.count+1;
+    return self.dataArr.count+3;
 }
 
 //每一个cell是什么
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == self.dataArr.count) {
+    NSInteger addIndex = self.dataArr.count ? self.dataArr.count+2 : 2;
+    if (indexPath.row == addIndex) {
         WAAppAddCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppAddCollectionViewCell" forIndexPath:indexPath];
         return cell;
     } else {
         
-        AppItem *appItem = self.dataArr[indexPath.row];
+        if (0 == indexPath.row) {
+            WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
+            cell.titleLab.text = @"手机系统";
+            cell.headImageView.image = [UIImage imageNamed:@"图层22"];
+            return cell;
+        } else if (1 == indexPath.row) {
+            WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
+            cell.titleLab.text = @"设置";
+            cell.headImageView.image = [UIImage imageNamed:@"图层22"];
+            return cell;
+        }else {
+            
+            AppItem *appItem = self.dataArr[indexPath.row-2];
+            WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
+            cell.appItem = appItem;
+            return cell;
+        }
         
-        WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
-        cell.appItem = appItem;
-        return cell;
+       
     }
     
 }
@@ -139,14 +148,37 @@
     //cell被电击后移动的动画
     [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionTop];
     
-    if (self.dataArr.count == indexPath.row) {
+    NSInteger addIndex = self.dataArr.count ? self.dataArr.count+2 : 2;
+    if (indexPath.row == addIndex) {
         
         [self clickCommonAppBtn:nil];
         
     } else {
 
-        AppItem *item = self.dataArr[indexPath.row];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/wei/id414478124"]];
+        
+        if (0 == indexPath.row) {
+            
+            NSURL * url = [NSURL URLWithString:@"App-Prefs:root=General&path=About"];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+      
+        } else if (1 == indexPath.row) {
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            [[UIApplication sharedApplication] openURL:url];
+                
+            }
+
+        }else {
+            AppItem *item = self.dataArr[indexPath.row];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item.appDownloadUrl]];
+        }
         
     }
     

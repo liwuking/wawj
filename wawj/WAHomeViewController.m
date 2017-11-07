@@ -17,7 +17,7 @@
 #import "contactView.h"
 #import "HomeCell.h"
 #import "HomeCellTwo.h"
-
+#import "WAApplyRemindViewController.h"
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
@@ -100,6 +100,10 @@
     
     [self initViews];
 
+}
+- (IBAction)cllickContactRemindBtn:(UIButton *)sender {
+    WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

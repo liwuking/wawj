@@ -12,6 +12,8 @@
 #import "ImagePicker.h"
 #import "WAHomeViewController.h"
 #import "CloseFamilyItem.h"
+#import <Contacts/Contacts.h>
+
 @interface WAContactViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *picImage;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
@@ -63,7 +65,48 @@
     
     [self initViews];
     
+    [self requestAuthorizationAddressBook];
 }
+
+
+- (BOOL)requestAuthorizationAddressBook {
+    // 判断是否授权
+    CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    if (authorizationStatus == CNAuthorizationStatusNotDetermined) {
+        // 请求授权
+        CNContactStore * store = [[CNContactStore alloc] init];
+        [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            if (granted) { // 授权成功
+                NSLog(@"授权成功！");
+                
+            } else {  // 授权失败
+                NSLog(@"授权失败！");
+                
+            }
+            
+        }];
+        return NO;
+    } else if(authorizationStatus == CNAuthorizationStatusDenied || authorizationStatus == CNAuthorizationStatusRestricted){
+        //设置-隐私-通讯录
+        
+        [self showAlertViewWithTitle:@"未开启通讯录权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        return NO;
+        
+    }
+    
+    return YES;
+}
+
 - (IBAction)clickHead:(UITapGestureRecognizer *)sender {
     
     [self.view endEditing:YES];
@@ -81,6 +124,9 @@
 
 
 - (IBAction)clickPhone:(UIButton *)sender {
+    if (![self requestAuthorizationAddressBook]) {
+        return;
+    }
     
     __weak WAContactViewController *weakObject = self;
     [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone,NSData *imageData) {

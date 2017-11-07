@@ -42,7 +42,7 @@ double const ScalePhotoWidth = 1000;
 
 @property (nonatomic, copy) NSMutableArray<ZLPhotoModel *> *arrSelectedModels;
 
-@property (nonatomic, assign) BOOL isSelectOriginalPhoto;
+//@property (nonatomic, assign) BOOL isSelectOriginalPhoto;
 @property (nonatomic, assign) UIStatusBarStyle previousStatusBarStyle;
 @property (nonatomic, assign) BOOL senderTabBarIsShow;
 @property (nonatomic, strong) UILabel *placeholderLabel;
@@ -256,7 +256,7 @@ double const ScalePhotoWidth = 1000;
         strongify(weakSelf);
         __strong typeof(weakNav) strongNav = weakNav;
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(photos, assets, NO);
+            strongSelf.selectImageBlock(photos, assets, YES);
         }
         [strongNav dismissViewControllerAnimated:YES completion:nil];
     }];
@@ -640,7 +640,7 @@ double const ScalePhotoWidth = 1000;
     [nav setCallSelectClipImageBlock:^(UIImage *image, PHAsset *asset){
         strongify(weakSelf);
         if (strongSelf.selectImageBlock) {
-            strongSelf.selectImageBlock(@[image], @[asset], NO);
+            strongSelf.selectImageBlock(@[image], @[asset], YES);
         }
         [strongSelf hide];
         [weakNav dismissViewControllerAnimated:YES completion:nil];

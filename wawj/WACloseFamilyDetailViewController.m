@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sendMesBtn;
+@property (weak, nonatomic) IBOutlet UIButton *wenhaoBtn;
 
 @property (nonatomic, strong) NSString* locationString;
 @property (nonatomic, assign) BOOL isSendMessage;
@@ -48,8 +49,48 @@
         [self.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
     }
     
+    
+    
 }
 
+-(BOOL)checkLocationPermission {
+    
+    if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
+    {
+        [self showAlertViewWithTitle:@"请先开启手机的定位功能" message:@"设置--隐私--定位" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:@"App-Prefs:root=LOCATION_SERVICES"];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        
+        return NO;
+    }
+    
+    CLAuthorizationStatus locationStatus = [CLLocationManager authorizationStatus];
+    if (locationStatus == kCLAuthorizationStatusRestricted || locationStatus == kCLAuthorizationStatusDenied) {
+        //无权限
+        [self showAlertViewWithTitle:@"未开启定位权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        return NO;
+    } else if(locationStatus == kCLAuthorizationStatusNotDetermined){
+        [self.locationManager requestWhenInUseAuthorization];
+        return NO;
+    }
+    return YES;
+}
 
 - (void)startLocation
 {
@@ -57,16 +98,16 @@
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
-     * 获取授权认证，两个方法：
-     * [self.locationManager requestWhenInUseAuthorization];
-     * [self.locationManager requestAlwaysAuthorization];
-     */
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        NSLog(@"requestWhenInUseAuthorization");
-        [self.locationManager requestWhenInUseAuthorization];
-//        [self.locationManager requestAlwaysAuthorization];
-    }
+//    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
+//     * 获取授权认证，两个方法：
+//     * [self.locationManager requestWhenInUseAuthorization];
+//     * [self.locationManager requestAlwaysAuthorization];
+//     */
+//    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+//        NSLog(@"requestWhenInUseAuthorization");
+//        [self.locationManager requestWhenInUseAuthorization];
+////        [self.locationManager requestAlwaysAuthorization];
+//    }
     
     
     //开始定位，不断调用其代理方法
@@ -149,20 +190,10 @@
 
     [self getFamilyDetail];
 
-    if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
-    {
-        [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-    } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {//位置服务是在设置中禁用
-        [self showAlertViewWithTitle:@"提示" message:@"请先打开此应用的定位功能" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-    } else {
+    
+    [self startLocation];
         
-        [self startLocation];
-        
-    }
+    
     
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
@@ -202,25 +233,18 @@
         return;
     }
     
+    
+    
     if (self.locationString) {
         [self sendMessageBut:self.locationString];
     }else {
         
-        if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
-        {
-            [self showAlertViewWithTitle:@"提示" message:@"请先开启定位功能" buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-        } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {//位置服务是在设置中禁用
-            [self showAlertViewWithTitle:@"提示" message:@"请先打开此应用的定位功能" buttonTitle:@"确定" clickBtn:^{
-                
-            }];
+        if (![self checkLocationPermission]) {
+            return;
         } else {
-            
             self.isSendMessage = YES;
             [MBProgressHUD showMessage:@"正在定位"];
             [self startLocation];
-            
         }
         
     }
@@ -311,14 +335,21 @@
                 
                 if ([body[@"qinmiUser"] isEqualToString:@""]) {
                     strongSelf.sendMesBtn.hidden = NO;
+                    strongSelf.wenhaoBtn.hidden = NO;
                 } else {
-                    NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",body[@"headUrl"],RATIO_IMAGE_100];
+                    NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",body[@"headUrl"],RATIO_IMAGE_50];
+                    
+//                    NSString *thumbUrl = [stringUtil calculateImageRatioWithShowSize:CGSizeMake(SCREEN_WIDTH, strongSelf.headImageView.frame.size.height) actualSize:CGSizeMake([item.photoWidth floatValue], [item.photoHeight floatValue]) andPhotoUrl:body[@"headUrl"]];
+//                    NSLog(@"thumbUrl: %@", thumbUrl);
+                    
+                    
                     [strongSelf.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"loadImaging"]];
                 }
                 
                 strongSelf.title = body[@"qinmiName"];
 
             }
+            [strongSelf startLocation];
             
         } else {
             

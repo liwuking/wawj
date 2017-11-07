@@ -29,7 +29,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
     // 创建配置
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     // 创建UserContentController（提供JavaScript向webView发送消息的方法）

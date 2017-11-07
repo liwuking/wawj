@@ -54,6 +54,11 @@
         thumImageData = contact.thumbnailImageData;
     }
     
+//    if ([contact isKeyAvailable:CNContactThumbnailImageDataKey])
+//    {
+//        thumImageData = contact.thumbnailImageData;
+//    }
+    
     if (self.handler)
     {
         self.handler(name, phoneNumber,thumImageData);

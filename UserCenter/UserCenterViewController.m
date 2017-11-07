@@ -192,6 +192,45 @@
         default:
             break;
     }
+    
+    
+    
+    [self checkPhotoLibraryPermission];
+    
+}
+
+-(BOOL)checkPhotoLibraryPermission {
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if(status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted ){
+        //无权限
+        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        
+        return NO;
+        
+    } else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            
+            if (status == PHAuthorizationStatusAuthorized) {
+                
+                // TODO:...
+            }
+        }];
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 - (IBAction)selectDate:(UIButton *)sender {
@@ -258,8 +297,11 @@
 
 - (IBAction)selectPic:(UITapGestureRecognizer *)sender {
     
-    __weak typeof(self) weakSelf = self;
+    if (![self checkPhotoLibraryPermission]) {
+        return;
+    }
     
+    __weak typeof(self) weakSelf = self;
     [ImagePicker showImagePickerFromViewController:self allowsEditing:YES finishAction:^(UIImage *image) {
         
         __strong typeof(weakSelf) strongSelf = weakSelf;

@@ -159,6 +159,9 @@
     [_btnOriginalPhoto setImage:normalImg forState:UIControlStateNormal];
     [_btnOriginalPhoto setImage:selImg forState:UIControlStateSelected];
     [_btnOriginalPhoto setImageEdgeInsets:UIEdgeInsetsMake(0, -5, 0, 5)];
+    
+    
+    [self btnOriginalImage_Click:nil];
     [_btnOriginalPhoto addTarget:self action:@selector(btnOriginalImage_Click:) forControlEvents:UIControlEventTouchUpInside];
     _btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
     [self getPhotosBytes];
@@ -206,17 +209,25 @@
 {
     ZLImageNavigationController *nav = (ZLImageNavigationController *)self.navigationController;
     nav.isSelectOriginalPhoto = YES;//btn.selected = !btn.selected;
-    if (btn.selected) {
-        [self getPhotosBytes];
-        if (!_navRightBtn.isSelected) {
-            if (nav.showSelectBtn &&
-                nav.arrSelectedModels.count < nav.maxSelectCount) {
-                [self navRightBtn_Click:_navRightBtn];
-            }
+    [self getPhotosBytes];
+    if (!_navRightBtn.isSelected) {
+        if (nav.showSelectBtn &&
+            nav.arrSelectedModels.count < nav.maxSelectCount) {
+            [self navRightBtn_Click:_navRightBtn];
         }
-    } else {
-        self.labPhotosBytes.text = nil;
     }
+    
+//    if (btn.selected) {
+//        [self getPhotosBytes];
+//        if (!_navRightBtn.isSelected) {
+//            if (nav.showSelectBtn &&
+//                nav.arrSelectedModels.count < nav.maxSelectCount) {
+//                [self navRightBtn_Click:_navRightBtn];
+//            }
+//        }
+//    } else {
+//        self.labPhotosBytes.text = nil;
+//    }
 }
 
 - (void)btnEdit_Click:(UIButton *)btn

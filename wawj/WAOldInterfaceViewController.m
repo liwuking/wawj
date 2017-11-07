@@ -17,7 +17,7 @@
 #import <MessageUI/MessageUI.h>
 #import "WABindIphoneViewController.h"
 #import "WANewInterfaceViewController.h"
-
+#import <Photos/Photos.h>
 #import <JPUSHService.h>
 #import <sys/utsname.h>
 #define ChineseMonths @[@"正月", @"二月", @"三月", @"四月", @"五月", @"六月", @"七月", @"八月",@"九月", @"十月", @"冬月", @"腊月"]
@@ -81,7 +81,40 @@
     
 }
 
-
+-(BOOL)checkPhotoLibraryPermission {
+//    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if(status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied ){
+        //无权限
+        [self showAlertViewWithTitle:@"\n未开启 \"相机\"权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        
+        return NO;
+        
+    } else if (status == AVAuthorizationStatusNotDetermined) {
+        
+//        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+//
+//            if (status == PHAuthorizationStatusAuthorized) {
+//
+//                // TODO:...
+//            }
+//        }];
+        
+        return NO;
+    }
+    
+    return YES;
+}
 
 -(void)initViews {
     
@@ -389,6 +422,9 @@
 - (void)handlePhoto {
     
     
+    if (![self checkPhotoLibraryPermission]) {
+        return;
+    }
     
     // UIImagePickerControllerCameraDeviceRear 后置摄像头
     // UIImagePickerControllerCameraDeviceFront 前置摄像头

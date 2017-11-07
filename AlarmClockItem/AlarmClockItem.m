@@ -55,7 +55,6 @@
 //        notificationContent.title = @"提醒";
 //        notificationContent.subtitle = @"我爱我家";
 //        notificationContent.body = content;
-//        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.m4r"];
 //        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
 //
 //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -89,6 +88,7 @@
 //    }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = [NSLocale systemLocale];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *todayStr = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -100,11 +100,13 @@
         } else {
             hourStr = [NSString stringWithFormat:@"%ld",i];
         }
-        NSDate *remindDate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@ %@:00:00",todayStr,hourStr]];
+        NSString *dateStr = [NSString stringWithFormat:@"%@ %@:00:00",todayStr,hourStr];
+        NSDate *remindDate = [dateFormatter dateFromString:dateStr];
 
          NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
         NSString *content = @"整点报时";
-        [self scheduleWholeNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockSoundName:hourStr fireDate:remindDate];
+        NSString *soundName = [NSString stringWithFormat:@"%@.m4r",hourStr];
+        [self scheduleWholeNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockSoundName:soundName fireDate:remindDate];
         
     }
     
@@ -193,8 +195,6 @@
     NSLog(@"本地推送时间: %@  soundName: %@", remindDate,soundName);
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
-    //    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-    //NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
     notification.soundName = soundName;
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
@@ -233,9 +233,7 @@
     NSLog(@"本地推送时间: %@  类型: %@", remindDate,alarType);
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
-//    notification.soundName = @"ThunderSong.m4r";//UILocalNotificationDefaultSoundName;
-    //NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
-    notification.soundName = @"ThunderSong.m4r";
+    notification.soundName = @"2947.wav";
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我爱我家";
@@ -252,13 +250,7 @@
     
 }
 
-+ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
-                        AlarmClockDateTime:(NSString *)dateTime
-                            AlarmClockType:(NSString *)alarType
-                      AlarmClockIdentifier:(NSString *)clockIdentifier
-                   AlarmClockAudioFilePath:(NSString *)audioFilePath {
-    
-}
+
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
                             AlarmClockDateTime:(NSString *)dateTime
@@ -346,11 +338,7 @@
         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
         notificationContent.title = @"我的提醒";
         notificationContent.subtitle = content;//@"我爱我家";
-        //notificationContent.body = content;
-//        NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"ThunderSong" ofType:@"caf"];
-//        notificationContent.sound = [UNNotificationSound soundNamed:soundPath];
-
-        notificationContent.sound = [UNNotificationSound soundNamed:@"ThunderSong.m4r"];
+        notificationContent.sound = [UNNotificationSound soundNamed:@"2947.wav"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             
@@ -368,6 +356,7 @@
                 [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
                     
                 }];
+                
             }
             
         } else  if ([alarType isEqualToString:REMINDTYPE_WORKDAY]) {
@@ -417,7 +406,7 @@
             components.hour = hour;
             components.minute = minute;
      
-            NSLog(@"%@ 提醒时间：%@", alarType,components);
+//            NSLog(@"%@ 提醒时间：%@", alarType,components);
             UNCalendarNotificationTrigger *trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:NO];
             
             NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,components.weekday];
@@ -430,6 +419,7 @@
                 }
             }];
             
+            NSLog(@"iOS 10创建本地提醒: %@ %@ %@",trigger.nextTriggerDate,requestIdentifier,notificationContent);
         }
     }
     

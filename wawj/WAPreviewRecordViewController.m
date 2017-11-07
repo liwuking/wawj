@@ -19,12 +19,17 @@
 @property (weak, nonatomic) IBOutlet UIButton *startStopBtn;
 @property (weak, nonatomic) IBOutlet CircularView *cicularView;
 @property (weak, nonatomic) IBOutlet UILabel *recordDateLab;
+@property (weak, nonatomic) IBOutlet UILabel *dayLab;
 
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
 
 @end
 
 @implementation WAPreviewRecordViewController
+- (IBAction)clickBackBtn:(id)sender {
+    [self backAction];
+}
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -46,6 +51,7 @@
     }];
     
     self.recordDateLab.text = self.recordedDate;
+    self.dayLab.text = self.recordedDay;
     self.cicularView.delegate = self;
     
     self.startStopBtn.selected = YES;
@@ -71,9 +77,16 @@
     if (sender.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
         [self.audioPlayer play];
+        
+        self.backBtn.enabled = NO;
+        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+        
     } else {
         [self.cicularView endCircle];
         [self.audioPlayer stop];
+        
+        self.backBtn.enabled = YES;
+        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
     }
 }
 
@@ -205,6 +218,9 @@
 -(void)circularViewEndDraw {
     
     self.startStopBtn.selected = NO;
+    
+    self.backBtn.enabled = YES;
+    [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
 }
 
 - (void)didReceiveMemoryWarning {

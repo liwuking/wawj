@@ -36,6 +36,40 @@
 		770104851F38509F00F723A2 /* WACommonlyAppCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770104831F38509F00F723A2 /* WACommonlyAppCell2.xib */; };
 		771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95861F0F276300B4D016 /* WABindIphoneViewController.m */; };
 		771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95881F0F276300B4D016 /* WAGuideViewController.m */; };
+		7749E1911FB058F600239DF3 /* WAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E18F1FB058F600239DF3 /* WAHelpViewController.m */; };
+		7749E1921FB058F600239DF3 /* WAHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1901FB058F600239DF3 /* WAHelpViewController.xib */; };
+		7749E1961FB05B2300239DF3 /* HelpTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E1941FB05B2300239DF3 /* HelpTableViewCell.m */; };
+		7749E1971FB05B2300239DF3 /* HelpTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1951FB05B2300239DF3 /* HelpTableViewCell.xib */; };
+		7749E19A1FB05C7000239DF3 /* HelpItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E1991FB05C7000239DF3 /* HelpItem.m */; };
+		7749E19E1FB05F3100239DF3 /* WAHelpDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E19C1FB05F3100239DF3 /* WAHelpDetailViewController.m */; };
+		7749E19F1FB05F3100239DF3 /* WAHelpDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7749E19D1FB05F3100239DF3 /* WAHelpDetailViewController.xib */; };
+		7749E1B81FB0786200239DF3 /* 24.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A01FB0785D00239DF3 /* 24.m4r */; };
+		7749E1B91FB0786200239DF3 /* 21.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A11FB0785D00239DF3 /* 21.m4r */; };
+		7749E1BA1FB0786200239DF3 /* 02.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A21FB0785D00239DF3 /* 02.m4r */; };
+		7749E1BB1FB0786200239DF3 /* 12.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A31FB0785E00239DF3 /* 12.m4r */; };
+		7749E1BC1FB0786200239DF3 /* 10.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A41FB0785E00239DF3 /* 10.m4r */; };
+		7749E1BD1FB0786200239DF3 /* 19.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A51FB0785E00239DF3 /* 19.m4r */; };
+		7749E1BE1FB0786200239DF3 /* 16.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A61FB0785E00239DF3 /* 16.m4r */; };
+		7749E1BF1FB0786200239DF3 /* 09.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A71FB0785E00239DF3 /* 09.m4r */; };
+		7749E1C01FB0786200239DF3 /* 07.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A81FB0785F00239DF3 /* 07.m4r */; };
+		7749E1C11FB0786200239DF3 /* 15.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1A91FB0785F00239DF3 /* 15.m4r */; };
+		7749E1C21FB0786200239DF3 /* 17.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AA1FB0785F00239DF3 /* 17.m4r */; };
+		7749E1C31FB0786200239DF3 /* 20.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AB1FB0785F00239DF3 /* 20.m4r */; };
+		7749E1C41FB0786200239DF3 /* 05.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AC1FB0785F00239DF3 /* 05.m4r */; };
+		7749E1C51FB0786200239DF3 /* 04.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AD1FB0785F00239DF3 /* 04.m4r */; };
+		7749E1C61FB0786200239DF3 /* 13.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AE1FB0786000239DF3 /* 13.m4r */; };
+		7749E1C71FB0786200239DF3 /* 14.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1AF1FB0786000239DF3 /* 14.m4r */; };
+		7749E1C81FB0786200239DF3 /* 18.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B01FB0786000239DF3 /* 18.m4r */; };
+		7749E1C91FB0786200239DF3 /* 22.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B11FB0786000239DF3 /* 22.m4r */; };
+		7749E1CA1FB0786200239DF3 /* 11.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B21FB0786000239DF3 /* 11.m4r */; };
+		7749E1CB1FB0786200239DF3 /* 06.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B31FB0786100239DF3 /* 06.m4r */; };
+		7749E1CC1FB0786200239DF3 /* 08.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B41FB0786100239DF3 /* 08.m4r */; };
+		7749E1CD1FB0786200239DF3 /* 03.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B51FB0786100239DF3 /* 03.m4r */; };
+		7749E1CE1FB0786200239DF3 /* 23.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B61FB0786100239DF3 /* 23.m4r */; };
+		7749E1CF1FB0786200239DF3 /* 01.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1B71FB0786200239DF3 /* 01.m4r */; };
+		7749E1D11FB07C1A00239DF3 /* 2947.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1D01FB07C1900239DF3 /* 2947.wav */; };
+		7749E1D51FB1481500239DF3 /* WAApplyRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E1D31FB1481500239DF3 /* WAApplyRemindViewController.m */; };
+		7749E1D61FB1481500239DF3 /* WAApplyRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1D41FB1481500239DF3 /* WAApplyRemindViewController.xib */; };
 		774FB8891F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */; };
 		774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */; };
 		774FB88D1F906445003F6A05 /* RemindItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 774FB88C1F906445003F6A05 /* RemindItem.m */; };
@@ -121,8 +155,6 @@
 		778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */; };
 		778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */; };
 		778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */; };
-		778EF8061FA0622D005CDD82 /* WAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8041FA0622D005CDD82 /* WAHelpViewController.m */; };
-		778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */; };
 		778EF80B1FA063D6005CDD82 /* WAAboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8091FA063D6005CDD82 /* WAAboutMeViewController.m */; };
 		778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF80A1FA063D6005CDD82 /* WAAboutMeViewController.xib */; };
 		778EF8101FA06D71005CDD82 /* WAAboutOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF80E1FA06D71005CDD82 /* WAAboutOneCell.m */; };
@@ -198,30 +230,6 @@
 		779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */; };
 		77A005BF1FAB0C28008BF5EE /* AddContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A005BE1FAB0C28008BF5EE /* AddContactView.m */; };
 		77A005C11FAB0C3D008BF5EE /* AddContactView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C01FAB0C3D008BF5EE /* AddContactView.xib */; };
-		77A005DB1FB030DD008BF5EE /* 01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C31FB030DC008BF5EE /* 01.mp3 */; };
-		77A005DC1FB030DD008BF5EE /* 02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C41FB030DC008BF5EE /* 02.mp3 */; };
-		77A005DD1FB030DD008BF5EE /* 03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C51FB030DC008BF5EE /* 03.mp3 */; };
-		77A005DE1FB030DD008BF5EE /* 04.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C61FB030DC008BF5EE /* 04.mp3 */; };
-		77A005DF1FB030DD008BF5EE /* 05.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C71FB030DC008BF5EE /* 05.mp3 */; };
-		77A005E01FB030DD008BF5EE /* 06.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C81FB030DC008BF5EE /* 06.mp3 */; };
-		77A005E11FB030DD008BF5EE /* 07.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C91FB030DC008BF5EE /* 07.mp3 */; };
-		77A005E21FB030DD008BF5EE /* 08.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CA1FB030DC008BF5EE /* 08.mp3 */; };
-		77A005E31FB030DD008BF5EE /* 09.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CB1FB030DC008BF5EE /* 09.mp3 */; };
-		77A005E41FB030DD008BF5EE /* 10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CC1FB030DC008BF5EE /* 10.mp3 */; };
-		77A005E51FB030DD008BF5EE /* 11.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CD1FB030DC008BF5EE /* 11.mp3 */; };
-		77A005E61FB030DD008BF5EE /* 12.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CE1FB030DC008BF5EE /* 12.mp3 */; };
-		77A005E71FB030DD008BF5EE /* 13.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005CF1FB030DC008BF5EE /* 13.mp3 */; };
-		77A005E81FB030DD008BF5EE /* 14.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D01FB030DC008BF5EE /* 14.mp3 */; };
-		77A005E91FB030DD008BF5EE /* 15.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D11FB030DC008BF5EE /* 15.mp3 */; };
-		77A005EA1FB030DD008BF5EE /* 16.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D21FB030DC008BF5EE /* 16.mp3 */; };
-		77A005EB1FB030DD008BF5EE /* 17.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D31FB030DC008BF5EE /* 17.mp3 */; };
-		77A005EC1FB030DD008BF5EE /* 18.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D41FB030DC008BF5EE /* 18.mp3 */; };
-		77A005ED1FB030DD008BF5EE /* 19.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D51FB030DC008BF5EE /* 19.mp3 */; };
-		77A005EE1FB030DD008BF5EE /* 20.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D61FB030DC008BF5EE /* 20.mp3 */; };
-		77A005EF1FB030DD008BF5EE /* 21.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D71FB030DC008BF5EE /* 21.mp3 */; };
-		77A005F01FB030DD008BF5EE /* 22.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D81FB030DC008BF5EE /* 22.mp3 */; };
-		77A005F11FB030DD008BF5EE /* 23.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005D91FB030DC008BF5EE /* 23.mp3 */; };
-		77A005F21FB030DD008BF5EE /* 24.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77A005DA1FB030DC008BF5EE /* 24.mp3 */; };
 		77A67CEB1F399329000DFD88 /* WAReplaceUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */; };
 		77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */; };
 		77A67CF01F3C3190000DFD88 /* WAPersonSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CEE1F3C3190000DFD88 /* WAPersonSetViewController.m */; };
@@ -439,6 +447,45 @@
 		771F95871F0F276300B4D016 /* WAGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGuideViewController.h; sourceTree = "<group>"; };
 		771F95881F0F276300B4D016 /* WAGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGuideViewController.m; sourceTree = "<group>"; };
 		772B48DA1F78E53200007701 /* WZLSerializeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZLSerializeKit.h; sourceTree = "<group>"; };
+		7749E18E1FB058F600239DF3 /* WAHelpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAHelpViewController.h; sourceTree = "<group>"; };
+		7749E18F1FB058F600239DF3 /* WAHelpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAHelpViewController.m; sourceTree = "<group>"; };
+		7749E1901FB058F600239DF3 /* WAHelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAHelpViewController.xib; sourceTree = "<group>"; };
+		7749E1931FB05B2300239DF3 /* HelpTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpTableViewCell.h; sourceTree = "<group>"; };
+		7749E1941FB05B2300239DF3 /* HelpTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelpTableViewCell.m; sourceTree = "<group>"; };
+		7749E1951FB05B2300239DF3 /* HelpTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpTableViewCell.xib; sourceTree = "<group>"; };
+		7749E1981FB05C7000239DF3 /* HelpItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpItem.h; sourceTree = "<group>"; };
+		7749E1991FB05C7000239DF3 /* HelpItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelpItem.m; sourceTree = "<group>"; };
+		7749E19B1FB05F3100239DF3 /* WAHelpDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAHelpDetailViewController.h; sourceTree = "<group>"; };
+		7749E19C1FB05F3100239DF3 /* WAHelpDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAHelpDetailViewController.m; sourceTree = "<group>"; };
+		7749E19D1FB05F3100239DF3 /* WAHelpDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAHelpDetailViewController.xib; sourceTree = "<group>"; };
+		7749E1A01FB0785D00239DF3 /* 24.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 24.m4r; sourceTree = "<group>"; };
+		7749E1A11FB0785D00239DF3 /* 21.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 21.m4r; sourceTree = "<group>"; };
+		7749E1A21FB0785D00239DF3 /* 02.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 02.m4r; sourceTree = "<group>"; };
+		7749E1A31FB0785E00239DF3 /* 12.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 12.m4r; sourceTree = "<group>"; };
+		7749E1A41FB0785E00239DF3 /* 10.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10.m4r; sourceTree = "<group>"; };
+		7749E1A51FB0785E00239DF3 /* 19.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 19.m4r; sourceTree = "<group>"; };
+		7749E1A61FB0785E00239DF3 /* 16.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 16.m4r; sourceTree = "<group>"; };
+		7749E1A71FB0785E00239DF3 /* 09.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 09.m4r; sourceTree = "<group>"; };
+		7749E1A81FB0785F00239DF3 /* 07.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 07.m4r; sourceTree = "<group>"; };
+		7749E1A91FB0785F00239DF3 /* 15.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 15.m4r; sourceTree = "<group>"; };
+		7749E1AA1FB0785F00239DF3 /* 17.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 17.m4r; sourceTree = "<group>"; };
+		7749E1AB1FB0785F00239DF3 /* 20.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20.m4r; sourceTree = "<group>"; };
+		7749E1AC1FB0785F00239DF3 /* 05.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 05.m4r; sourceTree = "<group>"; };
+		7749E1AD1FB0785F00239DF3 /* 04.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 04.m4r; sourceTree = "<group>"; };
+		7749E1AE1FB0786000239DF3 /* 13.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 13.m4r; sourceTree = "<group>"; };
+		7749E1AF1FB0786000239DF3 /* 14.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 14.m4r; sourceTree = "<group>"; };
+		7749E1B01FB0786000239DF3 /* 18.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 18.m4r; sourceTree = "<group>"; };
+		7749E1B11FB0786000239DF3 /* 22.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 22.m4r; sourceTree = "<group>"; };
+		7749E1B21FB0786000239DF3 /* 11.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 11.m4r; sourceTree = "<group>"; };
+		7749E1B31FB0786100239DF3 /* 06.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 06.m4r; sourceTree = "<group>"; };
+		7749E1B41FB0786100239DF3 /* 08.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 08.m4r; sourceTree = "<group>"; };
+		7749E1B51FB0786100239DF3 /* 03.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 03.m4r; sourceTree = "<group>"; };
+		7749E1B61FB0786100239DF3 /* 23.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 23.m4r; sourceTree = "<group>"; };
+		7749E1B71FB0786200239DF3 /* 01.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = 01.m4r; sourceTree = "<group>"; };
+		7749E1D01FB07C1900239DF3 /* 2947.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 2947.wav; sourceTree = "<group>"; };
+		7749E1D21FB1481500239DF3 /* WAApplyRemindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAApplyRemindViewController.h; sourceTree = "<group>"; };
+		7749E1D31FB1481500239DF3 /* WAApplyRemindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAApplyRemindViewController.m; sourceTree = "<group>"; };
+		7749E1D41FB1481500239DF3 /* WAApplyRemindViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAApplyRemindViewController.xib; sourceTree = "<group>"; };
 		774FB8861F8E0F2D003F6A05 /* PhotoCollectionViewCellNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCellNew.h; sourceTree = "<group>"; };
 		774FB8871F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCellNew.xib; sourceTree = "<group>"; };
 		774FB8881F8E0F2E003F6A05 /* PhotoCollectionViewCellNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCellNew.m; sourceTree = "<group>"; };
@@ -571,9 +618,6 @@
 		778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAValidIphoneViewController.h; sourceTree = "<group>"; };
 		778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAValidIphoneViewController.m; sourceTree = "<group>"; };
 		778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAValidIphoneViewController.xib; sourceTree = "<group>"; };
-		778EF8031FA0622D005CDD82 /* WAHelpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAHelpViewController.h; sourceTree = "<group>"; };
-		778EF8041FA0622D005CDD82 /* WAHelpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAHelpViewController.m; sourceTree = "<group>"; };
-		778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAHelpViewController.xib; sourceTree = "<group>"; };
 		778EF8081FA063D6005CDD82 /* WAAboutMeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAboutMeViewController.h; sourceTree = "<group>"; };
 		778EF8091FA063D6005CDD82 /* WAAboutMeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAboutMeViewController.m; sourceTree = "<group>"; };
 		778EF80A1FA063D6005CDD82 /* WAAboutMeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAboutMeViewController.xib; sourceTree = "<group>"; };
@@ -701,30 +745,6 @@
 		77A005BD1FAB0C28008BF5EE /* AddContactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddContactView.h; sourceTree = "<group>"; };
 		77A005BE1FAB0C28008BF5EE /* AddContactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddContactView.m; sourceTree = "<group>"; };
 		77A005C01FAB0C3D008BF5EE /* AddContactView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddContactView.xib; sourceTree = "<group>"; };
-		77A005C31FB030DC008BF5EE /* 01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 01.mp3; sourceTree = "<group>"; };
-		77A005C41FB030DC008BF5EE /* 02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 02.mp3; sourceTree = "<group>"; };
-		77A005C51FB030DC008BF5EE /* 03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 03.mp3; sourceTree = "<group>"; };
-		77A005C61FB030DC008BF5EE /* 04.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 04.mp3; sourceTree = "<group>"; };
-		77A005C71FB030DC008BF5EE /* 05.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 05.mp3; sourceTree = "<group>"; };
-		77A005C81FB030DC008BF5EE /* 06.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 06.mp3; sourceTree = "<group>"; };
-		77A005C91FB030DC008BF5EE /* 07.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 07.mp3; sourceTree = "<group>"; };
-		77A005CA1FB030DC008BF5EE /* 08.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 08.mp3; sourceTree = "<group>"; };
-		77A005CB1FB030DC008BF5EE /* 09.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 09.mp3; sourceTree = "<group>"; };
-		77A005CC1FB030DC008BF5EE /* 10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 10.mp3; sourceTree = "<group>"; };
-		77A005CD1FB030DC008BF5EE /* 11.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 11.mp3; sourceTree = "<group>"; };
-		77A005CE1FB030DC008BF5EE /* 12.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 12.mp3; sourceTree = "<group>"; };
-		77A005CF1FB030DC008BF5EE /* 13.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 13.mp3; sourceTree = "<group>"; };
-		77A005D01FB030DC008BF5EE /* 14.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 14.mp3; sourceTree = "<group>"; };
-		77A005D11FB030DC008BF5EE /* 15.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 15.mp3; sourceTree = "<group>"; };
-		77A005D21FB030DC008BF5EE /* 16.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 16.mp3; sourceTree = "<group>"; };
-		77A005D31FB030DC008BF5EE /* 17.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 17.mp3; sourceTree = "<group>"; };
-		77A005D41FB030DC008BF5EE /* 18.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 18.mp3; sourceTree = "<group>"; };
-		77A005D51FB030DC008BF5EE /* 19.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 19.mp3; sourceTree = "<group>"; };
-		77A005D61FB030DC008BF5EE /* 20.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 20.mp3; sourceTree = "<group>"; };
-		77A005D71FB030DC008BF5EE /* 21.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 21.mp3; sourceTree = "<group>"; };
-		77A005D81FB030DC008BF5EE /* 22.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 22.mp3; sourceTree = "<group>"; };
-		77A005D91FB030DC008BF5EE /* 23.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 23.mp3; sourceTree = "<group>"; };
-		77A005DA1FB030DC008BF5EE /* 24.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 24.mp3; sourceTree = "<group>"; };
 		77A67CE81F399329000DFD88 /* WAReplaceUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReplaceUIViewController.h; sourceTree = "<group>"; };
 		77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReplaceUIViewController.m; sourceTree = "<group>"; };
 		77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAReplaceUIViewController.xib; sourceTree = "<group>"; };
@@ -1559,9 +1579,6 @@
 				770104491F30770B00F723A2 /* WAFuctionSetViewController.h */,
 				7701044A1F30770B00F723A2 /* WAFuctionSetViewController.m */,
 				7701044B1F30770B00F723A2 /* WAFuctionSetViewController.xib */,
-				778EF8031FA0622D005CDD82 /* WAHelpViewController.h */,
-				778EF8041FA0622D005CDD82 /* WAHelpViewController.m */,
-				778EF8051FA0622D005CDD82 /* WAHelpViewController.xib */,
 				778EF80D1FA06D71005CDD82 /* WAAboutOneCell.h */,
 				778EF80E1FA06D71005CDD82 /* WAAboutOneCell.m */,
 				778EF80F1FA06D71005CDD82 /* WAAboutOneCell.xib */,
@@ -1583,6 +1600,17 @@
 				77A67F1F1F551319000DFD88 /* WAShareViewController.h */,
 				77A67F201F551319000DFD88 /* WAShareViewController.m */,
 				77A67F211F551319000DFD88 /* WAShareViewController.xib */,
+				7749E1931FB05B2300239DF3 /* HelpTableViewCell.h */,
+				7749E1941FB05B2300239DF3 /* HelpTableViewCell.m */,
+				7749E1951FB05B2300239DF3 /* HelpTableViewCell.xib */,
+				7749E1981FB05C7000239DF3 /* HelpItem.h */,
+				7749E1991FB05C7000239DF3 /* HelpItem.m */,
+				7749E18E1FB058F600239DF3 /* WAHelpViewController.h */,
+				7749E18F1FB058F600239DF3 /* WAHelpViewController.m */,
+				7749E1901FB058F600239DF3 /* WAHelpViewController.xib */,
+				7749E19B1FB05F3100239DF3 /* WAHelpDetailViewController.h */,
+				7749E19C1FB05F3100239DF3 /* WAHelpDetailViewController.m */,
+				7749E19D1FB05F3100239DF3 /* WAHelpDetailViewController.xib */,
 			);
 			name = PersonalSet;
 			sourceTree = "<group>";
@@ -1603,9 +1631,6 @@
 		779CF45F1F6F658700DBEE44 /* AccountMainPage */ = {
 			isa = PBXGroup;
 			children = (
-				770104441F2F15A200F723A2 /* WAHomeViewController.h */,
-				770104451F2F15A200F723A2 /* WAHomeViewController.m */,
-				770104461F2F15A200F723A2 /* WAHomeViewController.xib */,
 				779CF41F1F68FDD100DBEE44 /* HomeCell.h */,
 				779CF4201F68FDD100DBEE44 /* HomeCell.m */,
 				779CF4211F68FDD100DBEE44 /* HomeCell.xib */,
@@ -1614,6 +1639,12 @@
 				779CF4261F6900AF00DBEE44 /* HomeCellTwo.xib */,
 				779CF4731F70B87E00DBEE44 /* CloseFamilyItem.h */,
 				779CF4741F70B87E00DBEE44 /* CloseFamilyItem.m */,
+				770104441F2F15A200F723A2 /* WAHomeViewController.h */,
+				770104451F2F15A200F723A2 /* WAHomeViewController.m */,
+				770104461F2F15A200F723A2 /* WAHomeViewController.xib */,
+				7749E1D21FB1481500239DF3 /* WAApplyRemindViewController.h */,
+				7749E1D31FB1481500239DF3 /* WAApplyRemindViewController.m */,
+				7749E1D41FB1481500239DF3 /* WAApplyRemindViewController.xib */,
 				77CABE6B1F96EA29000097A2 /* RemindCloseFamily */,
 				779CF4601F6F966200DBEE44 /* CloseFamily */,
 				779CF47D1F71FEE400DBEE44 /* CloseFamilyPhotos */,
@@ -1682,30 +1713,31 @@
 			isa = PBXGroup;
 			children = (
 				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
-				77A005C31FB030DC008BF5EE /* 01.mp3 */,
-				77A005C41FB030DC008BF5EE /* 02.mp3 */,
-				77A005C51FB030DC008BF5EE /* 03.mp3 */,
-				77A005C61FB030DC008BF5EE /* 04.mp3 */,
-				77A005C71FB030DC008BF5EE /* 05.mp3 */,
-				77A005C81FB030DC008BF5EE /* 06.mp3 */,
-				77A005C91FB030DC008BF5EE /* 07.mp3 */,
-				77A005CA1FB030DC008BF5EE /* 08.mp3 */,
-				77A005CB1FB030DC008BF5EE /* 09.mp3 */,
-				77A005CC1FB030DC008BF5EE /* 10.mp3 */,
-				77A005CD1FB030DC008BF5EE /* 11.mp3 */,
-				77A005CE1FB030DC008BF5EE /* 12.mp3 */,
-				77A005CF1FB030DC008BF5EE /* 13.mp3 */,
-				77A005D01FB030DC008BF5EE /* 14.mp3 */,
-				77A005D11FB030DC008BF5EE /* 15.mp3 */,
-				77A005D21FB030DC008BF5EE /* 16.mp3 */,
-				77A005D31FB030DC008BF5EE /* 17.mp3 */,
-				77A005D41FB030DC008BF5EE /* 18.mp3 */,
-				77A005D51FB030DC008BF5EE /* 19.mp3 */,
-				77A005D61FB030DC008BF5EE /* 20.mp3 */,
-				77A005D71FB030DC008BF5EE /* 21.mp3 */,
-				77A005D81FB030DC008BF5EE /* 22.mp3 */,
-				77A005D91FB030DC008BF5EE /* 23.mp3 */,
-				77A005DA1FB030DC008BF5EE /* 24.mp3 */,
+				7749E1B71FB0786200239DF3 /* 01.m4r */,
+				7749E1D01FB07C1900239DF3 /* 2947.wav */,
+				7749E1A21FB0785D00239DF3 /* 02.m4r */,
+				7749E1B51FB0786100239DF3 /* 03.m4r */,
+				7749E1AD1FB0785F00239DF3 /* 04.m4r */,
+				7749E1AC1FB0785F00239DF3 /* 05.m4r */,
+				7749E1B31FB0786100239DF3 /* 06.m4r */,
+				7749E1A81FB0785F00239DF3 /* 07.m4r */,
+				7749E1B41FB0786100239DF3 /* 08.m4r */,
+				7749E1A71FB0785E00239DF3 /* 09.m4r */,
+				7749E1A41FB0785E00239DF3 /* 10.m4r */,
+				7749E1B21FB0786000239DF3 /* 11.m4r */,
+				7749E1A31FB0785E00239DF3 /* 12.m4r */,
+				7749E1AE1FB0786000239DF3 /* 13.m4r */,
+				7749E1AF1FB0786000239DF3 /* 14.m4r */,
+				7749E1A91FB0785F00239DF3 /* 15.m4r */,
+				7749E1A61FB0785E00239DF3 /* 16.m4r */,
+				7749E1AA1FB0785F00239DF3 /* 17.m4r */,
+				7749E1B01FB0786000239DF3 /* 18.m4r */,
+				7749E1A51FB0785E00239DF3 /* 19.m4r */,
+				7749E1AB1FB0785F00239DF3 /* 20.m4r */,
+				7749E1A11FB0785D00239DF3 /* 21.m4r */,
+				7749E1B11FB0786000239DF3 /* 22.m4r */,
+				7749E1B61FB0786100239DF3 /* 23.m4r */,
+				7749E1A01FB0785D00239DF3 /* 24.m4r */,
 			);
 			path = TimeAudio;
 			sourceTree = "<group>";
@@ -2398,91 +2430,97 @@
 			buildActionMask = 2147483647;
 			files = (
 				77A67D3B1F4C0614000DFD88 /* ListeningView.xib in Resources */,
+				7749E1BB1FB0786200239DF3 /* 12.m4r in Resources */,
 				770104681F32B68B00F723A2 /* WACommonCell.xib in Resources */,
 				775410F51F9DE3870005C3AE /* btn_unselected@3x.png in Resources */,
-				77A005E61FB030DD008BF5EE /* 12.mp3 in Resources */,
 				778EF8251FA3221C005CDD82 /* WAAppTableViewCell.xib in Resources */,
 				770104801F38321100F723A2 /* WACommonlyAppCell.xib in Resources */,
 				779CF4231F68FDD100DBEE44 /* HomeCell.xib in Resources */,
+				7749E19F1FB05F3100239DF3 /* WAHelpDetailViewController.xib in Resources */,
 				775410F81F9DE3870005C3AE /* navBackBtn@2x.png in Resources */,
 				77A67D1E1F4AB3A1000DFD88 /* WARemindListCell.xib in Resources */,
 				77A67CF11F3C3190000DFD88 /* WAPersonSetViewController.xib in Resources */,
-				77A005F11FB030DD008BF5EE /* 23.mp3 in Resources */,
+				7749E1CF1FB0786200239DF3 /* 01.m4r in Resources */,
 				77A67D001F3C3803000DFD88 /* WAEditRemindTwoCell.xib in Resources */,
 				775410ED1F9DE3870005C3AE /* btn_original_circle.png in Resources */,
 				776273041FA9C79D006EE231 /* EditAddTableViewCell.xib in Resources */,
 				77A67D341F4BD8CC000DFD88 /* SpeakingView.xib in Resources */,
-				77A005ED1FB030DD008BF5EE /* 19.mp3 in Resources */,
 				77931EDB1F987C0A0051D8BC /* WAPreviewRecordViewController.xib in Resources */,
 				77A67E431F4C0EE1000DFD88 /* call.bnf in Resources */,
+				7749E1971FB05B2300239DF3 /* HelpTableViewCell.xib in Resources */,
 				779CF4171F62863F00DBEE44 /* WAAddContactTableViewCell.xib in Resources */,
 				775410AA1F9DCD160005C3AE /* TimePickerView.xib in Resources */,
 				776272FA1FA9C770006EE231 /* EditNameTableViewCell.xib in Resources */,
 				775410F71F9DE3870005C3AE /* lock.png in Resources */,
+				7749E1D61FB1481500239DF3 /* WAApplyRemindViewController.xib in Resources */,
 				778EF80C1FA063D6005CDD82 /* WAAboutMeViewController.xib in Resources */,
-				77A005E81FB030DD008BF5EE /* 14.mp3 in Resources */,
 				77A67E441F4C0EE1000DFD88 /* grammar_sample.abnf in Resources */,
-				77A005E11FB030DD008BF5EE /* 07.mp3 in Resources */,
 				77A005C11FAB0C3D008BF5EE /* AddContactView.xib in Resources */,
 				77A67CFB1F3C377A000DFD88 /* WAEditRemindOneCell.xib in Resources */,
 				77CABE701F96EAF4000097A2 /* WARemindFamilyViewController.xib in Resources */,
 				775410FD1F9DE3870005C3AE /* ZLPhotoBrowserCell.xib in Resources */,
 				770104631F31AAA000F723A2 /* WACommonlyPhoneViewController.xib in Resources */,
 				7788D33E1F7F66A300F3512A /* UploadPhotoNullView.xib in Resources */,
+				7749E1CC1FB0786200239DF3 /* 08.m4r in Resources */,
+				7749E1C21FB0786200239DF3 /* 17.m4r in Resources */,
 				77A67D0C1F429500000DFD88 /* WANewInterfaceViewController.xib in Resources */,
 				7788D2F51F7CD43900F3512A /* PhotoCollectionViewCellNoMe.xib in Resources */,
 				779CF46F1F6FAC4B00DBEE44 /* WANewPhotosViewController.xib in Resources */,
+				7749E1BF1FB0786200239DF3 /* 09.m4r in Resources */,
+				7749E1921FB058F600239DF3 /* WAHelpViewController.xib in Resources */,
 				775410FB1F9DE3870005C3AE /* ZLPhotoActionSheet.xib in Resources */,
+				7749E1CD1FB0786200239DF3 /* 03.m4r in Resources */,
+				7749E1C81FB0786200239DF3 /* 18.m4r in Resources */,
 				7788D3531F8CC9A800F3512A /* EditRemindViewController.xib in Resources */,
-				77A005EA1FB030DD008BF5EE /* 16.mp3 in Resources */,
 				77A67F1E1F54069F000DFD88 /* UserCenterViewController.xib in Resources */,
 				7788D2FA1F7CD44E00F3512A /* PhotoCollectionViewCellNoMeNew.xib in Resources */,
 				779CF47A1F71108F00DBEE44 /* WACloseFamilyDetailViewController.xib in Resources */,
 				775410FC1F9DE3870005C3AE /* ZLPhotoBrowser.bundle in Resources */,
-				77A005F21FB030DD008BF5EE /* 24.mp3 in Resources */,
+				7749E1C91FB0786200239DF3 /* 22.m4r in Resources */,
+				7749E1C01FB0786200239DF3 /* 07.m4r in Resources */,
 				778EF8111FA06D71005CDD82 /* WAAboutOneCell.xib in Resources */,
 				77A67F231F551319000DFD88 /* WAShareViewController.xib in Resources */,
+				7749E1C51FB0786200239DF3 /* 04.m4r in Resources */,
 				7754111D1F9F2C060005C3AE /* LICENSE in Resources */,
+				7749E1C11FB0786200239DF3 /* 15.m4r in Resources */,
 				775410EF1F9DE3870005C3AE /* btn_original_circle@3x.png in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
 				776272EB1FA9A8FD006EE231 /* WAContactDetailViewController.xib in Resources */,
-				77A005E91FB030DD008BF5EE /* 15.mp3 in Resources */,
+				7749E1C61FB0786200239DF3 /* 13.m4r in Resources */,
 				770104481F2F15A200F723A2 /* WAHomeViewController.xib in Resources */,
 				778EF8351FA32FB1005CDD82 /* WAAppAddCollectionViewCell.xib in Resources */,
-				77A005DB1FB030DD008BF5EE /* 01.mp3 in Resources */,
 				779CF4281F6900AF00DBEE44 /* HomeCellTwo.xib in Resources */,
 				775410EB1F9DE3870005C3AE /* btn_circle@2x.png in Resources */,
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
 				776272F01FA9ABAD006EE231 /* WAContactEditViewController.xib in Resources */,
 				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
-				778EF8071FA0622D005CDD82 /* WAHelpViewController.xib in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
-				77A005E31FB030DD008BF5EE /* 09.mp3 in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
+				7749E1B81FB0786200239DF3 /* 24.m4r in Resources */,
 				775410F41F9DE3870005C3AE /* btn_unselected@2x.png in Resources */,
 				77A67D051F3C4E73000DFD88 /* WADatePicker.xib in Resources */,
-				77A005E41FB030DD008BF5EE /* 10.mp3 in Resources */,
 				77A67E451F4C0EE1000DFD88 /* userwords in Resources */,
 				775410EE1F9DE3870005C3AE /* btn_original_circle@2x.png in Resources */,
 				77A67E551F4C0EE1000DFD88 /* MJRefresh.bundle in Resources */,
-				77A005DE1FB030DD008BF5EE /* 04.mp3 in Resources */,
-				77A005E71FB030DD008BF5EE /* 13.mp3 in Resources */,
+				7749E1CA1FB0786200239DF3 /* 11.m4r in Resources */,
 				77A67E471F4C0EE1000DFD88 /* tts.strings in Resources */,
 				779CF4651F6FA81900DBEE44 /* WAMyFamilyPhotosViewController.xib in Resources */,
 				770104761F34143F00F723A2 /* WACommonAddCell.xib in Resources */,
 				775410F11F9DE3870005C3AE /* btn_selected@2x.png in Resources */,
 				77A67EA41F4C15AB000DFD88 /* ZQCycleCell.xib in Resources */,
-				77A005EB1FB030DD008BF5EE /* 17.mp3 in Resources */,
+				7749E1BD1FB0786200239DF3 /* 19.m4r in Resources */,
+				7749E1CE1FB0786200239DF3 /* 23.m4r in Resources */,
 				7701046D1F32F14E00F723A2 /* ContactTableViewCell.xib in Resources */,
 				770104591F307ACA00F723A2 /* WASetTwoCell.xib in Resources */,
-				77A005EE1FB030DD008BF5EE /* 20.mp3 in Resources */,
+				7749E1BC1FB0786200239DF3 /* 10.m4r in Resources */,
 				775410EC1F9DE3870005C3AE /* btn_circle@3x.png in Resources */,
 				775410F21F9DE3870005C3AE /* btn_selected@3x.png in Resources */,
 				775410F61F9DE3870005C3AE /* defaultphoto.png in Resources */,
 				775410F91F9DE3870005C3AE /* ZLCollectionCell.xib in Resources */,
-				77A005DD1FB030DD008BF5EE /* 03.mp3 in Resources */,
+				7749E1CB1FB0786200239DF3 /* 06.m4r in Resources */,
 				778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */,
+				7749E1C41FB0786200239DF3 /* 05.m4r in Resources */,
 				779CF4851F72468900DBEE44 /* WAPhotosUploadViewController.xib in Resources */,
 				779CF4121F626F2600DBEE44 /* WAContactViewController.xib in Resources */,
 				778EF8301FA32DDB005CDD82 /* WAAppCollectionViewCell.xib in Resources */,
@@ -2492,6 +2530,7 @@
 				779CF48A1F724D1000DBEE44 /* PhotoCell.xib in Resources */,
 				778EF81B1FA06D8F005CDD82 /* WAAboutThreeCell.xib in Resources */,
 				775410F01F9DE3870005C3AE /* btn_selected.png in Resources */,
+				7749E1B91FB0786200239DF3 /* 21.m4r in Resources */,
 				775411101F9DE3870005C3AE /* README.md in Resources */,
 				778EF8201FA32129005CDD82 /* WAAppListViewController.xib in Resources */,
 				770104541F307AB300F723A2 /* WASetOneCell.xib in Resources */,
@@ -2506,24 +2545,21 @@
 				770104851F38509F00F723A2 /* WACommonlyAppCell2.xib in Resources */,
 				77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */,
 				779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */,
-				77A005E51FB030DD008BF5EE /* 11.mp3 in Resources */,
+				7749E1BA1FB0786200239DF3 /* 02.m4r in Resources */,
+				7749E1D11FB07C1A00239DF3 /* 2947.wav in Resources */,
+				7749E1BE1FB0786200239DF3 /* 16.m4r in Resources */,
 				775410F31F9DE3870005C3AE /* btn_unselected.png in Resources */,
-				77A005DC1FB030DD008BF5EE /* 02.mp3 in Resources */,
 				779CF4081F612B8300DBEE44 /* WAAddFamilyViewController.xib in Resources */,
-				77A005E01FB030DD008BF5EE /* 06.mp3 in Resources */,
 				77931EE01F9886D90051D8BC /* DatePickerView.xib in Resources */,
 				779CF46A1F6FA93C00DBEE44 /* PhotoCollectionViewCell.xib in Resources */,
+				7749E1C31FB0786200239DF3 /* 20.m4r in Resources */,
 				779CF40D1F622F3300DBEE44 /* ContactPersonView.xib in Resources */,
 				775410FA1F9DE3870005C3AE /* ZLNoAuthorityViewController.xib in Resources */,
-				77A005EC1FB030DD008BF5EE /* 18.mp3 in Resources */,
 				7788D3441F8CA21A00F3512A /* BuildRemindView.xib in Resources */,
 				77A67D511F4C0D97000DFD88 /* Info.plist in Resources */,
-				77A005EF1FB030DD008BF5EE /* 21.mp3 in Resources */,
-				77A005E21FB030DD008BF5EE /* 08.mp3 in Resources */,
+				7749E1C71FB0786200239DF3 /* 14.m4r in Resources */,
 				775411221F9F2C060005C3AE /* README.md in Resources */,
 				774FB8891F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.xib in Resources */,
-				77A005F01FB030DD008BF5EE /* 22.mp3 in Resources */,
-				77A005DF1FB030DD008BF5EE /* 05.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2691,6 +2727,7 @@
 				779CF4511F6A27C000DBEE44 /* UPHTTPBodyPart.m in Sources */,
 				77D75DEA1F0F6CBE00E46D15 /* WANetViewController.m in Sources */,
 				77A67E331F4C0EE1000DFD88 /* ISEResultReadSentence.m in Sources */,
+				7749E19A1FB05C7000239DF3 /* HelpItem.m in Sources */,
 				77A67EA51F4C15AB000DFD88 /* ZQCycleScroView.m in Sources */,
 				779CF4111F626F2600DBEE44 /* WAContactViewController.m in Sources */,
 				775411071F9DE3870005C3AE /* ZLPhotoBrowserCell.m in Sources */,
@@ -2712,6 +2749,7 @@
 				77A67E581F4C0EE1000DFD88 /* MJRefreshFooterView.m in Sources */,
 				77A67E421F4C0EE1000DFD88 /* TTSUIController.m in Sources */,
 				77A67E401F4C0EE1000DFD88 /* TTSConfig.m in Sources */,
+				7749E1961FB05B2300239DF3 /* HelpTableViewCell.m in Sources */,
 				778EF82F1FA32DDB005CDD82 /* WAAppCollectionViewCell.m in Sources */,
 				771F95891F0F276300B4D016 /* WABindIphoneViewController.m in Sources */,
 				775411061F9DE3870005C3AE /* ZLPhotoBrowser.m in Sources */,
@@ -2725,6 +2763,7 @@
 				778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */,
 				77A67E2E1F4C0EE1000DFD88 /* ISESettingViewController.m in Sources */,
 				778EF82B1FA32394005CDD82 /* AppItem.m in Sources */,
+				7749E1D51FB1481500239DF3 /* WAApplyRemindViewController.m in Sources */,
 				77A67E151F4C0EE1000DFD88 /* NSData+Extension.m in Sources */,
 				779CF4221F68FDD100DBEE44 /* HomeCell.m in Sources */,
 				775411211F9F2C060005C3AE /* LJPickerDetailDelegate.m in Sources */,
@@ -2773,9 +2812,9 @@
 				77A67E4F1F4C0EE1000DFD88 /* SBJson4StreamParser.m in Sources */,
 				779CF4561F6A27C000DBEE44 /* UPMutUploaderManager.m in Sources */,
 				77A67E951F4C15AB000DFD88 /* CoreArchive.m in Sources */,
+				7749E1911FB058F600239DF3 /* WAHelpViewController.m in Sources */,
 				77A67E3D1F4C0EE1000DFD88 /* IATViewController.m in Sources */,
 				77A67E271F4C0EE1000DFD88 /* UIView+Shadow.m in Sources */,
-				778EF8061FA0622D005CDD82 /* WAHelpViewController.m in Sources */,
 				7754110A1F9DE3870005C3AE /* ZLProgressHUD.m in Sources */,
 				77A67D0B1F429500000DFD88 /* WANewInterfaceViewController.m in Sources */,
 				77931EDE1F9886BF0051D8BC /* DatePickerView.m in Sources */,
@@ -2866,6 +2905,7 @@
 				776272FE1FA9C782006EE231 /* EditPhoneTableViewCell.m in Sources */,
 				770104841F38509F00F723A2 /* WACommonlyAppCell2.m in Sources */,
 				77A67E171F4C0EE1000DFD88 /* NSJSONSerialization+Extension.m in Sources */,
+				7749E19E1FB05F3100239DF3 /* WAHelpDetailViewController.m in Sources */,
 				77A67E5E1F4C0EE1000DFD88 /* ITTLoadMoreTableFooterView.m in Sources */,
 				77A005BF1FAB0C28008BF5EE /* AddContactView.m in Sources */,
 				77A67E571F4C0EE1000DFD88 /* MJRefreshConst.m in Sources */,

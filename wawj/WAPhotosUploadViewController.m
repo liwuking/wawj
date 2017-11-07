@@ -337,13 +337,75 @@
 
 - (IBAction)clickUploadBtn:(UIButton *)sender {
     
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if(status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted ){
+        //无权限
+        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        
+        return;
+        
+    } else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            
+            if (status == PHAuthorizationStatusAuthorized) {
+                
+                // TODO:...
+            }
+        }];
+        
+        return;
+    }
+    
+   
+    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+    if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
+        
+        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        
+    }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
+        
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
+            if (granted) {
+                // Microphone enabled code
+            }
+            else {
+                // Microphone disabled code
+            }
+        }];
+        
+    }
+
+    
+    
     ZLPhotoActionSheet *actionSheet = [[ZLPhotoActionSheet alloc] init];
     //设置照片最大预览数
     actionSheet.maxPreviewCount = 100;
     //
     actionSheet.allowTakePhotoInLibrary = NO;
 //    //是否选择原图
-//    actionSheet.isSelectOriginalPhoto = YES;
+    actionSheet.isSelectOriginalPhoto = YES;
     //设置照片最大选择数
     actionSheet.maxSelectCount = 25 - self.dataArr.count;
     actionSheet.sender = self;

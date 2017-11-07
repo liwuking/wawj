@@ -352,8 +352,8 @@ static BOOL _sortAscending;
      这个属性只有在 synchronous 为 true 时有效。
      */
     
-    option.resizeMode = resizeMode;//控制照片尺寸
-//    option.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;//控制照片质量
+    option.resizeMode = PHImageRequestOptionsResizeModeExact;//控制照片尺寸
+    option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;//控制照片质量
     option.networkAccessAllowed = YES;
     
     /*

@@ -128,7 +128,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
     OverdueViewController *vc = [[OverdueViewController alloc] initWithNibName:@"OverdueViewController" bundle:nil];
 //    vc.delegate = self;
     __weak __typeof__(self) weakSelf = self;
-
     vc.overdueViewControllerWithAddRemind = ^(RemindItem *remindItem) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [strongSelf addRemindItem:remindItem];
@@ -201,14 +200,24 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
--(void)checkRecord
+-(BOOL)checkMicPhonePermission
 {
     AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
     if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
         
-        [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
+        //设置-隐私-麦克风
+        [self showAlertViewWithTitle:@"未开启麦克风权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
         }];
-        
+        return NO;
     }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
         
         [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
@@ -220,9 +229,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 // Microphone disabled code
             }
         }];
-        
+        return NO;
     }
     
+    return YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -261,7 +271,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.audioPlayer = [[PcmPlayer alloc] init];
     
     //检查麦克风
-    [self checkRecord];
+    [self checkMicPhonePermission];
     
     //判断是否开起推送权限
     [self isOpenNotificationJurisdiction];
@@ -270,6 +280,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
     //创建数据库表
     [MBProgressHUD showMessage:nil];
     [self createDatabaseTable];
+    
+    __weak __typeof__(self) weakSelf = self;
+    self.remindViewControllerWithRefreshRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf addRemindItem:remindItem];
+    };
 
 }
 
@@ -911,7 +927,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     if (sender.state == UIGestureRecognizerStateBegan) {
         
         if ([self isReachable]) {
-            if ([self isRecord]) {
+            if ([self checkMicPhonePermission]) {
                 
                 if (!self.speakingView) {
                     self.speakingView = [[NSBundle mainBundle] loadNibNamed:@"SpeakingView" owner:self options:nil][0];
@@ -922,12 +938,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 
                 [self beginDistinguish];
                 
-            }else{
-                
-                [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
-                }];
-                
-                return;
             }
             
         }else{

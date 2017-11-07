@@ -97,6 +97,7 @@
     [self initViews];
     [self setAudioSession];
 
+    [self checkMicPhonePermission];
 }
 
 /**
@@ -237,10 +238,19 @@
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
         [self.audioPlayer play];
         self.previewBtn.hidden = YES;
+        
+        self.remindBtn.enabled = NO;
+        [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+        
     } else {
         [self.cicularView endCircle];
         [self.audioPlayer stop];
         self.previewBtn.hidden = NO;
+        
+        if (self.recordedTime >= 5) {
+            self.remindBtn.enabled = YES;
+            [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+        }
     }
 }
 
@@ -250,12 +260,52 @@
     vc.headUrl = self.closeFamilyItem.headUrl;
     vc.recordedTime = self.recordedTime;
     vc.recordedDate = self.timeOneLab.text;
+    vc.recordedDay = self.timeTwoLab.text;
     vc.audioUrl = [self getSavePath];
     [self.navigationController pushViewController:vc animated:YES];
     
 }
 
+-(BOOL)checkMicPhonePermission
+{
+    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
+    if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
+        
+        //设置-隐私-麦克风
+        [self showAlertViewWithTitle:@"未开启麦克风权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                
+                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+            }
+        }];
+        return NO;
+    }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
+        
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
+            if (granted) {
+                // Microphone enabled code
+            }
+            else {
+                // Microphone disabled code
+            }
+        }];
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (IBAction)clickRecordBtn:(UIButton *)sender {
+    
+    if (![self checkMicPhonePermission]) {
+        return;
+    }
     
     if ([self.recordbtn.titleLabel.text isEqualToString:@"点击录音"]) {
         
@@ -270,6 +320,7 @@
         
         if (![self.audioRecorder isRecording]) {
             [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+            return;
         }
         
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"停止录音"]) {
@@ -286,11 +337,17 @@
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
         self.startStopBtn.selected = NO;
+        
+        if (self.recordedTime >= 5) {
+            self.remindBtn.enabled = YES;
+            [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+        }
   
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"重新录音"]) {
         
         if (![self.audioRecorder isRecording]) {
             [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+            return;
         }
         
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
@@ -310,7 +367,8 @@
 #pragma -mark CircularViewDelegate
 
 -(void)circularViewStartDraw {
-    
+    self.remindBtn.enabled = NO;
+    [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
 }
 
 -(void)circularViewWithProgress:(NSInteger)progress {
@@ -319,10 +377,7 @@
         self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  RECORD_TOTAL_TIME-progress];
         self.recordedTime = progress;
         
-        if (self.recordedTime >= 5) {
-            self.remindBtn.enabled = YES;
-            [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
-        }
+       
         
     }
 
@@ -336,10 +391,16 @@
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
-    }else {
         self.startStopBtn.selected = NO;
     }
+//    else {
+//        self.startStopBtn.selected = NO;
+//    }
     
+    if (self.recordedTime >= 5) {
+        self.remindBtn.enabled = YES;
+        [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+    }
     
 }
 
