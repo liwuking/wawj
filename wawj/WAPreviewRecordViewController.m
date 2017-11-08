@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *recordDateLab;
 @property (weak, nonatomic) IBOutlet UILabel *dayLab;
 
+@property (weak, nonatomic) IBOutlet UILabel *remindDescLab;
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
 @property (weak, nonatomic) IBOutlet UIButton *backBtn;
 
@@ -29,6 +30,17 @@
 @implementation WAPreviewRecordViewController
 - (IBAction)clickBackBtn:(id)sender {
     [self backAction];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 
 -(void)backAction {
@@ -46,13 +58,18 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
+    
+    
     [self.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",self.headUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@"头像设置"] options:SDWebImageRetryFailed completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
     }];
     
     self.recordDateLab.text = self.recordedDate;
     self.dayLab.text = self.recordedDay;
+    self.cicularView.radius = 107;
     self.cicularView.delegate = self;
+    
+    
     
     self.startStopBtn.selected = YES;
     [self.startStopBtn setImage:[UIImage imageNamed:@"audioStart"] forState:UIControlStateNormal];
@@ -67,6 +84,9 @@
     [self initViews];
     [self setAudioSession];
     
+    
+    
+     self.remindDescLab.text = [NSString stringWithFormat:@"%@的提醒", self.qinmiName];
    
     
 }

@@ -23,7 +23,6 @@
 //        }
 //    }
     
-    
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSString *userID = userInfo? userInfo[@"userId"] : @"";
     NSString *timeStamp = [NSString stringWithFormat:@"%ld",(long)([[NSDate date] timeIntervalSince1970]*1000)/1000];

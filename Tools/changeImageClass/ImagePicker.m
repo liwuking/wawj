@@ -63,8 +63,40 @@ static ImagePicker *imagePickerInstance = nil;
         AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
         if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
             
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"不能访问您的相机" message:@"请在设备的'设置-隐私-相机'中允许访问相机" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"不能访问您的相机" message:@"请在设备的'设置-隐私-相机'中允许访问相机" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+//            [alert show];
+            AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+            if(status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied ){
+                //无权限
+                [_viewController showAlertViewWithTitle:@"\n需开启 \"相机\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+                    
+                } otherButtonTitles:@"去开启" clickOtherBtn:^{
+                    NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                    if([[UIApplication sharedApplication] canOpenURL:url]) {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [[UIApplication sharedApplication] openURL:url];
+                        });
+                    }
+                }];
+                
+//                return NO;
+                
+            } else if (status == AVAuthorizationStatusNotDetermined) {
+                
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                    if(granted){//点击允许访问时调用
+                        //用户明确许可与否，媒体需要捕获，但用户尚未授予或拒绝许可。
+                        NSLog(@"Granted access to %@", AVMediaTypeVideo);
+                    }
+                    else {
+                        NSLog(@"Not granted access to %@", AVMediaTypeVideo);
+                    }
+                    
+                }];
+                
+//                return NO;
+            }
+            
             return;
         }else{
             UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -78,8 +110,21 @@ static ImagePicker *imagePickerInstance = nil;
         NSString *mediaType = AVMediaTypeVideo;
         AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
         if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"不能访问您的相册" message:@"请在设备的'设置-隐私-相册'中允许访问相机" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"不能访问您的相册" message:@"请在设备的'设置-隐私-相册'中允许访问相机" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+//            [alert show];
+            
+            //无权限
+            [_viewController showAlertViewWithTitle:@"\n需开启 \"照片\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+                
+            } otherButtonTitles:@"去开启" clickOtherBtn:^{
+                NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                if([[UIApplication sharedApplication] canOpenURL:url]) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [[UIApplication sharedApplication] openURL:url];
+                    });
+                }
+            }];
+            
             return;
 
         }else{

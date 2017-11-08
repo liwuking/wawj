@@ -200,6 +200,7 @@
     
     [self createDatabaseTable];//创建数据库表
   
+    [self checkNoticePersimission];
 }
 
 - (void)createDatabaseTable {
@@ -229,9 +230,34 @@
 }
 
 
+-(BOOL)checkNoticePersimission {
+    UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (settings.types < 6) {
+        [self showAlertViewWithTitle:@"\n需开启 \"通知\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+                
+                
+            }
+        }];
+       return NO;
+    }
+    
+    return YES;
+}
+
 - (IBAction)clickSubmitBtn:(UIButton *)sender {
     
     [self.view endEditing:YES];
+    
+    if (![self checkNoticePersimission]) {
+        return;
+    }
     
     NSString *remindContent = [self.textView.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if ([remindContent isEqualToString:@"请输入您要提醒的事情"]) {

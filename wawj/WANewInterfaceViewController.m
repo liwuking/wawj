@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLab;
 @property (weak, nonatomic) IBOutlet UILabel *dateLab;
+@property (weak, nonatomic) IBOutlet UIView *logoutRedView;
 
 @end
 
@@ -51,8 +52,14 @@
     switch (btn.tag) {
         case 0:
         {
-            WAHomeViewController *vc = [[WAHomeViewController alloc] initWithNibName:@"WAHomeViewController" bundle:nil];
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([CoreArchive dicForKey:USERINFO]) {
+                WAHomeViewController *vc = [[WAHomeViewController alloc] initWithNibName:@"WAHomeViewController" bundle:nil];
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+//                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+//                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
             break;
         case 1:

@@ -340,15 +340,14 @@
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if(status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted ){
         //无权限
-        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+        [self showAlertViewWithTitle:@"\n需开启 \"照片\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
             
         } otherButtonTitles:@"去开启" clickOtherBtn:^{
             NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
             if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                [[UIApplication sharedApplication] openURL:url];
-                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
             }
         }];
         
@@ -366,38 +365,6 @@
         
         return;
     }
-    
-   
-    AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
-    if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
-        
-        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-            
-        } otherButtonTitles:@"去开启" clickOtherBtn:^{
-            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                [[UIApplication sharedApplication] openURL:url];
-                
-            }
-        }];
-        
-    }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
-        
-        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-            // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
-            if (granted) {
-                // Microphone enabled code
-            }
-            else {
-                // Microphone disabled code
-            }
-        }];
-        
-    }
-
-    
     
     ZLPhotoActionSheet *actionSheet = [[ZLPhotoActionSheet alloc] init];
     //设置照片最大预览数

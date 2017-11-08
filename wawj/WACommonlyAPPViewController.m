@@ -99,12 +99,12 @@
         if (0 == indexPath.row) {
             WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
             cell.titleLab.text = @"手机系统";
-            cell.headImageView.image = [UIImage imageNamed:@"图层22"];
+            cell.headImageView.image = [UIImage imageNamed:@"icon_setting_system"];
             return cell;
         } else if (1 == indexPath.row) {
             WAAppCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"WAAppCollectionViewCell" forIndexPath:indexPath];
             cell.titleLab.text = @"设置";
-            cell.headImageView.image = [UIImage imageNamed:@"图层22"];
+            cell.headImageView.image = [UIImage imageNamed:@"icon_setting_app"];
             return cell;
         }else {
             
@@ -161,22 +161,22 @@
             NSURL * url = [NSURL URLWithString:@"App-Prefs:root=General&path=About"];
             if([[UIApplication sharedApplication] canOpenURL:url]) {
 
-                [[UIApplication sharedApplication] openURL:url];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
                 
             }
       
         } else if (1 == indexPath.row) {
             NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            
             if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            [[UIApplication sharedApplication] openURL:url];
-                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
             }
 
         }else {
-            AppItem *item = self.dataArr[indexPath.row];
+            AppItem *item = self.dataArr[indexPath.row-2];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item.appDownloadUrl]];
         }
         

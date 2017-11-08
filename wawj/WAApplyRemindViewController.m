@@ -30,7 +30,7 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.title = @"添加亲密人";
+    self.title = @"我的消息";
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     

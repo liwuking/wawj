@@ -53,49 +53,58 @@
     }
     
     [CoreArchive setBool:YES key:FIRST_ENTER];
-    if ([CoreArchive dicForKey:USERINFO]) {
+    if ([CoreArchive boolForKey:FIRST_ENTER]) {
+
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        self.window.rootViewController = nav;
+
+        //表明不是第一次登录了
+//        [CoreArchive setBool:NO key:FIRST_ENTER];
         
-        if ([CoreArchive boolForKey:INTERFACE_NEW]) {
-            
+    } else if ([CoreArchive boolForKey:INTERFACE_NEW]) {
+
             WANewInterfaceViewController *vc = [[WANewInterfaceViewController alloc] initWithNibName:@"WANewInterfaceViewController" bundle:nil];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             self.window.rootViewController = nav;
-            
-        } else {
-            
+
+    } else {
+
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             self.window.rootViewController = nav;
-            
-//            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            self.window.rootViewController = nav;
-//            WARemindFamilyViewController *vc  = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            self.window.rootViewController = nav;
-
-        }
-        
-        
-    } else {
-        
-        if ([CoreArchive boolForKey:FIRST_ENTER]) {
-            
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            self.window.rootViewController = nav;
-            
-        } else {
-            
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            self.window.rootViewController = nav;
-        }
         
     }
+    
+    //            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
+    //            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    //            self.window.rootViewController = nav;
+    //            WARemindFamilyViewController *vc  = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
+    //            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    //            self.window.rootViewController = nav;
+
+//
+//
+//    } else {
+    
+//        if ([CoreArchive boolForKey:FIRST_ENTER]) {
+//
+//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//            self.window.rootViewController = nav;
+//
+//        } else {
+//
+//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//            self.window.rootViewController = nav;
+//        }
+    
+//    }
     
     [self.window makeKeyAndVisible];
     
@@ -124,10 +133,19 @@
         [[NSFileManager defaultManager] createDirectoryAtPath:contactPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-//    [self downloadCaf];
+    if (![CoreArchive boolForKey:ISZHENGDIAN_BAOSHIDefaultSet]) {
+        [self openWholeRemind];
+    }
     
     return YES;
     
+}
+
+-(void)openWholeRemind {
+    [CoreArchive setBool:YES key:ISZHENGDIAN_BAOSHI];
+    [CoreArchive setBool:YES key:ISZHENGDIAN_BAOSHIDefaultSet];
+    [AlarmClockItem addWholePointTellTime];
+
 }
 
 -(void)downloadCaf {
@@ -256,10 +274,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *audioUrl = userInfo[@"nativeData"][@"remindAudio"];
     NSInteger createUser = [userInfo[@"nativeData"][@"createUser"] integerValue];
     NSString *headUrl = @"";
+     NSString *qinmiName = @"";
     NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
     for (NSDictionary *dict in arr) {
         if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",createUser]]) {
             headUrl = dict[@"headUrl"];
+            qinmiName = dict[@"qinmiName"];
             break;
         }
     }
@@ -277,6 +297,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     vc.audioUrl = audioUrl;
     vc.recordedTime = remindSeconds;
     vc.headUrl = headUrl;
+    vc.qinmiName = qinmiName;
     vc.recordedDate = recordTime;
     
     [[[self topViewController] navigationController] pushViewController:vc animated:YES];
@@ -298,13 +319,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         NSString *title = userInfo[@"aps"][@"alert"];
         __weak __typeof__(self) weakSelf = self;
-        [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-            
-        } otherButtonTitles:@"确定" clickOtherBtn:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            
-            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
-        }];
+//        [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+//
+//        } otherButtonTitles:@"确定" clickOtherBtn:^{
+//            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
+//        }];
         
 
     } else {
@@ -370,7 +391,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
     }
     
-    
     if(SYSTEM_VERSION >= 10){
         //iOS 10
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge |
@@ -387,7 +407,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 
             } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
                 __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                [[strongSelf topViewController] showAlertViewWithTitle:@"提醒" message:@"您还没打开推送通知权限" buttonTitle:@"确定" clickBtn:^{
+                [[strongSelf topViewController] showAlertViewWithTitle:@"\n需开启 \"通知\" 权限 \n\n"  message:nil buttonTitle:@"确定" clickBtn:^{
                 }];
             }
             

@@ -199,19 +199,54 @@
     
 }
 
--(BOOL)checkPhotoLibraryPermission {
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    if(status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted ){
+-(BOOL)checkCaptureDevicePermission {
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if(status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied ){
         //无权限
-        [self showAlertViewWithTitle:@"未开启相册权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+        [self showAlertViewWithTitle:@"\n需开启 \"相机\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
             
         } otherButtonTitles:@"去开启" clickOtherBtn:^{
             NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
             if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                [[UIApplication sharedApplication] openURL:url];
-                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+            }
+        }];
+        
+        return NO;
+        
+    } else if (status == AVAuthorizationStatusNotDetermined) {
+        
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if(granted){//点击允许访问时调用
+                //用户明确许可与否，媒体需要捕获，但用户尚未授予或拒绝许可。
+                NSLog(@"Granted access to %@", AVMediaTypeVideo);
+            }
+            else {
+                NSLog(@"Not granted access to %@", AVMediaTypeVideo);
+            }
+            
+        }];
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+-(BOOL)checkPhotoLibraryPermission {
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if(status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted ){
+        //无权限
+        [self showAlertViewWithTitle:@"\n需开启 \"照片\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
             }
         }];
         
@@ -297,9 +332,9 @@
 
 - (IBAction)selectPic:(UITapGestureRecognizer *)sender {
     
-    if (![self checkPhotoLibraryPermission]) {
-        return;
-    }
+//    if (![self checkPhotoLibraryPermission]) {
+//        return;
+//    }
     
     __weak typeof(self) weakSelf = self;
     [ImagePicker showImagePickerFromViewController:self allowsEditing:YES finishAction:^(UIImage *image) {
@@ -314,8 +349,7 @@
             [strongSelf uploadImage];
 
         }
-        
-        
+
     }];
 
 }
@@ -384,7 +418,7 @@
 }
 
 - (void)cancelButtonAction {
-    AppDelegate *app = [UIApplication sharedApplication].delegate;
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [[app.window viewWithTag:600] removeFromSuperview];
 }
 - (void)determineButtonAction {

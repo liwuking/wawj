@@ -330,7 +330,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     cell.remindTimeLab.text = remindItem.remindtime;
     cell.remindDateLab.text = remindItem.remindDate;
     cell.cellIndexPath = indexPath;
-    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"friends"]];
+    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"alarmClocked"]];
     
     return cell;
 }

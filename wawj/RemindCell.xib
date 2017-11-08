@@ -31,7 +31,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃饭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pi6-Zh-6Aj" userLabel="event">
-                                <rect key="frame" x="65" y="67" width="255" height="18"/>
+                                <rect key="frame" x="65" y="67" width="197" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="bIk-uK-qSN"/>
                                 </constraints>
@@ -76,12 +76,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="pi6-Zh-6Aj" secondAttribute="trailing" id="3dS-76-qa1"/>
                             <constraint firstItem="ysa-UI-ual" firstAttribute="top" secondItem="Ykg-r9-j3T" secondAttribute="top" constant="39" id="DmZ-lg-44Y"/>
                             <constraint firstItem="GNh-4z-OBx" firstAttribute="leading" secondItem="Ykg-r9-j3T" secondAttribute="leading" constant="10" id="FXp-hW-qah"/>
                             <constraint firstAttribute="trailing" secondItem="5lK-pH-TUM" secondAttribute="trailing" constant="10" id="GSi-JQ-YuD"/>
                             <constraint firstItem="GNh-4z-OBx" firstAttribute="centerY" secondItem="Ykg-r9-j3T" secondAttribute="centerY" id="JLp-3l-kqc"/>
                             <constraint firstItem="5lK-pH-TUM" firstAttribute="centerY" secondItem="Ykg-r9-j3T" secondAttribute="centerY" id="Mlz-Ax-beL"/>
+                            <constraint firstAttribute="trailing" secondItem="pi6-Zh-6Aj" secondAttribute="trailing" constant="58" id="QwX-Xt-sfe"/>
                             <constraint firstItem="5lK-pH-TUM" firstAttribute="leading" secondItem="ysa-UI-ual" secondAttribute="trailing" id="SfS-l4-mO8"/>
                             <constraint firstItem="4ha-zV-VSY" firstAttribute="leading" secondItem="GNh-4z-OBx" secondAttribute="trailing" constant="5" id="TQ6-x9-8rb"/>
                             <constraint firstItem="ysa-UI-ual" firstAttribute="leading" secondItem="4ha-zV-VSY" secondAttribute="trailing" id="dSe-Nm-upf"/>

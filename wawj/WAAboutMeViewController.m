@@ -76,18 +76,22 @@
                 
                 if ([bodyDict[@"versionForce"] isEqualToString:@"0"]) {
                     
-                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent buttonTitle:@"确定" clickBtn:^{
+                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent buttonTitle:@"立即更新" clickBtn:^{
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
                     }];
                     
                 } else {
                     [strongSelf showAlertViewWithTitle:versionDesc message:updateContent cancelButtonTitle:@"取消" clickCancelBtn:^{
-                    } otherButtonTitles:@"确定" clickOtherBtn:^{
+                    } otherButtonTitles:@"立即更新" clickOtherBtn:^{
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
                     }];
                 }
             } else {
+                
                 [CoreArchive removeStrForKey:APP_VERSION_DESC];
+                [strongSelf showAlertViewWithTitle:@"已经是最新版" message:nil buttonTitle:@"确定" clickBtn:^{
+                }];
+                
                 [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             }
             

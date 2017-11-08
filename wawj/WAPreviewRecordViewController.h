@@ -14,5 +14,8 @@
 @property (strong, nonatomic)  NSString *audioUrl;
 @property(nonatomic,assign)    NSInteger recordedTime;
 @property(nonatomic,assign)    NSString *recordedDate;
-@property(nonatomic,assign)   NSString *recordedDay;
+@property(nonatomic,assign)    NSString *recordedDay;
+
+@property(nonatomic,assign)    NSString *qinmiName;
+
 @end

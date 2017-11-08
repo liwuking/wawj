@@ -27,6 +27,7 @@
 #import <JPUSHService.h>
 #import "WAHelpViewController.h"
 #import "WAAboutMeViewController.h"
+#import "WAOldInterfaceViewController.h"
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -86,8 +87,7 @@
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
-        [CoreArchive removeStrForKey:USER_CONTACT_ARR];
-        
+        [CoreArchive removeStrForKey:USER_CONTACT_ARR];        
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];
         //删除提醒数据库
@@ -107,7 +107,7 @@
         
         
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+        WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         appDelegate.window.rootViewController = nav;
 

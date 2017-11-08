@@ -26,7 +26,7 @@
 #import "BuildRemindView.h"
 #import "OverdueViewController.h"
 #import "EditRemindViewController.h"
-
+#import "OverdueRemindCell.h"
 #import "RemindItem.h"
 #import <AVFoundation/AVFoundation.h>
 
@@ -41,7 +41,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Paused              = 4,
 };
 
-@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,EditRemindViewControllerDelegate, OverdueViewControllerDelegate>
+@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,EditRemindViewControllerDelegate, OverdueViewControllerDelegate,OverdueRemindCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *microphoneBGView;
@@ -171,6 +171,78 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self setupRefresh];
 }
 
+#pragma mark - cell delegate
+- (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([self isReachable]) {
+        
+        RemindItem *remindItem = self.dataArr[indexPath.row];
+        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
+            
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
+            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+            
+            [MBProgressHUD showMessage:nil];
+            __weak __typeof__(self) weakSelf = self;
+            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+                
+                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+                
+            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                [MBProgressHUD hideHUD];
+                
+                if (error) {
+                    [MBProgressHUD showError:@"音频播放出错"];
+                    return ;
+                }
+                
+                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+                
+                
+                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+                }
+                
+                NSError *errordd;
+                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+                
+                
+                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
+                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
+                
+                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
+                
+            }];
+            [downloadTask resume];
+            
+            
+        } else {
+            
+            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+            [self readTextWithString:readText];
+            
+        }
+        
+        
+        
+    }else{
+        
+        [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
+            
+        }];
+    }
+    
+}
+
 /**
  *  集成刷新控件
  */
@@ -200,25 +272,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
+-(BOOL)checkNoticePermission {
+    UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (settings.types >= 6) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 -(BOOL)checkMicPhonePermission
 {
+   
+    BOOL micPhonePermission = NO;
     AVAudioSessionRecordPermission permissionStatus = [[AVAudioSession sharedInstance] recordPermission];
-    if (permissionStatus == AVAudioSessionRecordPermissionDenied) {
-        
-        //设置-隐私-麦克风
-        [self showAlertViewWithTitle:@"未开启麦克风权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-            
-        } otherButtonTitles:@"去开启" clickOtherBtn:^{
-            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                [[UIApplication sharedApplication] openURL:url];
-                
-            }
-        }];
-        return NO;
-    }else if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
+    if (permissionStatus == AVAudioSessionRecordPermissionUndetermined) {
         
         [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
             // CALL YOUR METHOD HERE - as this assumes being called only once from user interacting with permission alert!
@@ -230,6 +298,65 @@ typedef NS_OPTIONS(NSInteger, Status) {
             }
         }];
         return NO;
+        
+    } else  if (permissionStatus == AVAudioSessionRecordPermissionGranted) {
+        
+        micPhonePermission = YES;
+
+    }
+    
+    
+    BOOL noticePermission = NO;
+    UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (settings.types >= 6) {
+        noticePermission = YES;
+    }
+    if (!noticePermission && !micPhonePermission) {
+        //设置-隐私-麦克风
+        [self showAlertViewWithTitle:@"\n需开启 \"麦克风\" 和 \"通知\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+                
+                
+            }
+        }];
+        return NO;
+
+    } else if(!micPhonePermission){
+        
+        //设置-隐私-麦克风
+        [self showAlertViewWithTitle:@"\n需开启 \"麦克风\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+            }
+        }];
+        return NO;
+        
+    } else if(!noticePermission){
+        
+        //设置-隐私-麦克风
+        [self showAlertViewWithTitle:@"\n需开启 \"通知\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"去开启" clickOtherBtn:^{
+            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if([[UIApplication sharedApplication] canOpenURL:url]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+            }
+        }];
+        return NO;
+        
     }
     
     return YES;
@@ -274,7 +401,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self checkMicPhonePermission];
     
     //判断是否开起推送权限
-    [self isOpenNotificationJurisdiction];
+//    [self isOpenNotificationJurisdiction];
     
     
     //创建数据库表
@@ -318,7 +445,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
     }
     
-    [self getDataFromDatabase];
+    
 
 }
 
@@ -374,8 +501,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 if(tempArr.count) {
                     [strongSelf insertRemoteRemindDate:tempArr];
                 }
-                
             }
+            
             
         } else {
             
@@ -385,6 +512,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
             
         }
         
+        [strongSelf getDataFromDatabase];
+        
     } fail:^(NSError *error) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
@@ -393,6 +522,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
         [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
             
         }];
+        
+        [strongSelf getDataFromDatabase];
         
     }];
     
@@ -504,6 +635,122 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
 }
 
+-(NSDate *)dateTimeWithCreateTimeStamp:(NSString *)timeStamp {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
+    
+    return remindDate;
+}
+
+-(NSString *)showDateTimeWithCreateTimeStamp:(NSString *)timeStamp {
+    
+    NSString *dateTime = @"";
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:8];
+    NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
+    
+    NSString *remindDateStr = [dateFormatter stringFromDate:remindDate];
+    remindDate = [dateFormatter dateFromString:remindDateStr];
+    
+    
+    NSDate *todaydayDate = [NSDate dateWithTimeIntervalSinceNow:-0*60*60];
+    NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-24*60*60];
+    NSDate *beforeYesterdayDate = [NSDate dateWithTimeIntervalSinceNow:-2*24*60*60];
+    
+    
+    NSString *todayDateStr = [dateFormatter stringFromDate:todaydayDate];
+    todaydayDate = [dateFormatter dateFromString:todayDateStr];
+    
+    NSString *yesterdayDateStr = [dateFormatter stringFromDate:yesterdayDate];
+    yesterdayDate = [dateFormatter dateFromString:yesterdayDateStr];
+    
+    NSString *beforeYesterdayDateStr = [dateFormatter stringFromDate:beforeYesterdayDate];
+    beforeYesterdayDate = [dateFormatter dateFromString:beforeYesterdayDateStr];
+    
+    
+    if ([remindDate compare:beforeYesterdayDate] == NSOrderedSame) {
+        dateTime = @"前天";
+    } else if ([remindDate compare:yesterdayDate] == NSOrderedSame) {
+        dateTime = @"昨天";
+    } else if ([remindDate compare:todaydayDate] == NSOrderedSame) {
+        dateTime = @"今天";
+    }else {
+        dateTime = [dateFormatter stringFromDate:remindDate];
+    }
+    
+    return dateTime;
+}
+
+
+
+#pragma -mark
+#pragma -mark 从数据库获取过期数据
+- (void)getOverdueDataFromDatabase {
+    if ([self.db open]) {
+        
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype == 'onlyonce' and createtimestamp < %ld order by createtimestamp desc",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        NSMutableArray *dataArr = [[NSMutableArray alloc] init];
+        FMResultSet * res = [self.db executeQuery:sql];
+        
+        while ([res next]) {
+            
+            RemindItem *item = [[RemindItem alloc] init];
+            item.remindorigintype = [res stringForColumn:@"remindorigintype"];
+            item.remindtype = [res stringForColumn:@"remindtype"];
+            item.remindtime = [res stringForColumn:@"remindtime"];
+            item.content = [res stringForColumn:@"content"];
+            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            if ([item.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
+                item.headurl = [res stringForColumn:@"headurl"];
+                item.audiourl = [res stringForColumn:@"audiourl"];
+            }
+            
+            item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
+            item.recentlyRemindDate = [self dateTimeWithCreateTimeStamp:item.createtimestamp];
+            NSLog(@"item.recentlyRemindDate = %@",item.recentlyRemindDate);
+            item.isOverdue = YES;
+            [dataArr addObject:item];
+        }
+        
+        
+        if (dataArr.count) {
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:dataArr];
+            [self.tableView reloadData];
+        } else {
+            [self.dataArr removeAllObjects];
+            [self.tableView reloadData];
+            
+//            [self insertOneAdditionalRemindData];
+//            if ([CoreArchive boolForKey:USERNAME]) {
+//
+//            }
+            
+        }
+        
+        
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
+        }
+        
+    }else{
+        
+        [MBProgressHUD showSuccess:@"获取提醒数据失败"];
+        
+        if (self.tableView.mj_header.isRefreshing) {
+            [self.tableView.mj_header endRefreshing];
+        }
+    }
+}
+
 #pragma -mark
 #pragma -mark 从数据库获取数据
 - (void)getDataFromDatabase {
@@ -555,8 +802,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
             [self.dataArr addObjectsFromArray:recentlyDataArr];
             [self.tableView reloadData];
         } else if(self.dataArr){
-            [self.dataArr removeAllObjects];
-            [self.tableView reloadData];
+//            [self.dataArr removeAllObjects];
+//            [self.tableView reloadData];
+            [self getOverdueDataFromDatabase];
         }
         
         
@@ -1014,22 +1262,41 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    static NSString *identifiter = @"remindCell";
-    RemindCell *cell = [tableView dequeueReusableCellWithIdentifier:identifiter];
-    if (!cell) {
-        cell = [[NSBundle mainBundle] loadNibNamed:@"RemindCell" owner:self options:nil][0];
-        cell.delegate = self;
-    }
-    
-    
     RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
-    cell.contentLab.text = remindItem.content;
-    cell.remindTimeLab.text = remindItem.remindtime;
-    cell.remindDateLab.text = remindItem.remindDate;
-    cell.cellIndexPath = indexPath;
-    [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"friends"]];
+    if (remindItem.isOverdue) {
+
+        static NSString *identifiter = @"OverdueRemindCell";
+        OverdueRemindCell *cell = [tableView dequeueReusableCellWithIdentifier:identifiter];
+        if (!cell) {
+            cell = [[NSBundle mainBundle] loadNibNamed:@"OverdueRemindCell" owner:self options:nil][0];
+            cell.delegate = self;
+        }
+
+        cell.contentLab.text = remindItem.content;
+        cell.remindTimeLab.text = remindItem.remindtime;
+        cell.remindDateLab.text = remindItem.remindDate;
+        cell.cellIndexPath = indexPath;
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"alarmClocked"]];
+
+        return cell;
+    } else {
     
-    return cell;
+        static NSString *identifiter = @"remindCell";
+        RemindCell *cell = [tableView dequeueReusableCellWithIdentifier:identifiter];
+        if (!cell) {
+            cell = [[NSBundle mainBundle] loadNibNamed:@"RemindCell" owner:self options:nil][0];
+            cell.delegate = self;
+        }
+        
+        cell.contentLab.text = remindItem.content;
+        cell.remindTimeLab.text = remindItem.remindtime;
+        cell.remindDateLab.text = remindItem.remindDate;
+        cell.cellIndexPath = indexPath;
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:remindItem.headurl] placeholderImage:[UIImage imageNamed:@"alarmClock"]];
+        
+        return cell;
+        
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

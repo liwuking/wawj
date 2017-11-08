@@ -57,6 +57,7 @@
 #define REMINDTYPE_WORKDAY       @"workday"
 #define REMINDTYPE_WEEKEND       @"weekend"
 
+#define  REMINDORIGINTYPE_LOCALADDITIONAL       @"remind_localaditional"
 #define  REMINDORIGINTYPE_LOCAL       @"remind_local"
 #define  REMINDORIGINTYPE_REMOTE       @"remind_remote"
 
@@ -73,6 +74,7 @@
 
 //#define USERIHEADIMG  @"userimg"   //yes表示已经上传
 #define ISZHENGDIAN_BAOSHI  @"zhengdianbaoshi"
+#define ISZHENGDIAN_BAOSHIDefaultSet  @"zhengdianbaoshiDefault"
 
 @interface CoreArchive : NSObject
 

@@ -57,7 +57,7 @@
     
     if (![CLLocationManager locationServicesEnabled])//确定用户的位置服务启用
     {
-        [self showAlertViewWithTitle:@"请先开启手机的定位功能" message:@"设置--隐私--定位" cancelButtonTitle:@"取消" clickCancelBtn:^{
+        [self showAlertViewWithTitle:@"\n需开启 \"手机定位\" 功能 \n\n" message:@"设置--隐私--定位" cancelButtonTitle:@"取消" clickCancelBtn:^{
             
         } otherButtonTitles:@"去开启" clickOtherBtn:^{
             NSURL * url = [NSURL URLWithString:@"App-Prefs:root=LOCATION_SERVICES"];
@@ -74,14 +74,14 @@
     CLAuthorizationStatus locationStatus = [CLLocationManager authorizationStatus];
     if (locationStatus == kCLAuthorizationStatusRestricted || locationStatus == kCLAuthorizationStatusDenied) {
         //无权限
-        [self showAlertViewWithTitle:@"未开启定位权限" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+        [self showAlertViewWithTitle:@"\n需开启 \"位置\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
             
         } otherButtonTitles:@"去开启" clickOtherBtn:^{
             NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
             if([[UIApplication sharedApplication] canOpenURL:url]) {
-                
-                [[UIApplication sharedApplication] openURL:url];
-                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
             }
         }];
         return NO;

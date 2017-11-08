@@ -10,7 +10,11 @@
 
 @interface RemindItem : NSObject
 
+@property(nonatomic, assign)BOOL isOverdue;
+
+
 @property(nonatomic, strong)NSString *remindorigintype;
+
 @property(nonatomic, strong)NSString *remindid;
 @property(nonatomic, strong)NSString *headurl;
 @property(nonatomic, strong)NSString *audiourl;

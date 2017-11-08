@@ -1168,7 +1168,6 @@
 				77A67D371F4C0614000DFD88 /* ListeningView.h */,
 				77A67D381F4C0614000DFD88 /* ListeningView.m */,
 				77A67D391F4C0614000DFD88 /* ListeningView.xib */,
-				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 				77A67D0D1F43DC59000DFD88 /* WAFeedbackViewController.h */,
 				77A67D0E1F43DC59000DFD88 /* WAFeedbackViewController.m */,
 				77A67D0F1F43DC59000DFD88 /* WAFeedbackViewController.xib */,
@@ -1345,11 +1344,13 @@
 		77832DE01F0CB3600009F004 /* wawj */ = {
 			isa = PBXGroup;
 			children = (
+				77A005C21FB030DC008BF5EE /* TimeAudio */,
 				77A67D141F452F0C000DFD88 /* wawj.entitlements */,
 				772B48DA1F78E53200007701 /* WZLSerializeKit.h */,
 				77832DE41F0CB3600009F004 /* AppDelegate.h */,
 				77832DE51F0CB3600009F004 /* AppDelegate.m */,
-				77A005C21FB030DC008BF5EE /* TimeAudio */,
+				771F95871F0F276300B4D016 /* WAGuideViewController.h */,
+				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
@@ -1618,7 +1619,6 @@
 		779CF45E1F6B7D3000DBEE44 /* LoginAndRegister */ = {
 			isa = PBXGroup;
 			children = (
-				771F95871F0F276300B4D016 /* WAGuideViewController.h */,
 				778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */,
 				778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */,
 				778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */,

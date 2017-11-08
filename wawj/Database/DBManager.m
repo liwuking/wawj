@@ -34,7 +34,12 @@ static DBManager *defaultManager = nil;
     // 追加文件系统路径
     NSString *dbPath = [documentDirectory stringByAppendingPathComponent:@"wawj.sqlite"];
     
-    [[NSFileManager defaultManager] removeItemAtPath:dbPath error:nil];
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:dbPath error:&error];
+    
+    if (error) {
+        NSLog(@"删除数据库失败: %@",[error localizedDescription]);
+    }
     
 }
 

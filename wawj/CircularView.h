@@ -19,6 +19,8 @@
 
 @interface CircularView : UIView
 
+@property(nonatomic,assign)NSInteger radius;
+
 @property(nonatomic,weak)id<CircularViewDelegate> delegate;
 -(void)startCircleWithTimeLength:(NSInteger)timeLength;
 -(void)endCircle;

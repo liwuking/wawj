@@ -31,7 +31,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃饭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Alf-yU-N8N" userLabel="event">
-                                <rect key="frame" x="65" y="67" width="255" height="18"/>
+                                <rect key="frame" x="65" y="67" width="197" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="TtE-gl-llC"/>
                                 </constraints>
@@ -81,11 +81,11 @@
                             <constraint firstItem="vId-vu-6En" firstAttribute="leading" secondItem="WCU-cJ-nar" secondAttribute="trailing" id="5U1-TW-W6D"/>
                             <constraint firstItem="vId-vu-6En" firstAttribute="centerY" secondItem="a1R-sj-Sws" secondAttribute="centerY" id="9tY-a2-NLM"/>
                             <constraint firstItem="Alf-yU-N8N" firstAttribute="top" secondItem="vId-vu-6En" secondAttribute="bottom" id="AIj-Rw-0Ix"/>
+                            <constraint firstAttribute="trailing" secondItem="Alf-yU-N8N" secondAttribute="trailing" constant="58" id="CrR-Lv-Oxk"/>
                             <constraint firstAttribute="trailing" secondItem="vId-vu-6En" secondAttribute="trailing" constant="10" id="D2R-dr-VUR"/>
                             <constraint firstItem="dhT-IB-jsg" firstAttribute="leading" secondItem="V3O-BJ-5bQ" secondAttribute="trailing" constant="5" id="Xz7-z2-XE6"/>
                             <constraint firstItem="Alf-yU-N8N" firstAttribute="leading" secondItem="V3O-BJ-5bQ" secondAttribute="trailing" constant="5" id="a9Y-DH-S2D"/>
                             <constraint firstItem="WCU-cJ-nar" firstAttribute="top" secondItem="a1R-sj-Sws" secondAttribute="top" constant="39" id="hzC-uZ-bZN"/>
-                            <constraint firstAttribute="trailing" secondItem="Alf-yU-N8N" secondAttribute="trailing" id="lSM-ZU-Eyw"/>
                             <constraint firstItem="WCU-cJ-nar" firstAttribute="leading" secondItem="dhT-IB-jsg" secondAttribute="trailing" id="oTI-Pw-yco"/>
                             <constraint firstItem="dhT-IB-jsg" firstAttribute="top" secondItem="a1R-sj-Sws" secondAttribute="top" constant="27" id="qAk-EM-JGj"/>
                         </constraints>

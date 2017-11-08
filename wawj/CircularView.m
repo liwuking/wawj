@@ -47,8 +47,8 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();//获取上下文
     
-    CGPoint center = CGPointMake(75, 75);  //设置圆心位置
-    CGFloat radius = 75;  //设置半径
+    CGPoint center = CGPointMake(_radius, _radius);  //设置圆心位置
+    CGFloat radius = _radius;  //设置半径
     CGFloat startA = - M_PI_2;  //圆起点位置
     CGFloat endA = -M_PI_2 + M_PI * 2 * _progress;  //圆终点位置
     NSLog(@"_progress: %f", _progress);
