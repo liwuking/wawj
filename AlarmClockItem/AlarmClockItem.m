@@ -250,7 +250,15 @@
     
 }
 
++ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
+                        fireDate:(NSDate *)fireDate
+                            AlarmClockType:(NSString *)alarType
+                      AlarmClockIdentifier:(NSString *)clockIdentifier
+                                  isOhters:(BOOL)isOther
+{
 
+    [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:fireDate];
+}
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
                             AlarmClockDateTime:(NSString *)dateTime

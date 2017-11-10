@@ -36,7 +36,7 @@
 -(void)initViews {
     self.scrollView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     NSArray *imageArr = @[@"guideOne",@"guideTwo",@"guideThree"];
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*imageArr.count, self.scrollView.frame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*imageArr.count, 0);
     for (NSInteger i = 0; i < 3; i++) {
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*i, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
         imgView.image = [UIImage imageNamed:imageArr[i]];

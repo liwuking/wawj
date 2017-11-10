@@ -14,6 +14,7 @@
 #define kRecordAudioFile @"myRecord.caf"
 
 @interface WAPreviewRecordViewController ()<AVAudioPlayerDelegate,CircularViewDelegate>
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *headImageGes;
 
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
 @property (weak, nonatomic) IBOutlet UIButton *startStopBtn;
@@ -89,6 +90,24 @@
      self.remindDescLab.text = [NSString stringWithFormat:@"%@的提醒", self.qinmiName];
    
     
+}
+- (IBAction)clickStart:(id)sender {
+    
+    self.startStopBtn.selected = !self.startStopBtn.selected;
+    if (self.startStopBtn.selected) {
+        [self.cicularView startCircleWithTimeLength:self.recordedTime];
+        [self.audioPlayer play];
+        
+        self.backBtn.enabled = NO;
+        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+        
+    } else {
+        [self.cicularView endCircle];
+        [self.audioPlayer stop];
+        
+        self.backBtn.enabled = YES;
+        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+    }
 }
 
 - (IBAction)clickStartBtn:(UIButton *)sender {

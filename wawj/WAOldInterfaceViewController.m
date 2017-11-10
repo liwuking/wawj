@@ -320,13 +320,16 @@
 //        }];
     } else {
         
-        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@",self.phoneText.text] cancelButtonTitle:@"取消" clickCancelBtn:^{
-            
-        } otherButtonTitles:@"拨打" clickOtherBtn:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.phoneText.text];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-
-        }];
+        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.phoneText.text];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        
+//        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@",self.phoneText.text] cancelButtonTitle:@"取消" clickCancelBtn:^{
+//
+//        } otherButtonTitles:@"拨打" clickOtherBtn:^{
+//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.phoneText.text];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//
+//        }];
         
     }
     

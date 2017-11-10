@@ -31,11 +31,15 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="lC9-bF-wbQ">
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="lC9-bF-wbQ">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="iIu-Dm-Pqw"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="WxW-6U-iSu" appends="YES" id="EGN-8j-JdL"/>
+                    </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qox-rc-1Vi">
                     <rect key="frame" x="0.0" y="160" width="375" height="50"/>
@@ -377,9 +381,14 @@
                 <action selector="clickQZone:" destination="-1" id="h4B-HH-AvG"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="bvC-74-B10">
+        <tapGestureRecognizer id="bvC-74-B10" userLabel="clickShare">
             <connections>
                 <action selector="clickShareHudView:" destination="-1" id="DGb-er-pDH"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="WxW-6U-iSu">
+            <connections>
+                <action selector="clickHeadImageView:" destination="-1" id="Xxf-H2-YrU"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -32,7 +32,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Paused              = 4,
 };
 
-@interface OverdueViewController ()<UITableViewDelegate,UITableViewDataSource,OverdueRemindCellDelegate,IFlySpeechSynthesizerDelegate,EditRemindViewControllerDelegate>
+@interface OverdueViewController ()<UITableViewDelegate,UITableViewDataSource,OverdueRemindCellDelegate,IFlySpeechSynthesizerDelegate>
 
 @property(nonatomic, strong)FMDatabase             *db;
 @property(nonatomic, strong)NSString               *databaseTableName;
@@ -335,12 +335,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return cell;
 }
 
-#pragma -mark
-#pragma -mark EditRemindViewControllerDelegate
--(void)editRemindViewControllerWithEditRemind {
-    self.isChange = YES;
-    [self getDataFromDatabase];
-}
+//#pragma -mark
+//#pragma -mark EditRemindViewControllerDelegate
+//-(void)editRemindViewControllerWithEditRemind {
+//    self.isChange = YES;
+//    [self getDataFromDatabase];
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -360,6 +360,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     vc.eventType = ExpRemind;
     vc.remindItem = remindItem;
     vc.database = self.db;
+    vc.isFromOver = YES;
     [self.navigationController pushViewController:vc animated:YES];
     
     __weak __typeof__(self) weakSelf = self;
@@ -368,12 +369,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
         [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
         [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-    };
-    
-    vc.editRemindViewControllerWithEditRemind = ^(RemindItem *remindItem) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        strongSelf.overdueViewControllerWithAddRemind(remindItem);
-        [strongSelf.navigationController popViewControllerAnimated:YES];        
     };
     
     

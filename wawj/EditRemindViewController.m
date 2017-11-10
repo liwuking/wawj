@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnTwo;
 @property (weak, nonatomic) IBOutlet UIButton *btnThree;
 @property (weak, nonatomic) IBOutlet UIButton *btnFour;
-@property(nonatomic, strong)NSString               *databaseTableName;
+@property(nonatomic, strong)NSString     *databaseTableName;
 
 @property (nonatomic, strong)NSString *alarmType;
 
@@ -270,7 +270,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
     dateFormatter.dateFormat = @"HH:mm";
-    NSString *dateStrHourMinite = self.pickerView.selectedTime;//[dateFormatter stringFromDate:self.datePicker.date];
+    NSString *dateStrHourMinite = self.pickerView.selectedTime;
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *currentDateDD = [dateFormatter stringFromDate:[NSDate date]];
@@ -286,12 +286,14 @@
         createtimestamp = [self.remindItem.createtimestamp integerValue];
     }
     
+    NSString *currentDateStr;
     if ([self.alarmType isEqualToString:REMINDTYPE_ONLYONCE]) {
+        
         
         if (self.eventType == NRemind || self.eventType == ExpRemind) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-            NSString *currentDateStr = [formatter stringFromDate:[NSDate date]];
+            currentDateStr = [formatter stringFromDate:[NSDate date]];
             currentDateStr = [NSString stringWithFormat:@"%@:00",currentDateStr];
             
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -307,7 +309,7 @@
             
         } else {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            NSString *currentDateStr;
+           
             NSString *currentDateDD;
             [formatter setDateFormat:@"yyyy-MM-dd"];
             if ([self.remindItem.remindDate isEqualToString:@"今天"]) {
@@ -336,8 +338,6 @@
     
     }
    
-   
-   
     RemindItem *remindItem = [[RemindItem alloc] init];
     NSString *sql;
     if (self.eventType == NRemind) {
@@ -358,13 +358,14 @@
         remindItem.createtimestamp = [NSString stringWithFormat:@"%ld",createtimestamp];
         
         if ([self.database executeUpdate:sql]) {
+            
             //添加一个新的闹钟
             NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
             [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
             
             NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",remindContent,dateStrHourMinite,self.alarmType);
             [MBProgressHUD showSuccess:@"创建成功"];
-            [self performSelector:@selector(backActionWithEditAddRefresh:) withObject:remindItem afterDelay:1];
+            [self performSelector:@selector(backActionWithAddRemindItem:) withObject:remindItem afterDelay:1];
             
             
         } else {
@@ -375,16 +376,47 @@
         
     } else {
  
+        if ([self.alarmType isEqualToString:REMINDTYPE_ONLYONCE]) {
+            BOOL isRepet = [self adjustRemindRepeatWithCreatetimestamp:[NSString stringWithFormat:@"%ld",createtimestamp]];
+            if (!isRepet) {
+                [self showAlertViewWithTitle:@"提示" message:@"存在重复提醒" buttonTitle:@"知道了" clickBtn:^{
+                    
+                }];
+                return;
+            }
+        } else {
+            BOOL isRepet = [self adjustRemindRepeatWithRemindType:self.alarmType andRemindTime:dateStrHourMinite];
+            if (!isRepet) {
+                [self showAlertViewWithTitle:@"提示" message:@"存在重复提醒" buttonTitle:@"知道了" clickBtn:^{
+                    
+                }];
+                return;
+            }
+        }
+        
+        
         sql =  [NSString stringWithFormat:
-                @"update %@ set remindtype='%@',remindtime='%@',content='%@',createtimestamp='%ld' where remindorigintype = '%@' and remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,REMINDORIGINTYPE_LOCAL,self.remindItem.remindtype,self.remindItem.remindtime];
+                @"update %@ set remindtype='%@', remindtime='%@', content='%@', createtimestamp='%ld' where remindorigintype = '%@' and remindtype = '%@' and remindtime = '%@'",self.databaseTableName,self.alarmType,dateStrHourMinite,remindContent,createtimestamp,self.remindItem.remindorigintype,self.remindItem.remindtype,self.remindItem.remindtime];
         
          if ([self.database executeUpdate:sql]) {
              [MBProgressHUD showSuccess:@"编辑成功"];
              
              [AlarmClockItem cancelAlarmClockWithRemindItem:remindItem];
              
+             
              NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",self.alarmType,dateStrHourMinite];
-             [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
+             if ([self.alarmType isEqualToString:REMINDTYPE_ONLYONCE]) {
+                 
+                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                 [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                 NSDate *fireDate = [formatter dateFromString:currentDateStr];
+                 [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent fireDate:fireDate AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
+                 
+             } else {
+                 [AlarmClockItem addAlarmClockWithAlarmClockContent:remindContent AlarmClockDateTime:dateStrHourMinite AlarmClockType:self.alarmType AlarmClockIdentifier:clockIdentifier isOhters:NO];
+             }
+             
+             
              
              remindItem.remindtype = self.alarmType;
              remindItem.remindtime = dateStrHourMinite;
@@ -399,71 +431,48 @@
     }
 
     
-    NSLog(@"sql = %@",sql);
+//    NSLog(@"sql = %@",sql);
  
 }
 
--(void)uploadRemindData {
-//    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-//    NSString *remindTime = [NSString stringWithFormat:@"%ld",self.recordedTime];//self.closeFamilyItem.qinmiUser
-//    NSDictionary *model = @{@"create_user":self.closeFamilyItem.qinmiUser,
-//                            @"remind_time":[NSString stringWithFormat:@"%ld",self.recordTimeStamp],
-//                            @"remind_content":audioUrl,
-//                            @"remind_content":remindTime,
-//                            @"createUser":userInfo[USERID],
-//                            };
-//    
-//    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2004" andModel:model];
-//    __weak __typeof__(self) weakSelf = self;
-//    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-//        
-//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//        
-//        [MBProgressHUD hideHUD];
-//        NSString *code = data[@"code"];
-//        NSString *desc = data[@"desc"];
-//        
-//        if ([code isEqualToString:@"1"]) {
-//            //             [MBProgressHUD showError:@"已经提醒"];
-//            //            [strongSelf addNotificationWithRemindContent:nil];
-//        } else {
-//            
-//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-//                
-//            }];
-//            
-//        }
-//        
-//    } fail:^(NSError *error) {
-//        
-//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//        [MBProgressHUD hideHUD];
-//        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-//            
-//        }];
-//        
-//    }];
-}
 
 -(void)backActionWithEditRefresh:(RemindItem *)remindItem {
     
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[RemindViewController class]]) {
-            
-            RemindViewController *vc = (RemindViewController *)temp;
-            vc.remindViewControllerWithRefreshRemind(remindItem);
-            [self.navigationController popToViewController:vc animated:YES];
-            
+    if (self.isFromOver) {
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[RemindViewController class]]) {
+                
+                RemindViewController *vc = (RemindViewController *)temp;
+                vc.remindViewControllerWithAddRemind(remindItem);
+                [self.navigationController popToViewController:vc animated:YES];
+                
+            }
         }
+    } else {
+        self.editRemindViewControllerWithEditRemind(remindItem);
+        [self.navigationController popViewControllerAnimated:YES];
     }
-//    
-//    self.editRemindViewControllerWithEditRemind(remindItem);
-//    [self.navigationController popViewControllerAnimated:YES];
+   
+   
 }
 
--(void)backActionWithEditAddRefresh:(RemindItem *)remindItem {
-    self.editRemindViewControllerWithAddRemind(remindItem);
-    [self.navigationController popViewControllerAnimated:YES];
+-(void)backActionWithAddRemindItem:(RemindItem *)remindItem {
+    
+    if (self.isFromOver) {
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[RemindViewController class]]) {
+                
+                RemindViewController *vc = (RemindViewController *)temp;
+                vc.remindViewControllerWithAddRemind(remindItem);
+                [self.navigationController popToViewController:vc animated:YES];
+                
+            }
+        }
+    } else {
+        self.editRemindViewControllerWithAddRemind(remindItem);
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 -(void)backActionWithDelRefresh:(RemindItem *)remindItem {
@@ -482,7 +491,7 @@
             
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             NSString *sql =  [NSString stringWithFormat:
-                              @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = %@",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,REMINDORIGINTYPE_LOCAL];
+                              @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,self.remindItem.remindorigintype];
             
             NSLog(@"sql = %@",sql);
             BOOL isCreate = [strongSelf.database executeUpdate:sql];
@@ -498,7 +507,7 @@
         }];
     }else {
         NSString *sql =  [NSString stringWithFormat:
-                          @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = %@",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,REMINDORIGINTYPE_LOCAL];
+                          @"delete from %@ where remindtype = '%@' and remindtime = '%@' and remindorigintype = '%@'",self.databaseTableName,self.remindItem.remindtype,self.remindItem.remindtime,self.remindItem.remindorigintype];
         
         NSLog(@"sql = %@",sql);
         BOOL isCreate = [self.database executeUpdate:sql];
@@ -513,12 +522,37 @@
         }
     }
     
-    
-    
-    
 }
 
+-(BOOL)adjustRemindRepeatWithCreatetimestamp:(NSString *)createtimestamp {
 
+    if ([self.database open]) {
+        
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype != 'onlyonce' or createtimestamp > %ld",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        FMResultSet * res = [self.database executeQuery:sql];
+        
+        NSMutableArray *dataArrOnlyOnce = [@[] mutableCopy];
+        while ([res next]) {
+            RemindItem *item = [[RemindItem alloc] init];
+            item.remindtype = [res stringForColumn:@"remindtype"];
+            item.remindtime = [res stringForColumn:@"remindtime"];
+            item.content = [res stringForColumn:@"content"];
+            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            [dataArrOnlyOnce addObject:item.createtimestamp];
+        }
+        
+        for (NSString *timestamp in dataArrOnlyOnce) {
+            if ([createtimestamp isEqualToString:timestamp]) {
+                return NO;
+            }
+        }
+        
+    }
+    return YES;
+}
 
 -(BOOL)adjustRemindRepeatWithRemindType:(NSString *)remindType andRemindTime:(NSString *)remindTime {
     

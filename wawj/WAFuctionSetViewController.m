@@ -28,6 +28,7 @@
 #import "WAHelpViewController.h"
 #import "WAAboutMeViewController.h"
 #import "WAOldInterfaceViewController.h"
+#import "WAGuideViewController.h"
 @interface WAFuctionSetViewController ()<UITableViewDelegate,UITableViewDataSource,UserCenterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -87,7 +88,9 @@
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
-        [CoreArchive removeStrForKey:USER_CONTACT_ARR];        
+        [CoreArchive removeStrForKey:USER_CONTACT_ARR];
+        [CoreArchive removeStrForKey:FIRST_ENTER];
+        
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];
         //删除提醒数据库
@@ -106,10 +109,16 @@
         [[NSFileManager defaultManager] removeItemAtPath:myContactPath error:nil];
         
         
+//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//        appDelegate.window.rootViewController = nav;
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
+        WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         appDelegate.window.rootViewController = nav;
+        //表明不是第一次登录了
+        [CoreArchive setBool:YES key:FIRST_ENTER];
 
     }];
     

@@ -22,6 +22,7 @@
 #define kRecordAudioFile @"myRecord.caf"
 
 @interface WARemindFamilyViewController ()<UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate,CircularViewDelegate,DatePickerViewDelegate>
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *headImageGes;
 
 @property (weak, nonatomic) IBOutlet UIButton *remindBtn;
 @property (weak, nonatomic) IBOutlet UILabel *recordTimeLab;
@@ -72,7 +73,7 @@
     NSString *currentDateMM = [dateFormatter stringFromDate:[NSDate date]];
     self.timeOneLab.text = currentDateMM;;
     
-    self.cicularView.radius = 75;
+    self.cicularView.radius = 90;
     self.cicularView.delegate = self;
     [self.startStopBtn setImage:[UIImage imageNamed:@"audioStart"] forState:UIControlStateNormal];
     [self.startStopBtn setImage:[UIImage imageNamed:@"audioStop"] forState:UIControlStateSelected];
@@ -164,6 +165,7 @@
  *  @return 录音机对象
  */
 -(AVAudioRecorder *)audioRecorder{
+
     if (!_audioRecorder) {
         //创建录音文件保存路径
         NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
@@ -173,6 +175,7 @@
         NSError *error=nil;
         _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
         _audioRecorder.delegate=self;
+        [_audioRecorder peakPowerForChannel:0];
 //        _audioRecorder.meteringEnabled=YES;//如果要监控声波则必须设置为YES
         if (error) {
             NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
@@ -188,6 +191,12 @@
  *  @return 播放器
  */
 -(AVAudioPlayer *)audioPlayer{
+//    NSError *audioError = nil;
+//    BOOL success = [AVAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&audioError];
+//    if(!success) {
+//        NSLog(@"error doing outputaudioportoverride - %@", [audioError localizedDescription]);
+//    }
+    
     if (!_audioPlayer) {
         NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
         NSError *error=nil;
@@ -229,6 +238,29 @@
 }
 - (void)audioPlayerEndInteruption:(AVAudioPlayer*)player{
     //处理中断结束的代码
+}
+
+- (IBAction)clickStart:(UITapGestureRecognizer *)sender {
+    
+    self.startStopBtn.selected = !self.startStopBtn.selected;
+    if (self.startStopBtn.selected) {
+        [self.cicularView startCircleWithTimeLength:self.recordedTime];
+        [self.audioPlayer play];
+        self.previewBtn.hidden = YES;
+        
+        self.remindBtn.enabled = NO;
+        [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+        
+    } else {
+        [self.cicularView endCircle];
+        [self.audioPlayer stop];
+        self.previewBtn.hidden = NO;
+        
+        if (self.recordedTime >= 5) {
+            self.remindBtn.enabled = YES;
+            [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+        }
+    }
 }
 
 - (IBAction)clickStartBtn:(UIButton *)sender {
@@ -317,7 +349,7 @@
         self.recordTimeLab.hidden = NO;
         self.previewBtn.hidden = YES;
         self.startStopBtn.hidden = YES;
-        
+        self.headImageGes.enabled = NO;
         self.recordedTime = 0;
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
@@ -335,10 +367,11 @@
         
         [self.recordbtn setTitle:@"重新录音" forState:UIControlStateNormal];
         
-        self.recordTimeLab.text =  [NSString stringWithFormat:@"已录音%lds",  self.recordedTime];
+        self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  self.recordedTime];
         
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
+        self.headImageGes.enabled = YES;
         self.startStopBtn.selected = NO;
         
         if (self.recordedTime >= 5) {
@@ -358,7 +391,7 @@
         self.recordTimeLab.hidden = NO;
         self.previewBtn.hidden = YES;
         self.startStopBtn.hidden = YES;
-        
+        self.headImageGes.enabled = NO;
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
         self.remindBtn.enabled = NO;
@@ -390,10 +423,10 @@
     
     if (![self.audioPlayer isPlaying]) {
         [self.recordbtn setTitle:@"重新录音" forState:UIControlStateNormal];
-        self.recordTimeLab.text =  [NSString stringWithFormat:@"已录音%lds",  self.recordedTime];
+        self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  self.recordedTime];
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;
-        self.startStopBtn.hidden = NO;
+        self.headImageGes.enabled = YES;
         self.startStopBtn.selected = NO;
     }
 //    else {

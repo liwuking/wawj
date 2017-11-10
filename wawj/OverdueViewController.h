@@ -9,17 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "RemindItem.h"
-@protocol OverdueViewControllerDelegate <NSObject>
-
-@optional
--(void)OverdueViewControllerRefresh;
-@end
-
-typedef void(^OverdueViewControllerWithAddRemind)(RemindItem *remindItem);
 
 @interface OverdueViewController : UIViewController
 
-//@property(nonatomic,weak)id<OverdueViewControllerDelegate> delegate;
-@property (nonatomic , strong)OverdueViewControllerWithAddRemind         overdueViewControllerWithAddRemind;
 
 @end

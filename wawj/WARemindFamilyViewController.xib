@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WARemindFamilyViewController">
             <connections>
                 <outlet property="cicularView" destination="zUV-CP-tqh" id="SQG-r8-Xsy"/>
+                <outlet property="headImageGes" destination="vkz-PB-vnF" id="LYN-yD-vxi"/>
                 <outlet property="headImageView" destination="yXS-Ru-XD5" id="Jq1-9J-bDh"/>
                 <outlet property="previewBtn" destination="BgV-BZ-lZ0" id="Qaf-OU-OZv"/>
                 <outlet property="recordTimeLab" destination="kht-UR-gXM" id="DiB-aQ-f6c"/>
@@ -30,58 +31,59 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LVT-oV-Wz5">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iph-il-DXZ">
-                            <rect key="frame" x="112" y="160" width="150" height="30"/>
+                            <rect key="frame" x="112" y="210" width="150" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="b6W-JO-arM"/>
                                 <constraint firstAttribute="width" constant="150" id="rYu-fc-1tA"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <state key="normal" title="点击录音">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="clickRecordBtn:" destination="-1" eventType="touchUpInside" id="vKI-dK-T9o"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zUV-CP-tqh" customClass="CircularView">
-                            <rect key="frame" x="112" y="5" width="150" height="150"/>
+                            <rect key="frame" x="97" y="5" width="180" height="180"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yXS-Ru-XD5">
-                                    <rect key="frame" x="3" y="3" width="144" height="144"/>
+                                <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yXS-Ru-XD5">
+                                    <rect key="frame" x="3" y="3" width="174" height="174"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="144" id="Acw-0C-fhJ"/>
-                                        <constraint firstAttribute="height" constant="144" id="On1-0y-Lo2"/>
+                                        <constraint firstAttribute="width" constant="174" id="Acw-0C-fhJ"/>
+                                        <constraint firstAttribute="height" constant="174" id="On1-0y-Lo2"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                            <integer key="value" value="73"/>
+                                            <integer key="value" value="88"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="150" id="C0T-nk-2OI"/>
-                                <constraint firstAttribute="width" constant="150" id="JrQ-ex-YK1"/>
+                                <constraint firstAttribute="height" constant="180" id="C0T-nk-2OI"/>
+                                <constraint firstAttribute="width" constant="180" id="JrQ-ex-YK1"/>
                                 <constraint firstItem="yXS-Ru-XD5" firstAttribute="centerY" secondItem="zUV-CP-tqh" secondAttribute="centerY" id="Ll0-hd-un2"/>
                                 <constraint firstItem="yXS-Ru-XD5" firstAttribute="centerX" secondItem="zUV-CP-tqh" secondAttribute="centerX" id="qqg-vH-vv0"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="75"/>
+                                    <integer key="value" value="90"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DT3-Ey-9fs">
-                            <rect key="frame" x="112" y="5" width="150" height="150"/>
+                            <rect key="frame" x="97" y="5" width="180" height="180"/>
                             <subviews>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Roe-vg-1aa">
-                                    <rect key="frame" x="108" y="108" width="30" height="30"/>
+                                    <rect key="frame" x="138" y="138" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="30" id="lWI-T1-Z9e"/>
                                         <constraint firstAttribute="height" constant="30" id="vAf-Mw-Exh"/>
@@ -93,29 +95,34 @@
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="Roe-vg-1aa" secondAttribute="trailing" constant="12" id="B7V-tK-jv1"/>
-                                <constraint firstAttribute="width" constant="150" id="TkJ-Ri-NDf"/>
-                                <constraint firstAttribute="bottom" secondItem="Roe-vg-1aa" secondAttribute="bottom" constant="12" id="mry-di-Igc"/>
-                                <constraint firstAttribute="height" constant="150" id="vKh-ci-YHo"/>
+                                <constraint firstAttribute="width" constant="180" id="TkJ-Ri-NDf"/>
+                                <constraint firstAttribute="trailing" secondItem="Roe-vg-1aa" secondAttribute="trailing" constant="12" id="a3E-TO-APC"/>
+                                <constraint firstAttribute="bottom" secondItem="Roe-vg-1aa" secondAttribute="bottom" constant="12" id="u1U-ue-gNb"/>
+                                <constraint firstAttribute="height" constant="180" id="vKh-ci-YHo"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="vkz-PB-vnF" appends="YES" id="ohy-OT-gC1"/>
+                            </connections>
                         </view>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30s" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kht-UR-gXM">
-                            <rect key="frame" x="10" y="5" width="82" height="20"/>
+                            <rect key="frame" x="15" y="0.0" width="60" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="20" id="Qvw-rZ-qRp"/>
-                                <constraint firstAttribute="width" constant="82" id="iJ3-Vf-PZK"/>
+                                <constraint firstAttribute="height" constant="60" id="Qvw-rZ-qRp"/>
+                                <constraint firstAttribute="width" constant="60" id="iJ3-Vf-PZK"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgV-BZ-lZ0">
-                            <rect key="frame" x="315" y="5" width="50" height="30"/>
+                            <rect key="frame" x="305" y="0.0" width="70" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="50" id="Geg-zG-bpf"/>
-                                <constraint firstAttribute="height" constant="30" id="Vj2-1U-Sap"/>
+                                <constraint firstAttribute="width" constant="70" id="Geg-zG-bpf"/>
+                                <constraint firstAttribute="height" constant="60" id="Vj2-1U-Sap"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
                             <state key="normal" title="预览"/>
                             <connections>
                                 <action selector="clickPreviewBtn:" destination="-1" eventType="touchUpInside" id="OB0-hx-050"/>
@@ -124,25 +131,25 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="BgV-BZ-lZ0" secondAttribute="trailing" constant="10" id="1HY-Xj-wUE"/>
+                        <constraint firstAttribute="trailing" secondItem="BgV-BZ-lZ0" secondAttribute="trailing" id="1HY-Xj-wUE"/>
                         <constraint firstItem="DT3-Ey-9fs" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" constant="5" id="5aL-iY-eoX"/>
                         <constraint firstItem="Iph-il-DXZ" firstAttribute="centerX" secondItem="LVT-oV-Wz5" secondAttribute="centerX" id="DYK-DI-Swz"/>
                         <constraint firstItem="zUV-CP-tqh" firstAttribute="centerX" secondItem="LVT-oV-Wz5" secondAttribute="centerX" id="FFj-em-fCx"/>
-                        <constraint firstItem="kht-UR-gXM" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" constant="5" id="JrX-gI-tcs"/>
-                        <constraint firstItem="Iph-il-DXZ" firstAttribute="top" secondItem="zUV-CP-tqh" secondAttribute="bottom" constant="5" id="MEn-ai-UmO"/>
+                        <constraint firstItem="kht-UR-gXM" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" id="JrX-gI-tcs"/>
+                        <constraint firstItem="Iph-il-DXZ" firstAttribute="top" secondItem="zUV-CP-tqh" secondAttribute="bottom" constant="25" id="MEn-ai-UmO"/>
                         <constraint firstItem="zUV-CP-tqh" firstAttribute="centerX" secondItem="LVT-oV-Wz5" secondAttribute="centerX" id="Mwm-GI-BRp"/>
-                        <constraint firstItem="kht-UR-gXM" firstAttribute="leading" secondItem="LVT-oV-Wz5" secondAttribute="leading" constant="10" id="Y5a-fl-LPp"/>
-                        <constraint firstItem="BgV-BZ-lZ0" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" constant="5" id="YUi-gA-XSu"/>
+                        <constraint firstItem="kht-UR-gXM" firstAttribute="leading" secondItem="LVT-oV-Wz5" secondAttribute="leading" constant="15" id="Y5a-fl-LPp"/>
+                        <constraint firstItem="BgV-BZ-lZ0" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" id="YUi-gA-XSu"/>
                         <constraint firstItem="DT3-Ey-9fs" firstAttribute="centerX" secondItem="LVT-oV-Wz5" secondAttribute="centerX" id="csJ-qc-C6V"/>
                         <constraint firstItem="zUV-CP-tqh" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="top" constant="5" id="sL9-cr-iAf"/>
-                        <constraint firstAttribute="height" constant="200" id="tzf-Fg-FA2"/>
+                        <constraint firstAttribute="height" constant="250" id="tzf-Fg-FA2"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-OO-bTL">
-                    <rect key="frame" x="15" y="300" width="345" height="50"/>
+                    <rect key="frame" x="15" y="390" width="345" height="60"/>
                     <color key="backgroundColor" red="0.47450980390000003" green="0.77647058820000003" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="5XW-x6-WrY"/>
+                        <constraint firstAttribute="height" constant="60" id="5XW-x6-WrY"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="提醒TA">
@@ -159,7 +166,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I93-sv-mBN">
-                    <rect key="frame" x="15" y="215" width="345" height="60"/>
+                    <rect key="frame" x="15" y="300" width="345" height="60"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:77" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTr-Yz-3sJ">
                             <rect key="frame" x="117.5" y="5" width="110" height="50"/>
@@ -206,10 +213,10 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="I93-sv-mBN" secondAttribute="trailing" constant="15" id="0eq-c2-TIn"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="gfp-OO-bTL" secondAttribute="trailing" constant="15" id="8j3-YY-9f2"/>
-                <constraint firstItem="gfp-OO-bTL" firstAttribute="top" secondItem="I93-sv-mBN" secondAttribute="bottom" constant="25" id="Cxp-gA-lQA"/>
+                <constraint firstItem="gfp-OO-bTL" firstAttribute="top" secondItem="I93-sv-mBN" secondAttribute="bottom" constant="30" id="Cxp-gA-lQA"/>
                 <constraint firstItem="LVT-oV-Wz5" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="O17-a7-anT"/>
                 <constraint firstItem="LVT-oV-Wz5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XI1-rh-HQd"/>
-                <constraint firstItem="I93-sv-mBN" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="bottom" constant="15" id="dG1-Ym-UHV"/>
+                <constraint firstItem="I93-sv-mBN" firstAttribute="top" secondItem="LVT-oV-Wz5" secondAttribute="bottom" constant="50" id="dG1-Ym-UHV"/>
                 <constraint firstItem="I93-sv-mBN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="l9R-HF-Xco"/>
                 <constraint firstItem="gfp-OO-bTL" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="15" id="oUy-ZD-avi"/>
                 <constraint firstItem="LVT-oV-Wz5" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="uAo-Fu-6wc"/>
@@ -220,6 +227,11 @@
         <tapGestureRecognizer id="wH9-bN-GZd" userLabel="tapGesTime">
             <connections>
                 <action selector="clickSelectTimeView:" destination="-1" id="OlK-WF-6uw"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer enabled="NO" id="vkz-PB-vnF">
+            <connections>
+                <action selector="clickStart:" destination="-1" id="5IN-N1-9sG"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -21,6 +21,7 @@
 #import "UpYunBlockUpLoader.h"
 #import <UMSocialCore/UMSocialCore.h>
 #import "UploadPhotoNullView.h"
+#import "WAAdvertiseViewController.h"
 @interface WAPhotosUploadViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WANewPhotosViewControllerDelegate,WAPhotosShowViewControllerDelegate,WAUploadPhotoNullViewDelegate>
 
 @property(nonatomic,assign)NSInteger delIndex;
@@ -111,6 +112,12 @@
     
    
 }
+- (IBAction)clickHeadImageView:(UITapGestureRecognizer *)sender {
+    
+    WAAdvertiseViewController *vc = [[WAAdvertiseViewController alloc] initWithNibName:@"WAAdvertiseViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 
 -(void)initView {
     
@@ -125,6 +132,12 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     self.title = self.photosItem.title;
+    
+    if ([CoreArchive dicForKey:ADALBUM]) {
+        NSString *photoUrl = [CoreArchive dicForKey:ADALBUM][AD_PHOTOURL];
+         [self.headImageView sd_setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"banner"]];
+    }
+   
     
     if (![self.photosItem.nums integerValue]) {
         self.uploadPhotoNullView = [[[NSBundle mainBundle] loadNibNamed:@"UploadPhotoNullView" owner:self options:nil] lastObject];
@@ -246,6 +259,14 @@
 
 -(void)clickShare {
 
+    if (!self.dataArr.count) {
+        [self showAlertViewWithTitle:@"提示" message:@"您还没有上传照片，不能分享！" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        
+        return;
+    }
+    
     if (self.hudShareView.hidden) {
         [UIView animateWithDuration:0.2 animations:^{
             //self.shareContant.constant = self.shareContant.constant == 0 ? -81 : 0;
@@ -790,9 +811,9 @@
             
         } else {
             
-            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                
-            }];
+//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//                
+//            }];
             
         }
         

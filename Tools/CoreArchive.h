@@ -25,8 +25,14 @@
 #define  RATIO_IMAGE_90      @"webp90"
 #define  RATIO_IMAGE_100     @"webp100"
 
-#define USER_CONTACT_ARR  @"user_contact_ARR"
 
+#define ADALBUM  @"adAlbum"
+#define AD_PHOTOURL  @"adPhotoUrl"
+#define AD_JUMPURL  @"jumpUrl"
+#define AD_TITLE  @"title"
+
+
+#define USER_CONTACT_ARR  @"user_contact_ARR"
 
 #define USER_APP_ARR  @"user_app_arr"
 

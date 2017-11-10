@@ -48,80 +48,22 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    if (!self.databaseArr) {
-        self.databaseArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_DATAIDENTIFIER_ARR]];
-    }
-    
-    [CoreArchive setBool:YES key:FIRST_ENTER];
-    if ([CoreArchive boolForKey:FIRST_ENTER]) {
-
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        self.window.rootViewController = nav;
-
-        //表明不是第一次登录了
-//        [CoreArchive setBool:NO key:FIRST_ENTER];
-        
-    } else if ([CoreArchive boolForKey:INTERFACE_NEW]) {
-
-            WANewInterfaceViewController *vc = [[WANewInterfaceViewController alloc] initWithNibName:@"WANewInterfaceViewController" bundle:nil];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            self.window.rootViewController = nav;
-
-    } else {
-
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            self.window.rootViewController = nav;
-        
-    }
-    
-    //            EditRemindViewController *vc  = [[EditRemindViewController alloc] initWithNibName:@"EditRemindViewController" bundle:nil];
-    //            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    //            self.window.rootViewController = nav;
-    //            WARemindFamilyViewController *vc  = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
-    //            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    //            self.window.rootViewController = nav;
-
-//
-//
-//    } else {
-    
-//        if ([CoreArchive boolForKey:FIRST_ENTER]) {
-//
-//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//            WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            self.window.rootViewController = nav;
-//
-//        } else {
-//
-//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//            WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            self.window.rootViewController = nav;
-//        }
-    
+//    if (!self.databaseArr) {
+//        self.databaseArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_DATAIDENTIFIER_ARR]];
 //    }
-    
+    [self handleVC];
     [self.window makeKeyAndVisible];
-    
     
     //设置科大讯飞
     [self iFlySet];
     //设置本地推送
     [self setLocalNotificationWithOptions:launchOptions];
     [self setJPush:launchOptions];//设置极光推送
-
-
     //网络监控
     [self netMonitor];
     //设置友盟
     [self setUMShare];
     
-
     NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
     NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
@@ -137,8 +79,30 @@
         [self openWholeRemind];
     }
     
+    [self getAdvertisingData];
     return YES;
     
+}
+
+-(void)handleVC {
+    if (![CoreArchive boolForKey:FIRST_ENTER]) {
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        self.window.rootViewController = nav;
+        //表明不是第一次登录了
+        [CoreArchive setBool:YES key:FIRST_ENTER];
+        
+    } else if ([CoreArchive boolForKey:INTERFACE_NEW]) {
+        WANewInterfaceViewController *vc = [[WANewInterfaceViewController alloc] initWithNibName:@"WANewInterfaceViewController" bundle:nil];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        self.window.rootViewController = nav;
+    } else {
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        self.window.rootViewController = nav;
+    }
 }
 
 -(void)openWholeRemind {
@@ -148,48 +112,32 @@
 
 }
 
--(void)downloadCaf {
-    
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    NSURL *URL = [NSURL URLWithString:@"http://wawj-test.b0.upaiyun.com/audio/20171029/1509273420.caf"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+-(void)getAdvertisingData {
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0006" andModel:nil];
+    
+//    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
         
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [MBProgressHUD hideHUD];
         
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+        NSString *code = data[@"code"];
+//        NSString *desc = data[@"desc"];
+        NSMutableDictionary *adAblum = [[NSMutableDictionary alloc] initWithDictionary:data[@"body"][@"adAlbum"]];
+        if ([code isEqualToString:@"0000"] && adAblum.count) {
+            
+            [CoreArchive setDic:adAblum key:ADALBUM];
+            
+        }
         
-    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-        NSLog(@"File downloaded to: %@", filePath);
+    } fail:^(NSError *error) {
         
-        
-//        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-//        NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-//        NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-//
-//
-//        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-//        NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-//        if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-//            [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-//        }
-//
-//        NSError *errordd;
-//        [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-//
-//        NSLog(@"添加远程提醒成功");
-
     }];
-
-    [downloadTask resume];
 }
 
-
 -(void)setJPush:(NSDictionary *)launchOptions {
-    //Required
+
     //notice: 3.0.0及以后版本注册可以这样写，也可以继续用之前的注册方式
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
     entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionSound;
@@ -244,29 +192,19 @@
                         object:nil];
 }
 
+#pragma -mark UIApplicationDelegate
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
-//    rootViewController.deviceTokenValueLabel.text =
-//    [NSString stringWithFormat:@"%@", deviceToken];
-//    rootViewController.deviceTokenValueLabel.textColor =
-//    [UIColor colorWithRed:0.0 / 255
-//                    green:122.0 / 255
-//                     blue:255.0 / 255
-//                    alpha:1];
-    
     NSDictionary *dictionary =[NSJSONSerialization JSONObjectWithData:deviceToken options:NSJSONReadingMutableContainers error:nil];
-    NSLog(@"NSData 转 NSDictionary =%@",dictionary);
-    
-    NSLog(@"%s  %@", __func__,[NSString stringWithFormat:@"Device Token: %@", deviceToken]);
     [JPUSHService registerDeviceToken:deviceToken];
+    NSLog(@"%s  %@", __func__,[NSString stringWithFormat:@"Device Token: %@", dictionary]);
 }
-
 
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     //Optional
-    NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
+    NSLog(@"%s \ndid Fail To Register For Remote Notifications With Error: %@",__func__, error);
 }
 
 -(void)handleRemoteNotificationWithUserInfo:(NSDictionary *)userInfo {
@@ -304,6 +242,36 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+- (void)networkDidLogin:(NSNotification *)notification {
+    NSLog(@"已登录");
+    
+    JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];
+    identifier.identifiers = nil;
+//    identifier.delivered = YES;
+//    __block JPushNotificationIdentifier *identifierWeak = identifier;
+    identifier.findCompletionHandler = ^(NSArray *results) {
+        NSLog(@"未处理通知数量: %ld", results.count);
+        for (UNNotificationRequest *request in results) {
+            NSDictionary * userInfo = request.content.userInfo;
+            NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+        }
+        
+        //         [JPUSHService removeNotification:identifierWeak];
+    };
+    [JPUSHService findNotification:identifier];
+    
+    
+    
+    
+    //     if(SYSTEM_VERSION >= 10){
+    //         identifier.delivered = YES;  //iOS10以上有效，等于YES则查找所有在通知中心显示的，等于NO则为查找所有待推送的；iOS10以下无效
+    //         [JPUSHService removeNotification:identifier];
+    //     }
+    
+    
+    
+}
+
 #pragma mark- JPUSHRegisterDelegate
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 // iOS 10 Support
@@ -319,13 +287,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         NSString *title = userInfo[@"aps"][@"alert"];
         __weak __typeof__(self) weakSelf = self;
-//        [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-//
-//        } otherButtonTitles:@"确定" clickOtherBtn:^{
-//            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//
-//            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
-//        }];
+        [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+
+        } otherButtonTitles:@"确定" clickOtherBtn:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+
+            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
+        }];
         
 
     } else {
@@ -426,8 +394,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
     
-    completionHandler(UNNotificationPresentationOptionAlert|UNNotificationPresentationOptionSound);
     NSLog(@"%s", __FUNCTION__);
+    completionHandler(UNNotificationPresentationOptionAlert|UNNotificationPresentationOptionSound);
+    
 //    //播放声音
 //    AudioServicesPlaySystemSound(1007);
 //    //开启震动
@@ -624,22 +593,19 @@ void systemAudioCallback()
     NSLog(@"已注册");
 }
 
-- (void)networkDidLogin:(NSNotification *)notification {
-    NSLog(@"已登录");
-    
-    JPushNotificationIdentifier *jPushNotificationIdentifier = [[JPushNotificationIdentifier alloc] init];
-    jPushNotificationIdentifier.identifiers = nil;
-    jPushNotificationIdentifier.findCompletionHandler = ^(NSArray *results) {
-        NSLog(@"未处理通知数量: %ld", results.count);
-        for (UNNotificationRequest *request in results) {
-            NSDictionary * userInfo = request.content.userInfo;
-            NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
-        }
-       
-    };
-    [JPUSHService findNotification:jPushNotificationIdentifier];
-    
-}
+//-(void)deleteNotification {
+//
+//    if(SYSTEM_VERSION >= 10){
+//        JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];
+//        identifier.identifiers = nil;
+//        identifier.delivered = YES;  //iOS10以上有效，等于YES则查找所有在通知中心显示的，等于NO则为查找所有待推送的；iOS10以下无效
+//        [JPUSHService removeNotification:identifier];
+//    } else {
+//
+//    }
+//}
+
+
 
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
@@ -657,22 +623,8 @@ void systemAudioCallback()
                                                                dateStyle:NSDateFormatterNoStyle
                                                                timeStyle:NSDateFormatterMediumStyle],
                                 title, content, [self logDic:extra]];
-    NSLog(@"%@", currentContent);
+    NSLog(@"%s %@", __FUNCTION__,currentContent);
     
-//    [_messageContents insertObject:currentContent atIndex:0];
-//
-//    NSString *allContent = [NSString
-//                            stringWithFormat:@"%@收到消息:\n%@\nextra:%@",
-//                            [NSDateFormatter
-//                             localizedStringFromDate:[NSDate date]
-//                             dateStyle:NSDateFormatterNoStyle
-//                             timeStyle:NSDateFormatterMediumStyle],
-//                            [_messageContents componentsJoinedByString:nil],
-//                            [self logDic:extra]];
-//
-//    _messageContentView.text = allContent;
-//    _messageCount++;
-//    [self reloadMessageCountLabel];
 }
 
 - (void)serviceError:(NSNotification *)notification {

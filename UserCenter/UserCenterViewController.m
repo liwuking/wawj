@@ -50,11 +50,7 @@
     [leftItem setTintColor:HEX_COLOR(0x666666)];
     [leftItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = leftItem;
-    
-//    _sexManBGView.layer.cornerRadius = 16.5;
-//    _sexWomanBGView.layer.cornerRadius = 16.5;
-//    _sexWomanBGView.layer.borderWidth = 1;
-//    _sexWomanBGView.layer.borderColor = blueColor.CGColor;
+
     isSexWithMan = YES;
     
     _calendarBGView.layer.masksToBounds = YES;
@@ -62,9 +58,6 @@
     _calendarBGView.layer.borderWidth = 1;
     _calendarBGView.layer.borderColor = blueColor.CGColor;
 
-//    _picImgView.layer.masksToBounds = YES;
-//    _picImgView.layer.cornerRadius = 50;
-    
     if (SCREEN_HEIGHT == 480) {
         _contentViewHeight.constant = 88+64;
     }
@@ -80,8 +73,9 @@
         nameTextField.text = userInfo[USERNAME];
     }
     
-    if (![userInfo[BIRTHDAY] isEqualToString:@""]) {
-        [_selectTimeButton setTitle:userInfo[BIRTHDAY] forState:UIControlStateNormal];
+    if (userInfo[BIRTHDAY] && ![userInfo[BIRTHDAY] isEqualToString:@""]) {
+        NSString *birthday = userInfo[BIRTHDAY];
+        [_selectTimeButton setTitle:birthday forState:UIControlStateNormal];
     }
     
     UIButton *yangButton = [_calendarBGView viewWithTag:200];
@@ -555,14 +549,17 @@
 
 -(void)refreshPersonData {
 
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     NSString *gender = isSexWithMan ? @"0":@"1";
     NSString *birthday_type = isYingLi ? @"0": @"1";
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //设定时间格式,这里可以设置成自己需要的格式
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    //用[NSDate date]可以获取系统当前时间
-    NSString *birthday = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *birthday = userInfo[BIRTHDAY];
+    if (_datePicker) {
+        birthday = [dateFormatter stringFromDate:_datePicker.date];
+    }
     
     NSDictionary *model = @{
                             @"user_name":      nameTextField.text,

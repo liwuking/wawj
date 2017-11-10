@@ -41,7 +41,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Paused              = 4,
 };
 
-@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,EditRemindViewControllerDelegate, OverdueViewControllerDelegate,OverdueRemindCellDelegate>
+@interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,OverdueRemindCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *microphoneBGView;
@@ -126,13 +126,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 -(void)BuildRemindViewWithClickOverDueRemind {
 
     OverdueViewController *vc = [[OverdueViewController alloc] initWithNibName:@"OverdueViewController" bundle:nil];
-//    vc.delegate = self;
-    __weak __typeof__(self) weakSelf = self;
-    vc.overdueViewControllerWithAddRemind = ^(RemindItem *remindItem) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [strongSelf addRemindItem:remindItem];
-    };
-    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -141,10 +134,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.buildRemindView = nil;
 }
 
-#pragma -mark OverdueViewControllerDelegate
--(void)OverdueViewControllerRefresh {
-    [self getDataFromDatabase];
-}
 
 -(void)initViews {
     
@@ -372,6 +361,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
 {
     [self.iFlySpeechUnderstander cancel];//终止语义
     [self.iFlySpeechUnderstander setParameter:@"" forKey:[IFlySpeechConstant PARAMS]];
+    
+    [self.iFlySpeechSynthesizer stopSpeaking];
+    
     [super viewWillDisappear:animated];
 }
 
@@ -409,7 +401,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self createDatabaseTable];
     
     __weak __typeof__(self) weakSelf = self;
-    self.remindViewControllerWithRefreshRemind = ^(RemindItem *remindItem) {
+    self.remindViewControllerWithAddRemind = ^(RemindItem *remindItem) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [strongSelf addRemindItem:remindItem];
     };
@@ -470,7 +462,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 for (NSDictionary *subDict in bodyDict) {
                     
                     NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
-                    NSLog(@"dictTrans: %@", dictTrans);
+//                    NSLog(@"dictTrans: %@", dictTrans);
                     
                     RemindItem *item = [[RemindItem alloc] init];
                     item.remindtype = REMINDTYPE_ONLYONCE;
@@ -1320,21 +1312,20 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.navigationController pushViewController:vc animated:YES];
     
     __weak __typeof__(self) weakSelf = self;
-    vc.editRemindViewControllerWithEditRemind = ^(RemindItem *remindItem) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
-        [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
-        [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        
-        [strongSelf addRemindItem:remindItem];
-    };
-    
     vc.editRemindViewControllerWithDelRemind = ^(RemindItem *remindItem) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
         [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         
+    };
+    
+    vc.editRemindViewControllerWithEditRemind = ^(RemindItem *remindItem) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf.dataArr removeObjectAtIndex:indexPath.row];
+        [strongSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+        [strongSelf addRemindItem:remindItem];
     };
     
 }

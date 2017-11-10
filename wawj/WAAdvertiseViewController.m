@@ -1,41 +1,55 @@
 //
-//  WAInternetViewController.m
+//  WAAdvertiseViewController.m
 //  wawj
 //
-//  Created by ruiyou on 2017/7/7.
+//  Created by ruiyou on 2017/11/9.
 //  Copyright © 2017年 technology. All rights reserved.
 //
 
-#import "WAInternetViewController.h"
+#import "WAAdvertiseViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface WAInternetViewController ()<WKNavigationDelegate>
+@interface WAAdvertiseViewController ()<WKNavigationDelegate>
 
 @property (strong, nonatomic)WKWebView   *webView;
 
 @end
 
-@implementation WAInternetViewController
+@implementation WAAdvertiseViewController
 
-- (BOOL)prefersStatusBarHidden{
-    return YES;
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)initView {
+    
+    NSString *title = [CoreArchive dicForKey:ADALBUM][AD_TITLE];
+    self.title = title;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
+    [backItem setTintColor:HEX_COLOR(0x666666)];
+    [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+    self.navigationItem.leftBarButtonItem = backItem;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view from its nib.
+    
+    
+    [self initView];
     
     // 创建配置
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     // 创建UserContentController（提供JavaScript向webView发送消息的方法）
     WKUserContentController* userContent = [[WKUserContentController alloc] init];
     // 添加消息处理，注意：self指代的对象需要遵守WKScriptMessageHandler协议，结束时需要移除
-//    [userContent addScriptMessageHandler:self name:@"NativeMethod"];
+    //    [userContent addScriptMessageHandler:self name:@"NativeMethod"];
     // 将UserConttentController设置到配置文件
     config.userContentController = userContent;
     self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-44) configuration:config];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://114.wawjapp.com/index.html"]];
+    NSString *adjumpurl = [CoreArchive dicForKey:ADALBUM][AD_JUMPURL];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:adjumpurl]];
     self.webView.navigationDelegate = self;
     
     [self.webView loadRequest:request];
@@ -63,30 +77,6 @@
     [MBProgressHUD showError:[error localizedDescription]];
     
     NSLog(@"%s", __FUNCTION__);
-    
-}
-
-//- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-//    // 判断是否是调用原生的
-//    if ([@"NativeMethod" isEqualToString:message.name]) {
-//        // 判断message的内容，然后做相应的操作
-//        if ([@"close" isEqualToString:message.body]) {
-//            
-//    　　}
-//    }
-//}
-
-- (IBAction)clickGoBack:(UIButton *)sender {
-    
-    if (self.webView.canGoBack) {
-        [self.webView goBack];
-    }
-    
-}
-
-- (IBAction)clickBack:(UIButton *)sender {
-    
-    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

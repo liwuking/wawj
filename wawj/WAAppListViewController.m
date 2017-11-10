@@ -117,7 +117,7 @@
                 for (NSDictionary *subDict in bodyLists) {
                     
                     NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
-                    NSLog(@"dictTrans: %@", dictTrans);
+//                    NSLog(@"dictTrans: %@", dictTrans);
                     AppItem *item = [[AppItem alloc] init];
                     item.appDownloadUrl = dictTrans[@"appDownloadUrl"];
                     item.appIcoUrl = dictTrans[@"appIcoUrl"];

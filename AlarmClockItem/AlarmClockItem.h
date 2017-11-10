@@ -11,6 +11,11 @@
 
 @interface AlarmClockItem : NSObject
 
++ (void)addAlarmClockWithAlarmClockContent:(NSString *)content
+                                  fireDate:(NSDate *)fireDate
+                            AlarmClockType:(NSString *)alarType
+                      AlarmClockIdentifier:(NSString *)clockIdentifier
+                                  isOhters:(BOOL)isOther;
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
                         AlarmClockDateTime:(NSString *)dateTime

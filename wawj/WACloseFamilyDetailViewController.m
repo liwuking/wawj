@@ -150,7 +150,7 @@
         if (!error) {
             
             CLPlacemark *placemark=[placemarks firstObject];
-            NSLog(@"详细信息:%@",placemark.addressDictionary);
+//            NSLog(@"详细信息:%@",placemark.addressDictionary);
             strongSelf.locationString = [NSString stringWithFormat:@"我现在的位置: %@;",[placemark.addressDictionary[@"FormattedAddressLines"] lastObject]];
             
             if (strongSelf.isSendMessage) {
@@ -198,13 +198,17 @@
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
     
-    [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",self.closeFamilyItem.qinmiName] cancelButtonTitle:@"取消" clickCancelBtn:^{
-        
-    } otherButtonTitles:@"拨打" clickOtherBtn:^{
-        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.closeFamilyItem.qinmiPhone];
-        //NSLog(@"str======%@",str);
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-    }];
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.closeFamilyItem.qinmiPhone];
+    //NSLog(@"str======%@",str);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    
+//    [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",self.closeFamilyItem.qinmiName] cancelButtonTitle:@"取消" clickCancelBtn:^{
+//
+//    } otherButtonTitles:@"拨打" clickOtherBtn:^{
+//        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.closeFamilyItem.qinmiPhone];
+//        //NSLog(@"str======%@",str);
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//    }];
 
     
 }

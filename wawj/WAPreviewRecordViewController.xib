@@ -15,6 +15,7 @@
                 <outlet property="backBtn" destination="3Zi-AK-HwY" id="zYD-XK-tT6"/>
                 <outlet property="cicularView" destination="mcr-zv-0kF" id="8Ic-Qu-nNb"/>
                 <outlet property="dayLab" destination="n0q-7h-wEt" id="w2R-VO-Xgd"/>
+                <outlet property="headImageGes" destination="aK1-hl-a2a" id="pI8-lD-wuC"/>
                 <outlet property="headImageView" destination="4tq-Nq-nWm" id="DFz-rJ-XmF"/>
                 <outlet property="recordDateLab" destination="6Id-Xs-HEm" id="mxQ-Ev-zg5"/>
                 <outlet property="remindDescLab" destination="ztO-w5-0wg" id="y3V-Mm-mTc"/>
@@ -77,12 +78,16 @@
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="215" id="1xj-Ml-RV8"/>
                                 <constraint firstAttribute="bottom" secondItem="kYe-y6-MrB" secondAttribute="bottom" constant="15" id="UBP-t0-hfm"/>
                                 <constraint firstAttribute="trailing" secondItem="kYe-y6-MrB" secondAttribute="trailing" constant="15" id="q6b-NC-yzk"/>
                                 <constraint firstAttribute="height" constant="215" id="yrd-1X-G0i"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="aK1-hl-a2a" appends="YES" id="39X-nu-AxX"/>
+                            </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提醒" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztO-w5-0wg">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
@@ -184,6 +189,11 @@
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="34.5" y="54.5"/>
         </view>
+        <tapGestureRecognizer id="aK1-hl-a2a">
+            <connections>
+                <action selector="clickStart:" destination="-1" id="O8n-4x-5t6"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="audioStop" width="33" height="33"/>
