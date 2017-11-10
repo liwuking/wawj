@@ -10,10 +10,11 @@
 #import <UIImageView+WebCache.h>
 #import "CircularView.h"
 #import <AVFoundation/AVFoundation.h>
-
+#import "WARemindFamilyViewController.h"
 #define kRecordAudioFile @"myRecord.caf"
 
 @interface WAPreviewRecordViewController ()<AVAudioPlayerDelegate,CircularViewDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstant;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *headImageGes;
 
 @property (weak, nonatomic) IBOutlet UIImageView *headImageView;
@@ -30,18 +31,53 @@
 
 @implementation WAPreviewRecordViewController
 - (IBAction)clickBackBtn:(id)sender {
-    [self backAction];
+    
+    if (self.isFromRemindVC) {
+        
+         CloseFamilyItem *closeFamilyItem = [[CloseFamilyItem alloc] init];
+        NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+        for (NSDictionary *dict in arr) {
+            if ([dict[@"qinmiUser"] isEqualToString:self.createUser]) {
+                closeFamilyItem.headUrl = dict[@"headUrl"];
+                closeFamilyItem.qinmiName = dict[@"qinmiName"];
+                closeFamilyItem.qinmiPhone = dict[@"qinmiPhone"];
+                closeFamilyItem.qinmiUser = dict[@"qinmiUser"];
+                closeFamilyItem.qinmiRole = dict[@"qinmiRole"];
+                closeFamilyItem.qinmiRoleName = dict[@"qinmiRoleName"];
+                break;
+            }
+        }
+        
+        WARemindFamilyViewController *vc = [[WARemindFamilyViewController alloc] initWithNibName:@"WARemindFamilyViewController" bundle:nil];
+        vc.closeFamilyItem = closeFamilyItem;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    } else {
+        
+        [self backAction];
+        
+    }
+    
+   
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    if (!self.isFromRemindVC) {
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    }
+    
     [super viewWillAppear:animated];
     
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    if (!self.isFromRemindVC) {
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
+    }
+    
     [super viewWillDisappear:animated];
+    
+    [self.audioPlayer stop];
 }
 
 -(void)backAction {
@@ -52,14 +88,19 @@
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
-    self.title = @"预览闹钟";
-    
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
-    [backItem setTintColor:HEX_COLOR(0x666666)];
-    [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
-    self.navigationItem.leftBarButtonItem = backItem;
-    
-    
+     if (self.isFromRemindVC) {
+         self.topConstant.constant = 0;
+         self.remindDescLab.hidden = YES;
+         self.title = [NSString stringWithFormat:@"%@的提醒", self.qinmiName];
+         
+         UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
+         [backItem setTintColor:HEX_COLOR(0x666666)];
+         [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+         self.navigationItem.leftBarButtonItem = backItem;
+         
+     } else {
+         self.remindDescLab.text = [NSString stringWithFormat:@"%@的提醒", self.qinmiName];
+     }
     
     [self.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",self.headUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@"头像设置"] options:SDWebImageRetryFailed completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
@@ -70,11 +111,13 @@
     self.cicularView.radius = 107;
     self.cicularView.delegate = self;
     
-    
-    
     self.startStopBtn.selected = YES;
     [self.startStopBtn setImage:[UIImage imageNamed:@"audioStart"] forState:UIControlStateNormal];
     [self.startStopBtn setImage:[UIImage imageNamed:@"audioStop"] forState:UIControlStateSelected];
+    
+    if (self.isFromRemindVC) {
+        [self.backBtn setTitle:@"我也提醒TA" forState:UIControlStateNormal];
+    }
     
 }
 
@@ -86,8 +129,6 @@
     [self setAudioSession];
     
     
-    
-     self.remindDescLab.text = [NSString stringWithFormat:@"%@的提醒", self.qinmiName];
    
     
 }
@@ -96,17 +137,26 @@
     self.startStopBtn.selected = !self.startStopBtn.selected;
     if (self.startStopBtn.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+        [session setActive:YES error:nil];
         [self.audioPlayer play];
         
-        self.backBtn.enabled = NO;
-        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+//        self.backBtn.enabled = NO;
+//        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
         [self.cicularView endCircle];
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+        [session setActive:YES error:nil];
         [self.audioPlayer stop];
         
-        self.backBtn.enabled = YES;
-        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+//
+//        self.backBtn.enabled = YES;
+//        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
     }
 }
 
@@ -117,15 +167,15 @@
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
         [self.audioPlayer play];
         
-        self.backBtn.enabled = NO;
-        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
+//        self.backBtn.enabled = NO;
+//        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
         [self.cicularView endCircle];
         [self.audioPlayer stop];
         
-        self.backBtn.enabled = YES;
-        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+//        self.backBtn.enabled = YES;
+//        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
     }
 }
 
@@ -188,19 +238,15 @@
    
 }
 
-
-
 /**
  *  设置音频会话
  */
 -(void)setAudioSession{
-    
     AVAudioSession *audioSession=[AVAudioSession sharedInstance];
     //设置为播放和录音状态，以便可以在录制完之后播放录音
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     [audioSession setActive:YES error:nil];
 }
-
 
 /**
  *  创建播放器
@@ -209,6 +255,7 @@
  */
 -(AVAudioPlayer *)audioPlayer{
     if (!_audioPlayer) {
+        
         NSURL *url= [NSURL URLWithString:self.audioUrl];//[self getSavePath];
         NSError *error=nil;
         _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
@@ -258,8 +305,8 @@
     
     self.startStopBtn.selected = NO;
     
-    self.backBtn.enabled = YES;
-    [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+//    self.backBtn.enabled = YES;
+//    [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
 }
 
 - (void)didReceiveMemoryWarning {

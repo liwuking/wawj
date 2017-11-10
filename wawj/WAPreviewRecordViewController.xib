@@ -20,6 +20,7 @@
                 <outlet property="recordDateLab" destination="6Id-Xs-HEm" id="mxQ-Ev-zg5"/>
                 <outlet property="remindDescLab" destination="ztO-w5-0wg" id="y3V-Mm-mTc"/>
                 <outlet property="startStopBtn" destination="kYe-y6-MrB" id="LeS-0G-wSf"/>
+                <outlet property="topConstant" destination="LKJ-23-YxU" id="XT9-jL-H25"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -73,7 +74,7 @@
                                     </constraints>
                                     <state key="normal" image="audioStop"/>
                                     <connections>
-                                        <action selector="clickStartBtn:" destination="-1" eventType="touchUpInside" id="Phq-yN-VOm"/>
+                                        <action selector="clickStartBtn:" destination="-1" eventType="touchUpInside" id="6qD-pg-opu"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -151,9 +152,9 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Zi-AK-HwY">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Zi-AK-HwY">
                     <rect key="frame" x="15" y="465" width="345" height="60"/>
-                    <color key="backgroundColor" red="0.47450980390000003" green="0.77647058820000003" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.12941176470588234" green="0.61176470588235299" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="gmR-Ut-VuR"/>
                     </constraints>

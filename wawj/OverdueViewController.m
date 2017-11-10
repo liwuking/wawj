@@ -21,6 +21,7 @@
 #import "EditRemindViewController.h"
 #import <UIImageView+WebCache.h>
 #import <AVFoundation/AVFoundation.h>
+#import "WAPreviewRecordViewController.h"
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
     UriType             = 6, //uri合成
@@ -207,10 +208,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
         
         NSMutableArray *dataArr = [[NSMutableArray alloc] init];
         FMResultSet * res = [self.db executeQuery:sql];
-        
+        NSMutableDictionary *remoteDict = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:REMOTE_REMIND_ARR]];
         while ([res next]) {
       
             RemindItem *item = [[RemindItem alloc] init];
+            item.remindid = [res stringForColumn:@"remindid"];
             item.remindorigintype = [res stringForColumn:@"remindorigintype"];
             item.remindtype = [res stringForColumn:@"remindtype"];
             item.remindtime = [res stringForColumn:@"remindtime"];
@@ -219,6 +221,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
             if ([item.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
                 item.headurl = [res stringForColumn:@"headurl"];
                 item.audiourl = [res stringForColumn:@"audiourl"];
+                NSString *qinmiName = remoteDict[item.remindid][@"qinmiName"];
+                item.content = [NSString stringWithFormat:@"%@的提醒",qinmiName];
             }
             
             item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
@@ -349,9 +353,26 @@ typedef NS_OPTIONS(NSInteger, Status) {
     RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
     
     if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
-        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
-            
-        }];
+//        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
+//
+//        }];
+        
+        NSMutableDictionary *remoteDict = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:REMOTE_REMIND_ARR]];
+        NSString *createUser = remoteDict[remindItem.remindid][@"createUser"];
+        NSString *headUrl = remoteDict[remindItem.remindid][@"headUrl"];
+        NSString *qinmiName = remoteDict[remindItem.remindid][@"qinmiName"];
+        
+        WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
+        vc.audioUrl = remindItem.audiourl;
+        vc.recordedTime = [remoteDict[remindItem.remindid][@"remindSeconds"] integerValue];
+        vc.headUrl = headUrl;
+        vc.qinmiName = qinmiName;
+        vc.recordedDate = remindItem.remindtime;
+        
+        vc.isFromRemindVC = YES;
+        vc.createUser = createUser;
+        
+        [self.navigationController pushViewController:vc animated:YES];
         
         return;
     }
@@ -412,62 +433,63 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)OverdueRemindCell:(OverdueRemindCell *)cell AndClickAudioIndexPath:(NSIndexPath *)indexPath {
     
     if ([self isReachable]) {
-        
-        RemindItem *remindItem = self.dataArr[indexPath.row];
-        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
-            
-            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
-            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-            
-            [MBProgressHUD showMessage:nil];
-            __weak __typeof__(self) weakSelf = self;
-            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-                
-                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-                
-            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-                __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                [MBProgressHUD hideHUD];
-                
-                if (error) {
-                    [MBProgressHUD showError:@"音频播放出错"];
-                    return ;
-                }
-                
-                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-                
-                
-                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-                }
-                
-                NSError *errordd;
-                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-                
-                
-                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
-                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
-                
-                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
-                
-            }];
-            [downloadTask resume];
-            
-            
-        } else {
-            
-            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
-            [self readTextWithString:readText];
-            
-        }
+        NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+        [self readTextWithString:readText];
+//        RemindItem *remindItem = self.dataArr[indexPath.row];
+//        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
+//
+//            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+//            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+//            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+//            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
+//            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+//
+//            [MBProgressHUD showMessage:nil];
+//            __weak __typeof__(self) weakSelf = self;
+//            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+//
+//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+//
+//            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+//                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//                [MBProgressHUD hideHUD];
+//
+//                if (error) {
+//                    [MBProgressHUD showError:@"音频播放出错"];
+//                    return ;
+//                }
+//
+//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+//                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+//
+//
+//                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+//                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+//                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+//                }
+//
+//                NSError *errordd;
+//                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+//
+//
+//                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
+//                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
+//
+//                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
+//
+//            }];
+//            [downloadTask resume];
+//
+//
+//        } else {
+//
+//            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+//            [self readTextWithString:readText];
+//
+//        }
         
         
         

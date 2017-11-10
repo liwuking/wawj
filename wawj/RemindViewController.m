@@ -29,6 +29,7 @@
 #import "OverdueRemindCell.h"
 #import "RemindItem.h"
 #import <AVFoundation/AVFoundation.h>
+#import "WAPreviewRecordViewController.h"
 
 typedef NS_OPTIONS(NSInteger, SynthesizeType) {
     NomalType           = 5,//普通合成
@@ -246,7 +247,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         //Call this Block When enter the refresh status automatically
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (strongSelf.db) {
-            [strongSelf getRemoteRemindData];
+            [strongSelf getDataFromDatabase];
         }else {
             [MBProgressHUD showMessage:nil];
             [strongSelf createDatabaseTable];
@@ -397,7 +398,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     
     //创建数据库表
-    [MBProgressHUD showMessage:nil];
+//    [MBProgressHUD showMessage:nil];
     [self createDatabaseTable];
     
     __weak __typeof__(self) weakSelf = self;
@@ -408,118 +409,116 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 }
 
--(void)insertRemoteRemindDate:(NSArray *)remindArr {
-    
-    for (RemindItem *remindItem in remindArr) {
-        
-        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindorigintype = '%@' and remindid = %@",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid];
-        NSLog(@"sql = %@",sql);
-        
-        if ([self.db open]) {
-            FMResultSet * res = [self.db executeQuery:sql];
-            if (![res next]) {
-                NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindorigintype,remindid,remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%@','%@','%@')",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid,REMINDTYPE_ONLYONCE,remindItem.remindtime,@"",remindItem.audiourl,remindItem.headurl,remindItem.createtimestamp];
-                NSLog(@"语音提醒sql: %@",sql);
-                BOOL isCreate = [_db executeUpdate:sql];
-                if (isCreate) {
-                    NSLog(@"插入成功");
-                    //添加一个新的闹钟
-                    NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindItem.remindtime];
-                    [AlarmClockItem addAlarmClockWithAlarmClockContent:@"" AlarmClockDateTime:remindItem.remindtime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
-                    
-                }else {
-                    NSLog(@"插入失败");
-                }
-                
-            } else {
-                NSLog(@"已存在");
-            }
-        }
-    }
-    
-    
-
-}
-
--(void)getRemoteRemindData {
-    
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2005" andModel:nil];
-    __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-        
-        [MBProgressHUD hideHUD];
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
-        if ([data[@"code"] isEqualToString:@"0000"]) {
-            
-            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
-                
-                if ([data[@"body"][@"interactiveRemindList"] isKindOfClass:[NSNull class]]) return ;
-                
-                NSDictionary *bodyDict = data[@"body"][@"interactiveRemindList"];
-                NSMutableArray *tempArr = [@[] mutableCopy];
-                for (NSDictionary *subDict in bodyDict) {
-                    
-                    NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
-//                    NSLog(@"dictTrans: %@", dictTrans);
-                    
-                    RemindItem *item = [[RemindItem alloc] init];
-                    item.remindtype = REMINDTYPE_ONLYONCE;
-                    item.content = dictTrans[@"remindContent"];
-                    item.createtimestamp = [NSString stringWithFormat:@"%ld",[dictTrans[@"remindTime"] integerValue]/1000];
-                    item.audiourl = dictTrans[@"remindAudio"];
-                    item.remindid = dictTrans[@"id"];
-                    NSInteger remindTimeStamp = [ item.createtimestamp integerValue];
-                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                    dateFormatter.timeZone = [NSTimeZone localTimeZone];
-                    [dateFormatter setDateFormat:@"HH:mm"];
-                    NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
-                    item.remindtime = [dateFormatter stringFromDate:date];
-                    
-                    NSInteger createUser = [dictTrans[@"createUser"] integerValue];
-                    NSString *headUrl = @"";
-                    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
-                    for (NSDictionary *dict in arr) {
-                        if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",createUser]]) {
-                            headUrl = dict[@"headUrl"];
-                            break;
-                        }
-                    }
-                    item.headurl = headUrl;
-                    [tempArr addObject:item];
-                }
-                
-                if(tempArr.count) {
-                    [strongSelf insertRemoteRemindDate:tempArr];
-                }
-            }
-            
-            
-        } else {
-            
-            [strongSelf showAlertViewWithTitle:@"提示" message:data[@"desc"] buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            
-        }
-        
-        [strongSelf getDataFromDatabase];
-        
-    } fail:^(NSError *error) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
-        
-        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        
-        [strongSelf getDataFromDatabase];
-        
-    }];
-    
-}
+//-(void)insertRemoteRemindDate:(NSArray *)remindArr {
+//
+//    for (RemindItem *remindItem in remindArr) {
+//
+//        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindorigintype = '%@' and remindid = %@",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid];
+//        NSLog(@"sql = %@",sql);
+//
+//        if ([self.db open]) {
+//            FMResultSet * res = [self.db executeQuery:sql];
+//            if (![res next]) {
+//                NSString *sql = [NSString stringWithFormat:@"insert into %@ (remindorigintype,remindid,remindtype,remindtime,content,audiourl,headurl,createtimestamp) values ('%@','%@','%@','%@','%@','%@','%@','%@')",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid,REMINDTYPE_ONLYONCE,remindItem.remindtime,@"",remindItem.audiourl,remindItem.headurl,remindItem.createtimestamp];
+//                NSLog(@"语音提醒sql: %@",sql);
+//                BOOL isCreate = [_db executeUpdate:sql];
+//                if (isCreate) {
+//                    NSLog(@"插入成功");
+//                    //添加一个新的闹钟
+//                    NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindItem.remindtime];
+//                    [AlarmClockItem addAlarmClockWithAlarmClockContent:@"" AlarmClockDateTime:remindItem.remindtime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
+//
+//                }else {
+//                    NSLog(@"插入失败");
+//                }
+//
+//            } else {
+//                NSLog(@"已存在");
+//            }
+//        }
+//    }
+//
+//
+//
+//}
+//
+//-(void)getRemoteRemindData {
+//
+//    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2005" andModel:nil];
+//    __weak __typeof__(self) weakSelf = self;
+//    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+//
+//        [MBProgressHUD hideHUD];
+//
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//        if ([data[@"code"] isEqualToString:@"0000"]) {
+//
+//            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
+//
+//                if ([data[@"body"][@"interactiveRemindList"] isKindOfClass:[NSNull class]]) return ;
+//
+//                NSDictionary *bodyDict = data[@"body"][@"interactiveRemindList"];
+//                NSMutableArray *tempArr = [@[] mutableCopy];
+//                for (NSDictionary *subDict in bodyDict) {
+//
+//                    NSDictionary *dictTrans = [subDict transforeNullValueToEmptyStringInSimpleDictionary];
+//                    RemindItem *item = [[RemindItem alloc] init];
+//                    item.remindtype = REMINDTYPE_ONLYONCE;
+//                    item.content = dictTrans[@"remindContent"];
+//                    item.createtimestamp = [NSString stringWithFormat:@"%ld",[dictTrans[@"remindTime"] integerValue]/1000];
+//                    item.audiourl = dictTrans[@"remindAudio"];
+//                    item.remindid = dictTrans[@"id"];
+//                    NSInteger remindTimeStamp = [ item.createtimestamp integerValue];
+//                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//                    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+//                    [dateFormatter setDateFormat:@"HH:mm"];
+//                    NSDate *date = [NSDate dateWithTimeIntervalSince1970:remindTimeStamp];
+//                    item.remindtime = [dateFormatter stringFromDate:date];
+//
+//                    NSInteger createUser = [dictTrans[@"createUser"] integerValue];
+//                    NSString *headUrl = @"";
+//                    NSMutableArray *arr = [CoreArchive arrForKey:USER_QIMI_ARR];
+//                    for (NSDictionary *dict in arr) {
+//                        if ([dict[@"qinmiUser"] isEqualToString:[NSString stringWithFormat:@"%ld",createUser]]) {
+//                            headUrl = dict[@"headUrl"];
+//                            break;
+//                        }
+//                    }
+//                    item.headurl = headUrl;
+//                    [tempArr addObject:item];
+//                }
+//
+//                if(tempArr.count) {
+//                    [strongSelf insertRemoteRemindDate:tempArr];
+//                }
+//            }
+//
+//
+//        } else {
+//
+//            [strongSelf showAlertViewWithTitle:@"提示" message:data[@"desc"] buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//
+//        }
+//
+//        [strongSelf getDataFromDatabase];
+//
+//    } fail:^(NSError *error) {
+//
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [MBProgressHUD hideHUD];
+//
+//        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+//
+//        }];
+//
+//        [strongSelf getDataFromDatabase];
+//
+//    }];
+//
+//}
 
 //是否授权推送权限
 - (BOOL)isOpenNotificationJurisdiction {
@@ -622,7 +621,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
     } FMDatabase:^(FMDatabase *database) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         strongSelf.db = database;
-        [strongSelf getRemoteRemindData];
+//        [strongSelf getRemoteRemindData];
+        [strongSelf getDataFromDatabase];
     }];
     
 }
@@ -691,7 +691,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         
         NSMutableArray *dataArr = [[NSMutableArray alloc] init];
         FMResultSet * res = [self.db executeQuery:sql];
-        
+        NSMutableDictionary *remoteDict = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:REMOTE_REMIND_ARR]];
         while ([res next]) {
             
             RemindItem *item = [[RemindItem alloc] init];
@@ -699,10 +699,13 @@ typedef NS_OPTIONS(NSInteger, Status) {
             item.remindtype = [res stringForColumn:@"remindtype"];
             item.remindtime = [res stringForColumn:@"remindtime"];
             item.content = [res stringForColumn:@"content"];
+            item.remindid = [res stringForColumn:@"remindid"];
             item.createtimestamp = [res stringForColumn:@"createtimestamp"];
             if ([item.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
                 item.headurl = [res stringForColumn:@"headurl"];
                 item.audiourl = [res stringForColumn:@"audiourl"];
+                NSString *qinmiName = remoteDict[item.remindid][@"qinmiName"];
+                item.content = [NSString stringWithFormat:@"%@的提醒",qinmiName];
             }
             
             item.remindDate = [self showDateTimeWithCreateTimeStamp:item.createtimestamp];
@@ -756,9 +759,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSMutableArray<RemindItem *> *dataArr = [[NSMutableArray alloc] init];
         if ([self.db open]) {
             FMResultSet * res = [self.db executeQuery:sql];
-            
+            NSMutableDictionary *remoteDict = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:REMOTE_REMIND_ARR]];
             while ([res next]) {
                 RemindItem *item = [[RemindItem alloc] init];
+                item.remindid = [res stringForColumn:@"remindid"];
                 item.remindorigintype = [res stringForColumn:@"remindorigintype"];
                 item.remindtype = [res stringForColumn:@"remindtype"];
                 item.remindtime = [res stringForColumn:@"remindtime"];
@@ -767,6 +771,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 if ([item.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
                     item.headurl = [res stringForColumn:@"headurl"];
                     item.audiourl = [res stringForColumn:@"audiourl"];
+                    NSString *qinmiName = remoteDict[item.remindid][@"qinmiName"];
+                    item.content = [NSString stringWithFormat:@"%@的提醒",qinmiName];
                 }
                 item.remindDate = [self showDateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp];
                 item.recentlyRemindDate = [self dateTimeWithRemindType:item.remindtype andRemindTime:item.remindtime andCreatetimestamp:item.createtimestamp isOhter:![item.audiourl isEqualToString:@""]];
@@ -1298,9 +1304,27 @@ typedef NS_OPTIONS(NSInteger, Status) {
     RemindItem *remindItem = [self.dataArr objectAtIndex:indexPath.row];
     
     if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
-        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
-            
-        }];
+//        [self showAlertViewWithTitle:@"互动提醒不允许编辑" message:nil buttonTitle:@"确定" clickBtn:^{
+//
+//        }];
+        
+        NSMutableDictionary *remoteDict = [[NSMutableDictionary alloc] initWithDictionary:[CoreArchive dicForKey:REMOTE_REMIND_ARR]];
+        NSString *createUser = remoteDict[remindItem.remindid][@"createUser"];
+        NSString *headUrl = remoteDict[remindItem.remindid][@"headUrl"];
+        NSString *qinmiName = remoteDict[remindItem.remindid][@"qinmiName"];
+        
+        WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
+        vc.audioUrl = remindItem.audiourl;
+        vc.recordedTime = [remoteDict[remindItem.remindid][@"remindSeconds"] integerValue];
+        vc.headUrl = headUrl;
+        vc.qinmiName = qinmiName;
+        vc.recordedDate = remindItem.remindtime;
+        
+        vc.isFromRemindVC = YES;
+        vc.createUser = createUser;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        
         
         return;
     }
@@ -1429,63 +1453,66 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }
     
     if ([self isReachable]) {
+    
+        NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+        [self readTextWithString:readText];
         
-        RemindItem *remindItem = self.dataArr[indexPath.row];
-        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
-            
-            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
-            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-            
-            [MBProgressHUD showMessage:nil];
-            __weak __typeof__(self) weakSelf = self;
-            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-                
-                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-                
-            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-                __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                [MBProgressHUD hideHUD];
-                
-                if (error) {
-                    [MBProgressHUD showError:@"音频播放出错"];
-                    return ;
-                }
-                
-                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-                
-                
-                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-                }
-                
-                NSError *errordd;
-                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-                
-                
-                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
-                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
-                
-                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
-                
-            }];
-            [downloadTask resume];
-            
-            
-        } else {
-            
-            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
-            [self readTextWithString:readText];
-            
-        }
-        
+//         RemindItem *remindItem = self.dataArr[indexPath.row];
+//        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
+//
+//            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+//            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+//            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+//            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
+//            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+//
+//            [MBProgressHUD showMessage:nil];
+//            __weak __typeof__(self) weakSelf = self;
+//            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+//
+//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+//
+//            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+//                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//                [MBProgressHUD hideHUD];
+//
+//                if (error) {
+//                    [MBProgressHUD showError:@"音频播放出错"];
+//                    return ;
+//                }
+//
+//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+//                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+//                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
+//
+//
+//                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+//                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
+//                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
+//                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
+//                }
+//
+//                NSError *errordd;
+//                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
+//
+//
+//                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
+//                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
+//
+//                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
+//
+//            }];
+//            [downloadTask resume];
+//
+//
+//        } else {
+//
+//            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
+//            [self readTextWithString:readText];
+//
+//        }
+//
         
         
     }else{

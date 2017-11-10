@@ -90,6 +90,7 @@
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
         [CoreArchive removeStrForKey:USER_CONTACT_ARR];
         [CoreArchive removeStrForKey:FIRST_ENTER];
+        [CoreArchive removeStrForKey:REMOTE_REMIND_ARR];
         
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];

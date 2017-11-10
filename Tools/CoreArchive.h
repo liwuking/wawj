@@ -31,13 +31,11 @@
 #define AD_JUMPURL  @"jumpUrl"
 #define AD_TITLE  @"title"
 
+#define REMOTE_REMIND_ARR  @"remoteremind_ARR"
 
 #define USER_CONTACT_ARR  @"user_contact_ARR"
-
 #define USER_APP_ARR  @"user_app_arr"
-
 #define USER_DATAIDENTIFIER_ARR  @"user_dataIdentifier_ARR"
-
 #define USER_QIMI_ARR  @"user_qinmi_ARR"
 #define USERINFO  @"userINFO"
 #define HEADURL  @"headUrl"

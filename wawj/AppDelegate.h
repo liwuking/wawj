@@ -22,6 +22,8 @@ static BOOL isProduction = FALSE;
 @property(nonatomic, strong)NSMutableArray               *databaseArr;
 @property (nonatomic,strong) AVAudioPlayer *audioFilePlayer;//音频播放器，用于播放录音文件
 
+@property (assign, nonatomic) NSInteger remoteEnterN;
+
 
 @end
 
