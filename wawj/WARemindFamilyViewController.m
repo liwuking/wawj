@@ -144,19 +144,30 @@
  *  @return 录音设置
  */
 -(NSDictionary *)getAudioSetting{
-    NSMutableDictionary *dicM=[NSMutableDictionary dictionary];
-    //设置录音格式
-    [dicM setObject:@(kAudioFormatLinearPCM) forKey:AVFormatIDKey];
-    //设置录音采样率，8000是电话采样率，对于一般录音已经够了
-    [dicM setObject:@(8000) forKey:AVSampleRateKey];
-    //设置通道,这里采用单声道
-    [dicM setObject:@(2) forKey:AVNumberOfChannelsKey];
-    //每个采样点位数,分为8、16、24、32
-    [dicM setObject:@(8) forKey:AVLinearPCMBitDepthKey];
-    //是否使用浮点数采样
-    [dicM setObject:@(YES) forKey:AVLinearPCMIsFloatKey];
-    //....其他设置等
-    return dicM;
+//    NSMutableDictionary *dicM=[NSMutableDictionary dictionary];
+//    //设置录音格式
+//    [dicM setObject:@(kAudioFormatLinearPCM) forKey:AVFormatIDKey];
+//    //设置录音采样率，8000是电话采样率，对于一般录音已经够了
+//    [dicM setObject:@(44100) forKey:AVSampleRateKey];
+//    //设置通道,这里采用单声道
+//    [dicM setObject:@(2) forKey:AVNumberOfChannelsKey];
+//    //每个采样点位数,分为8、16、24、32
+//    [dicM setObject:@(8) forKey:AVLinearPCMBitDepthKey];
+//    //是否使用浮点数采样
+//    [dicM setObject:@(YES) forKey:AVLinearPCMIsFloatKey];
+//    //....其他设置等
+//    return dicM;
+    
+    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              [NSNumber numberWithFloat:44100.0],AVSampleRateKey ,    //采样率 8000/44100/96000
+                              [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,  //录音格式
+                              [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,   //线性采样位数  8、16、24、32
+                              [NSNumber numberWithInt:2],AVNumberOfChannelsKey,      //声道 1，2
+                              [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey, //录音质量
+                              
+                              nil];
+    
+    return settings;
 }
 
 /**
@@ -191,11 +202,6 @@
  *  @return 播放器
  */
 -(AVAudioPlayer *)audioPlayer{
-//    NSError *audioError = nil;
-//    BOOL success = [AVAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&audioError];
-//    if(!success) {
-//        NSLog(@"error doing outputaudioportoverride - %@", [audioError localizedDescription]);
-//    }
     
     if (!_audioPlayer) {
         NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
@@ -265,7 +271,7 @@
 
 - (IBAction)clickStartBtn:(UIButton *)sender {
     
-    
+   
     sender.selected = !sender.selected;
     if (sender.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
@@ -276,6 +282,11 @@
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+        [session setActive:YES error:nil];
+        
         [self.cicularView endCircle];
         [self.audioPlayer stop];
         self.previewBtn.hidden = NO;
@@ -344,6 +355,10 @@
     
     if ([self.recordbtn.titleLabel.text isEqualToString:@"点击录音"]) {
         
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [session setActive:YES error:nil];
+        
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
@@ -357,6 +372,8 @@
             [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
             return;
         }
+        
+        
         
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"停止录音"]) {
         
@@ -379,7 +396,16 @@
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
   
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+        [session setActive:YES error:nil];
+
+        
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"重新录音"]) {
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [session setActive:YES error:nil];
         
         if (![self.audioRecorder isRecording]) {
             [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风

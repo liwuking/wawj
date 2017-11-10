@@ -138,9 +138,6 @@
     if (self.startStopBtn.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
         
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
-        [session setActive:YES error:nil];
         [self.audioPlayer play];
         
 //        self.backBtn.enabled = NO;
@@ -149,9 +146,6 @@
     } else {
         [self.cicularView endCircle];
         
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
-        [session setActive:YES error:nil];
         [self.audioPlayer stop];
         
 //
