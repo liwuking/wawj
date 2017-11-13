@@ -132,8 +132,9 @@
     HelpItem *helpItem = [self.dataArr objectAtIndex:indexPath.row];
    
     WAHelpDetailViewController *vc = [[WAHelpDetailViewController alloc] initWithNibName:@"WAHelpDetailViewController" bundle:nil];
-    vc.helpItem = helpItem;
-    
+//    vc.helpItem = helpItem;
+    vc.title = helpItem.title;
+    vc.webUrl = helpItem.url;
     [self.navigationController pushViewController:vc animated:YES];
     
 }

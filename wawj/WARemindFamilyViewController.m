@@ -115,6 +115,10 @@
     NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
     
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:urlStr]) {
+//        [[NSFileManager defaultManager] removeItemAtPath:urlStr error:nil];
+//    }
+    
     NSLog(@"file path:%@",urlStr);
 //    NSURL *url=[NSURL fileURLWithPath:urlStr];
     return urlStr;
@@ -125,7 +129,6 @@
     urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
     NSLog(@"file path:%@",urlStr);
     NSURL *url=[NSURL fileURLWithPath:urlStr];
-    
     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
 }
 
@@ -161,53 +164,90 @@
     return settings;
 }
 
-/**
- *  获得录音机对象
- *
- *  @return 录音机对象
- */
--(AVAudioRecorder *)audioRecorder{
+///**
+// *  获得录音机对象
+// *
+// *  @return 录音机对象
+// */
+//-(AVAudioRecorder *)audioRecorder{
+//
+////    if (!_audioRecorder) {
+//        //创建录音文件保存路径
+//        NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
+//        //创建录音格式设置
+//        NSDictionary *setting=[self getAudioSetting];
+//        //创建录音机
+//        NSError *error=nil;
+//        _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
+//        _audioRecorder.delegate=self;
+//        [_audioRecorder peakPowerForChannel:0];
+//        if (error) {
+//            NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
+//            return nil;
+//        }
+////    }
+//    return _audioRecorder;
+//}
 
-    if (!_audioRecorder) {
-        //创建录音文件保存路径
-        NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
-        //创建录音格式设置
-        NSDictionary *setting=[self getAudioSetting];
-        //创建录音机
-        NSError *error=nil;
-        _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
-        _audioRecorder.delegate=self;
-        [_audioRecorder peakPowerForChannel:0];
-//        _audioRecorder.meteringEnabled=YES;//如果要监控声波则必须设置为YES
-        if (error) {
-            NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
-            return nil;
-        }
+-(void)startRecord {
+    
+    //创建录音文件保存路径
+    NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
+    //创建录音格式设置
+    NSDictionary *setting= [self getAudioSetting];
+    //创建录音机
+    NSError *error=nil;
+    _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
+    _audioRecorder.delegate=self;
+    [_audioRecorder peakPowerForChannel:0];
+    if (error) {
+        NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
     }
-    return _audioRecorder;
+    
+    [_audioRecorder record];
 }
+
+///**
+// *  创建播放器
+// *
+// *  @return 播放器
+// */
+//-(AVAudioPlayer *)audioPlayer{
+//
+//    if (!_audioPlayer) {
+//        NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
+//        NSError *error=nil;
+//        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+//        _audioPlayer.numberOfLoops=0;
+//        _audioPlayer.volume = 1;
+//        _audioPlayer.delegate = self;
+//        [_audioPlayer prepareToPlay];
+//        if (error) {
+//            NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
+//            return nil;
+//        }
+//    }
+//    return _audioPlayer;
+//}
 
 /**
  *  创建播放器
  *
  *  @return 播放器
  */
--(AVAudioPlayer *)audioPlayer{
+-(void)startPlay{
     
-    if (!_audioPlayer) {
-        NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
-        NSError *error=nil;
-        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
-        _audioPlayer.numberOfLoops=0;
-        _audioPlayer.volume = 1;
-        _audioPlayer.delegate = self;
-        [_audioPlayer prepareToPlay];
-        if (error) {
-            NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-            return nil;
-        }
+    NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
+    NSError *error=nil;
+    _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+    _audioPlayer.numberOfLoops=0;
+    _audioPlayer.volume = 1;
+    _audioPlayer.delegate = self;
+    [_audioPlayer prepareToPlay];
+    if (error) {
+        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
     }
-    return _audioPlayer;
+    [_audioPlayer play];
 }
 
 
@@ -242,7 +282,8 @@
     self.startStopBtn.selected = !self.startStopBtn.selected;
     if (self.startStopBtn.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-        [self.audioPlayer play];
+//        [self.audioPlayer play];
+        [self startPlay];
         self.previewBtn.hidden = YES;
         
         self.remindBtn.enabled = NO;
@@ -266,7 +307,8 @@
     sender.selected = !sender.selected;
     if (sender.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-        [self.audioPlayer play];
+//        [self.audioPlayer play];
+        [self startPlay];
         self.previewBtn.hidden = YES;
         
         self.remindBtn.enabled = NO;
@@ -371,7 +413,7 @@
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
         if (![self.audioRecorder isRecording]) {
-            [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+            [self startRecord];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
             return;
         }
     
@@ -403,16 +445,13 @@
         
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"重新录音"]) {
         
+        [self removeRecordFile];
+        
         AVAudioSession *session = [AVAudioSession sharedInstance];
         [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [session setActive:YES error:nil];
         
-//        if (![self.audioRecorder isRecording]) {
-//            [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
-//            return;
-//        }
-        
-        [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+        [self startRecord];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;

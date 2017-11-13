@@ -20,6 +20,7 @@
 #import "FMDatabase.h"
 #import "AlarmClockItem.h"
 #import "DBManager.h"
+#import "WAHelpDetailViewController.h"
 @interface WABindIphoneViewController ()<CLLocationManagerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *getVeryCodeGes;
 @property (nonatomic, strong) CLLocationManager* locationManager;
@@ -72,6 +73,13 @@
     
 }
 
+- (IBAction)clickServiceProtocol:(UIButton *)sender {
+    WAHelpDetailViewController *vc = [[WAHelpDetailViewController alloc] initWithNibName:@"WAHelpDetailViewController" bundle:nil];
+    //    vc.helpItem = helpItem;
+    vc.title = @"用户协议";
+    vc.webUrl = @"http://www.wawjapp.com/contract.html";
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     

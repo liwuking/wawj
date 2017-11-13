@@ -23,7 +23,7 @@
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
-    self.title = self.helpItem.title;
+//    self.title = self.helpItem.title;
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
@@ -49,8 +49,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self initViews];
-   
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.helpItem.url]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.webUrl]];
     [self.webView loadRequest:request];
     
 }

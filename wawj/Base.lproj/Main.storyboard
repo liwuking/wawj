@@ -200,7 +200,7 @@
                                     <constraint firstAttribute="height" constant="50" id="FEu-Dy-gOm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <state key="normal" title="下一步">
+                                <state key="normal" title="确认">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -252,6 +252,27 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击确认即表示已阅读并同意" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ktj-IP-YVQ">
+                                <rect key="frame" x="20" y="325" width="210" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="43i-un-2Lp"/>
+                                    <constraint firstAttribute="width" constant="210" id="hYR-X3-ubA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cix-X5-VCa">
+                                <rect key="frame" x="230" y="325" width="130" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="Hlg-Ve-YTr"/>
+                                    <constraint firstAttribute="width" constant="130" id="jAQ-pf-Izh"/>
+                                </constraints>
+                                <state key="normal" title="《用户服务协议》"/>
+                                <connections>
+                                    <action selector="clickServiceProtocol:" destination="tso-xj-8GC" eventType="touchUpInside" id="NT6-pG-l68"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -264,6 +285,7 @@
                             <constraint firstItem="v94-51-hmV" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="7CI-6R-RC2"/>
                             <constraint firstItem="H2E-Wx-IQ7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HMk-yR-hWO" secondAttribute="leadingMargin" id="7l2-zg-4DN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ByZ-Ws-NTY" secondAttribute="trailing" id="8Sg-Zm-7RN"/>
+                            <constraint firstItem="Ktj-IP-YVQ" firstAttribute="top" secondItem="WA6-zi-kWR" secondAttribute="bottom" constant="10" id="APl-AZ-4je"/>
                             <constraint firstItem="zmr-fX-2NA" firstAttribute="trailing" secondItem="HMk-yR-hWO" secondAttribute="trailingMargin" id="GK5-63-ic3"/>
                             <constraint firstItem="MYp-kd-wzx" firstAttribute="leading" secondItem="5vi-ab-7jh" secondAttribute="trailing" constant="10" id="HLy-z3-dmd"/>
                             <constraint firstItem="WA6-zi-kWR" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="Hzb-rs-32o"/>
@@ -275,8 +297,10 @@
                             <constraint firstItem="v94-51-hmV" firstAttribute="top" secondItem="MYp-kd-wzx" secondAttribute="bottom" constant="10" id="MZf-ua-aLx"/>
                             <constraint firstItem="H2E-Wx-IQ7" firstAttribute="trailing" secondItem="HMk-yR-hWO" secondAttribute="trailingMargin" id="NLT-SN-OgS"/>
                             <constraint firstItem="kCp-Vq-XLP" firstAttribute="centerX" secondItem="HMk-yR-hWO" secondAttribute="centerX" id="NnW-Yg-Moi"/>
+                            <constraint firstItem="Cix-X5-VCa" firstAttribute="leading" secondItem="Ktj-IP-YVQ" secondAttribute="trailing" id="Tp0-2T-BHB"/>
                             <constraint firstItem="zmr-fX-2NA" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leadingMargin" id="U8O-pv-FPr"/>
                             <constraint firstAttribute="trailing" secondItem="v94-51-hmV" secondAttribute="trailing" constant="15" id="VHD-Ai-wGy"/>
+                            <constraint firstAttribute="trailing" secondItem="Cix-X5-VCa" secondAttribute="trailing" constant="15" id="YTf-W2-PqE"/>
                             <constraint firstItem="Mq7-T9-7oD" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="ZWb-vs-Mn5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MYp-kd-wzx" secondAttribute="trailing" constant="15" id="b0G-hn-YhG"/>
                             <constraint firstItem="zmr-fX-2NA" firstAttribute="centerX" secondItem="HMk-yR-hWO" secondAttribute="centerX" id="c0d-CY-Whm"/>
@@ -287,6 +311,7 @@
                             <constraint firstItem="WA6-zi-kWR" firstAttribute="top" secondItem="5Na-yX-gvh" secondAttribute="bottom" constant="245" id="pOT-8j-W4l"/>
                             <constraint firstItem="M2L-3C-6Jy" firstAttribute="leading" secondItem="4ee-B7-Las" secondAttribute="trailing" constant="9" id="por-2v-c95"/>
                             <constraint firstItem="H2E-Wx-IQ7" firstAttribute="top" secondItem="WA6-zi-kWR" secondAttribute="bottom" constant="110" id="s5z-bk-T67"/>
+                            <constraint firstItem="Cix-X5-VCa" firstAttribute="top" secondItem="WA6-zi-kWR" secondAttribute="bottom" constant="10" id="sGc-fP-ivy"/>
                             <constraint firstItem="6Un-VF-exS" firstAttribute="top" secondItem="Mq7-T9-7oD" secondAttribute="bottom" constant="10" id="tkA-TZ-F7l"/>
                             <constraint firstItem="4ee-B7-Las" firstAttribute="top" secondItem="v94-51-hmV" secondAttribute="bottom" constant="32" id="tqZ-GU-Y7V"/>
                             <constraint firstItem="ByZ-Ws-NTY" firstAttribute="leading" secondItem="M2L-3C-6Jy" secondAttribute="trailing" constant="5" id="yD5-YN-yc0"/>
@@ -308,7 +333,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1251.5" y="831.5"/>
+            <point key="canvasLocation" x="1250.4000000000001" y="830.73463268365822"/>
         </scene>
         <!--Old Interface View Controller-->
         <scene sceneID="1Kl-Wq-UHz">
