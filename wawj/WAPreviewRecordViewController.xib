@@ -126,7 +126,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n0q-7h-wEt">
-                            <rect key="frame" x="257.5" y="27" width="85" height="20"/>
+                            <rect key="frame" x="252.5" y="27" width="85" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="85" id="KWI-fs-07o"/>
                                 <constraint firstAttribute="height" constant="20" id="XoF-6K-6uc"/>
@@ -140,7 +140,7 @@
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="6Id-Xs-HEm" firstAttribute="centerY" secondItem="vVu-e7-vy1" secondAttribute="centerY" id="2sD-r3-mUk"/>
-                        <constraint firstItem="n0q-7h-wEt" firstAttribute="leading" secondItem="6Id-Xs-HEm" secondAttribute="trailing" constant="10" id="8Mv-6q-Pt4"/>
+                        <constraint firstItem="n0q-7h-wEt" firstAttribute="leading" secondItem="6Id-Xs-HEm" secondAttribute="trailing" constant="5" id="8Mv-6q-Pt4"/>
                         <constraint firstAttribute="height" constant="60" id="KMA-NY-P39"/>
                         <constraint firstItem="6Id-Xs-HEm" firstAttribute="centerX" secondItem="vVu-e7-vy1" secondAttribute="centerX" id="ZAt-da-2RW"/>
                         <constraint firstAttribute="bottom" secondItem="n0q-7h-wEt" secondAttribute="bottom" constant="13" id="bsC-cq-y7m"/>

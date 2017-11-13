@@ -232,6 +232,10 @@
 		779CF4921F72571400DBEE44 /* WAPhotosShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 779CF4901F72571400DBEE44 /* WAPhotosShowViewController.xib */; };
 		77A005BF1FAB0C28008BF5EE /* AddContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A005BE1FAB0C28008BF5EE /* AddContactView.m */; };
 		77A005C11FAB0C3D008BF5EE /* AddContactView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A005C01FAB0C3D008BF5EE /* AddContactView.xib */; };
+		77A3C66E1FB5AA650051A939 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C6611FB5AA650051A939 /* amrFileCodec.m */; };
+		77A3C66F1FB5AA650051A939 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A3C66A1FB5AA650051A939 /* libopencore-amrnb.a */; };
+		77A3C6701FB5AA650051A939 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A3C66B1FB5AA650051A939 /* libopencore-amrwb.a */; };
+		77A3C6711FB5AA650051A939 /* RecordVoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C66D1FB5AA650051A939 /* RecordVoice.m */; };
 		77A67CEB1F399329000DFD88 /* WAReplaceUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */; };
 		77A67CEC1F399329000DFD88 /* WAReplaceUIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */; };
 		77A67CF01F3C3190000DFD88 /* WAPersonSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A67CEE1F3C3190000DFD88 /* WAPersonSetViewController.m */; };
@@ -750,6 +754,16 @@
 		77A005BD1FAB0C28008BF5EE /* AddContactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddContactView.h; sourceTree = "<group>"; };
 		77A005BE1FAB0C28008BF5EE /* AddContactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddContactView.m; sourceTree = "<group>"; };
 		77A005C01FAB0C3D008BF5EE /* AddContactView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddContactView.xib; sourceTree = "<group>"; };
+		77A3C6601FB5AA650051A939 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
+		77A3C6611FB5AA650051A939 /* amrFileCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = amrFileCodec.m; sourceTree = "<group>"; };
+		77A3C6641FB5AA650051A939 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		77A3C6651FB5AA650051A939 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		77A3C6671FB5AA650051A939 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
+		77A3C6681FB5AA650051A939 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
+		77A3C66A1FB5AA650051A939 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		77A3C66B1FB5AA650051A939 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		77A3C66C1FB5AA650051A939 /* RecordVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordVoice.h; sourceTree = "<group>"; };
+		77A3C66D1FB5AA650051A939 /* RecordVoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordVoice.m; sourceTree = "<group>"; };
 		77A67CE81F399329000DFD88 /* WAReplaceUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReplaceUIViewController.h; sourceTree = "<group>"; };
 		77A67CE91F399329000DFD88 /* WAReplaceUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReplaceUIViewController.m; sourceTree = "<group>"; };
 		77A67CEA1F399329000DFD88 /* WAReplaceUIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAReplaceUIViewController.xib; sourceTree = "<group>"; };
@@ -1045,6 +1059,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				77CABE681F959112000097A2 /* UserNotifications.framework in Frameworks */,
+				77A3C6701FB5AA650051A939 /* libopencore-amrwb.a in Frameworks */,
 				779CF47C1F7127CD00DBEE44 /* CoreLocation.framework in Frameworks */,
 				77A67F2F1F564FBE000DFD88 /* libstdc++.6.0.9.tbd in Frameworks */,
 				77A67F2D1F564F58000DFD88 /* AddressBook.framework in Frameworks */,
@@ -1055,6 +1070,7 @@
 				77A67F021F4D159E000DFD88 /* CoreTelephony.framework in Frameworks */,
 				77A67F311F5656AE000DFD88 /* iflyMSC.framework in Frameworks */,
 				77A67F001F4D1573000DFD88 /* libz.1.1.3.tbd in Frameworks */,
+				77A3C66F1FB5AA650051A939 /* libopencore-amrnb.a in Frameworks */,
 				77A67EFE1F4D1551000DFD88 /* libsqlite3.0.tbd in Frameworks */,
 				430530EECFA3E9435E2049CE /* libPods-wawj.a in Frameworks */,
 			);
@@ -1317,6 +1333,7 @@
 		77832DD51F0CB3600009F004 = {
 			isa = PBXGroup;
 			children = (
+				77A3C65F1FB5AA650051A939 /* arm */,
 				775411111F9F2C050005C3AE /* LJContactManager */,
 				775410AB1F9DE3870005C3AE /* ZLPhotoBrowser */,
 				779CF4291F6A27C000DBEE44 /* UpYunSDK */,
@@ -1782,6 +1799,55 @@
 				776272EE1FA9ABAD006EE231 /* WAContactEditViewController.xib */,
 			);
 			name = CommonPhone;
+			sourceTree = "<group>";
+		};
+		77A3C65F1FB5AA650051A939 /* arm */ = {
+			isa = PBXGroup;
+			children = (
+				77A3C6601FB5AA650051A939 /* amrFileCodec.h */,
+				77A3C6611FB5AA650051A939 /* amrFileCodec.m */,
+				77A3C6621FB5AA650051A939 /* include */,
+				77A3C6691FB5AA650051A939 /* lib */,
+				77A3C66C1FB5AA650051A939 /* RecordVoice.h */,
+				77A3C66D1FB5AA650051A939 /* RecordVoice.m */,
+			);
+			path = arm;
+			sourceTree = "<group>";
+		};
+		77A3C6621FB5AA650051A939 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				77A3C6631FB5AA650051A939 /* opencore-amrnb */,
+				77A3C6661FB5AA650051A939 /* opencore-amrwb */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		77A3C6631FB5AA650051A939 /* opencore-amrnb */ = {
+			isa = PBXGroup;
+			children = (
+				77A3C6641FB5AA650051A939 /* interf_dec.h */,
+				77A3C6651FB5AA650051A939 /* interf_enc.h */,
+			);
+			path = "opencore-amrnb";
+			sourceTree = "<group>";
+		};
+		77A3C6661FB5AA650051A939 /* opencore-amrwb */ = {
+			isa = PBXGroup;
+			children = (
+				77A3C6671FB5AA650051A939 /* dec_if.h */,
+				77A3C6681FB5AA650051A939 /* if_rom.h */,
+			);
+			path = "opencore-amrwb";
+			sourceTree = "<group>";
+		};
+		77A3C6691FB5AA650051A939 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				77A3C66A1FB5AA650051A939 /* libopencore-amrnb.a */,
+				77A3C66B1FB5AA650051A939 /* libopencore-amrwb.a */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 		77A67D3C1F4C0D97000DFD88 /* Database */ = {
@@ -2774,6 +2840,7 @@
 				778EF82B1FA32394005CDD82 /* AppItem.m in Sources */,
 				7749E1D51FB1481500239DF3 /* WAApplyRemindViewController.m in Sources */,
 				77A67E151F4C0EE1000DFD88 /* NSData+Extension.m in Sources */,
+				77A3C6711FB5AA650051A939 /* RecordVoice.m in Sources */,
 				779CF4221F68FDD100DBEE44 /* HomeCell.m in Sources */,
 				775411211F9F2C060005C3AE /* LJPickerDetailDelegate.m in Sources */,
 				77A67E611F4C0EE1000DFD88 /* ITTRefreshTableHeaderView.m in Sources */,
@@ -2848,6 +2915,7 @@
 				77A67D4F1F4C0D97000DFD88 /* FMDatabaseQueue.m in Sources */,
 				77A67E681F4C1277000DFD88 /* AlarmClockItem.m in Sources */,
 				779CF4031F5FE78800DBEE44 /* NSDictionary+StringConversion.m in Sources */,
+				77A3C66E1FB5AA650051A939 /* amrFileCodec.m in Sources */,
 				77A67E4A1F4C0EE1000DFD88 /* SAMultisectorControl.m in Sources */,
 				77A67CFF1F3C3803000DFD88 /* WAEditRemindTwoCell.m in Sources */,
 				77D75DF01F0F6D8E00E46D15 /* WAInternetViewController.m in Sources */,
@@ -3133,9 +3201,13 @@
 				INFOPLIST_FILE = wawj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/arm/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirdtiger.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f5d4331d-9aca-43e4-9d12-7accb1f6e80f";
+				PROVISIONING_PROFILE = "f29a382b-278c-4773-a9bd-d50309a0bd46";
 				PROVISIONING_PROFILE_SPECIFIER = WAWJ01;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -3159,6 +3231,10 @@
 				INFOPLIST_FILE = wawj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/arm/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirdtiger.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "98fbe8c4-c89d-4fcf-859f-43ed8253381a";

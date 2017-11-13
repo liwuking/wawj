@@ -11,6 +11,8 @@
 #import "CircularView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "WARemindFamilyViewController.h"
+#import "amrFileCodec.h"
+
 #define kRecordAudioFile @"myRecord.caf"
 
 @interface WAPreviewRecordViewController ()<AVAudioPlayerDelegate,CircularViewDelegate>
@@ -250,9 +252,20 @@
 -(AVAudioPlayer *)audioPlayer{
     if (!_audioPlayer) {
         
-        NSURL *url= [NSURL URLWithString:self.audioUrl];//[self getSavePath];
+        NSURL *url= [NSURL URLWithString:self.audioUrl];
+         NSData *audioData = [NSData dataWithContentsOfFile:self.audioUrl];
+        
+        if ([self.audioUrl hasSuffix:@".amr"]) {
+            
+        } else {
+           
+        }
+        
+        
+        
         NSError *error=nil;
-        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+//        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+        _audioPlayer=[[AVAudioPlayer alloc] initWithData:audioData error:&error];
         _audioPlayer.numberOfLoops=0;
         _audioPlayer.volume = 1;
         _audioPlayer.delegate = self;

@@ -102,16 +102,7 @@
     [self checkMicPhonePermission];
 }
 
-/**
- *  设置音频会话
- */
--(void)setAudioSession{
-    
-    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
-    //设置为播放和录音状态，以便可以在录制完之后播放录音
-    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    [audioSession setActive:YES error:nil];
-}
+
 
 /**
  *  取得录音文件保存路径
@@ -347,6 +338,17 @@
     return YES;
 }
 
+/**
+ *  设置音频会话
+ */
+-(void)setAudioSession{
+    
+    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
+    //设置为播放和录音状态，以便可以在录制完之后播放录音
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    [audioSession setActive:YES error:nil];
+}
+
 - (IBAction)clickRecordBtn:(UIButton *)sender {
     
     if (![self checkMicPhonePermission]) {
@@ -372,9 +374,7 @@
             [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
             return;
         }
-        
-        
-        
+    
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"停止录音"]) {
         
         if ([self.audioRecorder isRecording]) {
@@ -407,11 +407,12 @@
         [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [session setActive:YES error:nil];
         
-        if (![self.audioRecorder isRecording]) {
-            [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
-            return;
-        }
+//        if (![self.audioRecorder isRecording]) {
+//            [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+//            return;
+//        }
         
+        [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
@@ -438,9 +439,6 @@
     if ([self.audioRecorder isRecording]) {
         self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  RECORD_TOTAL_TIME-progress];
         self.recordedTime = progress;
-        
-       
-        
     }
 
 }
@@ -611,19 +609,23 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         [MBProgressHUD hideHUD];
-        NSString *code = data[@"code"];
-        NSString *desc = data[@"desc"];
+//        NSString *code = data[@"code"];
+//        NSString *desc = data[@"desc"];
         
-        if ([code isEqualToString:@"1"]) {
-//             [MBProgressHUD showError:@"已经提醒"];
-//            [strongSelf addNotificationWithRemindContent:nil];
-        } else {
+        [MBProgressHUD showSuccess:@"发送成功"];
 
-            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            
-        }
+        [strongSelf.navigationController popViewControllerAnimated:YES];
+        
+//        if ([code isEqualToString:@"1"]) {
+////             [MBProgressHUD showError:@"已经提醒"];
+////            [strongSelf addNotificationWithRemindContent:nil];
+//        } else {
+//
+//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//
+//            }];
+//
+//        }
         
     } fail:^(NSError *error) {
         

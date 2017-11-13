@@ -19,6 +19,7 @@
 #import "HomeCellTwo.h"
 #import "WAApplyRemindViewController.h"
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewTop;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -31,6 +32,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
+    if (SCREEN_HEIGHT >= 667) {
+        self.viewTop.constant = 220;
+    }
     
     [self refreshTableView];
 }
@@ -85,13 +90,22 @@
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:index]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+   
+}
+
 -(void)initViews {
     
     self.dataArr = [@[] mutableCopy];
     
+   
+    
     self.tableHeightConstrain.constant = SCREEN_WIDTH;
     self.tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
     
+   
 }
 
 - (void)viewDidLoad {
@@ -99,6 +113,8 @@
     // Do any additional setup after loading the view from its nib.
     
     [self initViews];
+    
+    
 
 }
 - (IBAction)cllickContactRemindBtn:(UIButton *)sender {

@@ -31,8 +31,13 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.titleLab.text = [NSString stringWithFormat:@"我爱我家%@",APP_VERSION_DESC];
-    
+    if ([CoreArchive strForKey:APP_VERSION_DESC]) {
+         self.titleLab.text = [NSString stringWithFormat:@"我爱我家%@", [CoreArchive strForKey:APP_VERSION_DESC]];
+    } else {
+        NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        self.titleLab.text =  [NSString stringWithFormat:@"我爱我家%@", appVersion];
+    }
+   
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
 }
@@ -88,7 +93,7 @@
                 }
             } else {
                 
-                [CoreArchive removeStrForKey:APP_VERSION_DESC];
+               
                 [strongSelf showAlertViewWithTitle:@"已经是最新版" message:nil buttonTitle:@"确定" clickBtn:^{
                 }];
                 

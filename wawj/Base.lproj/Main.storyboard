@@ -38,7 +38,7 @@
                                 </connections>
                             </scrollView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5yZ-nE-JKE">
-                                <rect key="frame" x="87" y="557" width="200" height="50"/>
+                                <rect key="frame" x="87" y="577" width="200" height="50"/>
                                 <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="JnS-0H-0Iz"/>
@@ -65,7 +65,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CXU-gQ-yAX" secondAttribute="bottom" constant="60" id="6EC-LD-Ub2"/>
                             <constraint firstItem="5yZ-nE-JKE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8M7-N9-OGo"/>
                             <constraint firstItem="d8S-c4-KI0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Jlh-lU-qM2"/>
-                            <constraint firstAttribute="bottom" secondItem="5yZ-nE-JKE" secondAttribute="bottom" constant="60" id="P1g-n7-vAb"/>
+                            <constraint firstAttribute="bottom" secondItem="5yZ-nE-JKE" secondAttribute="bottom" constant="40" id="P1g-n7-vAb"/>
                             <constraint firstItem="CXU-gQ-yAX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Rj6-01-wOi"/>
                             <constraint firstItem="d8S-c4-KI0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="p4J-sv-1zh"/>
                             <constraint firstAttribute="bottom" secondItem="d8S-c4-KI0" secondAttribute="bottom" id="utX-eM-xVh"/>

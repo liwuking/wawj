@@ -1,4 +1,4 @@
-//
+
 //  AppDelegate.m
 //  wawj
 //
@@ -165,6 +165,33 @@
             NSLog(@"registrationID获取失败，code：%d",resCode);
         }
     }];
+    
+    
+    [JPUSHService getAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        
+        if (0 == iResCode) {
+            NSLog(@"得到别名: %@", iAlias);
+        } else {
+            NSLog(@"得到别名失败");
+            
+            NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+            //设置别名
+            NSString *userid = [NSString stringWithFormat:@"%@", userInfo[USERID]];
+            [JPUSHService setAlias:userid completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+                if (0 == iResCode) {
+                    NSLog(@"设置别名成功: %@", iAlias);
+                } else {
+                    NSLog(@"设置别名失败");
+                }
+            } seq:[[NSDate date] timeIntervalSince1970]];
+            
+        }
+        
+    } seq:[[NSDate date] timeIntervalSince1970]];
+    
+    
+
+    
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self

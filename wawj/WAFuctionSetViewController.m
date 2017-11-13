@@ -86,11 +86,13 @@
         [CoreArchive removeStrForKey:LASTTIME];
         [CoreArchive removeStrForKey:USER_PHOTO_ARR];
         [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
+        [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHIDefaultSet];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
         [CoreArchive removeStrForKey:USER_CONTACT_ARR];
         [CoreArchive removeStrForKey:FIRST_ENTER];
         [CoreArchive removeStrForKey:REMOTE_REMIND_ARR];
+        [CoreArchive removeStrForKey:APP_VERSION_DESC];
         
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];
@@ -238,6 +240,14 @@
             cell.waSwitch.on = !cell.waSwitch.on;
 
             [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
+            
+            
+            if (cell.waSwitch.on) {
+                [AlarmClockItem addWholePointTellTime];
+            } else {
+                [AlarmClockItem cancelWholePointTellTime];
+            }
+            
             
         } else {
             
