@@ -166,33 +166,6 @@
         }
     }];
     
-    
-    [JPUSHService getAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-        
-        if (0 == iResCode) {
-            NSLog(@"得到别名: %@", iAlias);
-        } else {
-            NSLog(@"得到别名失败");
-            
-            NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-            //设置别名
-            NSString *userid = [NSString stringWithFormat:@"%@", userInfo[USERID]];
-            [JPUSHService setAlias:userid completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-                if (0 == iResCode) {
-                    NSLog(@"设置别名成功: %@", iAlias);
-                } else {
-                    NSLog(@"设置别名失败");
-                }
-            } seq:[[NSDate date] timeIntervalSince1970]];
-            
-        }
-        
-    } seq:[[NSDate date] timeIntervalSince1970]];
-    
-    
-
-    
-    
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self
                       selector:@selector(networkDidSetup:)
@@ -273,15 +246,52 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)networkDidLogin:(NSNotification *)notification {
     NSLog(@"已登录");
     
+    
+    [JPUSHService getAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        
+        if (0 == iResCode) {
+            NSLog(@"得到别名: %@", iAlias);
+        } else {
+            NSLog(@"得到别名失败");
+            
+            if ([CoreArchive dicForKey:USERINFO]) {
+                NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+                //设置别名
+                NSString *userid = [NSString stringWithFormat:@"%@", userInfo[USERID]];
+                [JPUSHService setAlias:userid completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+                    if (0 == iResCode) {
+                        NSLog(@"设置别名成功: %@", iAlias);
+                    } else {
+                        NSLog(@"设置别名失败");
+                    }
+                } seq:[[NSDate date] timeIntervalSince1970]];
+            }
+            
+            
+        }
+        
+    } seq:[[NSDate date] timeIntervalSince1970]];
+    
+    
     JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];
     identifier.identifiers = nil;
-//    identifier.delivered = YES;
-//    __block JPushNotificationIdentifier *identifierWeak = identifier;
     identifier.findCompletionHandler = ^(NSArray *results) {
         NSLog(@"未处理通知数量: %ld", results.count);
+        
+        for (NSInteger i = 0; i < results.count; i++) {
+            if ([results[i] isKindOfClass:[UNNotificationRequest class]]) {
+                UNNotificationRequest *request = results[i];
+                NSDictionary * userInfo = request.content.userInfo;
+                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+            } else {
+                UNNotificationRequest *request = results[i];
+                NSDictionary * userInfo = request.content.userInfo;
+                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+            }
+        }
+        
         for (UNNotificationRequest *request in results) {
-            NSDictionary * userInfo = request.content.userInfo;
-            NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+            
         }
         
         //         [JPUSHService removeNotification:identifierWeak];
@@ -354,9 +364,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 BOOL isCreate = [self.database executeUpdate:sql];
                 if (isCreate) {
                     NSLog(@"插入成功");
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.timeZone = [NSTimeZone localTimeZone];
+                    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+                    NSDate *remindDate = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp integerValue]];
                     //添加一个新的闹钟
-                    NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindItem.remindtime];
-                    [AlarmClockItem addAlarmClockWithAlarmClockContent:@"" AlarmClockDateTime:remindItem.remindtime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
+                    NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindItem.remindtime];                    
+                    [AlarmClockItem addAlarmClockWithAlarmClockContent:@"" fireDate:remindDate AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:YES];
                     
                 }else {
                     NSLog(@"插入失败");
@@ -584,20 +598,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%s", __FUNCTION__);
     completionHandler(UNNotificationPresentationOptionAlert|UNNotificationPresentationOptionSound);
     
-//    //播放声音
-//    AudioServicesPlaySystemSound(1007);
-//    //开启震动
-//    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-//    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-//
-//    NSString *body = notification.request.content.body ;
-//    [[self topViewController] showAlertViewWithTitle:@"提醒" message:body buttonTitle:@"确定" clickBtn:^{
-//        //关闭震动
-//        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-//    }];
-//
-//    //    //删除已过期的闹钟
-//    //    [AlarmClockItem cancelAllExpireAlarmClock];
     
 }
 

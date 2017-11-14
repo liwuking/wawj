@@ -17,6 +17,7 @@
 #import "UpYunFormUploader.h"
 #import "UpYunBlockUpLoader.h"
 #import <JPUSHService.h>
+#import "LameTool.h"
 
 #define RECORD_TOTAL_TIME   30
 #define kRecordAudioFile @"myRecord.caf"
@@ -152,15 +153,20 @@
 //    //....其他设置等
 //    return dicM;
     
+//    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                              [NSNumber numberWithFloat:44100.0],AVSampleRateKey ,    //采样率 8000/44100/96000
+//                              [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,  //录音格式
+//                              [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,   //线性采样位数  8、16、24、32
+//                              [NSNumber numberWithInt:2],AVNumberOfChannelsKey,      //声道 1，2
+//                              [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey, //录音质量
+//
+//                              nil];
     NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              [NSNumber numberWithFloat:44100.0],AVSampleRateKey ,    //采样率 8000/44100/96000
-                              [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,  //录音格式
-                              [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,   //线性采样位数  8、16、24、32
-                              [NSNumber numberWithInt:2],AVNumberOfChannelsKey,      //声道 1，2
-                              [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey, //录音质量
-                              
+                              [NSNumber numberWithFloat: 15000],AVSampleRateKey, //采样率
+                              [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
+                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,//通道
+                              [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
                               nil];
-    
     return settings;
 }
 
@@ -282,7 +288,6 @@
     self.startStopBtn.selected = !self.startStopBtn.selected;
     if (self.startStopBtn.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-//        [self.audioPlayer play];
         [self startPlay];
         self.previewBtn.hidden = YES;
         
@@ -574,7 +579,6 @@
         
         NSDate *validDate = [NSDate dateWithTimeIntervalSinceNow:1*60];
         if ([remindDate compare:validDate] == NSOrderedAscending ) {
-//            [MBProgressHUD showSuccess:@"请选择有效提醒时间"];
             [self showAlertViewWithTitle:@"请选择有效提醒时间,超出当前时间1分钟" message:nil buttonTitle:@"确定" clickBtn:^{
                 
             }];
@@ -582,52 +586,73 @@
         }
     }
     
-    //图片命名
+    [NSThread detachNewThreadSelector:@selector(audio_PCMtoMP3) toTarget:self withObject:nil];
+
+}
+
+-(void)audio_PCMtoMP3 {
+    __weak __typeof__(self) weakSelf = self;
+    [LameTool audioToMP3:[self getSavePath] isDeleteSourchFile:NO andSourcePath:^(NSString *sourcePath) {
+        NSLog(@"sourcePath: %@", sourcePath);
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        if (sourcePath) {
+            [strongSelf uploadYunWithAudioPath:sourcePath];
+        }
+    }];
+}
+
+-(void)uploadYunWithAudioPath:(NSString *)audioSourcePath {
+    
+    //音频命名
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMdd"];
     NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+    NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
+    NSString *audioHTTPPath=[NSString stringWithFormat:@"audio/%@/%@.mp3", currentDateString,uuid];
     
     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
     NSString *bucketName = @"wawj-test";
-    NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[self getSavePath]]];
-    NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
-    NSString *imgName=[NSString stringWithFormat:@"audio/%@/%@.caf", currentDateString,uuid];
-    __weak __typeof__(self) weakSelf = self;
+    NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:audioSourcePath]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [MBProgressHUD showMessage:nil];
+    });
     
-    [MBProgressHUD showMessage:nil];
+    __weak __typeof__(self) weakSelf = self;
     [up uploadWithBucketName:bucketName
                     operator:@"wawj2017"
                     password:@"1+1=2yes"
                     fileData:fileData
                     fileName:nil
-                     saveKey:imgName
+                     saveKey:audioHTTPPath
              otherParameters:nil
                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
                          
-                         NSString *audioUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
+                         NSString *audioUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,audioHTTPPath];
                          
                          NSLog(@"photoUrl: %@", audioUrl);
                          
-                         [strongSelf createRemindRequestWith:audioUrl];
-
+                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                              [strongSelf createRemindRequestWith:audioUrl];
+                         });
+                        
+                         
                          
                      }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
-//                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                         //                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
                          NSLog(@"上传失败");
                          
                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                              [MBProgressHUD hideHUD];
-                             [MBProgressHUD showError:@"上传失败"];
+                             [MBProgressHUD showError:@"提醒失败"];
                          });
                          
-                        
+                         
                          
                      }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
                          NSLog(@"totalBytesCount: %lld  completedBytesCount: %lld",totalBytesCount,completedBytesCount);
                      }];
-    
 }
 
 -(void)createRemindRequestWith:(NSString *)audioUrl {
@@ -653,7 +678,7 @@
         
         [MBProgressHUD showSuccess:@"发送成功"];
 
-        [strongSelf.navigationController popViewControllerAnimated:YES];
+//        [strongSelf.navigationController popViewControllerAnimated:YES];
         
 //        if ([code isEqualToString:@"1"]) {
 ////             [MBProgressHUD showError:@"已经提醒"];

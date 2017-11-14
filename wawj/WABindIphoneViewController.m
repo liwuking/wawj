@@ -165,11 +165,6 @@
     
 }
 
--(void)backAction {
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
@@ -577,9 +572,10 @@
                 }
             } seq:[[NSDate date] timeIntervalSince1970]];
             
-            
+            [strongSelf.navigationController popViewControllerAnimated:YES];
             
         } else {
+            
             
             [strongSelf showAlertViewWithTitle:@"提示" message:data[@"desc"] buttonTitle:@"确定" clickBtn:^{
                 
@@ -587,7 +583,7 @@
             
         }
         
-        [self.navigationController popViewControllerAnimated:YES];
+        
         
     } fail:^(NSError *error) {
         

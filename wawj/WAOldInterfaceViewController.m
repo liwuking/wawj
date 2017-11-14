@@ -24,6 +24,8 @@
 #define ChineseDays @[@"初一", @"初二", @"初三", @"初四", @"初五", @"初六", @"初七", @"初八", @"初九", @"初十",@"十一", @"十二", @"十三", @"十四", @"十五", @"十六", @"十七", @"十八", @"十九", @"二十", @"廿一", @"廿二", @"廿三", @"廿四", @"廿五", @"廿六", @"廿七", @"廿八", @"廿九", @"三十"]
 
 @interface WAOldInterfaceViewController ()<MFMessageComposeViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *oneConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *twoConstraint;
 @property (weak, nonatomic) IBOutlet UIView *logoutRedView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnViewConstant;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleViewHeght;
@@ -45,16 +47,7 @@
     AVCaptureDevice *device;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [super viewWillAppear:animated];
- 
-    if (![CoreArchive dicForKey:USERINFO]) {
-        self.logoutRedView.hidden = NO;
-    } else {
-        self.logoutRedView.hidden = YES;
-    }
-}
+
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
@@ -123,14 +116,32 @@
     return YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+    
+    if (![CoreArchive dicForKey:USERINFO]) {
+        self.logoutRedView.hidden = NO;
+    } else {
+        self.logoutRedView.hidden = YES;
+    }
+    
+    if ([self isIphone5]) {
+        
+        self.constantHeadTop.constant = -50;
+        self.middleViewHeght.constant = 150;
+    }
+}
+
 -(void)initViews {
     
     self.arrText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"后退"];
-    CGFloat height = (SCREEN_HEIGHT- 423 - 1 - 1.5)/4;
+    CGFloat height = (SCREEN_HEIGHT- 240 -183 - 1 - 1.5)/4;
     if ([self isIphone5]) {
-        self.constantHeadTop.constant = -50;
-        self.middleViewHeght.constant = 160;
-        height = (SCREEN_HEIGHT-350 - 1 - 1.5)/4;
+        
+//        self.constantHeadTop.constant = -50;
+//        self.middleViewHeght.constant = 150;
+        height = (SCREEN_HEIGHT- 240 -183 - 1 - 1.5 + 50 + 33)/4;
     }
     CGFloat width = (SCREEN_WIDTH-1)/3;
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 1, 1);
@@ -264,28 +275,6 @@
     
     [CoreArchive setBool:NO key:INTERFACE_NEW];
     
-    
-    [JPUSHService getAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-        
-        if (0 == iResCode) {
-            NSLog(@"得到别名: %@", iAlias);
-        } else {
-            NSLog(@"得到别名失败");
-            
-            NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-            //设置别名
-            NSString *userid = [NSString stringWithFormat:@"%@", userInfo[USERID]];
-            [JPUSHService setAlias:userid completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-                if (0 == iResCode) {
-                    NSLog(@"设置别名成功: %@", iAlias);
-                } else {
-                    NSLog(@"设置别名失败");
-                }
-            } seq:[[NSDate date] timeIntervalSince1970]];
-            
-        }
-        
-    } seq:[[NSDate date] timeIntervalSince1970]];
     
 }
 

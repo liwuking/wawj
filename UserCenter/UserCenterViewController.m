@@ -137,12 +137,11 @@
 
     }
     
+    _bgScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT+30);
 }
 
 - (IBAction)selectSex:(UITapGestureRecognizer *)sender {
-//    NSString *manImgName = sender.view.tag >500 ? @"UC_man.png":@"UC_man_click.png";
-//    NSString *womanImgName = sender.view.tag >500 ? @"UC_woman_click.png":@"UC_woman.png";
-    
+
     switch (sender.view.tag) {
         case 500:
         {
@@ -466,25 +465,25 @@
                          saveKey:imgName
                  otherParameters:nil
                          success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
-                             
-                             [MBProgressHUD hideHUD];
                              __strong typeof(weakSelf) strongSelf = weakSelf;
                              strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
                              
-                             //[CoreArchive setBool:YES key:USERIHEADIMG];
-                             
-                             [strongSelf personHeadDataRefresh];
-                             
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [MBProgressHUD hideHUD];
+                                  [strongSelf personHeadDataRefresh];
+                             });
                              
                          }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
                              
-                             [MBProgressHUD hideHUD];
-                            __strong typeof(weakSelf) strongSelf = weakSelf;
-                             
-                             _picImgView.image = nil;
-                             [strongSelf showAlertViewWithTitle:@"提示" message:@"请求失败" buttonTitle:@"确定" clickBtn:^{
-                                 
-                             }];
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [MBProgressHUD hideHUD];
+                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                 _picImgView.image = nil;
+                                 [strongSelf showAlertViewWithTitle:@"提示" message:@"请求失败" buttonTitle:@"确定" clickBtn:^{
+                                     
+                                 }];
+                             });
+                           
                              
                          }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
                          

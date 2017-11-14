@@ -573,6 +573,7 @@
                         <outlet property="constantHeadTop" destination="ExB-AT-Yac" id="Nic-lF-SBs"/>
                         <outlet property="logoutRedView" destination="5L5-V3-rSA" id="Bpg-Ip-0PR"/>
                         <outlet property="middleViewHeght" destination="7vc-af-8D8" id="kh2-RR-AFb"/>
+                        <outlet property="oneConstraint" destination="3dc-ba-jca" id="56T-rf-ue8"/>
                         <outlet property="phoneText" destination="h76-Nd-kBq" id="Oh9-mc-PgL"/>
                         <outlet property="timeOne" destination="Wua-9c-Llv" id="Xha-gR-x2O"/>
                         <outlet property="timeTwo" destination="H9d-x1-TJf" id="AEp-pS-vnc"/>

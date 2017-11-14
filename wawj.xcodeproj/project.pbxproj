@@ -38,6 +38,9 @@
 		771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 771F95881F0F276300B4D016 /* WAGuideViewController.m */; };
 		7724152F1FB4231C00D400A8 /* WAAdvertiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7724152D1FB4231B00D400A8 /* WAAdvertiseViewController.m */; };
 		772415301FB4231C00D400A8 /* WAAdvertiseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7724152E1FB4231B00D400A8 /* WAAdvertiseViewController.xib */; };
+		772721D31FBA936000EC501F /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 772721D21FBA936000EC501F /* libmp3lame.a */; };
+		772721D61FBA93DC00EC501F /* LameTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 772721D51FBA93DC00EC501F /* LameTool.m */; };
+		772721D91FBACBB500EC501F /* CustomBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 772721D81FBACBB500EC501F /* CustomBtn.m */; };
 		7749E1911FB058F600239DF3 /* WAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E18F1FB058F600239DF3 /* WAHelpViewController.m */; };
 		7749E1921FB058F600239DF3 /* WAHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7749E1901FB058F600239DF3 /* WAHelpViewController.xib */; };
 		7749E1961FB05B2300239DF3 /* HelpTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749E1941FB05B2300239DF3 /* HelpTableViewCell.m */; };
@@ -455,6 +458,12 @@
 		7724152C1FB4231B00D400A8 /* WAAdvertiseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAdvertiseViewController.h; sourceTree = "<group>"; };
 		7724152D1FB4231B00D400A8 /* WAAdvertiseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAdvertiseViewController.m; sourceTree = "<group>"; };
 		7724152E1FB4231B00D400A8 /* WAAdvertiseViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WAAdvertiseViewController.xib; sourceTree = "<group>"; };
+		772721D11FBA936000EC501F /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
+		772721D21FBA936000EC501F /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
+		772721D41FBA93DC00EC501F /* LameTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LameTool.h; sourceTree = "<group>"; };
+		772721D51FBA93DC00EC501F /* LameTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LameTool.m; sourceTree = "<group>"; };
+		772721D71FBACBB500EC501F /* CustomBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomBtn.h; sourceTree = "<group>"; };
+		772721D81FBACBB500EC501F /* CustomBtn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomBtn.m; sourceTree = "<group>"; };
 		772B48DA1F78E53200007701 /* WZLSerializeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZLSerializeKit.h; sourceTree = "<group>"; };
 		7749E18E1FB058F600239DF3 /* WAHelpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAHelpViewController.h; sourceTree = "<group>"; };
 		7749E18F1FB058F600239DF3 /* WAHelpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAHelpViewController.m; sourceTree = "<group>"; };
@@ -1058,12 +1067,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77A67F2B1F564F30000DFD88 /* AudioToolbox.framework in Frameworks */,
 				77CABE681F959112000097A2 /* UserNotifications.framework in Frameworks */,
+				772721D31FBA936000EC501F /* libmp3lame.a in Frameworks */,
 				77A3C6701FB5AA650051A939 /* libopencore-amrwb.a in Frameworks */,
 				779CF47C1F7127CD00DBEE44 /* CoreLocation.framework in Frameworks */,
 				77A67F2F1F564FBE000DFD88 /* libstdc++.6.0.9.tbd in Frameworks */,
 				77A67F2D1F564F58000DFD88 /* AddressBook.framework in Frameworks */,
-				77A67F2B1F564F30000DFD88 /* AudioToolbox.framework in Frameworks */,
 				77A67F291F564F26000DFD88 /* Contacts.framework in Frameworks */,
 				77A67F271F564F17000DFD88 /* libicucore.tbd in Frameworks */,
 				77A67F071F4D1CA5000DFD88 /* libc++.1.tbd in Frameworks */,
@@ -1198,6 +1208,17 @@
 			);
 			name = StartPage;
 			sourceTree = "<group>";
+		};
+		772721D01FBA936000EC501F /* Lame */ = {
+			isa = PBXGroup;
+			children = (
+				772721D11FBA936000EC501F /* lame.h */,
+				772721D21FBA936000EC501F /* libmp3lame.a */,
+				772721D41FBA93DC00EC501F /* LameTool.h */,
+				772721D51FBA93DC00EC501F /* LameTool.m */,
+			);
+			path = Lame;
+			sourceTree = SOURCE_ROOT;
 		};
 		775410AB1F9DE3870005C3AE /* ZLPhotoBrowser */ = {
 			isa = PBXGroup;
@@ -1375,6 +1396,8 @@
 				771F95881F0F276300B4D016 /* WAGuideViewController.m */,
 				77D75DEB1F0F6CD200E46D15 /* WAOldInterfaceViewController.h */,
 				77D75DEC1F0F6CD200E46D15 /* WAOldInterfaceViewController.m */,
+				772721D71FBACBB500EC501F /* CustomBtn.h */,
+				772721D81FBACBB500EC501F /* CustomBtn.m */,
 				77A67D081F429500000DFD88 /* WANewInterfaceViewController.h */,
 				77A67D091F429500000DFD88 /* WANewInterfaceViewController.m */,
 				77A67D0A1F429500000DFD88 /* WANewInterfaceViewController.xib */,
@@ -1804,6 +1827,7 @@
 		77A3C65F1FB5AA650051A939 /* arm */ = {
 			isa = PBXGroup;
 			children = (
+				772721D01FBA936000EC501F /* Lame */,
 				77A3C6601FB5AA650051A939 /* amrFileCodec.h */,
 				77A3C6611FB5AA650051A939 /* amrFileCodec.m */,
 				77A3C6621FB5AA650051A939 /* include */,
@@ -2866,6 +2890,7 @@
 				77A67E221F4C0EE1000DFD88 /* EWPhotoViewer.m in Sources */,
 				77A67E4E1F4C0EE1000DFD88 /* SBJson4Parser.m in Sources */,
 				774FB88A1F8E0F2F003F6A05 /* PhotoCollectionViewCellNew.m in Sources */,
+				772721D91FBACBB500EC501F /* CustomBtn.m in Sources */,
 				779CF45B1F6B65AA00DBEE44 /* NSDictionary+Util.m in Sources */,
 				77A67E131F4C0EE1000DFD88 /* BMChineseSort.m in Sources */,
 				778EF8341FA32FB1005CDD82 /* WAAppAddCollectionViewCell.m in Sources */,
@@ -2937,6 +2962,7 @@
 				77A67E971F4C15AB000DFD88 /* JKCountDownButton.m in Sources */,
 				7701046C1F32F14E00F723A2 /* ContactTableViewCell.m in Sources */,
 				7754110F1F9DE3870005C3AE /* ZLThumbnailViewController.m in Sources */,
+				772721D61FBA93DC00EC501F /* LameTool.m in Sources */,
 				771F958A1F0F276300B4D016 /* WAGuideViewController.m in Sources */,
 				779CF4801F7238C800DBEE44 /* PhotosItem.m in Sources */,
 				77A67E1F1F4C0EE1000DFD88 /* UIWebView+Extension.m in Sources */,
@@ -3204,6 +3230,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/arm/lib",
+					"$(PROJECT_DIR)/Lame",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirdtiger.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3234,6 +3261,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/arm/lib",
+					"$(PROJECT_DIR)/Lame",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirdtiger.wawj;
 				PRODUCT_NAME = "$(TARGET_NAME)";

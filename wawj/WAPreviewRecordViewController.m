@@ -12,6 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "WARemindFamilyViewController.h"
 #import "amrFileCodec.h"
+//#import "SoundTouchOperation.h"
 
 #define kRecordAudioFile @"myRecord.caf"
 
@@ -31,7 +32,9 @@
 
 @end
 
-@implementation WAPreviewRecordViewController
+@implementation WAPreviewRecordViewController {
+//    NSOperationQueue *soundTouchQueue;
+}
 - (IBAction)clickBackBtn:(id)sender {
     
     if (self.isFromRemindVC) {
@@ -130,10 +133,27 @@
     [self initViews];
     [self setAudioSession];
     
-    
+//    soundTouchQueue = [[NSOperationQueue alloc]init];
+//    soundTouchQueue.maxConcurrentOperationCount = 1;
    
     
 }
+
+//-(void)startPlay {
+//    NSData *data = [NSData dataWithContentsOfFile:self.audioUrl];
+//    
+//    MySountTouchConfig config;
+//    config.sampleRate = 44100.0;
+//    config.tempoChange = 0;
+//    config.pitch = 0;
+//    config.rate = 0;
+//    
+//    SoundTouchOperation *manSTO = [[SoundTouchOperation alloc]initWithTarget:self action:@selector(SoundTouchFinish:) SoundTouchConfig:config soundFile:data];
+//    
+//    [soundTouchQueue cancelAllOperations];
+//    [soundTouchQueue addOperation:manSTO];
+//}
+
 - (IBAction)clickStart:(id)sender {
     
     self.startStopBtn.selected = !self.startStopBtn.selected;
@@ -252,27 +272,28 @@
 -(AVAudioPlayer *)audioPlayer{
     if (!_audioPlayer) {
         
-        NSURL *url= [NSURL URLWithString:self.audioUrl];
-         NSData *audioData = [NSData dataWithContentsOfFile:self.audioUrl];
+//         NSData *audioData = [NSData dataWithContentsOfFile:self.audioUrl];
         
-        if ([self.audioUrl hasSuffix:@".amr"]) {
-            
-        } else {
-           
-        }
-        
+//        if ([self.audioUrl hasSuffix:@".amr"]) {
+//
+//        } else {
+//
+//        }
+//
         
         
         NSError *error=nil;
-//        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
-        _audioPlayer=[[AVAudioPlayer alloc] initWithData:audioData error:&error];
+       _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:self.audioUrl] error:&error];
+//        _audioPlayer=[[AVAudioPlayer alloc] initWithData:audioData error:&error];
         _audioPlayer.numberOfLoops=0;
         _audioPlayer.volume = 1;
         _audioPlayer.delegate = self;
+//        _audioPlayer.enableRate = YES;
+//        _audioPlayer.rate = 1;
         [_audioPlayer prepareToPlay];
         if (error) {
             NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-            return nil;
+//            return nil;
         }
     }
     return _audioPlayer;
