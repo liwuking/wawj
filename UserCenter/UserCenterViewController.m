@@ -154,7 +154,6 @@
             
             
             UIView *womanBGView = _sexWomanBGView;
-//            womanBGView.backgroundColor = whiteColor;
             UIImageView *womanImgView = [womanBGView viewWithTag:100];
             womanImgView.image = [UIImage imageNamed:@"UC_woman_click"];
             UILabel *womanLabel = [womanBGView viewWithTag:101];

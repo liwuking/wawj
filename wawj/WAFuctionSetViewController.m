@@ -85,8 +85,6 @@
         [CoreArchive removeStrForKey:USERINFO];
         [CoreArchive removeStrForKey:LASTTIME];
         [CoreArchive removeStrForKey:USER_PHOTO_ARR];
-        [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHI];
-        [CoreArchive removeStrForKey:ISZHENGDIAN_BAOSHIDefaultSet];
         [CoreArchive removeStrForKey:UNSHOWPHOTOS];
         [CoreArchive removeStrForKey:PHOTO_LIST_DICT];
         [CoreArchive removeStrForKey:USER_CONTACT_ARR];
