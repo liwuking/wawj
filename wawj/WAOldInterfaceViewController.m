@@ -136,12 +136,9 @@
 -(void)initViews {
     
     self.arrText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"后退"];
-    CGFloat height = (SCREEN_HEIGHT- 240 -183 - 1 - 1.5)/4;
+    NSInteger height = (self.btnView.frame.size.height-3)/4;//(SCREEN_HEIGHT- 240 -184 - 2)/4;
     if ([self isIphone5]) {
-        
-//        self.constantHeadTop.constant = -50;
-//        self.middleViewHeght.constant = 150;
-        height = (SCREEN_HEIGHT- 240 -183 - 1 - 1.5 + 50 + 33)/4;
+        height = (self.btnView.frame.size.height-12)/4;
     }
     CGFloat width = (SCREEN_WIDTH-1)/3;
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 1, 1);
@@ -158,7 +155,7 @@
             btn.titleLabel.font = [UIFont systemFontOfSize:35];
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
             btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
-//            NSLog(@"btn.frame: %@", NSStringFromCGRect(btn.frame));
+            NSLog(@"btn.frame: %lf", btn.frame.origin.y);//NSStringFromCGRect(btn.frame)
             [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
             btn.tag = index;
             [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];

@@ -161,13 +161,28 @@
 //                              [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey, //录音质量
 //
 //                              nil];
-    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              [NSNumber numberWithFloat: 15000],AVSampleRateKey, //采样率
-                              [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
-                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,//通道
-                              [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
-                              nil];
-    return settings;
+//    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                              [NSNumber numberWithFloat: 15000],AVSampleRateKey, //采样率
+//                              [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
+//                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,//通道
+//                              [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
+//                              nil];
+//    return settings;
+    
+    
+    NSDictionary *setting = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithInt:AVAudioQualityMin],
+                             AVEncoderAudioQualityKey,
+                             [NSNumber numberWithInt:16],
+                             AVEncoderBitRateKey,
+                             [NSNumber numberWithInt:2],
+                             AVNumberOfChannelsKey,
+                             [NSNumber numberWithFloat:44100.0],
+                             AVSampleRateKey,
+                             nil];
+    
+    return setting;
+
 }
 
 ///**

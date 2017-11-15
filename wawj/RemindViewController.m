@@ -1025,8 +1025,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
         [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
         
-        NSDate* date = [formatter dateFromString:timeStr];
-        NSInteger timeSp_f = [date timeIntervalSince1970];
+        NSDate* remindDate = [formatter dateFromString:timeStr];
+        NSInteger timeSp_f = [remindDate timeIntervalSince1970];
         NSLog(@"timeSp_f = %ld",timeSp_f);
         
         NSInteger nowSp_f = [[NSDate date] timeIntervalSince1970];
@@ -1049,7 +1049,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
             [self getDataFromDatabase];
             
              NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindTime];
-            [AlarmClockItem addAlarmClockWithAlarmClockContent:content AlarmClockDateTime:remindTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
+//            [AlarmClockItem addAlarmClockWithAlarmClockContent:content AlarmClockDateTime:remindTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
+            [AlarmClockItem addAlarmClockWithAlarmClockContent:content fireDate:remindDate AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
             
         }else{
             [MBProgressHUD showSuccess:@"创建失败"];

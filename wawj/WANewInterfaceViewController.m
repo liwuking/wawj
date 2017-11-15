@@ -132,7 +132,7 @@
     NSArray *titleArr = @[@"我家",@"电话本",@"上网",@"相机",@"手电筒",@"应用"];
     
     CGFloat height = (SCREEN_HEIGHT-190 - 1.5)/3;
-    CGFloat width = (SCREEN_WIDTH-0.5)/2;
+    NSInteger width = (SCREEN_WIDTH-0.5)/2;
     for (NSInteger i = 0; i < 3; i++) {
         for (NSInteger j = 0; j < 2;  j++) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];

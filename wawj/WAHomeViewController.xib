@@ -58,7 +58,7 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wana" translatesAutoresizingMaskIntoConstraints="NO" id="Tvp-Q5-4OS">
-                    <rect key="frame" x="87" y="170" width="202" height="60"/>
+                    <rect key="frame" x="87" y="160" width="202" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="Yq8-uf-rqk"/>
                         <constraint firstAttribute="width" constant="202" id="b8L-NZ-KR1"/>
@@ -141,7 +141,7 @@
                 <constraint firstItem="nj5-ci-Fpe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="guz-f9-GfT"/>
                 <constraint firstItem="NLx-9p-PnA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="kXf-2g-w65"/>
                 <constraint firstItem="wug-cl-eDN" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mFh-6j-4mg"/>
-                <constraint firstItem="nj5-ci-Fpe" firstAttribute="top" secondItem="Tvp-Q5-4OS" secondAttribute="bottom" constant="10" id="ohQ-jk-VYQ"/>
+                <constraint firstItem="nj5-ci-Fpe" firstAttribute="top" secondItem="Tvp-Q5-4OS" secondAttribute="bottom" constant="20" id="ohQ-jk-VYQ"/>
                 <constraint firstItem="xob-mg-H5z" firstAttribute="top" secondItem="nj5-ci-Fpe" secondAttribute="bottom" constant="30" id="qkN-CU-wKA"/>
                 <constraint firstAttribute="trailing" secondItem="nj5-ci-Fpe" secondAttribute="trailing" id="rxR-YF-rTS"/>
             </constraints>

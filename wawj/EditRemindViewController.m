@@ -365,12 +365,12 @@
             
             NSLog(@"timeSp:%@ \n content:%@ \n timeStr:%@",remindContent,dateStrHourMinite,self.alarmType);
             [MBProgressHUD showSuccess:@"创建成功"];
-            [self performSelector:@selector(backActionWithAddRemindItem:) withObject:remindItem afterDelay:1];
+            [self performSelector:@selector(backActionWithAddRemindItem:) withObject:remindItem afterDelay:0];
             
             
         } else {
             [MBProgressHUD showSuccess:@"由于数据库问题，创建失败"];
-            [self performSelector:@selector(backAction) withObject:nil afterDelay:1];
+            [self performSelector:@selector(backAction) withObject:nil afterDelay:0];
         }
         
         
@@ -499,7 +499,7 @@
                 //删除本地通知
                 [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
                 [MBProgressHUD showSuccess:@"删除成功"];
-                [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
+                [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:0];
                 
             } else {
                 [MBProgressHUD showSuccess:@"删除失败"];
@@ -515,7 +515,7 @@
             //删除本地通知
             [AlarmClockItem cancelAlarmClockWithRemindItem:self.remindItem];
             [MBProgressHUD showSuccess:@"删除成功"];
-            [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:1];
+            [self performSelector:@selector(backActionWithDelRefresh:) withObject:self.remindItem afterDelay:0];
             
         } else {
             [MBProgressHUD showSuccess:@"删除失败"];

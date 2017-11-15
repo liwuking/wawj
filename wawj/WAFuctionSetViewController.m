@@ -48,7 +48,7 @@
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
-    [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+    [backItem setImageInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
     self.title = @"个人设置";
