@@ -122,7 +122,7 @@
     if(component == 0){
         
         if(row == self.firstIndex){
-            NSLog(@"_firstIndex: %ld",self.firstIndex);
+//            NSLog(@"_firstIndex: %ld",self.firstIndex);
             /*选中后的row的字体颜色*/
             /*重写- (nullable NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component NS_AVAILABLE_IOS(6_0) __TVOS_PROHIBITED; 方法加载 attributedText*/
             
@@ -137,7 +137,7 @@
     }else if (component == 1){
         
         if(row == self.secondIndex){
-            NSLog(@"secondIndex: %ld",self.secondIndex);
+//            NSLog(@"secondIndex: %ld",self.secondIndex);
             pickerLabel.attributedText
             = [self pickerView:pickerView attributedTitleForRow:self.secondIndex forComponent:component];
         }else{
@@ -148,7 +148,7 @@
     }else if (component == 2){
         
         if(row == self.thirdIndex){
-            NSLog(@"thirdIndex: %ld",self.thirdIndex);
+//            NSLog(@"thirdIndex: %ld",self.thirdIndex);
             pickerLabel.attributedText
             = [self pickerView:pickerView attributedTitleForRow:self.thirdIndex forComponent:component];
             

@@ -764,6 +764,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 RemindItem *item = [[RemindItem alloc] init];
                 item.remindid = [res stringForColumn:@"remindid"];
                 item.remindorigintype = [res stringForColumn:@"remindorigintype"];
+                NSLog(@"[res stringForColumn:%@", [res stringForColumn:@"remindorigintype"]);
                 item.remindtype = [res stringForColumn:@"remindtype"];
                 item.remindtime = [res stringForColumn:@"remindtime"];
                 item.content = [res stringForColumn:@"content"];

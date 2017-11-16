@@ -170,6 +170,7 @@
     self.labPhotosBytes = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_btnOriginalPhoto.frame)+5, 7, 80, 30)];
     self.labPhotosBytes.font = [UIFont systemFontOfSize:15];
     self.labPhotosBytes.textColor = kDoneButton_bgColor;
+    self.labPhotosBytes.hidden = YES;
     [_bottomView addSubview:self.labPhotosBytes];
     
     //编辑

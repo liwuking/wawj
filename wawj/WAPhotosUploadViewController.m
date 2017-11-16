@@ -471,6 +471,10 @@
                     
                 } else {
                     
+                    if (0  == imageArr.count) {
+                        return ;
+                    }
+                    
                     NSData *pngData = UIImagePNGRepresentation(imageArr[i]);
                     //图片命名
                     NSDate *currentDate = [NSDate date];
@@ -669,7 +673,7 @@
 //        [MBProgressHUD hideHUD];
         
         NSString *code = data[@"code"];
-        NSString *desc = data[@"desc"];
+//        NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
             strongSelf.shareUrl = data[@"body"][@"url"];
@@ -681,7 +685,7 @@
 //            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
 //
 //            }];
-            [MBProgressHUD showError:desc];
+//            [MBProgressHUD showError:desc];
         
         }
         
@@ -694,7 +698,7 @@
 //
 //            }];
 //        }
-        [MBProgressHUD showError:error.localizedDescription];
+//        [MBProgressHUD showError:error.localizedDescription];
         
     }];
     

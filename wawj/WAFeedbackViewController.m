@@ -155,6 +155,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
         if ([code isEqualToString:@"0000"]) {
             
             [MBProgressHUD showSuccess:@"反馈成功"];
+            [strongSelf.navigationController popViewControllerAnimated:YES];
             
         } else {
             

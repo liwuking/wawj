@@ -139,6 +139,8 @@
 
 -(void)setJPush:(NSDictionary *)launchOptions {
 
+    [JPUSHService setLogOFF];
+    
     //notice: 3.0.0及以后版本注册可以这样写，也可以继续用之前的注册方式
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
     entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionSound;

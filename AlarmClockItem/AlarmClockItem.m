@@ -217,7 +217,7 @@
             NSLog(@"newFireDate: %@", [formatter stringFromDate:newFireDate]);
             
             [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
-           
+           NSLog(@"requestIdentifier003: %@", clockIdentifier);
         } else  if ([alarType isEqualToString:REMINDTYPE_WORKDAY]) {
 
             for (NSInteger newWeekDay =2; newWeekDay<=6; newWeekDay++) {
@@ -233,8 +233,10 @@
                 [comps setSecond:0];
                 
                 NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
-                clockIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
-                [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
+                [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                
+                NSLog(@"requestIdentifier001: %@", requestIdentifier);
             }
 
         } else {
@@ -254,8 +256,9 @@
                     
                     NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
                     
-                    clockIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
-                    [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                    NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
+                    [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                    NSLog(@"requestIdentifier002: %@", requestIdentifier);
                 }
                 
             }

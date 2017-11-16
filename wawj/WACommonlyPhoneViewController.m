@@ -324,9 +324,12 @@
         item.name = name;
         NSString *imageName = [NSString stringWithFormat:@"%ld", (NSInteger)[[NSDate date] timeIntervalSince1970]];
         item.imageName = imageName;
-        [item.phoneArr addObject:[phone stringByReplacingOccurrencesOfString:@"-" withString:@""]];
+        phone = [NSString stringWithFormat:@"%@", phone];
+        phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        phone = [[phone componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@""];
+        [item.phoneArr addObject:phone];
         [strongObject.dataArr addObject:item];
-        
+
         if (imageData) {
             NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
             NSString *contactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
