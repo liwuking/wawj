@@ -417,9 +417,6 @@
 
 -(void)uploadImage:(NSArray *)images {
     
-    NSMutableArray *photoLists = [@[] mutableCopy];
-
-    NSMutableArray *imageArr = [[NSMutableArray alloc] initWithArray:images];
     if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
 
         [self hudShow:[NSString stringWithFormat:@"正在上传(0/%ld)...",images.count]];
@@ -427,6 +424,9 @@
         dispatch_queue_t queue = dispatch_queue_create("com.wawj.www", DISPATCH_QUEUE_PRIORITY_DEFAULT);
         dispatch_async( queue, ^{
 
+            NSMutableArray *photoLists = [@[] mutableCopy];
+            NSMutableArray *imageArr = [[NSMutableArray alloc] initWithArray:images];
+            
             dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
             for (int i = 0; i < imageArr.count+1; i++)
             {
@@ -444,27 +444,33 @@
                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
                         dispatch_semaphore_signal(semaphore);
                         
+                        [strongSelf hideHud];
+                        
                         NSString *code = data[@"code"];
-                        NSString *desc = data[@"desc"];
+//                        NSString *desc = data[@"desc"];
                         if ([code isEqualToString:@"0000"]) {
                             
                             //得到相册列表;
+                            [MBProgressHUD showMessage:nil];
                             [strongSelf getPhotosList];
                             
                         } else {
                             
-                            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                                
-                            }];
-                            
+//                            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//
+//                            }];
+                            [MBProgressHUD showError:@"网络请求失败"];
                         }
                         
                     } fail:^(NSError *error) {
                         
                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-                            
-                        }];
+//                        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+//
+//                        }];
+                        
+                        [MBProgressHUD showError:@"网络请求失败"];
+                        [strongSelf hideHud];
                         
                         dispatch_semaphore_signal(semaphore);
                     }];
@@ -474,7 +480,6 @@
                     if (0  == imageArr.count) {
                         return ;
                     }
-                    
                     NSData *pngData = UIImagePNGRepresentation(imageArr[i]);
                     //图片命名
                     NSDate *currentDate = [NSDate date];
@@ -482,7 +487,6 @@
                     [dateFormatter setDateFormat:@"yyyyMMdd"];
                     NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
                     
-                    //NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
                     NSString *uuid = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
                     NSString *imgName=[NSString stringWithFormat:@"album/%@/%@%@.png", currentDateString,self.photosItem.albumId,uuid];
 
@@ -738,7 +742,7 @@
         }
         
         NSString *code = data[@"code"];
-        NSString *desc = data[@"desc"];
+//        NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
             if (![data[@"body"][@"photoList"] isKindOfClass:[NSNull class]]) {

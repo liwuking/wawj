@@ -34,7 +34,7 @@
 //    [userContent addScriptMessageHandler:self name:@"NativeMethod"];
     // 将UserConttentController设置到配置文件
     config.userContentController = userContent;
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-44) configuration:config];
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-60) configuration:config];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://114.wawjapp.com/index.html"]];
     self.webView.navigationDelegate = self;
     
@@ -45,20 +45,22 @@
 }
 
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    [MBProgressHUD showMessage:nil];
-    
+//    [MBProgressHUD showMessage:nil];
+    [MBProgressHUD showMessage:nil toView:self.webView];
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
     
-    [MBProgressHUD hideHUD];
+//    [MBProgressHUD hideHUD];
+    [MBProgressHUD hideHUDForView:self.webView];
     NSLog(@"%s", __FUNCTION__);
 }
 
 -(void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     
-    [MBProgressHUD hideHUD];
+//    [MBProgressHUD hideHUD];
+     [MBProgressHUD hideHUDForView:self.webView];
     
     [MBProgressHUD showError:[error localizedDescription]];
     

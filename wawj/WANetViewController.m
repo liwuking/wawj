@@ -60,6 +60,10 @@
     
     self.title = @"网络设置";
     
+    self.wifiNameLab.adjustsFontSizeToFitWidth = YES;
+    self.phoneLab.adjustsFontSizeToFitWidth = YES;
+    self.netBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
+    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
