@@ -35,7 +35,7 @@
 
 
 
-@interface AppDelegate ()<UNUserNotificationCenterDelegate,JPUSHRegisterDelegate>
+@interface AppDelegate ()<UNUserNotificationCenterDelegate,JPUSHRegisterDelegate,AVAudioPlayerDelegate>
 
 @end
 
@@ -388,6 +388,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 -(void)handleRemoteRemindDate:(NSDictionary *)daDict {
     
+    if (daDict[@"acceptPhone"]) {
+        return;
+    }
+    
     NSDictionary *dataDict = [daDict transforeNullValueToEmptyStringInSimpleDictionary];
     
     RemindItem *item = [[RemindItem alloc] init];
@@ -614,23 +618,29 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //点击后台进入
     if (application.applicationState == UIApplicationStateInactive) {
         
-        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+        [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
             
         }];
         
         NSLog(@"UIApplicationStateInactive");
     }else{
         
-        //播放声音
-        //开启震动
-        AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        [self playRemindAudioWithSoundName:notification.soundName];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSString *fireTime = [dateFormatter stringFromDate:notification.fireDate];
+        NSString *remindContent = [NSString stringWithFormat:@"【%@】%@", fireTime,notification.alertBody];
         
-        [[self topViewController] showAlertViewWithTitle:@"提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+        //播放声音
+        [self playRemindAudioWithSoundName:notification.soundName];
+        NSLog(@"notification.soundName: %@", notification.soundName);
+        
+        __weak __typeof__(self) weakSelf = self;
+        [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:remindContent buttonTitle:@"确定" clickBtn:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
             //关闭震动
             AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-            [self.audioFilePlayer stop];
+            //关闭声音
+            [strongSelf.audioFilePlayer stop];
         }];
         
     }
@@ -638,6 +648,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"info = %@",notification.userInfo);
     //删除已过期的闹钟
     [AlarmClockItem cancelAllExpireAlarmClock];
+    
     
 }
 
@@ -657,9 +668,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.audioFilePlayer.numberOfLoops=0;
     self.audioFilePlayer.volume = 1;
     [self.audioFilePlayer prepareToPlay];
+    self.audioFilePlayer.delegate = self;
     if (error) {
         NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-//        [MBProgressHUD showError:@"播放失败"];
         return ;
     }
     
@@ -667,10 +678,53 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+//播放结束后调用这个函数
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    
+     NSLog(@"%s", __func__);
+    //开启震动
+    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //关闭震动
+        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+    });
+    
+}
+
 void systemAudioCallback()
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
+
+/* if an error occurs while decoding it will be reported to the delegate. */
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error {
+    NSLog(@"%s", __func__);
+}
+
+/* AVAudioPlayer INTERRUPTION NOTIFICATIONS ARE DEPRECATED - Use AVAudioSession instead. */
+
+/* audioPlayerBeginInterruption: is called when the audio session has been interrupted while the player was playing. The player will have been paused. */
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player  {
+    NSLog(@"%s", __func__);
+}
+
+/* audioPlayerEndInterruption:withOptions: is called when the audio session interruption has ended and this player had been interrupted while playing. */
+/* Currently the only flag is AVAudioSessionInterruptionFlags_ShouldResume. */
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player withOptions:(NSUInteger)flags  {
+    NSLog(@"%s", __func__);
+}
+
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player withFlags:(NSUInteger)flags  {
+    NSLog(@"%s", __func__);
+}
+
+/* audioPlayerEndInterruption: is called when the preferred method, audioPlayerEndInterruption:withFlags:, is not implemented. */
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player {
+    NSLog(@"%s", __func__);
+}
+
 
 -(void)setUMShare {
     

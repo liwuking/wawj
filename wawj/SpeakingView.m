@@ -13,7 +13,7 @@
 }
 
 - (void)startAction {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.45 target:self selector:@selector(changeVolumeImage) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(changeVolumeImage) userInfo:nil repeats:YES];
     
 }
 - (void)changeVolumeImage {

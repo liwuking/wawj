@@ -22,8 +22,11 @@
 #import "DBManager.h"
 #import "WAHelpDetailViewController.h"
 @interface WABindIphoneViewController ()<CLLocationManagerDelegate,UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *serviceBtn02;
+@property (weak, nonatomic) IBOutlet UILabel *servericeLab01;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *getVeryCodeGes;
 @property (nonatomic, strong) CLLocationManager* locationManager;
+@property (weak, nonatomic) IBOutlet UILabel *topLab;
 @property(nonatomic, strong)FMDatabase             *db;
 
     @property (weak, nonatomic) IBOutlet UITextField *iphoneTextField;
@@ -63,14 +66,22 @@
 
 -(void)initView {
     
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
     self.msgStatusLab.hidden = YES;
     
+   
     self.title = @"绑定手机号";
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(leftAction)];
     [backItem setTintColor:HEX_COLOR(0x666666)];
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
+     self.topLab.adjustsFontSizeToFitWidth = YES;
+    
+    self.servericeLab01.adjustsFontSizeToFitWidth = YES;
+    
+    self.serviceBtn02.titleLabel.font = self.servericeLab01.font;
 }
 
 - (IBAction)clickServiceProtocol:(UIButton *)sender {

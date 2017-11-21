@@ -43,6 +43,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 };
 
 @interface RemindViewController ()<UITableViewDelegate,UITableViewDataSource,IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,RemindCellDelegate,BuildRemindViewDelegate,OverdueRemindCellDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *longGesLab;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *microphoneBGView;
@@ -1172,21 +1173,21 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma -mark 点击录音
 - (IBAction)beginRecording:(UILongPressGestureRecognizer *)sender {
     
+   
+    NSLog(@"%s  %ld", __func__, sender.state);
     if (sender.state == UIGestureRecognizerStateBegan) {
-        
-        if ([self isReachable]) {
-            if ([self checkMicPhonePermission]) {
-                
-                if (!self.speakingView) {
-                    self.speakingView = [[NSBundle mainBundle] loadNibNamed:@"SpeakingView" owner:self options:nil][0];
-                    [self.speakingView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-                }
-                [self.myApp.window addSubview:self.speakingView];
-                [self.speakingView startAction];
-                
-                [self beginDistinguish];
-                
-            }
+         self.microphoneBGView.alpha = 0.5;
+        self.longGesLab.alpha = 0.5;
+        if ([self isReachable] && [self checkMicPhonePermission]) {
+            
+            if (!self.speakingView) {
+                self.speakingView = [[NSBundle mainBundle] loadNibNamed:@"SpeakingView" owner:self options:nil][0];
+                [self.speakingView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+            } 
+            [self.myApp.window addSubview:self.speakingView];
+            [self.speakingView startAction];
+            
+            [self beginDistinguish];
             
         }else{
             
@@ -1198,7 +1199,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         
     } else if (sender.state == UIGestureRecognizerStateEnded) {
-        
+         self.microphoneBGView.alpha = 1;
+        self.longGesLab.alpha = 1;
         if (![self isReachable]) {
             return;
         }
@@ -1541,6 +1543,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onEndOfSpeech
 {
 //     [_popUpView showText: @"停止录音"];
+    [MBProgressHUD hideHUD];
     NSLog(@"%s",__func__);
 }
 

@@ -629,7 +629,7 @@
         return;
     }
     
-    if ([self.imageUrl isEqualToString:@""]) {
+    if (!self.imageUrl  || [self.imageUrl isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"头像不能为空" buttonTitle:@"确定" clickBtn:^{
             
         }];
@@ -641,6 +641,10 @@
 }
 
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
 #pragma mark - text field delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -649,9 +653,7 @@
     if (SCREEN_HEIGHT == 480) {
         offset = _bgScrollView.contentSize.height - (textField.superview.bottom) ;
     }
-    
-    //NSLog(@"offset = %f",offset);
-    
+
     NSTimeInterval animationDuration = 0.30f;
     [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
     [UIView setAnimationDuration:animationDuration];

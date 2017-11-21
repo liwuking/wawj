@@ -20,6 +20,7 @@
 #import "WAApplyRemindViewController.h"
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewTop;
+@property (weak, nonatomic) IBOutlet UIButton *remindBtn;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -38,6 +39,10 @@
     }
     
     [self refreshTableView];
+    
+    if ([CoreArchive dicForKey:USERINFO]) {
+        [self getCloseFamilyApplyListData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -114,9 +119,38 @@
     
     [self initViews];
     
-    
-
 }
+
+
+#pragma -mark 亲密家人申请列表
+-(void)getCloseFamilyApplyListData {
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1105" andModel:nil];
+    
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        NSString *code = data[@"code"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            if ([data[@"body"] isKindOfClass:[NSArray class]]) {
+                
+                NSArray *dataArr = [[NSArray alloc] initWithArray: data[@"body"]];
+                if (dataArr.count > 0) {
+                    [strongSelf.remindBtn setImage:[UIImage imageNamed:@"remindLight"] forState:UIControlStateNormal];
+                }
+                
+            }
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+    }];
+    
+}
+
 - (IBAction)cllickContactRemindBtn:(UIButton *)sender {
     WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
@@ -244,9 +278,9 @@
         
         __weak __typeof__(self) weakSelf = self;
         NSString *userName = [CoreArchive dicForKey:USERINFO][@"userName"];
-        if ([userName isEqualToString:@""]) {
+        if (!userName || [userName isEqualToString:@""]) {
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            [strongSelf showAlertViewWithTitle:@"提示" message:@"您还没有设置个人信息，请先完善个人信息" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            [strongSelf showAlertViewWithTitle:@"添加亲密家人" message:@"请先设置头像、姓名和生日" cancelButtonTitle:@"取消" clickCancelBtn:^{
                 
             } otherButtonTitles:@"确定" clickOtherBtn:^{
                 
@@ -260,9 +294,9 @@
         }
         
         NSString *headUrl = [CoreArchive dicForKey:USERINFO][@"headUrl"];
-        if ([headUrl isEqualToString:@""]) {
+        if (!headUrl || [headUrl isEqualToString:@""]) {
             
-            [self showAlertViewWithTitle:@"提示" message:@"请先上传个人头像" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            [self showAlertViewWithTitle:@"添加亲密家人" message:@"请先设置头像、姓名和生日" cancelButtonTitle:@"取消" clickCancelBtn:^{
                 
             } otherButtonTitles:@"确定" clickOtherBtn:^{
                 
@@ -275,10 +309,7 @@
             return;
         }
         
-        
-        
         WAAddFamilyViewController *vc = [[WAAddFamilyViewController alloc] initWithNibName:@"WAAddFamilyViewController" bundle:nil];
-        //vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
         
     } else {

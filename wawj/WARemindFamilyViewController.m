@@ -306,7 +306,7 @@
         [self startPlay];
         self.previewBtn.hidden = YES;
         
-        self.remindBtn.enabled = NO;
+//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
@@ -315,7 +315,7 @@
         self.previewBtn.hidden = NO;
         
         if (self.recordedTime >= 5) {
-            self.remindBtn.enabled = YES;
+//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
     }
@@ -331,7 +331,7 @@
         [self startPlay];
         self.previewBtn.hidden = YES;
         
-        self.remindBtn.enabled = NO;
+//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
@@ -345,7 +345,7 @@
         self.previewBtn.hidden = NO;
         
         if (self.recordedTime >= 5) {
-            self.remindBtn.enabled = YES;
+//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
     }
@@ -454,7 +454,7 @@
         self.startStopBtn.selected = NO;
         
         if (self.recordedTime >= 5) {
-            self.remindBtn.enabled = YES;
+//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
   
@@ -480,7 +480,7 @@
         self.headImageGes.enabled = NO;
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
-        self.remindBtn.enabled = NO;
+//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
     }
     
@@ -489,7 +489,7 @@
 #pragma -mark CircularViewDelegate
 
 -(void)circularViewStartDraw {
-    self.remindBtn.enabled = NO;
+//    self.remindBtn.enabled = NO;
     [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
 }
 
@@ -517,7 +517,7 @@
 //    }
     
     if (self.recordedTime >= 5) {
-        self.remindBtn.enabled = YES;
+//        self.remindBtn.enabled = YES;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
     }
     

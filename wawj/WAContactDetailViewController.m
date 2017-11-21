@@ -42,7 +42,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
         [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
     }else {
-        [self.headImageView setImage:[UIImage imageNamed:@"oldFather"]];
+        [self.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
     }
     
     for (NSInteger i = 0; i < self.contactItem.phoneArr.count; i++) {
@@ -97,7 +97,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
             [strongSelf.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
         }else {
-            [strongSelf.headImageView setImage:[UIImage imageNamed:@"oldFather"]];
+            [strongSelf.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
         }
         
         

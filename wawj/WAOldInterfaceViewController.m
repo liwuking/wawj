@@ -136,9 +136,9 @@
 -(void)initViews {
     
     self.arrText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"后退"];
-    NSInteger height = (self.btnView.frame.size.height-3)/4;//(SCREEN_HEIGHT- 240 -184 - 2)/4;
+    NSInteger height = (SCREEN_HEIGHT- 240 -184 - 1.5)/4;//(self.btnView.frame.size.height-3)/4;//
     if ([self isIphone5]) {
-        height = (self.btnView.frame.size.height-12)/4;
+        height =  (SCREEN_HEIGHT- 190 -150 - 1.5)/4;//(self.btnView.frame.size.height-12)/4;
     }
     CGFloat width = (SCREEN_WIDTH-1)/3;
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 1, 1);
@@ -152,7 +152,14 @@
             NSInteger index = i*3+j;
             [btn setTitle:self.arrText[index] forState:UIControlStateNormal];
             btn.titleLabel.textColor = [UIColor whiteColor];
-            btn.titleLabel.font = [UIFont systemFontOfSize:35];
+            
+            if ([self.arrText[index] isEqualToString:@"后退"]) {
+                btn.titleLabel.font = [UIFont systemFontOfSize:30];
+            }else {
+                btn.titleLabel.font = [UIFont systemFontOfSize:35];
+            }
+            
+            
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
             btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
             NSLog(@"btn.frame: %lf", btn.frame.origin.y);//NSStringFromCGRect(btn.frame)
@@ -310,17 +317,11 @@
 //        }];
     } else {
         
-        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.phoneText.text];
+        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.phoneText.text];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        
-//        [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@",self.phoneText.text] cancelButtonTitle:@"取消" clickCancelBtn:^{
-//
-//        } otherButtonTitles:@"拨打" clickOtherBtn:^{
-//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.phoneText.text];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//
-//        }];
-        
+//        UIWebView * callWebview = [[UIWebView alloc] init];
+//        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+//        [self.view addSubview:callWebview];
     }
     
 }
@@ -387,52 +388,15 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
-    
-    
 }
 
 - (IBAction)clickBThree:(UIButton *)sender {
 
-    //[[UIApplication sharedApplication]openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-
     [self handlePhoto];
-//[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"]];
-//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=Photos"]];
-    
-    [self playAudioWithFilePath:@"Users/ruiyou/Library/Developer/CoreSimulator/Devices/0FCA3E2B-6364-48BA-BE4F-8DF57166C841/data/Containers/Data/Application/ED7D5C5B-DC73-4159-AB54-505913BBF7F0/Documents/1509273420.caf"];
-}
 
-#pragma -mark 播放本地音频
--(void)playAudioWithFilePath:(NSString *)audioFilePath {
-    
-    
-//    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
-//    if (!exists) {
-//        [MBProgressHUD showError:@"播放失败"];
-//        return;
-//    }
-//    
-//    NSData *data = [[NSFileManager defaultManager] contentsAtPath:audioFilePath];
-//    //    NSURL *url= [NSURL URLWithString:audioFilePath];
-//    
-//    NSError *error=nil;
-//    self.audioFilePlayer=[[AVAudioPlayer alloc] initWithData:data error:&error];
-//    self.audioFilePlayer.numberOfLoops=0;
-//    self.audioFilePlayer.volume = 1;
-//    [self.audioFilePlayer prepareToPlay];
-//    if (error) {
-//        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-//        [MBProgressHUD showError:@"播放失败"];
-//        return ;
-//    }
-//    
-//    [self.audioFilePlayer play];
-    
 }
-
 
 - (void)handlePhoto {
-    
     
     if (![self checkPhotoLibraryPermission]) {
         return;

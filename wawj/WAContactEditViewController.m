@@ -311,12 +311,12 @@
     self.contactItem.name = cellName.textField.text;
     if (!ischange && WAContactEditEdit == self.waContactEditType) {
         
-        if ([self queryContactWithName:cellName.textField.text].count > 0) {
-            [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            return;
-        }
+//        if ([self queryContactWithName:cellName.textField.text].count > 0) {
+//            [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
+//                
+//            }];
+//            return;
+//        }
         
         self.waContactEditChange(self.contactItem);
         
@@ -430,7 +430,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
         [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
     }else {
-        [self.headImageView setImage:[UIImage imageNamed:@"oldFather"]];
+        [self.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
     }
     
     

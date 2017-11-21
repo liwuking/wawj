@@ -368,7 +368,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
             [cell.bgImg setImage:[UIImage imageWithContentsOfFile:contactPath]];
         }else {
-            [cell.bgImg setImage:[UIImage imageNamed:@"oldFather"]];
+            [cell.bgImg setImage:[UIImage imageNamed:@"头像设置"]];
         }
         
         

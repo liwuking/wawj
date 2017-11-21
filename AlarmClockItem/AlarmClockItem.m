@@ -117,9 +117,6 @@
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我爱我家";
     notification.alertBody = alertContent;
-    //            //显示在icon上的红色圈中的数字,右上角数字加1
-    //            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
-    
     NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
     //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
     notification.userInfo = infoDict;
@@ -153,7 +150,7 @@
     NSLog(@"本地推送时间: %@  类型: %@", [dateFormatter stringFromDate:remindDate],alarType);
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
-    notification.soundName = @"2947.wav";
+    notification.soundName = @"115.m4a";
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我爱我家";
@@ -269,7 +266,7 @@
         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
         notificationContent.title = @"我的提醒";
         notificationContent.subtitle = content;//@"我爱我家";
-        notificationContent.sound = [UNNotificationSound soundNamed:@"2947.wav"];
+        notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             
@@ -459,18 +456,18 @@
 
 +(void)cancelAllExpireAlarmClock {
     
-    if(SYSTEM_VERSION >= 10){
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
-            NSMutableArray *deliveredIdentifiers = [@[] mutableCopy];
-            for (UNNotification *notification in notifications) {
-                [deliveredIdentifiers addObject:notification.request.identifier];
-            }
-            [center removeDeliveredNotificationsWithIdentifiers:deliveredIdentifiers];
-        }];
-    } else {
-        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    }
+//    if(SYSTEM_VERSION >= 10){
+//        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//        [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
+//            NSMutableArray *deliveredIdentifiers = [@[] mutableCopy];
+//            for (UNNotification *notification in notifications) {
+//                [deliveredIdentifiers addObject:notification.request.identifier];
+//            }
+//            [center removeDeliveredNotificationsWithIdentifiers:deliveredIdentifiers];
+//        }];
+//    } else {
+//        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+//    }
     
 
 }

@@ -157,6 +157,9 @@
 		7788D34E1F8CAAFD00F3512A /* OverdueRemindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D34C1F8CAAFD00F3512A /* OverdueRemindCell.xib */; };
 		7788D3521F8CC9A800F3512A /* EditRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7788D3501F8CC9A800F3512A /* EditRemindViewController.m */; };
 		7788D3531F8CC9A800F3512A /* EditRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */; };
+		778CF7331FC2BCE8002A89C5 /* WASetFourCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 778CF7311FC2BCE8002A89C5 /* WASetFourCell.m */; };
+		778CF7341FC2BCE8002A89C5 /* WASetFourCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778CF7321FC2BCE8002A89C5 /* WASetFourCell.xib */; };
+		778CF7361FC2C66D002A89C5 /* 115.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 778CF7351FC2C66D002A89C5 /* 115.m4a */; };
 		778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */; };
 		778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */; };
 		778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */; };
@@ -631,6 +634,10 @@
 		7788D34F1F8CC9A800F3512A /* EditRemindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditRemindViewController.h; sourceTree = "<group>"; };
 		7788D3501F8CC9A800F3512A /* EditRemindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditRemindViewController.m; sourceTree = "<group>"; };
 		7788D3511F8CC9A800F3512A /* EditRemindViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditRemindViewController.xib; sourceTree = "<group>"; };
+		778CF7301FC2BCE8002A89C5 /* WASetFourCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WASetFourCell.h; sourceTree = "<group>"; };
+		778CF7311FC2BCE8002A89C5 /* WASetFourCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WASetFourCell.m; sourceTree = "<group>"; };
+		778CF7321FC2BCE8002A89C5 /* WASetFourCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WASetFourCell.xib; sourceTree = "<group>"; };
+		778CF7351FC2C66D002A89C5 /* 115.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 115.m4a; sourceTree = "<group>"; };
 		778EF7FB1FA0238D005CDD82 /* UIButton+BtnCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+BtnCategory.h"; sourceTree = "<group>"; };
 		778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+BtnCategory.m"; sourceTree = "<group>"; };
 		778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAValidIphoneViewController.h; sourceTree = "<group>"; };
@@ -1622,6 +1629,9 @@
 				7701045A1F307AE400F723A2 /* WASetThreeCell.h */,
 				7701045B1F307AE400F723A2 /* WASetThreeCell.m */,
 				7701045C1F307AE400F723A2 /* WASetThreeCell.xib */,
+				778CF7301FC2BCE8002A89C5 /* WASetFourCell.h */,
+				778CF7311FC2BCE8002A89C5 /* WASetFourCell.m */,
+				778CF7321FC2BCE8002A89C5 /* WASetFourCell.xib */,
 				770104491F30770B00F723A2 /* WAFuctionSetViewController.h */,
 				7701044A1F30770B00F723A2 /* WAFuctionSetViewController.m */,
 				7701044B1F30770B00F723A2 /* WAFuctionSetViewController.xib */,
@@ -1763,6 +1773,7 @@
 				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				7749E1B71FB0786200239DF3 /* 01.m4r */,
 				7749E1D01FB07C1900239DF3 /* 2947.wav */,
+				778CF7351FC2C66D002A89C5 /* 115.m4a */,
 				7749E1A21FB0785D00239DF3 /* 02.m4r */,
 				7749E1B51FB0786100239DF3 /* 03.m4r */,
 				7749E1AD1FB0785F00239DF3 /* 04.m4r */,
@@ -2583,6 +2594,7 @@
 				7749E1C11FB0786200239DF3 /* 15.m4r in Resources */,
 				775410EF1F9DE3870005C3AE /* btn_original_circle@3x.png in Resources */,
 				77832DF11F0CB3600009F004 /* LaunchScreen.storyboard in Resources */,
+				778CF7341FC2BCE8002A89C5 /* WASetFourCell.xib in Resources */,
 				776272EB1FA9A8FD006EE231 /* WAContactDetailViewController.xib in Resources */,
 				7749E1C61FB0786200239DF3 /* 13.m4r in Resources */,
 				770104481F2F15A200F723A2 /* WAHomeViewController.xib in Resources */,
@@ -2600,6 +2612,7 @@
 				77A67D051F3C4E73000DFD88 /* WADatePicker.xib in Resources */,
 				77A67E451F4C0EE1000DFD88 /* userwords in Resources */,
 				775410EE1F9DE3870005C3AE /* btn_original_circle@2x.png in Resources */,
+				778CF7361FC2C66D002A89C5 /* 115.m4a in Resources */,
 				77A67E551F4C0EE1000DFD88 /* MJRefresh.bundle in Resources */,
 				7749E1CA1FB0786200239DF3 /* 11.m4r in Resources */,
 				77A67E471F4C0EE1000DFD88 /* tts.strings in Resources */,
@@ -3031,6 +3044,7 @@
 				77A67E381F4C0EE1000DFD88 /* ISEResultTools.m in Sources */,
 				77A67E251F4C0EE1000DFD88 /* UITabBar+Badge.m in Sources */,
 				77A67E1B1F4C0EE1000DFD88 /* UIFont+Extension.m in Sources */,
+				778CF7331FC2BCE8002A89C5 /* WASetFourCell.m in Sources */,
 				77A67F221F551319000DFD88 /* WAShareViewController.m in Sources */,
 				779CF44C1F6A27C000DBEE44 /* UpYunBlockUpLoader.m in Sources */,
 				7754111E1F9F2C060005C3AE /* LJContactManager.m in Sources */,
@@ -3225,7 +3239,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/wawj/PrefixHeader.pch";
 				INFOPLIST_FILE = wawj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3256,7 +3270,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/wawj/PrefixHeader.pch";
 				INFOPLIST_FILE = wawj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

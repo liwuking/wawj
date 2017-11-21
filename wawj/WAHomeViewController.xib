@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAHomeViewController">
             <connections>
+                <outlet property="remindBtn" destination="rrr-wU-CY6" id="WEO-DZ-AjR"/>
                 <outlet property="tableHeightConstrain" destination="GnS-0n-0Bh" id="jmX-zz-isx"/>
                 <outlet property="tableView" destination="Dtn-qT-kcP" id="RYd-HJ-R8K"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="VCb-7v-Wc1"/>

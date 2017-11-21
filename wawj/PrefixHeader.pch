@@ -24,9 +24,19 @@
 #import "NSDictionary+StringConversion.h"
 #import "MBProgressHUD+Extension.h"
 #import "NSDictionary+Util.h"
-// 测试URL
-#define KMain_URL   @"http://123.207.170.53:8888/service"//@"10.61.33.27:8081/wawjapp/service"  //
 
+// 普通业务URL
+#define KMain_URL    @"http://api.wawjapp.com"//@"http://123.207.170.53:8888/service"
+//相册相关
+#define ALBUM_URL @"http://album.wawjapp.com"
+////相册分享
+//#define ALBUMSHARE_URL @"share.wawjapp.com"
+////语音上传
+//#define AUDIO_URL @"yunaudio.wawjapp.com"
+////相册上传
+//#define ALBUMUPLOAD_URL @"yunphoto.wawjapp.com"
+
+//又拍云URL
 #define HTTP_IMAGE   @"http://wawj-test.b0.upaiyun.com"
 
 #define DATA_REMINDTABLENAME  [NSString stringWithFormat:@"remindList_%@", [CoreArchive dicForKey:USERINFO][@"userId"]]

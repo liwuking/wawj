@@ -22,6 +22,7 @@
 @interface WAMyFamilyPhotosViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WAPhotosUploadViewControllerDelegate,WANewPhotosViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UILabel *defaultLab;
 @property(nonatomic,strong)NSMutableArray *dataArr;
 //@property(nonatomic,assign)NSInteger selectIndex;
 
@@ -101,7 +102,9 @@
     item.isNew = YES;
     
     [self.dataArr insertObject:item atIndex:0];
-
+    self.defaultLab.hidden = YES;
+    
+    
     __weak __typeof__(self) weakSelf = self;
     [UIView animateWithDuration:0.5 animations:^{
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
@@ -380,6 +383,11 @@
         }
     }
     
+    if (self.dataArr.count) {
+        self.defaultLab.hidden = YES;
+    } else {
+        self.defaultLab.hidden = NO;
+    }
 
     
 }
@@ -632,7 +640,7 @@
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
             NSLog(@"imageUrl: %@", imageUrl);
-            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
             
@@ -644,7 +652,7 @@
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
             NSLog(@"imageUrl: %@", imageUrl);
-            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
         }
@@ -659,7 +667,7 @@
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
             NSLog(@"imageUrl: %@", imageUrl);
-            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
         } else {
@@ -669,7 +677,7 @@
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
             NSLog(@"imageUrl: %@", imageUrl);
-            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"familyPhotos"]];
+            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
         }

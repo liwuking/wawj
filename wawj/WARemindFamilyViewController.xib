@@ -145,7 +145,7 @@
                         <constraint firstAttribute="height" constant="250" id="tzf-Fg-FA2"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-OO-bTL">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-OO-bTL">
                     <rect key="frame" x="15" y="390" width="345" height="60"/>
                     <color key="backgroundColor" red="0.47450980390000003" green="0.77647058820000003" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>

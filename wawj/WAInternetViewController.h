@@ -10,4 +10,6 @@
 
 @interface WAInternetViewController : UIViewController
 
+@property(nonatomic,assign)BOOL isFromeNetVC;
+
 @end

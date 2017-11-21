@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAMyFamilyPhotosViewController">
             <connections>
                 <outlet property="collectionView" destination="lAu-1Y-Cnh" id="G69-59-QdM"/>
+                <outlet property="defaultLab" destination="PQl-tj-OlI" id="cWW-nu-axE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,9 +35,24 @@
                         <outlet property="delegate" destination="-1" id="6dt-Cb-W9H"/>
                     </connections>
                 </collectionView>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQl-tj-OlI">
+                    <rect key="frame" x="37.5" y="293.5" width="300" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="253-xX-kDW"/>
+                        <constraint firstAttribute="width" constant="300" id="fvA-cI-Gmq"/>
+                    </constraints>
+                    <string key="text"> 家庭相册，亲密家人，都看的见
+
+ 原图上传，永久保存，放心使用</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="PQl-tj-OlI" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="I5P-mN-mMY"/>
+                <constraint firstItem="PQl-tj-OlI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Sqx-jn-aNP"/>
                 <constraint firstItem="lAu-1Y-Cnh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="Yh8-l8-qdL"/>
                 <constraint firstAttribute="trailing" secondItem="lAu-1Y-Cnh" secondAttribute="trailing" id="ZUc-xk-8YU"/>
                 <constraint firstAttribute="bottom" secondItem="lAu-1Y-Cnh" secondAttribute="bottom" id="pNh-Ra-RHh"/>

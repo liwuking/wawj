@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemindViewController">
             <connections>
+                <outlet property="longGesLab" destination="pIK-BI-COX" id="U6w-5f-uaV"/>
                 <outlet property="microphoneBGView" destination="IgU-b1-kaS" id="PiX-O3-A9i"/>
                 <outlet property="tableView" destination="F0B-Kq-p2g" id="pQm-Ls-kGH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -34,35 +35,28 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nb1-yj-K1b" userLabel="View - bg">
                     <rect key="frame" x="0.0" y="557" width="375" height="110"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KaC-Fo-ZwT" userLabel="View - 话筒">
+                        <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KaC-Fo-ZwT" userLabel="View - 话筒">
                             <rect key="frame" x="113" y="0.0" width="150" height="110"/>
                             <subviews>
-                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按住说话" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-BI-COX">
+                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按住说话" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-BI-COX">
                                     <rect key="frame" x="0.0" y="2" width="150" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="QiZ-Gd-Ti6"/>
                                         <constraint firstAttribute="width" constant="150" id="SEy-Iv-yZu"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" red="0.1960784314" green="0.1960784314" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="jdH-C2-Bnx" appends="YES" id="Xet-f6-773"/>
-                                    </connections>
                                 </label>
-                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-b1-kaS">
+                                <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-b1-kaS">
                                     <rect key="frame" x="30" y="20" width="90" height="90"/>
                                     <gestureRecognizers/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="90" id="VoP-zZ-WWi"/>
                                         <constraint firstAttribute="height" constant="90" id="zHC-FQ-laC"/>
                                     </constraints>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="jdH-C2-Bnx" appends="YES" id="Lgn-gp-dL8"/>
-                                    </connections>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="110" id="48K-tJ-7nB"/>

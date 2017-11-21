@@ -142,7 +142,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="123456" placeholder="请输入短信验证码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M2L-3C-6Jy">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入短信验证码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M2L-3C-6Jy">
                                 <rect key="frame" x="48" y="163" width="186" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="xVf-K3-rQj"/>
@@ -253,26 +253,34 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击确认即表示已阅读并同意" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ktj-IP-YVQ">
-                                <rect key="frame" x="20" y="325" width="210" height="15"/>
+                                <rect key="frame" x="26" y="325" width="214" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="43i-un-2Lp"/>
-                                    <constraint firstAttribute="width" constant="210" id="hYR-X3-ubA"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cix-X5-VCa">
-                                <rect key="frame" x="230" y="325" width="130" height="15"/>
+                            <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cix-X5-VCa">
+                                <rect key="frame" x="240" y="325" width="125" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="Hlg-Ve-YTr"/>
-                                    <constraint firstAttribute="width" constant="130" id="jAQ-pf-Izh"/>
+                                    <constraint firstAttribute="width" constant="125" id="jAQ-pf-Izh"/>
                                 </constraints>
                                 <state key="normal" title="《用户服务协议》"/>
                                 <connections>
                                     <action selector="clickServiceProtocol:" destination="tso-xj-8GC" eventType="touchUpInside" id="NT6-pG-l68"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="短信验证后, 可使用语音提醒、家庭相册等功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0i-Jk-c42">
+                                <rect key="frame" x="10" y="5" width="355" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="E7F-iL-FO4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -282,7 +290,9 @@
                             <constraint firstItem="Mq7-T9-7oD" firstAttribute="top" secondItem="4ee-B7-Las" secondAttribute="bottom" constant="10" id="27N-aC-laT"/>
                             <constraint firstItem="v94-51-hmV" firstAttribute="top" secondItem="5vi-ab-7jh" secondAttribute="bottom" constant="10" id="2Cn-nj-BQ6"/>
                             <constraint firstAttribute="trailing" secondItem="Mq7-T9-7oD" secondAttribute="trailing" constant="15" id="4VT-R0-jAx"/>
+                            <constraint firstAttribute="trailing" secondItem="Ktj-IP-YVQ" secondAttribute="trailing" constant="135" id="6Cx-gm-knV"/>
                             <constraint firstItem="v94-51-hmV" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="7CI-6R-RC2"/>
+                            <constraint firstItem="l0i-Jk-c42" firstAttribute="top" secondItem="HMk-yR-hWO" secondAttribute="top" constant="5" id="7dg-Tu-mRM"/>
                             <constraint firstItem="H2E-Wx-IQ7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HMk-yR-hWO" secondAttribute="leadingMargin" id="7l2-zg-4DN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ByZ-Ws-NTY" secondAttribute="trailing" id="8Sg-Zm-7RN"/>
                             <constraint firstItem="Ktj-IP-YVQ" firstAttribute="top" secondItem="WA6-zi-kWR" secondAttribute="bottom" constant="10" id="APl-AZ-4je"/>
@@ -297,12 +307,13 @@
                             <constraint firstItem="v94-51-hmV" firstAttribute="top" secondItem="MYp-kd-wzx" secondAttribute="bottom" constant="10" id="MZf-ua-aLx"/>
                             <constraint firstItem="H2E-Wx-IQ7" firstAttribute="trailing" secondItem="HMk-yR-hWO" secondAttribute="trailingMargin" id="NLT-SN-OgS"/>
                             <constraint firstItem="kCp-Vq-XLP" firstAttribute="centerX" secondItem="HMk-yR-hWO" secondAttribute="centerX" id="NnW-Yg-Moi"/>
-                            <constraint firstItem="Cix-X5-VCa" firstAttribute="leading" secondItem="Ktj-IP-YVQ" secondAttribute="trailing" id="Tp0-2T-BHB"/>
+                            <constraint firstItem="l0i-Jk-c42" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="10" id="S9z-q3-0My"/>
                             <constraint firstItem="zmr-fX-2NA" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leadingMargin" id="U8O-pv-FPr"/>
                             <constraint firstAttribute="trailing" secondItem="v94-51-hmV" secondAttribute="trailing" constant="15" id="VHD-Ai-wGy"/>
-                            <constraint firstAttribute="trailing" secondItem="Cix-X5-VCa" secondAttribute="trailing" constant="15" id="YTf-W2-PqE"/>
+                            <constraint firstAttribute="trailing" secondItem="Cix-X5-VCa" secondAttribute="trailing" constant="10" id="YTf-W2-PqE"/>
                             <constraint firstItem="Mq7-T9-7oD" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="ZWb-vs-Mn5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MYp-kd-wzx" secondAttribute="trailing" constant="15" id="b0G-hn-YhG"/>
+                            <constraint firstAttribute="trailing" secondItem="l0i-Jk-c42" secondAttribute="trailing" constant="10" id="bMa-De-E7d"/>
                             <constraint firstItem="zmr-fX-2NA" firstAttribute="centerX" secondItem="HMk-yR-hWO" secondAttribute="centerX" id="c0d-CY-Whm"/>
                             <constraint firstItem="5vi-ab-7jh" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="iGL-C3-eS7"/>
                             <constraint firstItem="4ee-B7-Las" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leading" constant="15" id="lOu-lq-7Ou"/>
@@ -315,6 +326,7 @@
                             <constraint firstItem="6Un-VF-exS" firstAttribute="top" secondItem="Mq7-T9-7oD" secondAttribute="bottom" constant="10" id="tkA-TZ-F7l"/>
                             <constraint firstItem="4ee-B7-Las" firstAttribute="top" secondItem="v94-51-hmV" secondAttribute="bottom" constant="32" id="tqZ-GU-Y7V"/>
                             <constraint firstItem="ByZ-Ws-NTY" firstAttribute="leading" secondItem="M2L-3C-6Jy" secondAttribute="trailing" constant="5" id="yD5-YN-yc0"/>
+                            <constraint firstItem="Ktj-IP-YVQ" firstAttribute="leading" secondItem="HMk-yR-hWO" secondAttribute="leadingMargin" constant="10" id="ytg-97-3Sb"/>
                         </constraints>
                     </view>
                     <connections>
@@ -323,7 +335,10 @@
                         <outlet property="msgStatusLab" destination="6Un-VF-exS" id="GMk-TM-guW"/>
                         <outlet property="msgTextField" destination="M2L-3C-6Jy" id="MRe-If-cC8"/>
                         <outlet property="nextBtn" destination="WA6-zi-kWR" id="jdk-c9-7Wg"/>
+                        <outlet property="servericeLab01" destination="Ktj-IP-YVQ" id="ojn-cs-eDZ"/>
+                        <outlet property="serviceBtn02" destination="Cix-X5-VCa" id="JGC-JJ-1US"/>
                         <outlet property="timeLab" destination="8mZ-qN-oCp" id="95K-VA-qQ6"/>
+                        <outlet property="topLab" destination="l0i-Jk-c42" id="2Ys-TN-4jl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RWd-9A-upj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -798,13 +813,13 @@
                                 <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8s-GZ-iPJ">
-                                        <rect key="frame" x="150.5" y="13" width="75" height="36"/>
+                                        <rect key="frame" x="138" y="13" width="100" height="36"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="75" id="GB9-Eo-inh"/>
+                                            <constraint firstAttribute="width" constant="100" id="GB9-Eo-inh"/>
                                             <constraint firstAttribute="height" constant="36" id="k34-zQ-qkK"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="返回" image="返回">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -823,10 +838,10 @@
                                         <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
                                     <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exr-bg-j17">
-                                        <rect key="frame" x="335" y="15" width="30" height="30"/>
+                                        <rect key="frame" x="295" y="0.0" width="80" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="E7O-zZ-H75"/>
-                                            <constraint firstAttribute="width" constant="30" id="jkr-Et-bfQ"/>
+                                            <constraint firstAttribute="height" constant="60" id="E7O-zZ-H75"/>
+                                            <constraint firstAttribute="width" constant="80" id="jkr-Et-bfQ"/>
                                         </constraints>
                                         <state key="normal" image="111"/>
                                         <connections>
@@ -842,7 +857,7 @@
                                     <constraint firstItem="f8s-GZ-iPJ" firstAttribute="centerX" secondItem="d3s-jw-UWj" secondAttribute="centerX" id="foD-Zq-2pN"/>
                                     <constraint firstItem="f8s-GZ-iPJ" firstAttribute="centerY" secondItem="d3s-jw-UWj" secondAttribute="centerY" constant="1" id="kLk-Xt-sit"/>
                                     <constraint firstItem="nFh-6N-I30" firstAttribute="leading" secondItem="d3s-jw-UWj" secondAttribute="leading" id="l4f-rx-EET"/>
-                                    <constraint firstAttribute="trailing" secondItem="exr-bg-j17" secondAttribute="trailing" constant="10" id="vjD-UY-7uN"/>
+                                    <constraint firstAttribute="trailing" secondItem="exr-bg-j17" secondAttribute="trailing" id="vjD-UY-7uN"/>
                                     <constraint firstAttribute="height" constant="60" id="yrr-f2-zKW"/>
                                 </constraints>
                             </view>

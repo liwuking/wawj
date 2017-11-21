@@ -8,6 +8,8 @@
 
 #import "WAInternetViewController.h"
 #import <WebKit/WebKit.h>
+#import "WAOldInterfaceViewController.h"
+#import "WANewInterfaceViewController.h"
 
 @interface WAInternetViewController ()<WKNavigationDelegate>
 
@@ -62,7 +64,7 @@
 //    [MBProgressHUD hideHUD];
      [MBProgressHUD hideHUDForView:self.webView];
     
-    [MBProgressHUD showError:[error localizedDescription]];
+//    [MBProgressHUD showError:[error localizedDescription]];
     
     NSLog(@"%s", __FUNCTION__);
     
@@ -87,9 +89,21 @@
 }
 
 - (IBAction)clickBack:(UIButton *)sender {
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
+
+    if ([CoreArchive boolForKey:INTERFACE_NEW]) {
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[WANewInterfaceViewController class]]) {
+                [self.navigationController popToViewController:temp animated:YES];
+            }
+        }
+    } else {
+         for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[WAOldInterfaceViewController class]]) {
+                [self.navigationController popToViewController:temp animated:YES];
+            }
+        }
+    }
+   
 }
 
 - (void)didReceiveMemoryWarning {

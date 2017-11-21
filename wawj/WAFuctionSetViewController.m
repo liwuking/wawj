@@ -11,6 +11,7 @@
 #import "WASetOneCell.h"
 #import "WASetTwoCell.h"
 #import "WASetThreeCell.h"
+#import "WASetFourCell.h"
 #import "WAReplaceUIViewController.h"
 #import "WAEditRemindViewController.h"
 #import "UserCenterViewController.h"
@@ -210,6 +211,11 @@
         
         
         
+        return cell;
+        
+    } else if (2 == indexPath.section) {
+        
+        WASetFourCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetFourCell" owner:nil options:nil] lastObject];
         return cell;
         
     } else {
