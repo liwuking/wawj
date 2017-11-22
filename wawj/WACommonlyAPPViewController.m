@@ -29,13 +29,6 @@
     
     self.title = @"常用应用";
     
-    //此处必须要有创见一个UICollectionViewFlowLayout的对象
-    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
-    //同一行相邻两个cell的最小间距
-    layout.minimumInteritemSpacing = 1;
-    //最小两行之间的间距
-    layout.minimumLineSpacing = 1;
-    
     /*
      *这是重点 必须注册cell
      */
@@ -113,8 +106,6 @@
             cell.appItem = appItem;
             return cell;
         }
-        
-       
     }
     
 }

@@ -1460,65 +1460,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
         NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
         [self readTextWithString:readText];
-        
-//         RemindItem *remindItem = self.dataArr[indexPath.row];
-//        if ([remindItem.remindorigintype isEqualToString:REMINDORIGINTYPE_REMOTE]) {
-//
-//            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-//            configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-//            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-//            NSURL *URL = [NSURL URLWithString:remindItem.audiourl];
-//            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-//
-//            [MBProgressHUD showMessage:nil];
-//            __weak __typeof__(self) weakSelf = self;
-//            NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-//
-//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-//                return [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-//
-//            } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-//                __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//                [MBProgressHUD hideHUD];
-//
-//                if (error) {
-//                    [MBProgressHUD showError:@"音频播放出错"];
-//                    return ;
-//                }
-//
-//                NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-//                NSURL *sourceFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-//                NSURL *destinationFilePath = [documentsDirectoryURL URLByAppendingPathComponent:[NSString stringWithFormat:@"MyRecord/%@",[response suggestedFilename]]];
-//
-//
-//                NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-//                NSString *recordPath = [documentPath stringByAppendingPathComponent:@"MyRecord"];
-//                if (![[NSFileManager defaultManager] fileExistsAtPath:recordPath]) {
-//                    [[NSFileManager defaultManager] createDirectoryAtPath:recordPath withIntermediateDirectories:YES attributes:nil error:nil];
-//                }
-//
-//                NSError *errordd;
-//                [[NSFileManager defaultManager] moveItemAtURL:sourceFilePath toURL:destinationFilePath error:&errordd];
-//
-//
-//                NSString *downLoadAudioUrl = [NSString stringWithFormat:@"%@/%@",recordPath,[response suggestedFilename]];
-//                NSLog(@"File downloaded to: %@", downLoadAudioUrl);
-//
-//                [strongSelf playAudioWithFilePath:downLoadAudioUrl];
-//
-//            }];
-//            [downloadTask resume];
-//
-//
-//        } else {
-//
-//            NSString *readText = [NSString stringWithFormat:@"%@%@%@",cell.remindDateLab.text,cell.remindTimeLab.text,cell.contentLab.text];
-//            [self readTextWithString:readText];
-//
-//        }
-//
-        
-        
+
     }else{
 
         [self showAlertViewWithTitle:@"提醒" message:@"网络中断，无法朗读提醒" buttonTitle:@"我知道了" clickBtn:^{
@@ -1533,7 +1475,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 #pragma mark - iFly 语义理解 delegate
 - (void) onBeginOfSpeech
 {
-//    [_popUpView showText: @"正在录音"];
     NSLog(@"%s",__func__);
 }
 
@@ -1542,7 +1483,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onEndOfSpeech
 {
-//     [_popUpView showText: @"停止录音"];
     [MBProgressHUD hideHUD];
     NSLog(@"%s",__func__);
 }
@@ -1554,13 +1494,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onVolumeChanged: (int)volume
 {
     NSLog(@"%s",__func__);
-//    if (self.isCanceled) {
-//        [_popUpView removeFromSuperview];
-//        return;
-//    }
-//
-//    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
-//    [_popUpView showText: vol];
 }
 
 /**
@@ -1669,17 +1602,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakBegin
 {
     NSLog(@"%s",__func__);
-//    self.isSpeechCanceled = NO;
-//    if (_state  != Playing) {
-//        NSLog(@"开始播放");
-//    }
-//    _state = Playing;
-//    [MBProgressHUD hideHUD];
-//
-//    if (!_myApp) {
-//
-//    }
-    
     [self.listeningView setFrame:[UIScreen mainScreen].bounds];
     [self.myApp.window addSubview:self.listeningView];
     
@@ -1760,24 +1682,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 {
     NSLog(@"%s,error=%d",__func__,error.errorCode);
     
-    //    if (error.errorCode != 0) {
-    //        [_inidicateView hide];
-    //        [_popUpView showText:[NSString stringWithFormat:@"错误码:%d",error.errorCode]];
-    //        return;
-    //    }
-    //    NSString *text ;
-    //    if (self.isCanceled) {
-    //        text = @"合成已取消";
-    //    }else if (error.errorCode == 0) {
-    //        text = @"合成结束";
-    //    }else {
-    //        text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
-    //        self.hasError = YES;
-    //        NSLog(@"%@",text);
-    //    }
-    
-//    _state = NotStart;
-    
     if (error.errorCode != 0) {
         NSString *mes = [NSString stringWithFormat:@"错误码: %i\n错误描述: %@",error.errorCode,error.errorDesc];
         [self showAlertViewWithTitle:@"语音播放出错" message:mes buttonTitle:@"确定" clickBtn:^{
@@ -1804,16 +1708,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void)onSpeakCancel
 {
     NSLog(@"%s",__func__);
-//    if (_isViewDidDisappear) {
-//        return;
-//    }
-//    self.isSpeechCanceled = YES;
-//
-//    if (_synType == UriType) {
-//
-//    }else if (_synType == NomalType) {
-//        NSLog(@"取消中");
-//    }
     
 }
 

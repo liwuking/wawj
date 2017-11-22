@@ -265,7 +265,8 @@
         //Local Notification
         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
         notificationContent.title = @"我的提醒";
-        notificationContent.subtitle = content;//@"我爱我家";
+//        notificationContent.subtitle = content;
+        notificationContent.body = content;
         notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {

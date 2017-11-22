@@ -25,19 +25,28 @@
 #import "MBProgressHUD+Extension.h"
 #import "NSDictionary+Util.h"
 
-// 普通业务URL
-#define KMain_URL    @"http://api.wawjapp.com"//@"http://123.207.170.53:8888/service"
-//相册相关
-#define ALBUM_URL @"http://album.wawjapp.com"
-////相册分享
-//#define ALBUMSHARE_URL @"share.wawjapp.com"
-////语音上传
-//#define AUDIO_URL @"yunaudio.wawjapp.com"
-////相册上传
-//#define ALBUMUPLOAD_URL @"yunphoto.wawjapp.com"
+////正式服务器URL
+//#define KMain_URL    @"http://api.wawjapp.com/service"
+//#define ALBUM_URL @"http://album.wawjapp.com/service"
+////又拍云URL
+//#define YUN_OPERATOR @"iosoperator"
+//#define YUN_PASSWORD @"hello123"
+//#define YUN_BUCKETNAMEPHOTO @"wawjphoto"
+//#define YUN_BUCKETNAMEAUDIO @"wawjaudio"
+//#define YUN_PHOTO   @"http://yunphoto.wawjapp.com"
+//#define YUN_AUDIO   @"http://yunaudio.wawjapp.com"
+
+//测试服务器
+#define KMain_URL    @"http://123.207.170.53:8888/service"
+#define ALBUM_URL    @"http://123.207.170.53:8888/service"
 
 //又拍云URL
-#define HTTP_IMAGE   @"http://wawj-test.b0.upaiyun.com"
+#define YUN_OPERATOR @"iosoperator"
+#define YUN_PASSWORD @"hello123"
+#define YUN_BUCKETNAMEPHOTO @"wawj-test"
+#define YUN_BUCKETNAMEAUDIO @"wawj-test"
+#define YUN_PHOTO   @"http://wawj-test.b0.upaiyun.com"
+#define YUN_AUDIO   @"http://wawj-test.b0.upaiyun.com"
 
 #define DATA_REMINDTABLENAME  [NSString stringWithFormat:@"remindList_%@", [CoreArchive dicForKey:USERINFO][@"userId"]]
 

@@ -78,10 +78,11 @@
     self.navigationItem.leftBarButtonItem = backItem;
     
      self.topLab.adjustsFontSizeToFitWidth = YES;
-    
     self.servericeLab01.adjustsFontSizeToFitWidth = YES;
-    
     self.serviceBtn02.titleLabel.font = self.servericeLab01.font;
+    
+//    self.msgTextField.adjustsFontSizeToFitWidth = YES;
+//    self.iphoneTextField.font = self.msgTextField.font;
 }
 
 - (IBAction)clickServiceProtocol:(UIButton *)sender {
@@ -109,6 +110,14 @@
 
 - (IBAction)clickSendVericode:(UITapGestureRecognizer *)sender {
     
+    [self.view endEditing:YES];
+    
+    if ([self.iphoneTextField.text isEqualToString:@""]) {
+        [self showAlertViewWithTitle:@"提示" message:@"手机号不能为空" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
     
     self.getVeryCodeGes.enabled = NO;
     
@@ -126,7 +135,7 @@
         NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
-            [MBProgressHUD showSuccess:@"已发送成功"];
+            [MBProgressHUD showError:@"已发送成功"];
             [strongSelf startTime];
 
             

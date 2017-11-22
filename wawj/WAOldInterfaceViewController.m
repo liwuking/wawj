@@ -38,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *phoneText;
 @property(nonatomic, strong)NSArray *arrText;
 @property (weak, nonatomic) IBOutlet UIView *phoneView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLabConstant;
 
 @end
 
@@ -128,6 +129,7 @@
     
     if ([self isIphone5]) {
         
+        self.topLabConstant.constant = 90;
         self.constantHeadTop.constant = -50;
         self.middleViewHeght.constant = 150;
     }

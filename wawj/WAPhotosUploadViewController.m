@@ -224,6 +224,8 @@
 
 -(void)backAction {
     
+    [MBProgressHUD hideHUD];
+    
     if (self.isChange) {
         if (self.dataArr.count) {
             PhotoItem *item = self.dataArr[0];
@@ -440,14 +442,13 @@
                     
                     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2103" andModel:model];
                     __weak __typeof__(self) weakSelf = self;
-                    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+                    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
                         dispatch_semaphore_signal(semaphore);
                         
                         [strongSelf hideHud];
                         
                         NSString *code = data[@"code"];
-//                        NSString *desc = data[@"desc"];
                         if ([code isEqualToString:@"0000"]) {
                             
                             //得到相册列表;
@@ -455,20 +456,12 @@
                             [strongSelf getPhotosList];
                             
                         } else {
-                            
-//                            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-//
-//                            }];
                             [MBProgressHUD showError:@"网络请求失败"];
                         }
                         
                     } fail:^(NSError *error) {
                         
                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//                        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-//
-//                        }];
-                        
                         [MBProgressHUD showError:@"网络请求失败"];
                         [strongSelf hideHud];
                         
@@ -481,6 +474,7 @@
                         return ;
                     }
                     NSData *pngData = UIImagePNGRepresentation(imageArr[i]);
+//                    NSLog(@"pngData.length:%lf", pngData.length/2000.0);
                     //图片命名
                     NSDate *currentDate = [NSDate date];
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -491,20 +485,20 @@
                     NSString *imgName=[NSString stringWithFormat:@"album/%@/%@%@.png", currentDateString,self.photosItem.albumId,uuid];
 
                     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
-                    NSString *bucketName = @"wawj-test";
                     NSDictionary *parameters = @{@"expiration":[NSNumber numberWithLong:1920597071]};
                     __weak __typeof__(self) weakSelf = self;
-                    [up uploadWithBucketName:bucketName
-                                    operator:@"wawj2017"
-                                    password:@"1+1=2yes"
+                    NSLog(@"图片上传");
+                    [up uploadWithBucketName:YUN_BUCKETNAMEPHOTO
+                                    operator:YUN_OPERATOR
+                                    password:YUN_PASSWORD
                                     fileData:pngData
                                     fileName:nil
                                      saveKey:imgName
                              otherParameters:parameters
                                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
                                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                                         
-                                         NSString *photoUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
+                                          NSLog(@"图片上传完成");
+                                         NSString *photoUrl = [NSString stringWithFormat:@"%@/%@",YUN_PHOTO,imgName];
                                          NSDictionary *photos = @{@"photo_url":photoUrl, @"photoSize":responseBody[@"file_size"], @"photoWidth":responseBody[@"image-width"], @"photoHeight":responseBody[@"image-height"]};
                                          [photoLists addObject:photos];
                                          
@@ -605,7 +599,7 @@
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2106" andModel:model];
     [MBProgressHUD showMessage:nil];
     __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
@@ -671,7 +665,7 @@
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2105" andModel:model];
     __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
 //        [MBProgressHUD hideHUD];
@@ -730,7 +724,7 @@
     
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2104" andModel:model];
     __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD hideHUD];
@@ -867,7 +861,7 @@
                             @"photoId":item.photoId};
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2108" andModel:model];
     
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         
         
     } fail:^(NSError *error) {
@@ -1031,7 +1025,7 @@
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2107" andModel:model];
     
     __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         

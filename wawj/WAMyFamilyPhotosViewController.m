@@ -480,7 +480,7 @@
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2101" andModel:model];
     
     __weak __typeof__(self) weakSelf = self;
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
          [MBProgressHUD hideHUD];
         NSString *code = data[@"code"];

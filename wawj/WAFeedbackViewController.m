@@ -30,7 +30,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     Playing             = 2, //高异常分析需要的级别
     Paused              = 4,
 };
-@interface WAFeedbackViewController ()<IFlySpeechRecognizerDelegate,IFlySpeechSynthesizerDelegate,UITextViewDelegate>
+@interface WAFeedbackViewController ()<IFlySpeechRecognizerDelegate,UITextViewDelegate>
 
 //语音语义理解对象
 @property (nonatomic,strong) IFlySpeechUnderstander *iFlySpeechUnderstander;
@@ -265,8 +265,16 @@ typedef NS_OPTIONS(NSInteger, Status) {
                 [self beginDistinguish];
             }else{
                 
-                [self showAlertViewWithTitle:@"提示" message:@"请在“设置-隐私-麦克风”选项中允许我爱我家访问你的麦克风" buttonTitle:@"我知道了" clickBtn:^{
+                //设置-隐私-麦克风
+                [self showAlertViewWithTitle:@"\n需开启 \"麦克风\" 权限 \n\n" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
                     
+                } otherButtonTitles:@"去开启" clickOtherBtn:^{
+                    NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                    if([[UIApplication sharedApplication] canOpenURL:url]) {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [[UIApplication sharedApplication] openURL:url];
+                        });
+                    }
                 }];
                 
                 return;
@@ -290,7 +298,11 @@ typedef NS_OPTIONS(NSInteger, Status) {
         
         [_speakingView endSpeak];
         [_iFlySpeechUnderstander stopListening];
-        [MBProgressHUD showMessage:@"正在创建..."];
+        if (self.iFlySpeechUnderstander.isUnderstanding) {
+            [MBProgressHUD showMessage:@"正在创建..."];
+        }
+        
+//        [MBProgressHUD showMessage:@"正在创建..."];
     }
     
     
@@ -410,63 +422,31 @@ typedef NS_OPTIONS(NSInteger, Status) {
     return NO;
 }
 
+#pragma -mark 开始录音
 - (void)beginDistinguish {
-    if (self.isSpeechUnderstander){
-        return;
-    }
-    //设置为麦克风输入语音
-    [_iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
     
-    bool ret = [_iFlySpeechUnderstander startListening];
+    //设置为麦克风输入语音
+    [self.iFlySpeechUnderstander setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];
+    
+    BOOL ret = [self.iFlySpeechUnderstander startListening];
     
     if (ret) {
         
         self.isSpeechUnderstander = YES;
         self.isCanceled = NO;
         
-    }
-    else
-    {
+    } else {
+        
+        [MBProgressHUD showError:@"启动服务失败"];
         
     }
     
 }
 
 
-- (void)readTextWithString:(NSString *)str {
-    if ([str isEqualToString:@""]) {
-        return;
-    }
-    
-    [MBProgressHUD showMessage:@"正在合成..."];
-    if (!_listeningView) {
-        _listeningView = [[NSBundle mainBundle]loadNibNamed:@"ListeningView" owner:self options:nil][0];
-    }
-    
-    if (_audioPlayer != nil && _audioPlayer.isPlaying == YES) {
-        [_audioPlayer stop];
-    }
-    
-    _synType = NomalType;
-    
-    self.hasError = NO;
-    [NSThread sleepForTimeInterval:0.05];
-    
-    self.isSpeechCanceled = NO;
-    
-    _iFlySpeechSynthesizer.delegate = self;
-    
-    [_iFlySpeechSynthesizer startSpeaking:str];
-    if (_iFlySpeechSynthesizer.isSpeaking) {
-        _state = Playing;
-    }
-    
-}
-
-#pragma mark - iFly 语义理解 delegate
 - (void) onBeginOfSpeech
 {
-    //[_popUpView showText: @"正在录音"];
+    NSLog(@"%s",__func__);
 }
 
 /**
@@ -474,7 +454,8 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onEndOfSpeech
 {
-    // [_popUpView showText: @"停止录音"];
+    NSLog(@"%s",__func__);
+    [MBProgressHUD hideHUD];
 }
 
 /**
@@ -483,13 +464,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
  ****/
 - (void) onVolumeChanged: (int)volume
 {
-    //    if (self.isCanceled) {
-    //        [_popUpView removeFromSuperview];
-    //        return;
-    //    }
-    //
-    //    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
-    //    [_popUpView showText: vol];
+    
 }
 
 /**
@@ -590,142 +565,142 @@ typedef NS_OPTIONS(NSInteger, Status) {
 
 #pragma mark - iFly 语音合成 delegate
 
-/**
- 开始播放回调
- 注：
- 对通用合成方式有效，
- 对uri合成无效
- ****/
-- (void)onSpeakBegin
-{
-    self.isSpeechCanceled = NO;
-    if (_state  != Playing) {
-        NSLog(@"开始播放");
-    }
-    _state = Playing;
-    [MBProgressHUD hideHUD];
-    
-    if (!_myApp) {
-        _myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    }
-    
-    [_listeningView setFrame:[UIScreen mainScreen].bounds];
-    [_myApp.window addSubview:_listeningView];
-    
-}
-
-
-
-/**
- 缓冲进度回调
- 
- progress 缓冲进度
- msg 附加信息
- 注：
- 对通用合成方式有效，
- 对uri合成无效
- ****/
-- (void)onBufferProgress:(int) progress message:(NSString *)msg
-{
-    NSLog(@"buffer progress %2d%%. msg: %@.", progress, msg);
-}
-
-
-
-
-/**
- 播放进度回调
- 
- progress 缓冲进度
- 
- 注：
- 对通用合成方式有效，
- 对uri合成无效
- ****/
-- (void) onSpeakProgress:(int) progress beginPos:(int)beginPos endPos:(int)endPos
-{
-    _listeningView.progressLabel.text = [NSString stringWithFormat:@"%2d%%",progress];
-    
-    //NSLog(@"speak progress %2d%%.", progress);
-}
-
-
-/**
- 合成暂停回调
- 注：
- 对通用合成方式有效，
- 对uri合成无效
- ****/
-- (void)onSpeakPaused
-{
-    
-    _state = Paused;
-}
-
-
-
-/**
- 恢复合成回调
- 注：
- 对通用合成方式有效，
- 对uri合成无效
- ****/
-- (void)onSpeakResumed
-{
-    _state = Playing;
-}
-
-/**
- 合成结束（完成）回调
- 
- 对uri合成添加播放的功能
- ****/
-- (void)onCompleted:(IFlySpeechError *) error
-{
-    NSLog(@"%s,error=%d",__func__,error.errorCode);
-    
-    //    if (error.errorCode != 0) {
-    //        [_inidicateView hide];
-    //        [_popUpView showText:[NSString stringWithFormat:@"错误码:%d",error.errorCode]];
-    //        return;
-    //    }
-    //    NSString *text ;
-    //    if (self.isCanceled) {
-    //        text = @"合成已取消";
-    //    }else if (error.errorCode == 0) {
-    //        text = @"合成结束";
-    //    }else {
-    //        text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
-    //        self.hasError = YES;
-    //        NSLog(@"%@",text);
-    //    }
-    
-    _state = NotStart;
-    [_iFlySpeechSynthesizer stopSpeaking];
-    [_listeningView removeFromSuperview];
-    
-}
-
-
-
-
-/**
- 取消合成回调
- ****/
-- (void)onSpeakCancel
-{
-    if (_isViewDidDisappear) {
-        return;
-    }
-    self.isSpeechCanceled = YES;
-    
-    if (_synType == UriType) {
-        
-    }else if (_synType == NomalType) {
-        NSLog(@"取消中");
-    }
-    
-}
+///**
+// 开始播放回调
+// 注：
+// 对通用合成方式有效，
+// 对uri合成无效
+// ****/
+//- (void)onSpeakBegin
+//{
+//    self.isSpeechCanceled = NO;
+//    if (_state  != Playing) {
+//        NSLog(@"开始播放");
+//    }
+//    _state = Playing;
+//    [MBProgressHUD hideHUD];
+//
+//    if (!_myApp) {
+//        _myApp = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    }
+//
+//    [_listeningView setFrame:[UIScreen mainScreen].bounds];
+//    [_myApp.window addSubview:_listeningView];
+//
+//}
+//
+//
+////
+///**
+// 缓冲进度回调
+//
+// progress 缓冲进度
+// msg 附加信息
+// 注：
+// 对通用合成方式有效，
+// 对uri合成无效
+// ****/
+//- (void)onBufferProgress:(int) progress message:(NSString *)msg
+//{
+//    NSLog(@"buffer progress %2d%%. msg: %@.", progress, msg);
+//}
+//
+//
+//
+//
+///**
+// 播放进度回调
+//
+// progress 缓冲进度
+//
+// 注：
+// 对通用合成方式有效，
+// 对uri合成无效
+// ****/
+//- (void) onSpeakProgress:(int) progress beginPos:(int)beginPos endPos:(int)endPos
+//{
+//    _listeningView.progressLabel.text = [NSString stringWithFormat:@"%2d%%",progress];
+//
+//    //NSLog(@"speak progress %2d%%.", progress);
+//}
+//
+//
+///**
+// 合成暂停回调
+// 注：
+// 对通用合成方式有效，
+// 对uri合成无效
+// ****/
+//- (void)onSpeakPaused
+//{
+//
+//    _state = Paused;
+//}
+//
+//
+//
+///**
+// 恢复合成回调
+// 注：
+// 对通用合成方式有效，
+// 对uri合成无效
+// ****/
+//- (void)onSpeakResumed
+//{
+//    _state = Playing;
+//}
+//
+///**
+// 合成结束（完成）回调
+//
+// 对uri合成添加播放的功能
+// ****/
+//- (void)onCompleted:(IFlySpeechError *) error
+//{
+//    NSLog(@"%s,error=%d",__func__,error.errorCode);
+//
+//    //    if (error.errorCode != 0) {
+//    //        [_inidicateView hide];
+//    //        [_popUpView showText:[NSString stringWithFormat:@"错误码:%d",error.errorCode]];
+//    //        return;
+//    //    }
+//    //    NSString *text ;
+//    //    if (self.isCanceled) {
+//    //        text = @"合成已取消";
+//    //    }else if (error.errorCode == 0) {
+//    //        text = @"合成结束";
+//    //    }else {
+//    //        text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
+//    //        self.hasError = YES;
+//    //        NSLog(@"%@",text);
+//    //    }
+//
+//    _state = NotStart;
+//    [_iFlySpeechSynthesizer stopSpeaking];
+//    [_listeningView removeFromSuperview];
+//
+//}
+//
+//
+//
+//
+///**
+// 取消合成回调
+// ****/
+//- (void)onSpeakCancel
+//{
+//    if (_isViewDidDisappear) {
+//        return;
+//    }
+//    self.isSpeechCanceled = YES;
+//
+//    if (_synType == UriType) {
+//
+//    }else if (_synType == NomalType) {
+//        NSLog(@"取消中");
+//    }
+//
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

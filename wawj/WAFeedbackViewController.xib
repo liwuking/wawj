@@ -143,35 +143,33 @@
                     <rect key="frame" x="0.0" y="458" width="320" height="110"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="81q-Ol-xIe" userLabel="View - 话筒">
-                            <rect key="frame" x="130" y="36" width="60" height="60"/>
+                            <rect key="frame" x="120" y="0.0" width="80" height="110"/>
                             <subviews>
                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="语音" translatesAutoresizingMaskIntoConstraints="NO" id="da7-WN-NMc">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                    <rect key="frame" x="0.0" y="20" width="80" height="80"/>
                                     <gestureRecognizers/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="GH4-97-naL"/>
-                                        <constraint firstAttribute="height" constant="60" id="td5-IU-Qlg"/>
+                                        <constraint firstAttribute="width" constant="80" id="aTQ-Ro-rzX"/>
+                                        <constraint firstAttribute="height" constant="80" id="jCF-Hm-sPV"/>
                                     </constraints>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="ePP-pD-64l" appends="YES" id="Tds-vh-2hY"/>
-                                    </connections>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="da7-WN-NMc" secondAttribute="bottom" id="0VU-b4-Jfs"/>
-                                <constraint firstAttribute="width" constant="60" id="BYB-KJ-4V1"/>
-                                <constraint firstItem="da7-WN-NMc" firstAttribute="centerX" secondItem="81q-Ol-xIe" secondAttribute="centerX" id="g8G-xq-jLg"/>
-                                <constraint firstAttribute="height" constant="60" id="qEF-zb-sJZ"/>
+                                <constraint firstAttribute="width" constant="80" id="UdK-Bq-3JI"/>
+                                <constraint firstItem="da7-WN-NMc" firstAttribute="centerX" secondItem="81q-Ol-xIe" secondAttribute="centerX" id="XbI-ze-yir"/>
+                                <constraint firstAttribute="bottom" secondItem="da7-WN-NMc" secondAttribute="bottom" constant="10" id="mN6-qs-qec"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="ePP-pD-64l" appends="YES" id="Nc8-yg-Zny"/>
+                            </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按住说话" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6V-a3-oef">
-                            <rect key="frame" x="120" y="10" width="80" height="16"/>
+                            <rect key="frame" x="120" y="0.0" width="80" height="16"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="80" id="JCq-6R-ab9"/>
-                                <constraint firstAttribute="height" constant="16" id="RH1-gt-MHF"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="yeb-W2-hpn"/>
+                                <constraint firstAttribute="height" constant="16" id="hVh-m1-9br"/>
+                                <constraint firstAttribute="width" constant="80" id="tdS-Hp-aML"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" red="0.1960784314" green="0.1960784314" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
@@ -180,10 +178,11 @@
                     </subviews>
                     <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="81q-Ol-xIe" firstAttribute="centerX" secondItem="Q6V-a3-oef" secondAttribute="centerX" id="HcT-E7-e98"/>
-                        <constraint firstItem="Q6V-a3-oef" firstAttribute="top" secondItem="ucq-Yl-SBd" secondAttribute="top" constant="10" id="Rcn-oR-Hk7"/>
-                        <constraint firstItem="81q-Ol-xIe" firstAttribute="top" secondItem="Q6V-a3-oef" secondAttribute="bottom" constant="10" id="pmQ-he-ceo"/>
-                        <constraint firstItem="Q6V-a3-oef" firstAttribute="centerX" secondItem="ucq-Yl-SBd" secondAttribute="centerX" id="uiY-Is-cZ8"/>
+                        <constraint firstItem="81q-Ol-xIe" firstAttribute="top" secondItem="ucq-Yl-SBd" secondAttribute="top" id="5JH-w3-JRP"/>
+                        <constraint firstItem="81q-Ol-xIe" firstAttribute="centerX" secondItem="ucq-Yl-SBd" secondAttribute="centerX" id="CRn-5T-pmK"/>
+                        <constraint firstItem="Q6V-a3-oef" firstAttribute="centerX" secondItem="ucq-Yl-SBd" secondAttribute="centerX" id="H0Q-xt-IYg"/>
+                        <constraint firstAttribute="bottom" secondItem="81q-Ol-xIe" secondAttribute="bottom" id="jQO-0l-wRJ"/>
+                        <constraint firstItem="Q6V-a3-oef" firstAttribute="top" secondItem="ucq-Yl-SBd" secondAttribute="top" id="nfh-aL-5wL"/>
                         <constraint firstAttribute="height" constant="110" id="zPt-we-l05"/>
                     </constraints>
                 </view>

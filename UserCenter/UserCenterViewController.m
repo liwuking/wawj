@@ -292,9 +292,9 @@
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     BOOL headUrlBool = self.imageUrl ? [userInfo[HEADURL] isEqualToString:self.imageUrl] : YES;
     BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
-    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:_selectTimeButton.titleLabel.text];
-    BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi);
-    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && !isSexWithMan) || ([userInfo[GENDER] isEqualToString:@"0"] && isSexWithMan);
+    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:_selectTimeButton.titleLabel.text] || [_selectTimeButton.titleLabel.text isEqualToString:@"请选择日期"];
+    BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi) || [userInfo[BIRTHDAYTYPE] isEqualToString:@""];
+    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && !isSexWithMan) || ([userInfo[GENDER] isEqualToString:@"0"] && isSexWithMan) || ([userInfo[GENDER] isEqualToString:@""] && isSexWithMan);
     
     if (headUrlBool && userNameBool && birthdayBool && birthdayTypeBool && genderBool) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -442,6 +442,14 @@
     
     NSData *fileData = UIImageJPEGRepresentation(_picImgView.image, 0.5);
     if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
+        
+//        //从 app 服务器获取的上传策略 policy
+//        NSString *policy = @"eyJleHBpcmF0aW9uIjoxNDg5Mzc4NjExLCJyZXR1cm4tdXJsIjoiaHR0cGJpbi5vcmdcL3Bvc3QiLCJidWNrZXQiOiJmb3JtdGVzdCIsInNhdmUta2V5IjoiXC91cGxvYWRzXC97eWVhcn17bW9ufXtkYXl9XC97cmFuZG9tMzJ9ey5zdWZmaXh9In0=";
+//        
+//        //从 app 服务器获取的上传策略签名 signature
+//        NSString *signature = @"l6BqFmNArztYqj6NtLkTj+PIsxk=";
+//        
+//    
         //图片命名
         NSDate *currentDate = [NSDate date];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -454,18 +462,19 @@
         
         __weak typeof(self) weakSelf = self;
         UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
-        NSString *bucketName = @"wawj-test";
         [MBProgressHUD showMessage:nil];
-        [up uploadWithBucketName:bucketName
-                        operator:@"wawj2017"
-                        password:@"1+1=2yes"
+        
+        
+        [up uploadWithBucketName:YUN_BUCKETNAMEPHOTO
+                        operator:YUN_OPERATOR
+                        password:YUN_PASSWORD
                         fileData:fileData
                         fileName:nil
                          saveKey:imgName
                  otherParameters:nil
                          success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
                              __strong typeof(weakSelf) strongSelf = weakSelf;
-                             strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,imgName];
+                             strongSelf.imageUrl = [NSString stringWithFormat:@"%@/%@",YUN_PHOTO,imgName];
                              
                              dispatch_async(dispatch_get_main_queue(), ^{
                                  [MBProgressHUD hideHUD];
@@ -477,7 +486,7 @@
                              dispatch_async(dispatch_get_main_queue(), ^{
                                  [MBProgressHUD hideHUD];
                                  __strong typeof(weakSelf) strongSelf = weakSelf;
-                                 _picImgView.image = nil;
+                                 _picImgView.image = [UIImage imageNamed:@"头像设置"];
                                  [strongSelf showAlertViewWithTitle:@"提示" message:@"请求失败" buttonTitle:@"确定" clickBtn:^{
                                      
                                  }];

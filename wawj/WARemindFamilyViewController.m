@@ -627,16 +627,15 @@
     NSString *audioHTTPPath=[NSString stringWithFormat:@"audio/%@/%@.mp3", currentDateString,uuid];
     
     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
-    NSString *bucketName = @"wawj-test";
     NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:audioSourcePath]];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [MBProgressHUD showMessage:nil];
     });
     
     __weak __typeof__(self) weakSelf = self;
-    [up uploadWithBucketName:bucketName
-                    operator:@"wawj2017"
-                    password:@"1+1=2yes"
+    [up uploadWithBucketName:YUN_BUCKETNAMEAUDIO
+                    operator:YUN_OPERATOR
+                    password:YUN_PASSWORD
                     fileData:fileData
                     fileName:nil
                      saveKey:audioHTTPPath
@@ -644,9 +643,9 @@
                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
                          
-                         NSString *audioUrl = [NSString stringWithFormat:@"%@/%@",HTTP_IMAGE,audioHTTPPath];
+                         NSString *audioUrl = [NSString stringWithFormat:@"%@/%@",YUN_AUDIO,audioHTTPPath];
                          
-                         NSLog(@"photoUrl: %@", audioUrl);
+                         NSLog(@"audioUrl: %@", audioUrl);
                          
                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                               [strongSelf createRemindRequestWith:audioUrl];

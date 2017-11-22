@@ -128,7 +128,7 @@
         NSMutableDictionary *adAblum = [[NSMutableDictionary alloc] initWithDictionary:data[@"body"][@"adAlbum"]];
         if ([code isEqualToString:@"0000"] && adAblum.count) {
             
-            [CoreArchive setDic:adAblum key:ADALBUM];
+            [CoreArchive setDic:[adAblum transforeNullValueToEmptyStringInSimpleDictionary] key:ADALBUM];
             
         }
         
@@ -284,11 +284,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             if ([results[i] isKindOfClass:[UNNotificationRequest class]]) {
                 UNNotificationRequest *request = results[i];
                 NSDictionary * userInfo = request.content.userInfo;
-                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+//                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
             } else {
                 UNNotificationRequest *request = results[i];
                 NSDictionary * userInfo = request.content.userInfo;
-                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
+//                NSLog(@"未处理的通知:%@", [self logDic:userInfo]);
             }
         }
         

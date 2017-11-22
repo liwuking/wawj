@@ -36,8 +36,64 @@
                      failure:(UpLoaderFailureBlock)failureBlock
                     progress:(UpLoaderProgressBlock)progressBlock {
     
+//
+////    operatorName = @"unionph";
+////    operatorPassword = @"1+1=2yes";
+//    operatorName = @"unionph";
+//    operatorPassword = @"hello123";
+//
+//
+//    NSDate *now = [NSDate date];
+//    NSString *expiration = [NSString stringWithFormat:@"%.0f",[now timeIntervalSince1970] + 1800];//本地自签名30分钟后过期
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+//    dateFormatter.locale = usLocale;
+//    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+//    [dateFormatter setDateFormat:@"EEE, dd MMM y HH:mm:ss zzz"];
+//
+//    NSString *date = [dateFormatter stringFromDate:now];
+//    NSString *content_md5 = [UpApiUtils getMD5HashFromData:fileData];
+//
+//    NSMutableDictionary *policyDict = [NSMutableDictionary new];
+////    NSDictionary *policyDict_part1 = @{@"bucket": bucketName,
+////                                       @"save-key": saveKey,
+////                                       @"expiration": expiration,
+////                                       @"date": date,
+////                                       @"content-md5": content_md5,
+////                                       @"content-length":[NSString stringWithFormat:@"%ld", fileData.length]};
+//    NSDictionary *policyDict_part1 = @{@"bucket": bucketName,
+//                                       @"save-key": saveKey,
+//                                       @"expiration": expiration,
+//                                       @"date": date,
+//                                       @"content-md5": content_md5};
+//
+//    NSDictionary *policyDict_part2 = [NSDictionary new];
+//    if (otherParameters) {
+//        policyDict_part2 = otherParameters;
+//    }
+//
+//    //所有上传参数都是放到上传策略 policy 中
+//    [policyDict addEntriesFromDictionary:policyDict_part1];
+//    [policyDict addEntriesFromDictionary:policyDict_part2];
+//
+//
+//    NSString *policy = [UpApiUtils getPolicyWithParameters:policyDict];
+//    NSString *signature = @"l6BqFmNArztYqj6NtLkTj+PIsxk=";
+//
+////     NSString *uri = [NSString stringWithFormat:@"/%@", bucketName];
+////     NSString *signature = [UpApiUtils getSignatureWithPassword:operatorPassword parameters:@[@"POST", uri, date, policy, content_md5]];
+//
+//    [self uploadWithOperator:operatorName
+//                      policy:policy
+//                   signature:signature
+//                    fileData:fileData
+//                    fileName:fileName
+//                     success:successBlock
+//                     failure:failureBlock
+//                    progress:progressBlock];
+    
     NSDate *now = [NSDate date];
-    NSString *expiration = [NSString stringWithFormat:@"%.0f",[now timeIntervalSince1970] + 1800];//本地自签名30分钟后过期
+    NSString *expiration = [NSString stringWithFormat:@"%.0f",[now timeIntervalSince1970] + 24*60*60*300];//本地自签名30分钟后过期
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     [dateFormatter setLocale:usLocale];
@@ -46,7 +102,7 @@
     
     NSString *date = [dateFormatter stringFromDate:now];
     NSString *content_md5 = [UpApiUtils getMD5HashFromData:fileData];
-
+    
     
     NSMutableDictionary *policyDict = [NSMutableDictionary new];
     NSDictionary *policyDict_part1 = @{@"bucket": bucketName,
@@ -65,14 +121,14 @@
     [policyDict addEntriesFromDictionary:policyDict_part1];
     [policyDict addEntriesFromDictionary:policyDict_part2];
     
-
+    
     NSString *policy = [UpApiUtils getPolicyWithParameters:policyDict];
     
     
     NSString *uri = [NSString stringWithFormat:@"/%@", bucketName];
     NSString *signature = [UpApiUtils getSignatureWithPassword:operatorPassword
                                                     parameters:@[@"POST", uri, date, policy, content_md5]];
-
+    
     [self uploadWithOperator:operatorName
                       policy:policy
                    signature:signature

@@ -21,14 +21,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="kdk-Ye-UyF">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="542"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="F4a-oc-cr9"/>
                         <outlet property="delegate" destination="-1" id="JaF-qR-Qz4"/>
                     </connections>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="101-LH-1W5">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="101-LH-1W5">
                     <rect key="frame" x="15" y="577" width="345" height="50"/>
                     <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -52,9 +52,9 @@
             <constraints>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2EW-w1-AQz"/>
                 <constraint firstAttribute="trailing" secondItem="101-LH-1W5" secondAttribute="trailing" constant="15" id="Ght-zY-nvX"/>
+                <constraint firstAttribute="bottom" secondItem="kdk-Ye-UyF" secondAttribute="bottom" id="MfK-tC-UJt"/>
                 <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" constant="40" id="Sxq-ux-knP"/>
                 <constraint firstAttribute="trailing" secondItem="kdk-Ye-UyF" secondAttribute="trailing" id="XLr-qG-YOX"/>
-                <constraint firstItem="101-LH-1W5" firstAttribute="top" secondItem="kdk-Ye-UyF" secondAttribute="bottom" constant="35" id="n15-mt-mPP"/>
                 <constraint firstItem="101-LH-1W5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="orY-eA-EBg"/>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="se3-fh-fAw"/>
                 <constraint firstItem="101-LH-1W5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="tHS-ab-7OO"/>
