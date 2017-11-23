@@ -18,6 +18,8 @@
 #import "HomeCell.h"
 #import "HomeCellTwo.h"
 #import "WAApplyRemindViewController.h"
+#import <sys/utsname.h>
+
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewTop;
 @property (weak, nonatomic) IBOutlet UIButton *remindBtn;
@@ -106,6 +108,9 @@
     self.dataArr = [@[] mutableCopy];
     
    
+    if ([self isIphone5]) {
+        self.remindBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -35, 0, 0);
+    }
     
     self.tableHeightConstrain.constant = SCREEN_WIDTH;
     self.tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
@@ -113,6 +118,27 @@
    
 }
 
+
+-(BOOL)isIphone5 {
+    //需要导入头文件：
+    
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString*platform = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
+    
+    if([platform isEqualToString:@"iPhone5,1"]
+       || [platform isEqualToString:@"iPhone5,2"]
+       || [platform isEqualToString:@"iPhone5,3"]
+       || [platform isEqualToString:@"iPhone5,4"]
+       || [platform isEqualToString:@"iPhone6,1"]
+       || [platform isEqualToString:@"iPhone6,2"]) {
+        return YES;
+    }
+    return NO;
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

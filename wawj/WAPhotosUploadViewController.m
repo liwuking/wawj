@@ -453,6 +453,7 @@
                             
                             //得到相册列表;
                             [MBProgressHUD showMessage:nil];
+                            
                             [strongSelf getPhotosList];
                             
                         } else {

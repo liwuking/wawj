@@ -131,6 +131,9 @@
     [[LJContactManager sharedInstance] selectContactAtController:self complection:^(NSString *name, NSString *phone,NSData *imageData) {
         __strong WAContactViewController *strongObject = weakObject;
         
+        phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        phone = [[phone componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@""];
+        
         ContactItem *item = [[ContactItem alloc] init];
         item.name = name;
         [item.phoneArr addObject:phone];

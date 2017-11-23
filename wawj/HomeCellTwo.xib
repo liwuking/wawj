@@ -34,7 +34,7 @@
             <connections>
                 <outlet property="headImageView" destination="Py5-mk-lvs" id="Yco-WD-rJ4"/>
             </connections>
-            <point key="canvasLocation" x="55" y="71"/>
+            <point key="canvasLocation" x="54.5" y="70.5"/>
         </tableViewCell>
     </objects>
     <resources>

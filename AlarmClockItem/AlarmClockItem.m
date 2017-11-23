@@ -16,7 +16,7 @@
 
 +(void)addWholePointTellTime {
     
-    
+    NSLog(@"%s", __func__);
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale systemLocale];
     dateFormatter.timeZone = [NSTimeZone systemTimeZone];

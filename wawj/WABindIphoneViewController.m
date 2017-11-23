@@ -95,7 +95,7 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
-    NSLog(@"%@-- %@", self.iphoneTextField.text,self.msgTextField.text);
+//    NSLog(@"%@-- %@", self.iphoneTextField.text,self.msgTextField.text);
     if (self.iphoneTextField.text.length > 1 && self.msgTextField.text.length > 1) {
         self.nextBtn.enabled = YES;
         self.nextBtn.backgroundColor = HEX_COLOR(0x219CE0);
@@ -103,6 +103,15 @@
     }else {
         self.nextBtn.enabled = NO;
         self.nextBtn.backgroundColor = HEX_COLOR(0xd1d1d8);
+    }
+    
+    if (self.msgTextField == textField) {
+        
+        if ((string.length + textField.text.length) > 6) {
+            return NO;
+        }
+//        NSLog(@"textField.text: %@",textField.text);
+//        NSLog(@"%@",string);
     }
     
     return YES;
@@ -218,6 +227,15 @@
     [self.locationManager startUpdatingHeading];
     NSLog(@"start gps");
 }
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//
+//    if (self.msgTextField == textField) {
+//        NSLog(@"textField.text: %@",textField.text);
+//    }
+//
+//    return YES;
+//}
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     
@@ -524,8 +542,8 @@
         return;
     }
     
-    if (self.msgTextField.text.length > 6) {
-        [self showAlertViewWithTitle:@"提示" message:@"验证码不能大于6位" buttonTitle:@"确定" clickBtn:^{
+    if (self.msgTextField.text.length < 4) {
+        [self showAlertViewWithTitle:@"提示" message:@"验证码不能小于4位" buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;

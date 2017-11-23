@@ -52,7 +52,7 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.title = @"个人设置";
+    self.title = @"功能设置";
     
 }
 

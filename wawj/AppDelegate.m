@@ -618,11 +618,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //点击后台进入
     if (application.applicationState == UIApplicationStateInactive) {
         
-        [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        
-        NSLog(@"UIApplicationStateInactive");
+//        [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+//
+//        }];
+//
+//        NSLog(@"UIApplicationStateInactive");
     }else{
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -634,14 +634,19 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [self playRemindAudioWithSoundName:notification.soundName];
         NSLog(@"notification.soundName: %@", notification.soundName);
         
-        __weak __typeof__(self) weakSelf = self;
-        [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:remindContent buttonTitle:@"确定" clickBtn:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            //关闭震动
-            AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-            //关闭声音
-            [strongSelf.audioFilePlayer stop];
-        }];
+        NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
+        if (!(str.length == 2)) {
+            __weak __typeof__(self) weakSelf = self;
+            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:remindContent buttonTitle:@"确定" clickBtn:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                //关闭震动
+                AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+                //关闭声音
+                [strongSelf.audioFilePlayer stop];
+            }];
+
+        }
+        
         
     }
     //这里，你就可以通过notification的useinfo，干一些你想做的事情了
@@ -668,7 +673,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.audioFilePlayer.numberOfLoops=0;
     self.audioFilePlayer.volume = 1;
     [self.audioFilePlayer prepareToPlay];
-    self.audioFilePlayer.delegate = self;
+    NSString *str = [[soundName componentsSeparatedByString:@"."] firstObject];
+    if (!(str.length == 2)) {
+         self.audioFilePlayer.delegate = self;
+    }
+   
     if (error) {
         NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
         return ;

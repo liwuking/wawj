@@ -356,7 +356,8 @@
     NSDictionary *userDict = [CoreArchive dicForKey:USERINFO];
     
     WAPreviewRecordViewController *vc = [[WAPreviewRecordViewController alloc] initWithNibName:@"WAPreviewRecordViewController" bundle:nil];
-    vc.headUrl = self.closeFamilyItem.headUrl;
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    vc.headUrl = userInfo[HEADURL];//self.closeFamilyItem.headUrl;
     vc.recordedTime = self.recordedTime;
     vc.recordedDate = self.timeOneLab.text;
     vc.recordedDay = self.timeTwoLab.text;
@@ -574,7 +575,7 @@
 }
 
 - (IBAction)clickRemindBtn:(UIButton *)sender {
-    
+
     if (self.recordedTime < 5) {
         [self showAlertViewWithTitle:@"录音时间不得小于5s" message:nil buttonTitle:@"确定" clickBtn:^{
             
@@ -690,9 +691,23 @@
 //        NSString *code = data[@"code"];
 //        NSString *desc = data[@"desc"];
         
-        [MBProgressHUD showSuccess:@"发送成功"];
 
-//        [strongSelf.navigationController popViewControllerAnimated:YES];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        
+        // Set the text mode to show only text.
+        hud.mode = MBProgressHUDModeText;
+        hud.label.text = @"发送成功";
+        // Move to bottm center.
+        hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
+        
+        [hud hideAnimated:YES afterDelay:2.f];
+        
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [strongSelf.navigationController popViewControllerAnimated:YES];
+        });
+        
+//
         
 //        if ([code isEqualToString:@"1"]) {
 ////             [MBProgressHUD showError:@"已经提醒"];

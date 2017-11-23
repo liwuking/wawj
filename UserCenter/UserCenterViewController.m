@@ -13,7 +13,7 @@
 #import "UpYun.h"
 #import "UpYunFormUploader.h"
 #import <UIImageView+WebCache.h>
-
+#import <sys/utsname.h>
 #define blueColor RGB_COLOR(45, 168, 232)
 #define whiteColor [UIColor whiteColor]
 @interface UserCenterViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>
@@ -43,6 +43,27 @@
 
 @implementation UserCenterViewController
 
+-(BOOL)isIphone5 {
+    //需要导入头文件：
+    
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString*platform = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
+    
+    if([platform isEqualToString:@"iPhone5,1"]
+       || [platform isEqualToString:@"iPhone5,2"]
+       || [platform isEqualToString:@"iPhone5,3"]
+       || [platform isEqualToString:@"iPhone5,4"]
+       || [platform isEqualToString:@"iPhone6,1"]
+       || [platform isEqualToString:@"iPhone6,2"]) {
+        return YES;
+    }
+    return NO;
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人设置";
@@ -61,6 +82,8 @@
     if (SCREEN_HEIGHT == 480) {
         _contentViewHeight.constant = 88+64;
     }
+    
+    _bgScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 568);
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     if (![userInfo[HEADURL] isEqualToString:@""]) {
@@ -137,7 +160,7 @@
 
     }
     
-    _bgScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT+30);
+//    _bgScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT+30);
 }
 
 - (IBAction)selectSex:(UITapGestureRecognizer *)sender {
@@ -347,15 +370,15 @@
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    // When the user presses return, take focus away from the text field so that the keyboard is dismissed.
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    CGRect rect = CGRectMake(0.0f, 64.0f, self.view.frame.size.width, self.view.frame.size.height);
-    //CGRect rect = CGRectMake(0.0f, 20.0f, self.view.frame.size.width, self.view.frame.size.height);
-    self.view.frame = rect;
-    //         NSLog(@"%@",NSStringFromCGRect(self.view.frame));
-    [UIView commitAnimations];
+//    // When the user presses return, take focus away from the text field so that the keyboard is dismissed.
+//    NSTimeInterval animationDuration = 0.30f;
+//    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+//    [UIView setAnimationDuration:animationDuration];
+//    CGRect rect = CGRectMake(0.0f, 64.0f, self.view.frame.size.width, self.view.frame.size.height);
+//    //CGRect rect = CGRectMake(0.0f, 20.0f, self.view.frame.size.width, self.view.frame.size.height);
+//    self.view.frame = rect;
+//    //         NSLog(@"%@",NSStringFromCGRect(self.view.frame));
+//    [UIView commitAnimations];
     [textField resignFirstResponder];
     return YES;
 }
@@ -684,7 +707,7 @@
     NSTimeInterval animationDuration = 0.30f;
     [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
     [UIView setAnimationDuration:animationDuration];
-    CGRect rect = CGRectMake(0.0f, 64.0f, self.view.frame.size.width, self.view.frame.size.height);
+    CGRect rect = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
     self.view.frame = rect;
     [UIView commitAnimations];
     
