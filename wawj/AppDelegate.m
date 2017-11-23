@@ -475,7 +475,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         // 判断为本地通知
         NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
         if (![notification.request.content.title isEqualToString:@"整点报时"]) {
-            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.subtitle buttonTitle:@"确定" clickBtn:^{
+            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.body buttonTitle:@"确定" clickBtn:^{
                 
             }];
             
