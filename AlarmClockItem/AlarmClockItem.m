@@ -115,8 +115,10 @@
     notification.soundName = soundName;
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-    notification.alertTitle = @"我爱我家";
-    notification.alertBody = alertContent;
+    notification.alertTitle = @"整点报时";
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *remindContent = [NSString stringWithFormat:@"【%@】%@", [dateFormatter stringFromDate:remindDate],alertContent];
+    notification.alertBody = remindContent;
     NSDictionary *infoDict = @{@"requestIdentifier":requestIdentifier,@"alarType":REMINDTYPE_ONLYONCE};
     //设置userinfo 方便在之后需要撤销的时候使用 也可以传递其他值，当通知触发时可以获取
     notification.userInfo = infoDict;
@@ -153,8 +155,10 @@
     notification.soundName = @"115.m4a";
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
-    notification.alertTitle = @"我爱我家";
-    notification.alertBody = alertContent;
+    notification.alertTitle = @"我的提醒";
+    [dateFormatter setDateFormat:@"HH:mm"];
+     NSString *remindContent = [NSString stringWithFormat:@"【%@】%@", [dateFormatter stringFromDate:remindDate],alertContent];
+    notification.alertBody = remindContent;
     //            //显示在icon上的红色圈中的数字,右上角数字加1
     //            notification.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
     
@@ -265,8 +269,17 @@
         //Local Notification
         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
         notificationContent.title = @"我的提醒";
-//        notificationContent.subtitle = content;
-        notificationContent.body = content;
+        
+        NSString *remindContent = [NSString stringWithFormat:@"【%ld:%ld】%@",hour,minute,content];
+        if (hour < 10) {
+            remindContent = [NSString stringWithFormat:@"【0%ld:%ld】%@",hour,minute,content];
+        }else if(minute < 10) {
+            remindContent = [NSString stringWithFormat:@"【%ld:0%ld】%@",hour,minute,content];
+        }else if (hour < 10 && minute < 10) {
+            remindContent = [NSString stringWithFormat:@"【0%ld:0%ld】%@",hour,minute,content];
+        }
+//        notificationContent.subtitle = remindContent;
+        notificationContent.body = remindContent;
         notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {

@@ -416,16 +416,51 @@
     
 }
 
+-(void)photoListHandleWithPhotoLists:(NSArray *)photoLists andSemaphore:(dispatch_semaphore_t)semaphore {
+    //上传相册
+    NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
+                            @"photo_List": photoLists};
+    
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2103" andModel:model];
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        dispatch_semaphore_signal(semaphore);
+        
+        [strongSelf hideHud];
+        
+        NSString *code = data[@"code"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            //得到相册列表;
+            [MBProgressHUD showMessage:nil];
+            
+            [strongSelf getPhotosList];
+            
+        } else {
+            [MBProgressHUD showError:@"网络请求失败"];
+        }
+        
+    } fail:^(NSError *error) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [MBProgressHUD showError:@"网络请求失败"];
+        [strongSelf hideHud];
+        
+        dispatch_semaphore_signal(semaphore);
+    }];
 
+}
 -(void)uploadImage:(NSArray *)images {
     
     if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
 
         [self hudShow:[NSString stringWithFormat:@"正在上传(0/%ld)...",images.count]];
         
+        __weak __typeof__(self) weakSelf = self;
         dispatch_queue_t queue = dispatch_queue_create("com.wawj.www", DISPATCH_QUEUE_PRIORITY_DEFAULT);
         dispatch_async( queue, ^{
-
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
             NSMutableArray *photoLists = [@[] mutableCopy];
             NSMutableArray *imageArr = [[NSMutableArray alloc] initWithArray:images];
             
@@ -436,46 +471,14 @@
                 
                 if (i >= imageArr.count && photoLists.count > 0) {
                     
-                    //上传相册
-                    NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
-                                            @"photo_List": photoLists};
-                    
-                    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2103" andModel:model];
-                    __weak __typeof__(self) weakSelf = self;
-                    [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
-                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                        dispatch_semaphore_signal(semaphore);
-                        
-                        [strongSelf hideHud];
-                        
-                        NSString *code = data[@"code"];
-                        if ([code isEqualToString:@"0000"]) {
-                            
-                            //得到相册列表;
-                            [MBProgressHUD showMessage:nil];
-                            
-                            [strongSelf getPhotosList];
-                            
-                        } else {
-                            [MBProgressHUD showError:@"网络请求失败"];
-                        }
-                        
-                    } fail:^(NSError *error) {
-                        
-                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                        [MBProgressHUD showError:@"网络请求失败"];
-                        [strongSelf hideHud];
-                        
-                        dispatch_semaphore_signal(semaphore);
-                    }];
-                    
+                        //相册处理
+                    [strongSelf photoListHandleWithPhotoLists:[NSArray arrayWithArray:photoLists] andSemaphore:semaphore];
                 } else {
                     
-                    if (0  == imageArr.count) {
+                    if (i  == imageArr.count || imageArr.count == 0) {
                         return ;
                     }
                     NSData *pngData = UIImagePNGRepresentation(imageArr[i]);
-//                    NSLog(@"pngData.length:%lf", pngData.length/2000.0);
                     //图片命名
                     NSDate *currentDate = [NSDate date];
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -487,7 +490,7 @@
 
                     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
                     NSDictionary *parameters = @{@"expiration":[NSNumber numberWithLong:1920597071]};
-                    __weak __typeof__(self) weakSelf = self;
+//                    __weak __typeof__(self) weakSelf = self;
                     NSLog(@"图片上传");
                     [up uploadWithBucketName:YUN_BUCKETNAMEPHOTO
                                     operator:YUN_OPERATOR
@@ -497,7 +500,7 @@
                                      saveKey:imgName
                              otherParameters:parameters
                                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
-                                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//                                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
                                           NSLog(@"图片上传完成");
                                          NSString *photoUrl = [NSString stringWithFormat:@"%@/%@",YUN_PHOTO,imgName];
                                          NSDictionary *photos = @{@"photo_url":photoUrl, @"photoSize":responseBody[@"file_size"], @"photoWidth":responseBody[@"image-width"], @"photoHeight":responseBody[@"image-height"]};
@@ -512,13 +515,18 @@
                                          
                                      }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
                                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                                         
                                          NSLog(@"上传失败: %ld", strongSelf.cacheImags.count);
                                          
-                                         //[strongSelf.cacheImags removeAllObjects];
-                                         [strongSelf hideHudWithError:@"上传失败"];
+//                                         [strongSelf.cacheImags removeAllObjects];
+                                         
+                                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                             [strongSelf hideHudWithError:@"上传失败"];
+                                         });
+                                         
                                          [imageArr removeAllObjects];
                                          
-                                         dispatch_semaphore_signal(semaphore);
+//                                         dispatch_semaphore_signal(semaphore);
                                          
                                      }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
                                          
@@ -1006,7 +1014,7 @@
         
     });
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (strongSelf.hudView) {

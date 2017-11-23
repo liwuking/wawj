@@ -474,6 +474,32 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     } else {
         // 判断为本地通知
         NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
+        if (![notification.request.content.title isEqualToString:@"整点报时"]) {
+            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.subtitle buttonTitle:@"确定" clickBtn:^{
+                
+            }];
+            
+        }
+       
+        
+//        //播放声音
+//        [self playRemindAudioWithSoundName:notification.soundName];
+//        NSLog(@"notification.soundName: %@", notification.soundName);
+//
+//
+//        NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
+//        if (!(str.length == 2)) {
+//            __weak __typeof__(self) weakSelf = self;
+//            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.subtitle buttonTitle:@"确定" clickBtn:^{
+//                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//                //关闭震动
+//                AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+//                //关闭声音
+//                [strongSelf.audioFilePlayer stop];
+//            }];
+//
+//        }
+        
     }
     
     completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
@@ -568,7 +594,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     if(SYSTEM_VERSION >= 10){
         //iOS 10
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];//UNAuthorizationOptionBadge |
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         __weak __typeof__(self) weakSelf = self;
         [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
             
@@ -615,6 +641,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     NSLog(@"%s", __FUNCTION__);
+//    if (SYSTEM_VERSION >= 11) {
+//        return;
+//    }
+    
     //点击后台进入
     if (application.applicationState == UIApplicationStateInactive) {
         
@@ -625,19 +655,20 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //        NSLog(@"UIApplicationStateInactive");
     }else{
         
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm"];
-        NSString *fireTime = [dateFormatter stringFromDate:notification.fireDate];
-        NSString *remindContent = [NSString stringWithFormat:@"【%@】%@", fireTime,notification.alertBody];
-        
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setDateFormat:@"HH:mm"];
+//        NSString *fireTime = [dateFormatter stringFromDate:notification.fireDate];
+//        NSString *remindContent = [NSString stringWithFormat:@"【%@】%@", fireTime,notification.alertBody];
+//
         //播放声音
         [self playRemindAudioWithSoundName:notification.soundName];
         NSLog(@"notification.soundName: %@", notification.soundName);
         
+
         NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
         if (!(str.length == 2)) {
             __weak __typeof__(self) weakSelf = self;
-            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:remindContent buttonTitle:@"确定" clickBtn:^{
+            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
                 __strong __typeof__(weakSelf) strongSelf = weakSelf;
                 //关闭震动
                 AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);

@@ -576,6 +576,7 @@
 
 - (IBAction)clickRemindBtn:(UIButton *)sender {
 
+    
     if (self.recordedTime < 5) {
         [self showAlertViewWithTitle:@"录音时间不得小于5s" message:nil buttonTitle:@"确定" clickBtn:^{
             
@@ -660,7 +661,15 @@
                          
                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                              [MBProgressHUD hideHUD];
-                             [MBProgressHUD showError:@"提醒失败"];
+                             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+                             
+                             // Set the text mode to show only text.
+                             hud.mode = MBProgressHUDModeText;
+                             hud.label.text = @"提醒失败";
+                             // Move to bottm center.
+                             hud.offset = CGPointMake(0.f, 30);
+                             
+                             [hud hideAnimated:YES afterDelay:1.f];
                          });
                          
                          
@@ -688,22 +697,19 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         [MBProgressHUD hideHUD];
-//        NSString *code = data[@"code"];
-//        NSString *desc = data[@"desc"];
-        
+
 
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        
-        // Set the text mode to show only text.
         hud.mode = MBProgressHUDModeText;
         hud.label.text = @"发送成功";
         // Move to bottm center.
-        hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
+//        hud.backgroundColor = [UIColor redColor];
+        hud.offset = CGPointMake(0.f, 30);
         
-        [hud hideAnimated:YES afterDelay:2.f];
+        [hud hideAnimated:YES afterDelay:1.f];
         
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [strongSelf.navigationController popViewControllerAnimated:YES];
         });
         

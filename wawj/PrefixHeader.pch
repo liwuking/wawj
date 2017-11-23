@@ -39,7 +39,6 @@
 //测试服务器
 #define KMain_URL    @"http://123.207.170.53:8888/service"
 #define ALBUM_URL    @"http://123.207.170.53:8888/service"
-
 //又拍云URL
 #define YUN_OPERATOR @"iosoperator"
 #define YUN_PASSWORD @"hello123"
