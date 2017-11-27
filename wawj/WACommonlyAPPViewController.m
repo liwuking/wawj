@@ -11,6 +11,8 @@
 #import "WAAppAddCollectionViewCell.h"
 #import "WAAppListViewController.h"
 #import "AppItem.h"
+#import "WAFuctionSetViewController.h"
+
 @interface WACommonlyAPPViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -159,12 +161,9 @@
             }
       
         } else if (1 == indexPath.row) {
-            NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            if([[UIApplication sharedApplication] canOpenURL:url]) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [[UIApplication sharedApplication] openURL:url];
-                });
-            }
+            
+            WAFuctionSetViewController *vc = [[WAFuctionSetViewController alloc] initWithNibName:@"WAFuctionSetViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
 
         }else {
             AppItem *item = self.dataArr[indexPath.row-2];

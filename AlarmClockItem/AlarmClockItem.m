@@ -16,6 +16,7 @@
 
 +(void)addWholePointTellTime {
     
+    [self cancelWholePointTellTime];
     NSLog(@"%s", __func__);
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale systemLocale];
@@ -34,7 +35,7 @@
         NSString *dateStr = [NSString stringWithFormat:@"%@ %@:00:00",todayStr,hourStr];
         NSDate *remindDate = [dateFormatter dateFromString:dateStr];
 
-         NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
+         NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@%@",WHOLEHOURREMIND,REMINDTYPE_ONETIMEONCE,hourStr];
         NSString *content = @"整点报时";
         NSString *soundName = [NSString stringWithFormat:@"%@.m4r",hourStr];
         [self scheduleWholeNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockSoundName:soundName fireDate:remindDate];
@@ -42,65 +43,10 @@
     }
     
 }
-+(void)cancelWholePointTellTime {
-    
-    NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    for (NSInteger i = 5; i <= 21; i++) {
-        
-        NSString *hourStr;
-        if (i < 10) {
-            hourStr = [NSString stringWithFormat:@"0%ld",i];
-        } else {
-            hourStr = [NSString stringWithFormat:@"%ld",i];
-        }
-        
-        NSString *requestIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
-        for (UILocalNotification *notification in notiArray) {
-            NSDictionary *info = notification.userInfo;
-            if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
-                //将这个notification从UIApplication中移除
-                [[UIApplication sharedApplication] cancelLocalNotification:notification];
-            }
-        }
 
-    }
-    
-    
-    
-//    NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
-//    NSString *requestIdentifier = REMINDTYPE_ONETIMEONCE;
-//
-//    if (SYSTEM_VERSION >= 10) {
-//        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-//        [center removePendingNotificationRequestsWithIdentifiers:@[requestIdentifier]];
-//        [center removeDeliveredNotificationsWithIdentifiers:@[requestIdentifier]];
-//    } else {
-//        for (UILocalNotification *notification in notiArray) {
-//            NSDictionary *info = notification.userInfo;
-//            if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
-//                //将这个notification从UIApplication中移除
-//                [[UIApplication sharedApplication] cancelLocalNotification:notification];
-//            }
-//        }
-//    }
-
-}
-
-
-+(NSInteger)getCurrentWeekDay {
-    NSDate *dateNow = [NSDate date];
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
-    NSDateComponents *comps = [[NSDateComponents alloc] init];
-    
-    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
-    comps = [calendar components:unitFlags fromDate:dateNow];
-    
-    long weekNumber = [comps weekday]; //获取星期对应的长整形字符串
-    
-    return weekNumber;
-}
 
 + (void)scheduleWholeNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockSoundName:(NSString *)soundName fireDate:(NSDate*)remindDate {
+    NSLog(@"%s", __func__);
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     //在选中的时间发出提醒
     notification.fireDate = remindDate;
@@ -109,7 +55,6 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSLog(@"本地推送时间: %@  soundName: %@", [dateFormatter stringFromDate:remindDate],soundName);
     notification.timeZone = [NSTimeZone defaultTimeZone];
     //设置推送时的声音，一个30秒的音乐
     notification.soundName = soundName;
@@ -125,10 +70,14 @@
     
     //将这个notification添加到UIApplication中
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
+    
+    NSLog(@"本地推送时间: %@  soundName: %@ %@ %@", [dateFormatter stringFromDate:remindDate],soundName,remindContent,notification);
 }
 
-+ (void)scheduleNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockType:(NSString *)alarType fireDate:(NSDate*)remindDate
++ (void)scheduleNotificationWithAlertContent:(NSString *)alertContent requestIdentifier:(NSString *)requestIdentifier AlarmClockType:(NSString *)alarType fireDate:(NSDate*)remindDate isOhters:(BOOL)isOther
 {
+    NSLog(@"%s", __func__);
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     //在选中的时间发出提醒
     notification.fireDate = remindDate;
@@ -151,8 +100,11 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSLog(@"本地推送时间: %@  类型: %@", [dateFormatter stringFromDate:remindDate],alarType);
     notification.timeZone = [NSTimeZone defaultTimeZone];
-    //设置推送时的声音，一个30秒的音乐
-    notification.soundName = @"115.m4a";
+    if (!isOther) {
+        //设置推送时的声音，一个30秒的音乐
+        notification.soundName = @"115.m4a";
+    }
+    
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
     notification.alertTitle = @"我的提醒";
@@ -177,8 +129,9 @@
                       AlarmClockIdentifier:(NSString *)clockIdentifier
                                   isOhters:(BOOL)isOther
 {
+    NSLog(@"%s", __func__);
 
-    [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:fireDate];
+    [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:fireDate isOhters:isOther];
 }
 
 + (void)addAlarmClockWithAlarmClockContent:(NSString *)content
@@ -187,6 +140,7 @@
                             AlarmClockIdentifier:(NSString *)clockIdentifier
                                   isOhters:(BOOL)isOther
 {
+    NSLog(@"%s", __func__);
     
     NSArray *arr = [dateTime componentsSeparatedByString:@":"];
     NSInteger hour = [arr[0] integerValue];
@@ -217,7 +171,7 @@
             
             NSLog(@"newFireDate: %@", [formatter stringFromDate:newFireDate]);
             
-            [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate];
+            [self scheduleNotificationWithAlertContent:content requestIdentifier:clockIdentifier AlarmClockType:alarType fireDate:newFireDate isOhters:NO];
            NSLog(@"requestIdentifier003: %@", clockIdentifier);
         } else  if ([alarType isEqualToString:REMINDTYPE_WORKDAY]) {
 
@@ -235,7 +189,7 @@
                 
                 NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
                 NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
-                [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate isOhters:NO];
                 
                 NSLog(@"requestIdentifier001: %@", requestIdentifier);
             }
@@ -258,7 +212,7 @@
                     NSDate *newFireDate = [[[NSCalendar currentCalendar] dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
                     
                     NSString *requestIdentifier = [NSString stringWithFormat:@"%@%ld",clockIdentifier,newWeekDay];
-                    [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate];
+                    [self scheduleNotificationWithAlertContent:content requestIdentifier:requestIdentifier AlarmClockType:alarType fireDate:newFireDate isOhters:NO];
                     NSLog(@"requestIdentifier002: %@", requestIdentifier);
                 }
                 
@@ -280,7 +234,10 @@
         }
 //        notificationContent.subtitle = remindContent;
         notificationContent.body = remindContent;
-        notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
+        if (!isOther) {
+            notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
+        }
+        
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {
             
@@ -369,8 +326,60 @@
     
 }
 
++(void)cancelWholePointTellTime {
+    
+    
+    
+    NSLog(@"%s", __func__);
+    NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *notification in notiArray) {
+        NSDictionary *info = notification.userInfo;
+        if ([info[@"requestIdentifier"] hasPrefix:WHOLEHOURREMIND]) {
+            //将这个notification从UIApplication中移除
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    
+    
+//    for (NSInteger i = 5; i <= 21; i++) {
+//
+//        NSString *hourStr;
+//        if (i < 10) {
+//            hourStr = [NSString stringWithFormat:@"0%ld",i];
+//        } else {
+//            hourStr = [NSString stringWithFormat:@"%ld",i];
+//        }
+//
+//        NSString *requestIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONETIMEONCE,hourStr];
+//        for (UILocalNotification *notification in notiArray) {
+//            NSDictionary *info = notification.userInfo;
+//            if ([info[@"requestIdentifier"] isEqualToString:requestIdentifier]) {
+//                //将这个notification从UIApplication中移除
+//                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+//            }
+//        }
+//
+//    }
+    
+}
+
+
++(NSInteger)getCurrentWeekDay {
+    NSLog(@"%s", __func__);
+    NSDate *dateNow = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    
+    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
+    comps = [calendar components:unitFlags fromDate:dateNow];
+    
+    long weekNumber = [comps weekday]; //获取星期对应的长整形字符串
+    
+    return weekNumber;
+}
+
 + (void)cancelAlarmClockWithRemindItem:(RemindItem *)remindItem{
-   
+   NSLog(@"%s", __func__);
     if(SYSTEM_VERSION < 10){
         
         NSArray *notiArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
@@ -455,7 +464,7 @@
 }
 
 + (void)cancelAllAlarmClock {
-    
+    NSLog(@"%s", __func__);
     if(SYSTEM_VERSION >= 10){
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         [center removeAllPendingNotificationRequests];
@@ -469,7 +478,7 @@
 
 
 +(void)cancelAllExpireAlarmClock {
-    
+    NSLog(@"%s", __func__);
 //    if(SYSTEM_VERSION >= 10){
 //        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
 //        [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {

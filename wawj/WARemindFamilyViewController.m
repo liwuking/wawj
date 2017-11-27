@@ -98,7 +98,7 @@
     self.recordTimeStamp = remindStamp;
     
     [self initViews];
-    [self setAudioSession];
+    
 
     [self checkMicPhonePermission];
 }
@@ -139,36 +139,6 @@
  *  @return 录音设置
  */
 -(NSDictionary *)getAudioSetting{
-//    NSMutableDictionary *dicM=[NSMutableDictionary dictionary];
-//    //设置录音格式
-//    [dicM setObject:@(kAudioFormatLinearPCM) forKey:AVFormatIDKey];
-//    //设置录音采样率，8000是电话采样率，对于一般录音已经够了
-//    [dicM setObject:@(44100) forKey:AVSampleRateKey];
-//    //设置通道,这里采用单声道
-//    [dicM setObject:@(2) forKey:AVNumberOfChannelsKey];
-//    //每个采样点位数,分为8、16、24、32
-//    [dicM setObject:@(8) forKey:AVLinearPCMBitDepthKey];
-//    //是否使用浮点数采样
-//    [dicM setObject:@(YES) forKey:AVLinearPCMIsFloatKey];
-//    //....其他设置等
-//    return dicM;
-    
-//    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                              [NSNumber numberWithFloat:44100.0],AVSampleRateKey ,    //采样率 8000/44100/96000
-//                              [NSNumber numberWithInt:kAudioFormatMPEG4AAC],AVFormatIDKey,  //录音格式
-//                              [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,   //线性采样位数  8、16、24、32
-//                              [NSNumber numberWithInt:2],AVNumberOfChannelsKey,      //声道 1，2
-//                              [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey, //录音质量
-//
-//                              nil];
-//    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                              [NSNumber numberWithFloat: 15000],AVSampleRateKey, //采样率
-//                              [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
-//                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,//通道
-//                              [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
-//                              nil];
-//    return settings;
-    
     
     NSDictionary *setting = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithInt:AVAudioQualityMin],
@@ -185,32 +155,11 @@
 
 }
 
-///**
-// *  获得录音机对象
-// *
-// *  @return 录音机对象
-// */
-//-(AVAudioRecorder *)audioRecorder{
-//
-////    if (!_audioRecorder) {
-//        //创建录音文件保存路径
-//        NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
-//        //创建录音格式设置
-//        NSDictionary *setting=[self getAudioSetting];
-//        //创建录音机
-//        NSError *error=nil;
-//        _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&error];
-//        _audioRecorder.delegate=self;
-//        [_audioRecorder peakPowerForChannel:0];
-//        if (error) {
-//            NSLog(@"创建录音机对象时发生错误，错误信息：%@",error.localizedDescription);
-//            return nil;
-//        }
-////    }
-//    return _audioRecorder;
-//}
+
 
 -(void)startRecord {
+    
+    [self setAudioSession];
     
     //创建录音文件保存路径
     NSURL *url= [NSURL fileURLWithPath:[self getSavePath]];
@@ -228,36 +177,13 @@
     [_audioRecorder record];
 }
 
-///**
-// *  创建播放器
-// *
-// *  @return 播放器
-// */
-//-(AVAudioPlayer *)audioPlayer{
-//
-//    if (!_audioPlayer) {
-//        NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
-//        NSError *error=nil;
-//        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
-//        _audioPlayer.numberOfLoops=0;
-//        _audioPlayer.volume = 1;
-//        _audioPlayer.delegate = self;
-//        [_audioPlayer prepareToPlay];
-//        if (error) {
-//            NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-//            return nil;
-//        }
-//    }
-//    return _audioPlayer;
-//}
-
 /**
  *  创建播放器
  *
- *  @return 播放器
+ *   播放器
  */
 -(void)startPlay{
-    
+
     NSURL *url=[NSURL fileURLWithPath:[self getSavePath]];
     NSError *error=nil;
     _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
@@ -268,6 +194,10 @@
     if (error) {
         NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
     }
+    
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+    
     [_audioPlayer play];
 }
 
@@ -306,7 +236,6 @@
         [self startPlay];
         self.previewBtn.hidden = YES;
         
-//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
@@ -315,7 +244,6 @@
         self.previewBtn.hidden = NO;
         
         if (self.recordedTime >= 5) {
-//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
     }
@@ -327,25 +255,17 @@
     sender.selected = !sender.selected;
     if (sender.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-//        [self.audioPlayer play];
         [self startPlay];
         self.previewBtn.hidden = YES;
         
-//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
         
     } else {
-        
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
-        [session setActive:YES error:nil];
-        
         [self.cicularView endCircle];
         [self.audioPlayer stop];
         self.previewBtn.hidden = NO;
         
         if (self.recordedTime >= 5) {
-//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
     }
@@ -419,11 +339,6 @@
     }
     
     if ([self.recordbtn.titleLabel.text isEqualToString:@"点击录音"]) {
-        
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [session setActive:YES error:nil];
-        
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
@@ -455,23 +370,20 @@
         self.startStopBtn.selected = NO;
         
         if (self.recordedTime >= 5) {
-//            self.remindBtn.enabled = YES;
             [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
         }
-  
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
-        [session setActive:YES error:nil];
 
-        
     } else if ([self.recordbtn.titleLabel.text isEqualToString:@"重新录音"]) {
         
+        if ([self.audioRecorder isRecording]) {
+            [self.audioRecorder stop];
+        }
+        if ([self.audioPlayer isPlaying]) {
+            [self.audioPlayer stop];
+        }
+        [self.cicularView endCircle];
+        
         [self removeRecordFile];
-        
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [session setActive:YES error:nil];
-        
         [self startRecord];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
         
@@ -481,7 +393,6 @@
         self.headImageGes.enabled = NO;
         [self.cicularView startCircleWithTimeLength:RECORD_TOTAL_TIME];
         
-//        self.remindBtn.enabled = NO;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
     }
     
@@ -490,7 +401,6 @@
 #pragma -mark CircularViewDelegate
 
 -(void)circularViewStartDraw {
-//    self.remindBtn.enabled = NO;
     [self.remindBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
 }
 
@@ -513,12 +423,9 @@
         self.headImageGes.enabled = YES;
         self.startStopBtn.selected = NO;
     }
-//    else {
-//        self.startStopBtn.selected = NO;
-//    }
+
     
     if (self.recordedTime >= 5) {
-//        self.remindBtn.enabled = YES;
         [self.remindBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
     }
     
@@ -702,29 +609,15 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.label.text = @"发送成功";
-        // Move to bottm center.
-//        hud.backgroundColor = [UIColor redColor];
+
         hud.offset = CGPointMake(0.f, 30);
         
         [hud hideAnimated:YES afterDelay:1.f];
         
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [strongSelf.navigationController popViewControllerAnimated:YES];
-        });
-        
-//
-        
-//        if ([code isEqualToString:@"1"]) {
-////             [MBProgressHUD showError:@"已经提醒"];
-////            [strongSelf addNotificationWithRemindContent:nil];
-//        } else {
-//
-//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-//
-//            }];
-//
-//        }
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [strongSelf.navigationController popViewControllerAnimated:YES];
+//        });
         
     } fail:^(NSError *error) {
         
@@ -738,65 +631,6 @@
     
 }
 
-/*
-- (void)addNotificationWithRemindContent:(NSString *)remindContent {
-    
-    JPushNotificationContent *content = [[JPushNotificationContent alloc] init];
-    content.title = @"提醒";
-    content.subtitle = @"我爱我家";
-    content.body = @"This is a test code";
-    content.categoryIdentifier = @"Custom Category Name";
-    
-//    // 5s后提醒 iOS 10 以上支持
-//    JPushNotificationTrigger *trigger1 = [[JPushNotificationTrigger alloc] init];
-//    trigger1.timeInterval = 5;
-//    //每小时重复 1 次 iOS 10 以上支持
-//    JPushNotificationTrigger *trigger2 = [[JPushNotificationTrigger alloc] init];
-//    trigger2.timeInterval = 3600;
-//    trigger2.repeat = YES;
-//
-//    //每周一早上8：00提醒，iOS10以上支持
-//    NSDateComponents *components = [[NSDateComponents alloc] init];
-//    components.weekday = 2;
-//    components.hour = 8;
-//    JPushNotificationTrigger *trigger3 = [[JPushNotificationTrigger alloc] init];
-//    trigger3.dateComponents = components;
-//    trigger3.repeat = YES;
-//
-//    //#import <CoreLocation/CoreLocation.h>
-//    //一到某地点提醒，iOS8以上支持
-//    CLRegion *region = [[CLRegion alloc] initCircularRegionWithCenter:CLLocationCoordinate2DMake(0, 0) radius:0 identifier:@"test"];
-//    JPushNotificationTrigger *trigger4 = [[JPushNotificationTrigger alloc] init];
-//    trigger4.region = region;
-//
-//    //5s后提醒，iOS10以下支持
-//    JPushNotificationTrigger *trigger5 = [[JPushNotificationTrigger alloc] init];
-//    trigger5.fireDate = [NSDate dateWithTimeIntervalSinceNow:5];
-    
-    
-    JPushNotificationTrigger *trigger;
-    if (SYSTEM_VERSION >= 10) {
-        trigger = [[JPushNotificationTrigger alloc] init];
-        trigger.timeInterval = 1;
-    } else {
-        trigger = [[JPushNotificationTrigger alloc] init];
-        trigger.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-    }
-    
-    JPushNotificationRequest *request = [[JPushNotificationRequest alloc] init];
-    request.requestIdentifier = @"sampleRequest";
-    request.content = content;
-    request.trigger = trigger;
-    request.completionHandler = ^(id result) {
-        if (result) {
-            NSLog(@"推送结果返回：%@", result);
-        } else {
-            NSLog(@"推送失败");
-        }
-    };
-    [JPUSHService addNotification:request];
-}
-*/
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];

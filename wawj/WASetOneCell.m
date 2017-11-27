@@ -14,6 +14,11 @@
     [super awakeFromNib];
     // Initialization code
 }
+- (IBAction)clickValidationPhone:(UIButton *)sender {
+    
+    self.clickLogin();
+    
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

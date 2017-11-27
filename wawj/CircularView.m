@@ -51,7 +51,7 @@
     CGFloat radius = _radius;  //设置半径
     CGFloat startA = - M_PI_2;  //圆起点位置
     CGFloat endA = -M_PI_2 + M_PI * 2 * _progress;  //圆终点位置
-    NSLog(@"_progress: %f", _progress);
+//    NSLog(@"_progress: %f", _progress);
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:startA endAngle:endA clockwise:YES];
     
     CGContextSetLineWidth(ctx, 10); //设置线条宽度

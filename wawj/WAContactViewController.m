@@ -110,14 +110,14 @@
     
     [self.view endEditing:YES];
     
-    __weak __typeof__(self) weakSelf = self;
-    [ImagePicker showImagePickerFromViewController:self allowsEditing:YES finishAction:^(UIImage *image) {
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        if (image)
-        {
-            [strongSelf.picImage setImage:image];
-        }
-    }];
+//    __weak __typeof__(self) weakSelf = self;
+//    [ImagePicker showImagePickerFromViewController:self allowsEditing:YES finishAction:^(UIImage *image) {
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        if (image)
+//        {
+//            [strongSelf.picImage setImage:image];
+//        }
+//    }];
 
 }
 
@@ -259,18 +259,64 @@
     
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    CGRect textFieldFrame      = [textField convertRect:textField.bounds toView:self.view];
+    //当前输入框的Y
+    CGFloat textField_Y        = textFieldFrame.origin.y;
+    //当前输入框的高度
+    CGFloat textFieldHight     = textFieldFrame.size.height;
+    //屏幕高度
+    CGFloat screenHight        = self.view.frame.size.height;
+    //键盘高度
+    CGFloat keyBordHight       = 216;
+    //键盘tabbar高度
+    CGFloat keyBordTabbarHight = 35;
+    //计算输入框向上移动的偏移量
+    int offset = 64+textField_Y + textFieldHight - (screenHight - keyBordHight - keyBordTabbarHight);
     
+    //根据键盘遮挡的高度开始移动动画
+    [UIView animateWithDuration:0.3 animations:^{
+        if (offset > 0) {
+            
+            float width = self.view.frame.size.width;
+            float hight = self.view.frame.size.height;
+            
+            CGRect rect = CGRectMake(0, -offset, width, hight);
+            self.view.frame = rect;
+        }
+    }];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
     [self.view endEditing:YES];
+    //键盘收回后视图移动回原位的动画
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        float width = self.view.frame.size.width;
+        float hight = self.view.frame.size.height;
+        
+        CGRect rect = CGRectMake(0, 0, width, hight);
+        self.view.frame = rect;
+    }];
     
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
-    [textField resignFirstResponder];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+    //点击Return,键盘收回后视图移动回原位的动画
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        float width = self.view.frame.size.width;
+        float hight = self.view.frame.size.height;
+        
+        CGRect rect = CGRectMake(0, 0, width, hight);
+        self.view.frame = rect;
+    }];
     return YES;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

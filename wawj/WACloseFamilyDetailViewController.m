@@ -178,7 +178,7 @@
 }
 - (IBAction)clickSendMessageBtn:(UIButton *)sender {
     
-    NSString *message = [NSString stringWithFormat:@"%@,我正在使用我爱我家APP，有家庭相册，提醒，还内置老年桌面，挺好的，你快下载安装吧http://wawjapp.com",self.closeFamilyItem.qinmiRoleName];
+    NSString *message = [NSString stringWithFormat:@"%@,我正在使用我爱我家APP，有家庭相册，提醒，还内置老年桌面，挺好的，你快下载安装吧http://wawjapp.com/d.html",self.closeFamilyItem.qinmiRoleName];
     [self sendMessage:message];
 }
 
@@ -198,24 +198,14 @@
 }
 - (IBAction)clickPhoneBtn:(UIButton *)sender {
     
-    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.closeFamilyItem.qinmiPhone];
-    //NSLog(@"str======%@",str);
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.closeFamilyItem.qinmiPhone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-    
-//    [self showAlertViewWithTitle:@"提示" message:[NSString stringWithFormat:@"是否拨打%@的号码",self.closeFamilyItem.qinmiName] cancelButtonTitle:@"取消" clickCancelBtn:^{
-//
-//    } otherButtonTitles:@"拨打" clickOtherBtn:^{
-//        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.closeFamilyItem.qinmiPhone];
-//        //NSLog(@"str======%@",str);
-//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//    }];
-
     
 }
 
 
 - (IBAction)clickRemind:(UIButton *)sender {
-    if ([self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
+    if (self.closeFamilyItem.qinmiUser && [self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"对方还未添加你为亲密家人,请先添加" message:nil buttonTitle:@"确定" clickBtn:^{
             
         }];

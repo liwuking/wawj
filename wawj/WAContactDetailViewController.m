@@ -53,7 +53,8 @@
         [phoneBtn setTitle:phone forState:UIControlStateNormal];
         [phoneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [phoneBtn setImage:[UIImage imageNamed:@"phone_x"] forState:UIControlStateNormal];
-        [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -20, 0, 0)];
+        [phoneBtn setBackgroundColor:[UIColor whiteColor]];
+        [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 0, 0, 0)];
         [phoneBtn addTarget:self action:@selector(clickPhone:) forControlEvents:UIControlEventTouchUpInside];
         [self.photoStackView addArrangedSubview:phoneBtn];
         
@@ -63,11 +64,9 @@
 
 -(void)clickPhone:(UIButton *)phoneBtn {
     
-    [self showAlertViewWithTitle:[NSString stringWithFormat:@"是否拨打%@",self.contactItem.phoneArr[phoneBtn.tag]] message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-        
-    } otherButtonTitles:@"确定" clickOtherBtn:^{
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.contactItem.phoneArr[phoneBtn.tag]]];
-    }];
+    NSString *phone = [NSString stringWithFormat:@"tel://%@", self.contactItem.phoneArr[phoneBtn.tag]];
+     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+
     
 }
 
@@ -112,7 +111,8 @@
             [phoneBtn setTitle:phone forState:UIControlStateNormal];
             [phoneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [phoneBtn setImage:[UIImage imageNamed:@"phone_x"] forState:UIControlStateNormal];
-            [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -20, 0, 0)];
+            [phoneBtn setBackgroundColor:[UIColor redColor]];
+            [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 0, 0, 0)];
             [phoneBtn addTarget:self action:@selector(clickPhone:) forControlEvents:UIControlEventTouchUpInside];
             [self.photoStackView addArrangedSubview:phoneBtn];
             

@@ -53,8 +53,8 @@
 #define PHOTO_LIST_DICT  @"user_photoList_ARR"
 
 
+#define WHOLEHOURREMIND   @"wholehourremind"
 #define REMINDTYPE_ONETIMEONCE      @"onetimeonce"
-
 
 #define REMINDTYPE_ONLYONCE      @"onlyonce"
 #define REMINDTYPE_EVERYDAY      @"everyday"

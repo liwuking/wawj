@@ -416,7 +416,7 @@
     
 }
 
--(void)photoListHandleWithPhotoLists:(NSArray *)photoLists andSemaphore:(dispatch_semaphore_t)semaphore {
+-(void)photoListHandleWithPhotoLists:(NSArray *)photoLists andCompleteBlock:(void(^)(void))block {
     //上传相册
     NSDictionary *model = @{@"albumId":     self.photosItem.albumId,
                             @"photo_List": photoLists};
@@ -424,9 +424,8 @@
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P2103" andModel:model];
     __weak __typeof__(self) weakSelf = self;
     [CLNetworkingManager postNetworkRequestWithUrlString:ALBUM_URL parameters:params isCache:NO succeed:^(id data) {
+       
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        dispatch_semaphore_signal(semaphore);
-        
         [strongSelf hideHud];
         
         NSString *code = data[@"code"];
@@ -441,13 +440,19 @@
             [MBProgressHUD showError:@"网络请求失败"];
         }
         
+        block();
+//        NSLog(@"信号发送04");
+//        dispatch_semaphore_signal(semaphore);//发送信号
+        
     } fail:^(NSError *error) {
         
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         [MBProgressHUD showError:@"网络请求失败"];
         [strongSelf hideHud];
+         block();
+//        NSLog(@"信号发送05");
+//        dispatch_semaphore_signal(semaphore);//发送信号
         
-        dispatch_semaphore_signal(semaphore);
     }];
 
 }
@@ -460,22 +465,27 @@
         __weak __typeof__(self) weakSelf = self;
         dispatch_queue_t queue = dispatch_queue_create("com.wawj.www", DISPATCH_QUEUE_PRIORITY_DEFAULT);
         dispatch_async( queue, ^{
+             NSLog(@"[NSThread currentThread]--enter: %@",[NSThread currentThread]);
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             NSMutableArray *photoLists = [@[] mutableCopy];
             NSMutableArray *imageArr = [[NSMutableArray alloc] initWithArray:images];
             
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);//创建信号量
             for (int i = 0; i < imageArr.count+1; i++)
             {
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+                NSLog(@"信号等待01: %@", [NSThread currentThread]);
+                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);//等待信号
                 
-                if (i >= imageArr.count && photoLists.count > 0) {
-                    
-                        //相册处理
-                    [strongSelf photoListHandleWithPhotoLists:[NSArray arrayWithArray:photoLists] andSemaphore:semaphore];
+                if (i == imageArr.count && photoLists.count > 0) {
+                    NSLog(@"相册处理");
+                    //相册处理
+                    [strongSelf photoListHandleWithPhotoLists:[NSArray arrayWithArray:photoLists] andCompleteBlock:^{
+                        NSLog(@"信号发送03: %@", [NSThread currentThread]);
+                        dispatch_semaphore_signal(semaphore);//发送信号
+                    }];
                 } else {
-                    
-                    if (i  == imageArr.count || imageArr.count == 0) {
+
+                    if (imageArr.count == 0) {
                         return ;
                     }
                     NSData *pngData = UIImagePNGRepresentation(imageArr[i]);
@@ -490,8 +500,7 @@
 
                     UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
                     NSDictionary *parameters = @{@"expiration":[NSNumber numberWithLong:1920597071]};
-//                    __weak __typeof__(self) weakSelf = self;
-                    NSLog(@"图片上传");
+//                    NSLog(@"图片上传");
                     [up uploadWithBucketName:YUN_BUCKETNAMEPHOTO
                                     operator:YUN_OPERATOR
                                     password:YUN_PASSWORD
@@ -500,8 +509,7 @@
                                      saveKey:imgName
                              otherParameters:parameters
                                      success:^(NSHTTPURLResponse *response,NSDictionary *responseBody) {  //上传成功
-//                                         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                                          NSLog(@"图片上传完成");
+//                                          NSLog(@"图片上传完成");
                                          NSString *photoUrl = [NSString stringWithFormat:@"%@/%@",YUN_PHOTO,imgName];
                                          NSDictionary *photos = @{@"photo_url":photoUrl, @"photoSize":responseBody[@"file_size"], @"photoWidth":responseBody[@"image-width"], @"photoHeight":responseBody[@"image-height"]};
                                          [photoLists addObject:photos];
@@ -510,23 +518,37 @@
                                          
                                          [strongSelf hudShow:[NSString stringWithFormat:@"正在上传(%ld/%ld)...",photoLists.count,imageArr.count]];
                                          
-                                         
-                                         dispatch_semaphore_signal(semaphore);
+                                          NSLog(@"信号发送02: %@", [NSThread currentThread]);
+                                         dispatch_semaphore_signal(semaphore);//发送信号
                                          
                                      }failure:^(NSError *error,NSHTTPURLResponse *response,NSDictionary *responseBody) { //上传失败
                                          __strong __typeof__(weakSelf) strongSelf = weakSelf;
                                          
-                                         NSLog(@"上传失败: %ld", strongSelf.cacheImags.count);
+                                         NSLog(@"上传失败,成功上传数量: %ld", strongSelf.cacheImags.count);
+                                         NSLog(@"[NSThread currentThread]--failure: %@",[NSThread currentThread]);
                                          
-//                                         [strongSelf.cacheImags removeAllObjects];
-                                         
-                                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                             [strongSelf hideHudWithError:@"上传失败"];
-                                         });
                                          
                                          [imageArr removeAllObjects];
-                                         
-//                                         dispatch_semaphore_signal(semaphore);
+                                         if (photoLists.count > 0) {
+                                             //相册处理
+                                             [strongSelf photoListHandleWithPhotoLists:[NSArray arrayWithArray:photoLists] andCompleteBlock:^{
+                                                 NSLog(@"信号发送04: %@", [NSThread currentThread]);
+                                                 dispatch_semaphore_signal(semaphore);//发送信号
+                                                 dispatch_semaphore_signal(semaphore);//发送信号
+                                                 
+                                                 NSString *errorMsg = [NSString stringWithFormat:@"上传失败%ld张，成功%ld张",imageArr.count-photoLists.count,photoLists.count];
+                                                 [strongSelf hideHudWithError:errorMsg];
+                                                 
+                                             }];
+                                             
+                                         } else {
+                                             NSLog(@"信号发送05: %@", [NSThread currentThread]);
+                                             dispatch_semaphore_signal(semaphore);//发送信号
+                                             dispatch_semaphore_signal(semaphore);//发送信号
+                                             
+                                             NSString *errorMsg = [NSString stringWithFormat:@"上传失败%ld张，成功%ld张",imageArr.count-photoLists.count,photoLists.count];
+                                             [strongSelf hideHudWithError:errorMsg];
+                                         }
                                          
                                      }progress:^(int64_t completedBytesCount,int64_t totalBytesCount) {
                                          
@@ -745,7 +767,6 @@
         }
         
         NSString *code = data[@"code"];
-//        NSString *desc = data[@"desc"];
         if ([code isEqualToString:@"0000"]) {
             
             if (![data[@"body"][@"photoList"] isKindOfClass:[NSNull class]]) {
@@ -821,10 +842,6 @@
             
             
         } else {
-            
-//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-//                
-//            }];
             
         }
         
@@ -907,7 +924,7 @@
         self.isChange = YES;
     } else {
         
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",item.photoUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@""]];
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@!%@",item.photoUrl,WEBP_HEADER_FAMILY]] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
     }
     
     return cell;
@@ -955,7 +972,8 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         
         if (!strongSelf.hudView) {
-            strongSelf.hudView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 120)];
+            
+            strongSelf.hudView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, 120)];
             strongSelf.hudView.layer.masksToBounds = YES;
             strongSelf.hudView.layer.cornerRadius = 5.0f;
             strongSelf.hudView.backgroundColor = [UIColor darkGrayColor];
@@ -966,10 +984,10 @@
             indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
             [indicator startAnimating];
             
-            UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 150, 30)];
+            UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, strongSelf.hudView.frame.size.width, 30)];
             lab.textAlignment = NSTextAlignmentCenter;
             lab.textColor = [UIColor whiteColor];
-            lab.font = [UIFont systemFontOfSize:16];
+            lab.adjustsFontSizeToFitWidth = YES;
             lab.tag = 100;
             lab.text = text;//[NSString stringWithFormat:@"正在上传(%ld/%ld)...",images.count,images.count];
             
@@ -1004,18 +1022,23 @@
 
 -(void)hideHudWithError:(NSString *)errorMessage {
     
-    __weak __typeof__(self) weakSelf = self;
+   
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        
-        UILabel *lab = [strongSelf.hudView viewWithTag:100];
-        lab.text = errorMessage;
-        
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        strongSelf.hudView.frame = CGRectMake(0, 0, 200, 120);
+//        strongSelf.hudView.center = self.view.center;
+//
+//        UILabel *lab = [strongSelf.hudView viewWithTag:100];
+//        lab.frame = CGRectMake(0, 50, 200, 30);
+//        lab.text = errorMessage;
+//
+//    });
     
+    [self hudShow:errorMessage];
+    
+     __weak __typeof__(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (strongSelf.hudView) {
             [strongSelf.hudView removeFromSuperview];

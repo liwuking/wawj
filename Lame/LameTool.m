@@ -33,16 +33,12 @@
         unsigned char mp3_buffer[MP3_SIZE];
         
         lame_t lame = lame_init();
-        lame_set_num_channels(lame,1);//设置1为单通道，默认为2双通道
+        lame_set_num_channels(lame,2);//设置1为单通道，默认为2双通道
         lame_set_in_samplerate(lame, 44100.0);
         lame_set_VBR(lame, vbr_default);
-        
         lame_set_brate(lame,8);
-        
         lame_set_mode(lame,3);
-        
         lame_set_quality(lame,2);
-        
         lame_init_params(lame);
         
         do {

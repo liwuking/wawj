@@ -23,7 +23,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sgz-ZR-TjK">
                     <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="文字广告位" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EE0-ki-Gdd">
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="文字广告位" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EE0-ki-Gdd">
                             <rect key="frame" x="8" y="17" width="156" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -37,7 +37,7 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCb-xn-JST">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="xS3-bX-36C"/>
                     </connections>
@@ -46,7 +46,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="hCb-xn-JST" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0px-gq-Qm7"/>
-                <constraint firstItem="sgz-ZR-TjK" firstAttribute="top" secondItem="hCb-xn-JST" secondAttribute="bottom" id="9WW-vZ-6mo"/>
+                <constraint firstAttribute="bottom" secondItem="hCb-xn-JST" secondAttribute="bottom" id="9WW-vZ-6mo"/>
                 <constraint firstAttribute="bottom" secondItem="sgz-ZR-TjK" secondAttribute="bottom" id="Dmx-Nt-mZw"/>
                 <constraint firstAttribute="trailing" secondItem="sgz-ZR-TjK" secondAttribute="trailing" id="Q03-8s-SYz"/>
                 <constraint firstItem="hCb-xn-JST" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SHF-Ms-I0r"/>

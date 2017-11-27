@@ -12,7 +12,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "WARemindFamilyViewController.h"
 #import "amrFileCodec.h"
-//#import "SoundTouchOperation.h"
 
 #define kRecordAudioFile @"myRecord.caf"
 
@@ -33,7 +32,6 @@
 @end
 
 @implementation WAPreviewRecordViewController {
-//    NSOperationQueue *soundTouchQueue;
 }
 - (IBAction)clickBackBtn:(id)sender {
     
@@ -112,6 +110,7 @@
     }];
     
     self.recordDateLab.text = self.recordedDate;
+    self.dayLab.adjustsFontSizeToFitWidth = YES;
     self.dayLab.text = self.recordedDay;
     self.cicularView.radius = 107;
     self.cicularView.delegate = self;
@@ -131,67 +130,39 @@
     // Do any additional setup after loading the view from its nib.
     
     [self initViews];
-    [self setAudioSession];
-    
-//    soundTouchQueue = [[NSOperationQueue alloc]init];
-//    soundTouchQueue.maxConcurrentOperationCount = 1;
-   
     
 }
 
-//-(void)startPlay {
-//    NSData *data = [NSData dataWithContentsOfFile:self.audioUrl];
-//    
-//    MySountTouchConfig config;
-//    config.sampleRate = 44100.0;
-//    config.tempoChange = 0;
-//    config.pitch = 0;
-//    config.rate = 0;
-//    
-//    SoundTouchOperation *manSTO = [[SoundTouchOperation alloc]initWithTarget:self action:@selector(SoundTouchFinish:) SoundTouchConfig:config soundFile:data];
-//    
-//    [soundTouchQueue cancelAllOperations];
-//    [soundTouchQueue addOperation:manSTO];
-//}
 
 - (IBAction)clickStart:(id)sender {
     
-    self.startStopBtn.selected = !self.startStopBtn.selected;
-    if (self.startStopBtn.selected) {
-        [self.cicularView startCircleWithTimeLength:self.recordedTime];
-        
-        [self.audioPlayer play];
-        
-//        self.backBtn.enabled = NO;
-//        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
-        
-    } else {
-        [self.cicularView endCircle];
-        
-        [self.audioPlayer stop];
-        
+//    self.startStopBtn.selected = !self.startStopBtn.selected;
+//    if (self.startStopBtn.selected) {
 //
-//        self.backBtn.enabled = YES;
-//        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
-    }
+//        [self.cicularView startCircleWithTimeLength:self.recordedTime];
+//        [self.audioPlayer play];
+//
+//    } else {
+//
+//        [self.cicularView endCircle];
+//        [self.audioPlayer stop];
+//
+//    }
+    
+    [self clickStartBtn:nil];
 }
 
 - (IBAction)clickStartBtn:(UIButton *)sender {
-    
-    sender.selected = !sender.selected;
-    if (sender.selected) {
+
+     self.startStopBtn.selected = !self.startStopBtn.selected;
+    if (self.startStopBtn.selected) {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-        [self.audioPlayer play];
-        
-//        self.backBtn.enabled = NO;
-//        [self.backBtn setBackgroundColor:HEX_COLOR(0x79C6ED)];
-        
+        [self startPlay];
+
     } else {
         [self.cicularView endCircle];
         [self.audioPlayer stop];
-        
-//        self.backBtn.enabled = YES;
-//        [self.backBtn setBackgroundColor:HEX_COLOR(0x219CE0)];
+
     }
 }
 
@@ -242,63 +213,67 @@
             
             strongSelf.audioUrl = downLoadAudioUrl;
             [strongSelf.cicularView startCircleWithTimeLength:self.recordedTime];
-            [strongSelf.audioPlayer play];
+            [strongSelf startPlay];
             
         }];
         [downloadTask resume];
 
     } else {
         [self.cicularView startCircleWithTimeLength:self.recordedTime];
-        [self.audioPlayer play];
+        [self startPlay];
     }
    
 }
 
-/**
- *  设置音频会话
- */
--(void)setAudioSession{
-    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
-    //设置为播放和录音状态，以便可以在录制完之后播放录音
-    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    [audioSession setActive:YES error:nil];
-}
+///**
+// *  创建播放器
+// *
+// *  @return 播放器
+// */
+//-(AVAudioPlayer *)audioPlayer{
+//
+//    if (!_audioPlayer) {
+//        NSURL *url=[NSURL fileURLWithPath:self.audioUrl];
+//        NSError *error=nil;
+//        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+//        _audioPlayer.numberOfLoops=0;
+//        _audioPlayer.volume = 1;
+//        _audioPlayer.delegate = self;
+//        [_audioPlayer prepareToPlay];
+//        if (error) {
+//            NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
+//            return nil;
+//        }
+//
+//        AVAudioSession *session = [AVAudioSession sharedInstance];
+//        [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+//    }
+//    return _audioPlayer;
+//}
 
 /**
  *  创建播放器
  *
- *  @return 播放器
+ *   播放器
  */
--(AVAudioPlayer *)audioPlayer{
-    if (!_audioPlayer) {
-        
-//         NSData *audioData = [NSData dataWithContentsOfFile:self.audioUrl];
-        
-//        if ([self.audioUrl hasSuffix:@".amr"]) {
-//
-//        } else {
-//
-//        }
-//
-        
-        
-        NSError *error=nil;
-       _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:self.audioUrl] error:&error];
-//        _audioPlayer=[[AVAudioPlayer alloc] initWithData:audioData error:&error];
-        _audioPlayer.numberOfLoops=0;
-        _audioPlayer.volume = 1;
-        _audioPlayer.delegate = self;
-//        _audioPlayer.enableRate = YES;
-//        _audioPlayer.rate = 1;
-        [_audioPlayer prepareToPlay];
-        if (error) {
-            NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
-//            return nil;
-        }
+-(void)startPlay{
+    
+    NSURL *url=[NSURL fileURLWithPath:self.audioUrl];
+    NSError *error=nil;
+    _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+    _audioPlayer.numberOfLoops=0;
+    _audioPlayer.volume = 1;
+    _audioPlayer.delegate = self;
+    [_audioPlayer prepareToPlay];
+    if (error) {
+        NSLog(@"创建播放器过程中发生错误，错误信息：%@",error.localizedDescription);
     }
-    return _audioPlayer;
+    
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayback error:nil];  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+    
+    [_audioPlayer play];
 }
-
 
 #pragma mark - 播放代理方法
 

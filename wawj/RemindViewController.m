@@ -725,11 +725,6 @@ typedef NS_OPTIONS(NSInteger, Status) {
             [self.dataArr removeAllObjects];
             [self.tableView reloadData];
             
-//            [self insertOneAdditionalRemindData];
-//            if ([CoreArchive boolForKey:USERNAME]) {
-//
-//            }
-            
         }
         
         
@@ -1323,6 +1318,22 @@ typedef NS_OPTIONS(NSInteger, Status) {
         vc.headUrl = headUrl;
         vc.qinmiName = qinmiName;
         vc.recordedDate = remindItem.remindtime;
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *today = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0*24*60*60]];
+        NSString *tomorrow = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:1*24*60*60]];
+        NSString *aftertomorrow = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:2*24*60*60]];
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:[remindItem.createtimestamp longLongValue]];
+        NSString *remindDate = [dateFormatter stringFromDate:date];
+        if ([remindDate isEqualToString:today]) {
+            remindDate = @"今天";
+        } else if([remindDate isEqualToString:tomorrow]) {
+            remindDate = @"明天";
+        } else if([remindDate isEqualToString:aftertomorrow]){
+            remindDate = @"后天";
+        } 
+        vc.recordedDay = remindDate;
         
         vc.isFromRemindVC = YES;
         vc.createUser = createUser;

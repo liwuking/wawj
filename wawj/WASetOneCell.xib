@@ -52,18 +52,66 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GqS-tU-Nas">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lEE-jm-rd8">
+                                <rect key="frame" x="85" y="20" width="150" height="50"/>
+                                <color key="backgroundColor" red="0.47450980390000003" green="0.77647058820000003" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="H8n-dl-sty"/>
+                                    <constraint firstAttribute="height" constant="50" id="XHg-lA-Ggt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="验证手机">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="clickValidationPhone:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="fz0-0T-TDu"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="验证后，可使用更多功能" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="js2-7f-hje">
+                                <rect key="frame" x="35" y="80" width="250" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="9Cs-Cn-TuB"/>
+                                    <constraint firstAttribute="width" constant="250" id="9Ls-5x-XWG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="lEE-jm-rd8" firstAttribute="centerX" secondItem="GqS-tU-Nas" secondAttribute="centerX" id="7KE-Dg-U6Q"/>
+                            <constraint firstItem="js2-7f-hje" firstAttribute="centerX" secondItem="GqS-tU-Nas" secondAttribute="centerX" id="aCR-mV-GDa"/>
+                            <constraint firstItem="lEE-jm-rd8" firstAttribute="top" secondItem="GqS-tU-Nas" secondAttribute="top" constant="20" id="iEn-AU-ZSp"/>
+                            <constraint firstItem="js2-7f-hje" firstAttribute="top" secondItem="lEE-jm-rd8" secondAttribute="bottom" constant="10" id="iXB-xL-mXo"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="mpw-gj-Iq0" secondAttribute="trailing" constant="15" id="57X-Ne-iKY"/>
+                    <constraint firstAttribute="trailing" secondItem="GqS-tU-Nas" secondAttribute="trailing" id="7cn-Tv-GHb"/>
                     <constraint firstItem="wAe-qK-y0t" firstAttribute="top" secondItem="mpw-gj-Iq0" secondAttribute="bottom" constant="15" id="BPp-dT-Ie4"/>
                     <constraint firstItem="mpw-gj-Iq0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="20" id="BTJ-yO-stU"/>
+                    <constraint firstItem="GqS-tU-Nas" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Ipf-d9-5C4"/>
                     <constraint firstAttribute="trailingMargin" secondItem="wAe-qK-y0t" secondAttribute="trailing" constant="15" id="NWQ-3B-8JH"/>
                     <constraint firstItem="nzI-Cy-l6G" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="XyA-2s-M8u"/>
                     <constraint firstItem="nzI-Cy-l6G" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="e6v-mP-zm9"/>
+                    <constraint firstItem="GqS-tU-Nas" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="fc4-s9-r1W"/>
+                    <constraint firstAttribute="bottom" secondItem="GqS-tU-Nas" secondAttribute="bottom" id="mb5-Tb-uef"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="headImageView" destination="nzI-Cy-l6G" id="0Vq-Qf-uzw"/>
+                <outlet property="loginView" destination="GqS-tU-Nas" id="deT-vc-Ekp"/>
                 <outlet property="userIphone" destination="wAe-qK-y0t" id="q48-JG-wpD"/>
                 <outlet property="userNameLab" destination="mpw-gj-Iq0" id="v53-kU-265"/>
             </connections>

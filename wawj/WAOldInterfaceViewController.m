@@ -164,7 +164,7 @@
             
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
             btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
-            NSLog(@"btn.frame: %lf", btn.frame.origin.y);//NSStringFromCGRect(btn.frame)
+//            NSLog(@"btn.frame: %lf", btn.frame.origin.y);//NSStringFromCGRect(btn.frame)
             [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
             btn.tag = index;
             [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -321,9 +321,7 @@
         
         NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.phoneText.text];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//        UIWebView * callWebview = [[UIWebView alloc] init];
-//        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-//        [self.view addSubview:callWebview];
+
     }
     
 }
@@ -381,14 +379,8 @@
 
 - (IBAction)clickBTwo:(UIButton *)sender {
     
-    if ([CoreArchive dicForKey:USERINFO]) {
-        WAFuctionSetViewController *vc = [[WAFuctionSetViewController alloc] initWithNibName:@"WAFuctionSetViewController" bundle:nil];
-        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+    WAFuctionSetViewController *vc = [[WAFuctionSetViewController alloc] initWithNibName:@"WAFuctionSetViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

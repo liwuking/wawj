@@ -54,7 +54,7 @@
     NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"\n"];
     jsonString = [[jsonString componentsSeparatedByCharactersInSet: doNotWant]componentsJoinedByString: @""];
     
-    NSLog(@"jsonString: %@", jsonString);
+//    NSLog(@"jsonString: %@", jsonString);
     return jsonString;
 }
 

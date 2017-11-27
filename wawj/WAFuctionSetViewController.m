@@ -181,19 +181,27 @@
         NSDictionary *userDict = [CoreArchive dicForKey:USERINFO];
         
         WASetOneCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WASetOneCell" owner:nil options:nil] lastObject];
-        NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-        NSString *headurl = [NSString stringWithFormat:@"%@!%@",userInfo[@"headUrl"],WEBP_HEADER_INFO];
-        if (![headurl isEqualToString:@""]) {
-
-            [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:headurl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                
-            }];
-            
-            
-//            cell.headImageView sd_setImageWithURL:@"" placeholderImage:nil options:(SDWebImageOptions)
+       NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+        if (userInfo) {
+         cell.loginView.hidden = YES;
+            if (userInfo[@"headUrl"]) {
+                NSString *headurl = [NSString stringWithFormat:@"%@!%@",userInfo[@"headUrl"],WEBP_HEADER_INFO];
+                [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:headurl] placeholderImage:[UIImage imageNamed:@"个人设置-我的头像"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                }];
+            }
+            cell.userNameLab.text = userDict[USERNAME];
+            cell.userIphone.text = userDict[USERIPHONE];
+        } else {
+           cell.loginView.hidden = NO;
         }
-        cell.userNameLab.text = userDict[USERNAME];
-        cell.userIphone.text = userDict[USERIPHONE];
+        
+         __weak typeof(self) weakSelf = self;
+        cell.clickLogin = ^{
+             __strong typeof(weakSelf) strongSelf = weakSelf;
+            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            WABindIphoneViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WABindIphoneViewController"];
+            [strongSelf.navigationController pushViewController:vc animated:YES];
+        };
         return cell;
         
     } else if(1 == indexPath.section && 1 == indexPath.row){
@@ -233,24 +241,27 @@
     
     if (0 == indexPath.section) {
         
-        UserCenterViewController *vc = [[UserCenterViewController alloc] initWithNibName:@"UserCenterViewController" bundle:nil];
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([CoreArchive dicForKey:USERINFO]) {
+            UserCenterViewController *vc = [[UserCenterViewController alloc] initWithNibName:@"UserCenterViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
         
     } else if (1 == indexPath.section) {
         
         if (1 == indexPath.row) {
             
-            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            cell.waSwitch.on = !cell.waSwitch.on;
-
-            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
-            
-            
-            if (cell.waSwitch.on) {
-                [AlarmClockItem addWholePointTellTime];
-            } else {
-                [AlarmClockItem cancelWholePointTellTime];
-            }
+//            WASetTwoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            cell.waSwitch.on = !cell.waSwitch.on;
+//
+//            [CoreArchive setBool:cell.waSwitch.on key:ISZHENGDIAN_BAOSHI];
+//            
+//            
+//            if (cell.waSwitch.on) {
+//                [AlarmClockItem addWholePointTellTime];
+//            } else {
+//                [AlarmClockItem cancelWholePointTellTime];
+//            }
             
             
         } else {
