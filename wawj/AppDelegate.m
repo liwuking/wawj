@@ -29,8 +29,7 @@
 #endif
 // 如果需要使用idfa功能所需要引入的头文件（可选）
 #import <AdSupport/AdSupport.h>
-#import "WAPreviewRecordViewController.h"
-
+#import "WAApplyRemindViewController.h"
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
 
@@ -44,13 +43,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    NSLog(@"%s", __FUNCTION__);
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
-//    if (!self.databaseArr) {
-//        self.databaseArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_DATAIDENTIFIER_ARR]];
-//    }
     [self handleVC];
     [self.window makeKeyAndVisible];
     
@@ -356,7 +352,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 
 -(void)insertRemoteRemindToDB:(NSArray *)remindArr {
-    
+    NSLog(@"%s", __FUNCTION__);
     for (RemindItem *remindItem in remindArr) {
         
         NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindorigintype = '%@' and remindid = %@",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid];
@@ -443,46 +439,98 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%s -- identifier: %@", __FUNCTION__, notification.request.identifier);
     
     NSDictionary * userInfo = notification.request.content.userInfo;
+    NSString *title = userInfo[@"aps"][@"alert"];
+    
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
         
-        if (!self.remoteEnterN) {
-            self.remoteEnterN = 1;
-            NSString *title = userInfo[@"aps"][@"alert"];
+        if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
+            
+        } else if ([title containsString:@"申请添加你"]) {
             __weak __typeof__(self) weakSelf = self;
             [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-                __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                strongSelf.remoteEnterN = 0;
             } otherButtonTitles:@"确定" clickOtherBtn:^{
                 __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                strongSelf.remoteEnterN = 0;
-                [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
+                WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
+                [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
             }];
-        }
-        
-        if (userInfo[@"nativeData"]) {
-            if (!self.database) {
+            
+        }  else {
+            if (!self.remoteEnterN) {
+                self.remoteEnterN = 1;
+                NSString *title = userInfo[@"aps"][@"alert"];
                 __weak __typeof__(self) weakSelf = self;
-                NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
-                [self createDatabaseTableWithUserid:userID andCompletion:^{
+                [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
                     __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                     [strongSelf handleRemoteRemindToDB:userInfo[@"nativeData"]];
+                    strongSelf.remoteEnterN = 0;
+                } otherButtonTitles:@"确定" clickOtherBtn:^{
+                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                    strongSelf.remoteEnterN = 0;
+                    [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
                 }];
-            } else {
-                 [self handleRemoteRemindToDB:userInfo[@"nativeData"]];
+            }
+            
+            if (userInfo[@"nativeData"]) {
+                if (!self.database) {
+                    __weak __typeof__(self) weakSelf = self;
+                    NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
+                    [self createDatabaseTableWithUserid:userID andCompletion:^{
+                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                        [strongSelf handleRemoteRemindToDB:userInfo[@"nativeData"]];
+                    }];
+                } else {
+                    [self handleRemoteRemindToDB:userInfo[@"nativeData"]];
+                }
             }
         }
         
     } else {
         // 判断为本地通知
-        NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
+//        NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
         if (![notification.request.content.title isEqualToString:@"整点报时"]) {
             [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.body buttonTitle:@"确定" clickBtn:^{
-                
+
             }];
+
+        }
+        
+        NSString *requestIdentifier = notification.request.identifier;//notification.userInfo[@"requestIdentifier"];
+        if ([requestIdentifier hasPrefix:@"remote"]) {
             
+            NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
+            if (!self.database) {
+                NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
+                __weak __typeof__(self) weakSelf = self;
+                [self createDatabaseTableWithUserid:userID andCompletion:^{
+                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                    RemindItem *remindItem = [strongSelf getRemindItemWithRequestIdentifier:remindid];
+                    [strongSelf enterpreVC:remindItem];
+                }];
+            } else {
+                RemindItem *remindItem = [self getRemindItemWithRequestIdentifier:remindid];
+                [self enterpreVC:remindItem];
+            }
+            
+        } else {
+//            //播放声音
+//            [self playRemindAudioWithSoundName:notification.soundName];
+//            NSLog(@"notification.soundName: %@", notification.soundName);
+            
+            
+//            NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
+//            if (!(str.length == 2)) {
+//                __weak __typeof__(self) weakSelf = self;
+//                [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+//                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//                    //关闭震动
+//                    AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+//                    //关闭声音
+//                    [strongSelf.audioFilePlayer stop];
+//                }];
+//
+//            }
         }
         
     }
@@ -495,16 +543,27 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%s", __FUNCTION__);
     NSLog(@"%s -- identifier: %@", __FUNCTION__, response.notification.request.identifier);
     NSDictionary * userInfo = response.notification.request.content.userInfo;
+    NSString *title = userInfo[@"aps"][@"alert"];
+    
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
 
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"OS10及以上 后台转前台收到远程通知:%@", [self logDic:userInfo]);
-        [self handleRemoteNotificationWithUserInfo:userInfo];
+        
 
-        if ([userInfo[@"aps"][@"alert"] isEqualToString:@"亲， 您的提醒对方已知晓"]) {
+        if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
+            
+        } else if ([title containsString:@"申请添加你"]) {
+
+            WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
+            [[[self topViewController] navigationController] pushViewController:vc animated:YES];
             
         } else {
-            if (userInfo[@"nativeData"]) {
+            
+            [self handleRemoteNotificationWithUserInfo:userInfo];
+            
+             if (userInfo[@"nativeData"]) {
+             
                 if (!self.database) {
                     self.databaseTableName = userInfo[@"nativeData"][@"remindUser"];
                     __weak __typeof__(self) weakSelf = self;
@@ -515,10 +574,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 } else {
                     [self handleRemoteRemindToDB:userInfo[@"nativeData"]];
                 }
-            }
+             }
         }
-        
-
+  
     } else {
         // 判断为本地通知
         NSLog(@"iOS10 收到本地通知:userInfo：%@\n}",userInfo);
@@ -532,29 +590,37 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Required, iOS 7 Support
     [JPUSHService handleRemoteNotification:userInfo];
     NSLog(@"iOS7及iOS9，前台收到通知:%@", [self logDic:userInfo]);
+    NSString *title = userInfo[@"aps"][@"alert"];
+    
+    if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
+        
+    } else if ([title containsString:@"申请添加你"]) {
 
-    if (!self.remoteEnterN) {
-        self.remoteEnterN = 1;
-        NSString *title = userInfo[@"aps"][@"alert"];
         __weak __typeof__(self) weakSelf = self;
         [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            strongSelf.remoteEnterN = 0;
         } otherButtonTitles:@"确定" clickOtherBtn:^{
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            strongSelf.remoteEnterN = 0;
-            [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
+            WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
+            [[[strongSelf topViewController] navigationController] pushViewController:vc animated:YES];
         }];
-    }
-    
-    
-   
-    
-    if (userInfo[@"nativeData"]) {
         
-        if ([userInfo[@"aps"][@"alert"] isEqualToString:@"亲， 您的提醒对方已知晓"]) {
+    } else {
+        
+        if (!self.remoteEnterN) {
+            self.remoteEnterN = 1;
+            __weak __typeof__(self) weakSelf = self;
+            [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                strongSelf.remoteEnterN = 0;
+            } otherButtonTitles:@"确定" clickOtherBtn:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                strongSelf.remoteEnterN = 0;
+                [strongSelf handleRemoteNotificationWithUserInfo:userInfo];
+            }];
+        }
+        
+        if (userInfo[@"nativeData"]) {
             
-        } else {
             if (!self.database) {
                 self.databaseTableName = userInfo[@"nativeData"][@"remindUser"];
                 __weak __typeof__(self) weakSelf = self;
@@ -565,10 +631,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             } else {
                 [self handleRemoteRemindToDB:userInfo[@"nativeData"]];
             }
+            
         }
-        
+       
     }
-    
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
@@ -581,7 +647,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 -(void)setLocalNotificationWithOptions:(NSDictionary *)launchOptions {
-
+    NSLog(@"%s", __FUNCTION__);
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
         // 这里添加处理代码
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
@@ -703,59 +769,44 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     NSLog(@"%s  %@", __FUNCTION__,  [[UIApplication sharedApplication] scheduledLocalNotifications]);
-    //点击后台进入
-    if (application.applicationState == UIApplicationStateInactive) {
-        
-    }else{
-        
-         NSString *requestIdentifier = notification.userInfo[@"requestIdentifier"];
-        if ([requestIdentifier hasPrefix:@"remote"]) {
-           
-            NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
-             if (!self.database) {
-                 NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
-                 __weak __typeof__(self) weakSelf = self;
-                 [self createDatabaseTableWithUserid:userID andCompletion:^{
-                     __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                     RemindItem *remindItem = [strongSelf getRemindItemWithRequestIdentifier:remindid];
-                     [strongSelf enterpreVC:remindItem];
-                 }];
-             } else {
-                 RemindItem *remindItem = [self getRemindItemWithRequestIdentifier:remindid];
-                 [self enterpreVC:remindItem];
-             }
     
-            
+    NSString *requestIdentifier = notification.userInfo[@"requestIdentifier"];
+    if ([requestIdentifier hasPrefix:@"remote"]) {
+        
+        NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
+        if (!self.database) {
+            NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
+            __weak __typeof__(self) weakSelf = self;
+            [self createDatabaseTableWithUserid:userID andCompletion:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                RemindItem *remindItem = [strongSelf getRemindItemWithRequestIdentifier:remindid];
+                [strongSelf enterpreVC:remindItem];
+            }];
         } else {
-            //播放声音
-            [self playRemindAudioWithSoundName:notification.soundName];
-            NSLog(@"notification.soundName: %@", notification.soundName);
-            
-            
-            NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
-            if (!(str.length == 2)) {
-                __weak __typeof__(self) weakSelf = self;
-                [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
-                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
-                    //关闭震动
-                    AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-                    //关闭声音
-                    [strongSelf.audioFilePlayer stop];
-                }];
-                
-            }
+            RemindItem *remindItem = [self getRemindItemWithRequestIdentifier:remindid];
+            [self enterpreVC:remindItem];
         }
+    
+    } else {
+        //播放声音
+        [self playRemindAudioWithSoundName:notification.soundName];
+        NSLog(@"notification.soundName: %@", notification.soundName);
         
         
-        
-        
+        NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
+        if (!(str.length == 2)) {
+            __weak __typeof__(self) weakSelf = self;
+            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+                __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                //关闭震动
+                AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+                //关闭声音
+                [strongSelf.audioFilePlayer stop];
+            }];
+            
+        }
     }
-    //这里，你就可以通过notification的useinfo，干一些你想做的事情了
-    NSLog(@"info = %@",notification.userInfo);
-    //删除已过期的闹钟
-    [AlarmClockItem cancelAllExpireAlarmClock];
-    
-    
+
 }
 
 #pragma -mark 播放本地音频

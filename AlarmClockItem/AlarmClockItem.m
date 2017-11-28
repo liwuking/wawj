@@ -100,10 +100,10 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSLog(@"本地推送时间: %@  类型: %@", [dateFormatter stringFromDate:remindDate],alarType);
     notification.timeZone = [NSTimeZone defaultTimeZone];
-    if (!isOther) {
+//    if (!isOther) {
         //设置推送时的声音，一个30秒的音乐
         notification.soundName = @"115.m4a";
-    }
+//    }
     
     notification.alertAction = @"确定";//改变提示框按钮文字
     notification.hasAction = YES;//为no时按钮显示默认文字，为yes时，上一句代码起效
@@ -234,9 +234,9 @@
         }
 //        notificationContent.subtitle = remindContent;
         notificationContent.body = remindContent;
-        if (!isOther) {
+//        if (!isOther) {
             notificationContent.sound = [UNNotificationSound soundNamed:@"115.m4a"];
-        }
+//        }
         
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         if ([alarType isEqualToString:REMINDTYPE_EVERYDAY]) {

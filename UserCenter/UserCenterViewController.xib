@@ -16,9 +16,9 @@
                 <outlet property="_contentViewHeight" destination="3ko-Lr-rmC" id="rvq-Vv-JRs"/>
                 <outlet property="_picImgView" destination="noT-wu-qff" id="Thn-4G-ZmQ"/>
                 <outlet property="_saveButton" destination="izb-wi-294" id="G79-XY-fL2"/>
-                <outlet property="_selectTimeButton" destination="ljW-te-67d" id="9CX-e3-7Cb"/>
                 <outlet property="_sexManBGView" destination="Wvk-L2-hv9" id="MMR-E3-gIu"/>
                 <outlet property="_sexWomanBGView" destination="exa-OQ-i17" id="pUm-tS-Oq2"/>
+                <outlet property="birthdayTextField" destination="GpM-eM-Iae" id="9C3-CZ-nu8"/>
                 <outlet property="nameTextField" destination="7rm-3F-t5o" id="Ggi-kz-Han"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -275,6 +275,15 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BV5-e5-Zvp" userLabel="View - 生日">
                                     <rect key="frame" x="0.0" y="415" width="320" height="50"/>
                                     <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请选择日期" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GpM-eM-Iae">
+                                            <rect key="frame" x="80" y="10" width="230" height="30"/>
+                                            <color key="textColor" red="0.1960784314" green="0.1960784314" blue="0.1960784314" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="zuF-M1-udg"/>
+                                            </connections>
+                                        </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="生日" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9T-Un-b1Z">
                                             <rect key="frame" x="20" y="15" width="35" height="20"/>
                                             <constraints>
@@ -285,26 +294,16 @@
                                             <color key="textColor" red="0.1960784314" green="0.1960784314" blue="0.1960784314" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ljW-te-67d">
-                                            <rect key="frame" x="80" y="11" width="232" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <state key="normal" title="请选择日期">
-                                                <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="selectTime:" destination="-1" eventType="touchUpInside" id="jp8-gG-c8M"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="ljW-te-67d" firstAttribute="leading" secondItem="r9T-Un-b1Z" secondAttribute="trailing" constant="25" id="Ffq-08-EzE"/>
-                                        <constraint firstAttribute="trailing" secondItem="ljW-te-67d" secondAttribute="trailing" constant="8" id="c3M-mQ-87E"/>
+                                        <constraint firstAttribute="bottom" secondItem="GpM-eM-Iae" secondAttribute="bottom" constant="10" id="TQE-9D-3Cc"/>
+                                        <constraint firstItem="GpM-eM-Iae" firstAttribute="top" secondItem="BV5-e5-Zvp" secondAttribute="top" constant="10" id="XHo-52-geF"/>
                                         <constraint firstItem="r9T-Un-b1Z" firstAttribute="leading" secondItem="BV5-e5-Zvp" secondAttribute="leading" constant="20" id="d1z-Oy-lmY"/>
+                                        <constraint firstAttribute="trailing" secondItem="GpM-eM-Iae" secondAttribute="trailing" constant="10" id="dlM-3o-uVp"/>
+                                        <constraint firstItem="GpM-eM-Iae" firstAttribute="leading" secondItem="r9T-Un-b1Z" secondAttribute="trailing" constant="25" id="k6T-x7-tMI"/>
                                         <constraint firstItem="r9T-Un-b1Z" firstAttribute="centerY" secondItem="BV5-e5-Zvp" secondAttribute="centerY" id="mRX-dR-eEX"/>
                                         <constraint firstAttribute="height" constant="50" id="qxw-Is-ucd"/>
-                                        <constraint firstAttribute="bottom" secondItem="ljW-te-67d" secondAttribute="bottom" constant="9" id="w35-Bo-hGD"/>
-                                        <constraint firstItem="ljW-te-67d" firstAttribute="top" secondItem="BV5-e5-Zvp" secondAttribute="top" constant="11" id="xmZ-rn-xgG"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="izb-wi-294">

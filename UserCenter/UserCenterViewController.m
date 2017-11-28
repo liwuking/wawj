@@ -31,9 +31,10 @@
     UIDatePicker                *_datePicker;
     UILabel                     *_onDatePickerLabel;
     __weak IBOutlet UITextField *nameTextField;
+    __weak IBOutlet UITextField *birthdayTextField;
     
     
-    IBOutlet UIButton *_selectTimeButton;
+//    IBOutlet UIButton *_selectTimeButton;
     
 }
 
@@ -98,7 +99,8 @@
     
     if (userInfo[BIRTHDAY] && ![userInfo[BIRTHDAY] isEqualToString:@""]) {
         NSString *birthday = userInfo[BIRTHDAY];
-        [_selectTimeButton setTitle:birthday forState:UIControlStateNormal];
+//        [_selectTimeButton setTitle:birthday forState:UIControlStateNormal];
+        birthdayTextField.text = birthday;
     }
     
     UIButton *yangButton = [_calendarBGView viewWithTag:200];
@@ -315,7 +317,7 @@
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
     BOOL headUrlBool = self.imageUrl ? [userInfo[HEADURL] isEqualToString:self.imageUrl] : YES;
     BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
-    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:_selectTimeButton.titleLabel.text] || [_selectTimeButton.titleLabel.text isEqualToString:@"请选择日期"];
+    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:birthdayTextField.text] || [birthdayTextField.text isEqualToString:@""];
     BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi) || [userInfo[BIRTHDAYTYPE] isEqualToString:@""];
     BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && !isSexWithMan) || ([userInfo[GENDER] isEqualToString:@"0"] && isSexWithMan) || ([userInfo[GENDER] isEqualToString:@""] && isSexWithMan);
     
@@ -367,20 +369,6 @@
 
     }];
 
-}
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-//    // When the user presses return, take focus away from the text field so that the keyboard is dismissed.
-//    NSTimeInterval animationDuration = 0.30f;
-//    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-//    [UIView setAnimationDuration:animationDuration];
-//    CGRect rect = CGRectMake(0.0f, 64.0f, self.view.frame.size.width, self.view.frame.size.height);
-//    //CGRect rect = CGRectMake(0.0f, 20.0f, self.view.frame.size.width, self.view.frame.size.height);
-//    self.view.frame = rect;
-//    //         NSLog(@"%@",NSStringFromCGRect(self.view.frame));
-//    [UIView commitAnimations];
-    [textField resignFirstResponder];
-    return YES;
 }
 
 - (IBAction)selectTime:(UIButton *)sender {
@@ -435,6 +423,16 @@
 - (void)cancelButtonAction {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [[app.window viewWithTag:600] removeFromSuperview];
+    
+    //键盘收回后视图移动回原位的动画
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        float width = self.view.frame.size.width;
+        float hight = self.view.frame.size.height;
+        
+        CGRect rect = CGRectMake(0, 0, width, hight);
+        self.view.frame = rect;
+    }];
 }
 - (void)determineButtonAction {
     [self cancelButtonAction];
@@ -443,9 +441,10 @@
     [dateFormatter setDateFormat:@"YYYY-MM-dd"];
     NSString *dateAndTime =  [dateFormatter stringFromDate:select];
     NSLog(@"dateAndTime = %@",dateAndTime);
-    _selectTimeButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_selectTimeButton setTitleColor:RGBA_COLOR(50, 50, 50, 1) forState:UIControlStateNormal];
-    [_selectTimeButton setTitle:dateAndTime forState:UIControlStateNormal];
+//    _selectTimeButton.titleLabel.font = [UIFont systemFontOfSize:16];
+//    [_selectTimeButton setTitleColor:RGBA_COLOR(50, 50, 50, 1) forState:UIControlStateNormal];
+//    [_selectTimeButton setTitle:dateAndTime forState:UIControlStateNormal];
+    birthdayTextField.text = dateAndTime;
 }
 
 - (void)dateChanged:(id)dataPicker {
@@ -672,46 +671,108 @@
     
 }
 
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.view endEditing:YES];
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    
+    if (textField == birthdayTextField) {
+        [textField resignFirstResponder];
+        [self selectTime:nil];
+        
+        
+        CGRect textFieldFrame      = [textField convertRect:textField.bounds toView:self.view];
+        //当前输入框的Y
+        CGFloat textField_Y        = textFieldFrame.origin.y;
+        //当前输入框的高度
+        CGFloat textFieldHight     = textFieldFrame.size.height;
+        //屏幕高度
+        CGFloat screenHight        = self.view.frame.size.height;
+        //键盘高度
+        CGFloat keyBordHight       = 270;
+        //键盘tabbar高度
+        CGFloat keyBordTabbarHight = 0;
+        //计算输入框向上移动的偏移量
+        int offset = 64+textField_Y + textFieldHight - (screenHight - keyBordHight - keyBordTabbarHight);
+        
+        //根据键盘遮挡的高度开始移动动画
+        [UIView animateWithDuration:0.3 animations:^{
+            if (offset > 0) {
+                
+                float width = self.view.frame.size.width;
+                float hight = self.view.frame.size.height;
+                
+                CGRect rect = CGRectMake(0, -offset, width, hight);
+                self.view.frame = rect;
+            }
+        }];
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - text field delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    CGRect textFieldFrame      = [textField convertRect:textField.bounds toView:self.view];
+    //当前输入框的Y
+    CGFloat textField_Y        = textFieldFrame.origin.y;
+    //当前输入框的高度
+    CGFloat textFieldHight     = textFieldFrame.size.height;
+    //屏幕高度
+    CGFloat screenHight        = self.view.frame.size.height;
+    //键盘高度
+    CGFloat keyBordHight       = 216;
+    //键盘tabbar高度
+    CGFloat keyBordTabbarHight = 35;
+    //计算输入框向上移动的偏移量
+    int offset = 64+textField_Y + textFieldHight - (screenHight - keyBordHight - keyBordTabbarHight);
     
-    float offset = SCREEN_HEIGHT - (textField.superview.bottom + 64);
-    if (SCREEN_HEIGHT == 480) {
-        offset = _bgScrollView.contentSize.height - (textField.superview.bottom) ;
-    }
-
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    float width = self.view.frame.size.width;
-    float height = self.view.frame.size.height;
-    if(offset < 260)
-    {
-        
-        CGRect rect = CGRectMake(0.0f, offset-260,width,height);
-        self.view.frame = rect;
-        
-    }
-    [UIView commitAnimations];
+    //根据键盘遮挡的高度开始移动动画
+    [UIView animateWithDuration:0.3 animations:^{
+        if (offset > 0) {
+            
+            float width = self.view.frame.size.width;
+            float hight = self.view.frame.size.height;
+            
+            CGRect rect = CGRectMake(0, -offset, width, hight);
+            self.view.frame = rect;
+        }
+    }];
+    
+    
     
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    CGRect rect = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
-    self.view.frame = rect;
-    [UIView commitAnimations];
+    [self.view endEditing:YES];
+    //键盘收回后视图移动回原位的动画
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        float width = self.view.frame.size.width;
+        float hight = self.view.frame.size.height;
+        
+        CGRect rect = CGRectMake(0, 0, width, hight);
+        self.view.frame = rect;
+    }];
     
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+    //点击Return,键盘收回后视图移动回原位的动画
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        float width = self.view.frame.size.width;
+        float hight = self.view.frame.size.height;
+        
+        CGRect rect = CGRectMake(0, 0, width, hight);
+        self.view.frame = rect;
+    }];
+    return YES;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

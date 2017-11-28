@@ -102,7 +102,7 @@
         fileName = @"fileName";
     }
     NSDictionary *polcyDictDecoded = [UpApiUtils getDictFromPolicyString:policy];
-    
+    sleep(1);
     NSString *bucketName_new = [polcyDictDecoded objectForKey:@"bucket"];
     NSString *urlString = [NSString stringWithFormat:@"%@/%@", UpYunStorageServer, bucketName_new];
     _httpClient = [UpSimpleHttpClient POST:urlString

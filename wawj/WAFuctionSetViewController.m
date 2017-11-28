@@ -66,7 +66,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSString *interFace = [CoreArchive boolForKey:INTERFACE_NEW]? @"拟物界面" : @"老年界面";
+    NSString *interFace = @"老年界面";//[CoreArchive boolForKey:INTERFACE_NEW]? @"拟物界面" : @"老年界面";
     
     self.arrTitles = @[@[@"我的头像"],@[interFace,@"整点报时"],@[@"帮助中心"],@[@"分享下载",@"关于我们"]];
     

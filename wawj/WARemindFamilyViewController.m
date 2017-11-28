@@ -615,9 +615,9 @@
         [hud hideAnimated:YES afterDelay:1.f];
         
         
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [strongSelf.navigationController popViewControllerAnimated:YES];
-//        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [strongSelf.navigationController popViewControllerAnimated:YES];
+        });
         
     } fail:^(NSError *error) {
         

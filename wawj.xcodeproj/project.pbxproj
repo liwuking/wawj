@@ -172,6 +172,7 @@
 		778CF75D1FC54414002A89C5 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778CF74F1FC54414002A89C5 /* NSLayoutConstraint+MASDebugAdditions.m */; };
 		778CF75E1FC54414002A89C5 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778CF7511FC54414002A89C5 /* View+MASAdditions.m */; };
 		778CF75F1FC54414002A89C5 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 778CF7541FC54414002A89C5 /* ViewController+MASAdditions.m */; };
+		778CF7691FCD3660002A89C5 /* 00.wav in Resources */ = {isa = PBXBuildFile; fileRef = 778CF7681FCD3660002A89C5 /* 00.wav */; };
 		778EF7FD1FA0238D005CDD82 /* UIButton+BtnCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */; };
 		778EF8011FA05AF1005CDD82 /* WAValidIphoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778EF7FF1FA05AF1005CDD82 /* WAValidIphoneViewController.m */; };
 		778EF8021FA05AF1005CDD82 /* WAValidIphoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778EF8001FA05AF1005CDD82 /* WAValidIphoneViewController.xib */; };
@@ -678,6 +679,7 @@
 		778CF7521FC54414002A89C5 /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
 		778CF7531FC54414002A89C5 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		778CF7541FC54414002A89C5 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
+		778CF7681FCD3660002A89C5 /* 00.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 00.wav; sourceTree = "<group>"; };
 		778EF7FB1FA0238D005CDD82 /* UIButton+BtnCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+BtnCategory.h"; sourceTree = "<group>"; };
 		778EF7FC1FA0238D005CDD82 /* UIButton+BtnCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+BtnCategory.m"; sourceTree = "<group>"; };
 		778EF7FE1FA05AF1005CDD82 /* WAValidIphoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAValidIphoneViewController.h; sourceTree = "<group>"; };
@@ -1846,6 +1848,7 @@
 		77A005C21FB030DC008BF5EE /* TimeAudio */ = {
 			isa = PBXGroup;
 			children = (
+				778CF7681FCD3660002A89C5 /* 00.wav */,
 				77A67D121F452EF4000DFD88 /* ThunderSong.m4r */,
 				7749E1B71FB0786200239DF3 /* 01.m4r */,
 				7749E1D01FB07C1900239DF3 /* 2947.wav */,
@@ -2680,6 +2683,7 @@
 				7701044D1F30770B00F723A2 /* WAFuctionSetViewController.xib in Resources */,
 				776272F01FA9ABAD006EE231 /* WAContactEditViewController.xib in Resources */,
 				77A67D131F452EF4000DFD88 /* ThunderSong.m4r in Resources */,
+				778CF7691FCD3660002A89C5 /* 00.wav in Resources */,
 				77A67F0C1F4D1D07000DFD88 /* RemindViewController.xib in Resources */,
 				77A67D2C1F4BD5C6000DFD88 /* RemindCell.xib in Resources */,
 				77832DEE1F0CB3600009F004 /* Assets.xcassets in Resources */,
