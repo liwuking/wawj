@@ -213,7 +213,6 @@
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         NSLog(@"requestWhenInUseAuthorization");
         [self.locationManager requestWhenInUseAuthorization];
-        //        [self.locationManager requestAlwaysAuthorization];
     }
     
     //开始定位，不断调用其代理方法

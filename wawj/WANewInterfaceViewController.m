@@ -140,17 +140,16 @@
             [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:imageArr[index]] forState:UIControlStateNormal];
             [btn setTitle:titleArr[index] forState:UIControlStateNormal];
-//            [btn verticalImageAndTitle:5];
             [btn setContentMode:UIViewContentModeCenter];
             btn.titleLabel.textColor = [UIColor whiteColor];
             btn.titleLabel.font = [UIFont systemFontOfSize:35];
             btn.titleLabel.textAlignment = NSTextAlignmentCenter;
             btn.frame = CGRectMake(j*(width+0.5), i*(height+0.5), width, height);
-            NSLog(@"btn.frame: %@", NSStringFromCGRect(btn.frame));
+//            NSLog(@"btn.frame: %@", NSStringFromCGRect(btn.frame));
             [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
             btn.tag = index;
             [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
-            [btn verticalImageAndTitle:5];
+            [btn verticalImageAndTitle:2];
             
             [self.btnView addSubview:btn];
         }

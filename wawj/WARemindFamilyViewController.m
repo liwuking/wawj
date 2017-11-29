@@ -337,9 +337,10 @@
     if (![self checkMicPhonePermission]) {
         return;
     }
-    
+    [self.recordbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     if ([self.recordbtn.titleLabel.text isEqualToString:@"点击录音"]) {
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
+        [self.recordbtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
         self.previewBtn.hidden = YES;
@@ -386,6 +387,7 @@
         [self removeRecordFile];
         [self startRecord];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         [self.recordbtn setTitle:@"停止录音" forState:UIControlStateNormal];
+         [self.recordbtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         
         self.recordTimeLab.hidden = NO;
         self.previewBtn.hidden = YES;

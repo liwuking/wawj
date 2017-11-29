@@ -23,6 +23,7 @@
 @interface WAHomeViewController ()<WAAddFamilyViewControllerDelegate,contactViewDelegate,WACloseFamilyDetailViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewTop;
 @property (weak, nonatomic) IBOutlet UIButton *remindBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTop;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -116,6 +117,12 @@
     self.tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
     
    
+   if(SCREEN_HEIGHT == 667) {
+        self.bottomTop.constant = 60;
+    } else if (SCREEN_HEIGHT >= 736) {
+        self.bottomTop.constant = 90;
+    }
+    
 }
 
 

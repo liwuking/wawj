@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -43,7 +43,7 @@
                     </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qox-rc-1Vi">
-                    <rect key="frame" x="0.0" y="160" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="150" width="375" height="50"/>
                     <subviews>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oy8-rM-FxA">
                             <rect key="frame" x="220" y="5" width="60" height="40"/>
@@ -60,20 +60,20 @@
                             </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JQx-vC-dmv">
-                            <rect key="frame" x="10" y="5" width="40" height="40"/>
+                            <rect key="frame" x="10" y="1" width="48" height="48"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="lKE-GJ-wIB"/>
-                                <constraint firstAttribute="width" constant="40" id="upa-ap-psG"/>
+                                <constraint firstAttribute="height" constant="48" id="lKE-GJ-wIB"/>
+                                <constraint firstAttribute="width" constant="48" id="upa-ap-psG"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="2"/>
+                                    <integer key="value" value="24"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhX-HX-i80">
-                            <rect key="frame" x="58" y="5" width="100" height="21"/>
+                            <rect key="frame" x="66" y="5" width="100" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="6Ij-1a-xQ1"/>
                                 <constraint firstAttribute="width" constant="100" id="GTS-FH-VmX"/>
@@ -94,7 +94,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="09月27日 15:29" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lcz-xh-V15">
-                            <rect key="frame" x="58" y="24" width="130" height="21"/>
+                            <rect key="frame" x="66" y="24" width="130" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="130" id="56d-Qh-AHm"/>
                                 <constraint firstAttribute="height" constant="21" id="cBJ-KC-Rtc"/>
@@ -127,7 +127,7 @@
                         <constraint firstItem="FAm-XC-ozb" firstAttribute="leading" secondItem="Oy8-rM-FxA" secondAttribute="trailing" constant="7" id="VAM-i9-Xpg"/>
                         <constraint firstItem="vFO-Dv-MrC" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="XpR-uk-gQB"/>
                         <constraint firstItem="Oy8-rM-FxA" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="bUg-xn-pLb"/>
-                        <constraint firstItem="JQx-vC-dmv" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="5" id="cIi-sb-0yX"/>
+                        <constraint firstItem="JQx-vC-dmv" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="cNp-rh-3PB"/>
                         <constraint firstItem="JQx-vC-dmv" firstAttribute="leading" secondItem="Qox-rc-1Vi" secondAttribute="leading" constant="10" id="clT-TZ-hMG"/>
                         <constraint firstItem="Lcz-xh-V15" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="24" id="kLU-CZ-NiQ"/>
                         <constraint firstItem="FAm-XC-ozb" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="tcd-6a-8KT"/>
@@ -173,7 +173,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="tYL-xc-hhm">
-                    <rect key="frame" x="0.0" y="210" width="375" height="407"/>
+                    <rect key="frame" x="0.0" y="200" width="375" height="417"/>
                     <color key="backgroundColor" red="0.92549019610000005" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UTI-Pf-r4a">
                         <size key="itemSize" width="50" height="50"/>
@@ -363,7 +363,7 @@
                 <constraint firstItem="tYL-xc-hhm" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="bottom" id="GB7-dK-txe"/>
                 <constraint firstAttribute="trailing" secondItem="lC9-bF-wbQ" secondAttribute="trailing" id="Mfc-gd-ZjV"/>
                 <constraint firstAttribute="trailing" secondItem="Qox-rc-1Vi" secondAttribute="trailing" id="QGd-wS-YvA"/>
-                <constraint firstItem="Qox-rc-1Vi" firstAttribute="top" secondItem="lC9-bF-wbQ" secondAttribute="bottom" constant="10" id="WiJ-XQ-NCK"/>
+                <constraint firstItem="Qox-rc-1Vi" firstAttribute="top" secondItem="lC9-bF-wbQ" secondAttribute="bottom" id="WiJ-XQ-NCK"/>
                 <constraint firstAttribute="trailing" secondItem="14Z-d5-eUo" secondAttribute="trailing" id="YyM-tp-d0A"/>
                 <constraint firstItem="a5w-Vq-EuU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="e0B-Th-U3F"/>
                 <constraint firstItem="14Z-d5-eUo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="q5b-ec-n7a"/>

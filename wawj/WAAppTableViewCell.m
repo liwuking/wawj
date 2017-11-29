@@ -26,8 +26,10 @@
     
     if (appItem.isAdd) {
         [self.addBtn setTitle:@"添加" forState:UIControlStateNormal];
+        [self.addBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     } else {
         [self.addBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [self.addBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     }
     
 }

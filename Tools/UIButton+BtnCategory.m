@@ -34,7 +34,16 @@
     self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
     
     
-    self.titleEdgeInsets = UIEdgeInsetsMake(0+top, - imageSize.width, - (totalHeight - titleSize.height), 0+right);
+    NSInteger topB = 75;
+    if (totalHeight - titleSize.height > 90) {
+        topB = 105;
+    }
+    
+//    self.titleEdgeInsets = UIEdgeInsetsMake(0+top, - imageSize.width, - (totalHeight - titleSize.height), 0+right);
+    self.titleEdgeInsets = UIEdgeInsetsMake(0+top, - imageSize.width, -topB, 0+right);
+
+    
+    NSLog(@"self.titleEdgeInsets: %@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
 
     
 }

@@ -120,8 +120,8 @@
         _manager.desiredAccuracy = kCLLocationAccuracyBest;
         
         //fix by kim 2015-6-23 该API是否可以用
-        if ([_manager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-            [_manager requestAlwaysAuthorization];
+        if ([_manager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+//            [_manager requestAlwaysAuthorization];
             [_manager requestWhenInUseAuthorization];
             
         }

@@ -103,11 +103,11 @@
 //     * [self.locationManager requestWhenInUseAuthorization];
 //     * [self.locationManager requestAlwaysAuthorization];
 //     */
-//    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-//        NSLog(@"requestWhenInUseAuthorization");
-//        [self.locationManager requestWhenInUseAuthorization];
-////        [self.locationManager requestAlwaysAuthorization];
-//    }
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        NSLog(@"requestWhenInUseAuthorization");
+        [self.locationManager requestWhenInUseAuthorization];
+//        [self.locationManager requestAlwaysAuthorization];
+    }
     
     
     //开始定位，不断调用其代理方法
@@ -145,13 +145,13 @@
     __weak __typeof__(self) weakSelf = self;
     CLLocation *location=[[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
     [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        [MBProgressHUD hideHUD];
+        
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (!error) {
             
             CLPlacemark *placemark=[placemarks firstObject];
 //            NSLog(@"详细信息:%@",placemark.addressDictionary);
-            strongSelf.locationString = [NSString stringWithFormat:@"我现在的位置: %@;",[placemark.addressDictionary[@"FormattedAddressLines"] lastObject]];
+            strongSelf.locationString = [NSString stringWithFormat:@"我现在的位置: %@, 经纬度【%lf,%lf】",[placemark.addressDictionary[@"FormattedAddressLines"] lastObject],latitude,longitude];
             
             if (strongSelf.isSendMessage) {
                 strongSelf.isSendMessage = NO;
@@ -161,7 +161,10 @@
             
         } else {
             
-//            strongSelf showAlertViewWithTitle:@"提示" message:[] buttonTitle:<#(nullable NSString *)#> clickBtn:<#^(void)btnBlock#>
+            [MBProgressHUD hideHUD];
+            [strongSelf showAlertViewWithTitle:@"定位失败" message:nil buttonTitle:@"确定" clickBtn:^{
+                
+            }];
         }
         
         
@@ -206,7 +209,7 @@
 
 - (IBAction)clickRemind:(UIButton *)sender {
     if (self.closeFamilyItem.qinmiUser && [self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
-        [self showAlertViewWithTitle:@"对方还未添加你为亲密家人,请先添加" message:nil buttonTitle:@"确定" clickBtn:^{
+        [self showAlertViewWithTitle:@"TA还没同意，不能远程提醒" message:nil buttonTitle:@"确定" clickBtn:^{
             
         }];
         return;
@@ -220,15 +223,15 @@
 
 - (IBAction)clickSendLocation:(UIButton *)sender {
     
-    if ([self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
-        [self showAlertViewWithTitle:@"对方还未添加你为亲密家人,请先添加" message:nil buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        return;
-    }
+//    if ([self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
+//        [self showAlertViewWithTitle:@"TA还没同意，不能发位置" message:nil buttonTitle:@"确定" clickBtn:^{
+//
+//        }];
+//        return;
+//    }
+//
     
-    
-    
+    [MBProgressHUD showMessage:@"正在定位"];
     if (self.locationString) {
         [self sendMessageBut:self.locationString];
     }else {
@@ -237,7 +240,7 @@
             return;
         } else {
             self.isSendMessage = YES;
-            [MBProgressHUD showMessage:@"正在定位"];
+//            [MBProgressHUD showMessage:@"正在定位"];
             [self startLocation];
         }
         
@@ -249,7 +252,7 @@
 - (void)sendMessageBut:(NSString *)text {
     
     
-    
+    [MBProgressHUD hideHUD];
     [self sendMessage:text];
    
 }
