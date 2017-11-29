@@ -77,6 +77,8 @@
     
     [self getAdvertisingData];
     
+    //检测版本
+    [self checkAppVesion];
     return YES;
     
 }
@@ -1193,6 +1195,48 @@ void systemAudioCallback()
     
     return YES;
     
+}
+
+-(void)checkAppVesion {
+    
+    NSDictionary *model = @{};
+    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0001" andModel:model];
+    __weak __typeof__(self) weakSelf = self;
+    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+        
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        NSString *code = data[@"code"];
+//        NSString *desc = data[@"desc"];
+        if ([code isEqualToString:@"0000"]) {
+            
+            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
+                NSDictionary *bodyDict = [data[@"body"] transforeNullValueToEmptyStringInSimpleDictionary];
+                NSString *versionDesc = bodyDict[@"versionDesc"];
+                NSString *updateContent = bodyDict[@"updateContent"];
+                NSString *downloadUrl = bodyDict[@"downloadUrl"];
+                NSLog(@"%@", data);
+                [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
+                
+                if ([bodyDict[@"versionForce"] isEqualToString:@"0"]) {
+                    
+                    [[strongSelf topViewController] showAlertViewWithTitle:versionDesc message:updateContent buttonTitle:@"立即更新" clickBtn:^{
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
+                    }];
+                    
+                } else {
+                    [[strongSelf topViewController] showAlertViewWithTitle:versionDesc message:updateContent cancelButtonTitle:@"取消" clickCancelBtn:^{
+                    } otherButtonTitles:@"立即更新" clickOtherBtn:^{
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
+                    }];
+                }
+            }
+            
+        }
+        
+    } fail:^(NSError *error) {
+        
+        
+    }];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {

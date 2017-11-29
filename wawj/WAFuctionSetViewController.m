@@ -34,6 +34,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *arrTitles;
+@property (weak, nonatomic) IBOutlet UIButton *logoutBtn;
 
 @end
 
@@ -53,6 +54,10 @@
     self.navigationItem.leftBarButtonItem = backItem;
     
     self.title = @"功能设置";
+    
+    if (MY_PROJECT_GLOBAL_CONTROL == 1) {
+        self.logoutBtn.hidden = YES;
+    }
     
 }
 

@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAFuctionSetViewController">
             <connections>
+                <outlet property="logoutBtn" destination="101-LH-1W5" id="StU-PQ-tct"/>
                 <outlet property="tableView" destination="kdk-Ye-UyF" id="hsX-uo-VbI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

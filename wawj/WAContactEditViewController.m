@@ -35,7 +35,7 @@
     NSPredicate *predicate = [CNContact predicateForContactsMatchingName:name];
     
     //过滤的条件，也可以过滤时候格式化
-    NSArray *keysToFetch = @[CNContactGivenNameKey,CNContactPhoneNumbersKey,CNContactImageDataKey];
+    NSArray *keysToFetch = @[CNContactGivenNameKey,CNContactFamilyNameKey,CNContactPhoneNumbersKey,CNContactImageDataKey];
     
     NSArray *contact = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keysToFetch error:nil];
     return contact;
@@ -51,7 +51,7 @@
         CNMutableContact * contact = [[[self queryContactWithName:originName] objectAtIndex:0] mutableCopy];
         //名字
         contact.givenName = newName;
-        
+        contact.familyName = @"";
         NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
         NSString *imageContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
         if ([[NSFileManager defaultManager] fileExistsAtPath:imageContactPath]) {
@@ -90,7 +90,7 @@
     
     //名字
     contact.givenName = givenName;
-    
+    contact.familyName = @"";
     //头像
 //    contact.imageData = UIImagePNGRepresentation(self.headImageView.image);
     NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];

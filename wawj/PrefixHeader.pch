@@ -25,21 +25,24 @@
 #import "MBProgressHUD+Extension.h"
 #import "NSDictionary+Util.h"
 
-////正式服务器URL
-//#define KMain_URL    @"http://api.wawjapp.com/service"
-//#define ALBUM_URL @"http://album.wawjapp.com/service"
-////又拍云URL
-//#define YUN_OPERATOR @"iosoperator"
-//#define YUN_PASSWORD @"hello123"
-//#define YUN_BUCKETNAMEPHOTO @"wawjphoto"
-//#define YUN_BUCKETNAMEAUDIO @"wawjaudio"
-//#define YUN_PHOTO   @"http://yunphoto.wawjapp.com"
-//#define YUN_AUDIO   @"http://yunaudio.wawjapp.com"
+/**
+ *  工程全局环境控制
+ *
+ *  0:开发环境  1:发布环境 
+ */
+#define MY_PROJECT_GLOBAL_CONTROL 1
+
+#if (MY_PROJECT_GLOBAL_CONTROL == 0)
+
+#define DLog(fmt, ...) NSLog((@"[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define DeBugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define NSLog(...) NSLog(__VA_ARGS__);
+#define MyNSLog(FORMAT, ...) fprintf(stderr,"[%s]:[line %d行] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 //测试服务器
 #define KMain_URL    @"http://123.207.170.53:8888/service"
 #define ALBUM_URL    @"http://123.207.170.53:8888/service"
-//又拍云URL
+//又拍云测试
 #define YUN_OPERATOR @"iosoperator"
 #define YUN_PASSWORD @"hello123"
 #define YUN_BUCKETNAMEPHOTO @"wawj-test"
@@ -47,10 +50,27 @@
 #define YUN_PHOTO   @"http://wawj-test.b0.upaiyun.com"
 #define YUN_AUDIO   @"http://wawj-test.b0.upaiyun.com"
 
-#define DATA_REMINDTABLENAME  [NSString stringWithFormat:@"remindList_%@", [CoreArchive dicForKey:USERINFO][@"userId"]]
+#elif (MY_PROJECT_GLOBAL_CONTROL == 1)
+#define DLog(...)
+#define DeBugLog(...)
+#define NSLog(...)
+#define MyNSLog(FORMAT, ...)
+
+//正式服务器URL
+#define KMain_URL    @"http://api.wawjapp.com/service"
+#define ALBUM_URL    @"http://album.wawjapp.com/service"
+//又拍云正式
+#define YUN_OPERATOR @"iosoperator"
+#define YUN_PASSWORD @"hello123"
+#define YUN_BUCKETNAMEPHOTO @"wawjphoto"
+#define YUN_BUCKETNAMEAUDIO @"wawjaudio"
+#define YUN_PHOTO   @"http://yunphoto.wawjapp.com"
+#define YUN_AUDIO   @"http://yunaudio.wawjapp.com"
+
+#endif
 
 
-#define CURRENT_TIMESTAMP    [[NSDate date] timeIntervalSince1970]*1000
+
 
 #endif /* PrefixHeader_pch */
 
