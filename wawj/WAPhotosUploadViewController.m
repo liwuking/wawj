@@ -24,6 +24,7 @@
 #import "WAAdvertiseViewController.h"
 @interface WAPhotosUploadViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,WANewPhotosViewControllerDelegate,WAPhotosShowViewControllerDelegate,WAUploadPhotoNullViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *lineLab;
 @property(nonatomic,assign)NSInteger delIndex;
 
 @property(nonatomic,strong)NSMutableArray *dataArr;
@@ -160,6 +161,7 @@
         
         self.editBtn.hidden = YES;
         self.uploadBtn.hidden = YES;
+        self.lineLab.hidden = YES;
         NSMutableArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
         for (NSDictionary *dict in qimiArr) {
             
@@ -823,6 +825,7 @@
                 
                 if (strongSelf.dataArr.count >= 25) {
                     strongSelf.uploadBtn.hidden = YES;
+                    self.lineLab.hidden = YES;
                 }
                 
             }

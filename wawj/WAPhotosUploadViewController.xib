@@ -18,6 +18,7 @@
                 <outlet property="headImg" destination="JQx-vC-dmv" id="it4-Bz-jxp"/>
                 <outlet property="headTitle" destination="QhX-HX-i80" id="Erw-7s-l58"/>
                 <outlet property="hudShareView" destination="a5w-Vq-EuU" id="Xm4-Su-Dy0"/>
+                <outlet property="lineLab" destination="FAm-XC-ozb" id="x7e-6q-ExK"/>
                 <outlet property="shareContant" destination="vWH-yU-uLk" id="gss-id-zO1"/>
                 <outlet property="shareView" destination="uZY-Ry-kcO" id="vuJ-sU-WPW"/>
                 <outlet property="uploadBtn" destination="Oy8-rM-FxA" id="SKx-PJ-apU"/>
@@ -81,6 +82,17 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAm-XC-ozb">
+                            <rect key="frame" x="287" y="12.5" width="1" height="25"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="mdD-Oa-RnP"/>
+                                <constraint firstAttribute="width" constant="1" id="yd7-WX-mDv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="09月27日 15:29" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lcz-xh-V15">
                             <rect key="frame" x="58" y="24" width="130" height="21"/>
                             <constraints>
@@ -108,15 +120,17 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="vFO-Dv-MrC" firstAttribute="leading" secondItem="Oy8-rM-FxA" secondAttribute="trailing" constant="15" id="6wT-4U-PSr"/>
                         <constraint firstAttribute="trailing" secondItem="vFO-Dv-MrC" secondAttribute="trailing" constant="20" id="7sy-tA-Ei0"/>
                         <constraint firstItem="Lcz-xh-V15" firstAttribute="leading" secondItem="JQx-vC-dmv" secondAttribute="trailing" constant="8" id="Iod-oP-5fK"/>
+                        <constraint firstItem="vFO-Dv-MrC" firstAttribute="leading" secondItem="FAm-XC-ozb" secondAttribute="trailing" constant="7" id="SWj-jG-evP"/>
                         <constraint firstItem="QhX-HX-i80" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="5" id="UFD-y7-KHo"/>
+                        <constraint firstItem="FAm-XC-ozb" firstAttribute="leading" secondItem="Oy8-rM-FxA" secondAttribute="trailing" constant="7" id="VAM-i9-Xpg"/>
                         <constraint firstItem="vFO-Dv-MrC" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="XpR-uk-gQB"/>
                         <constraint firstItem="Oy8-rM-FxA" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="bUg-xn-pLb"/>
                         <constraint firstItem="JQx-vC-dmv" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="5" id="cIi-sb-0yX"/>
                         <constraint firstItem="JQx-vC-dmv" firstAttribute="leading" secondItem="Qox-rc-1Vi" secondAttribute="leading" constant="10" id="clT-TZ-hMG"/>
                         <constraint firstItem="Lcz-xh-V15" firstAttribute="top" secondItem="Qox-rc-1Vi" secondAttribute="top" constant="24" id="kLU-CZ-NiQ"/>
+                        <constraint firstItem="FAm-XC-ozb" firstAttribute="centerY" secondItem="Qox-rc-1Vi" secondAttribute="centerY" id="tcd-6a-8KT"/>
                         <constraint firstAttribute="height" constant="50" id="y8B-BL-fYf"/>
                         <constraint firstItem="QhX-HX-i80" firstAttribute="leading" secondItem="JQx-vC-dmv" secondAttribute="trailing" constant="8" id="zgK-We-wRk"/>
                     </constraints>

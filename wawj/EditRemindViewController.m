@@ -542,11 +542,11 @@
     
 }
 
+#pragma -mark 排查编辑提醒事件，时间重复性判断
 -(BOOL)adjustRemindRepeatWithCreatetimestamp:(NSString *)createtimestamp {
 
     if ([self.database open]) {
         
-//        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
         NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype = 'onlyonce' and createtimestamp != %@",self.databaseTableName,self.remindItem.createtimestamp];
         NSLog(@"sql = %@",sql);
         

@@ -42,7 +42,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
         [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
     }else {
-        [self.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
+        [self.headImageView setImage:[UIImage imageNamed:@"photoShowDefault"]];
     }
     
     for (NSInteger i = 0; i < self.contactItem.phoneArr.count; i++) {
@@ -65,9 +65,8 @@
 -(void)clickPhone:(UIButton *)phoneBtn {
     
     NSString *phone = [NSString stringWithFormat:@"tel://%@", self.contactItem.phoneArr[phoneBtn.tag]];
-     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
 
-    
 }
 
 - (void)viewDidLoad {
@@ -96,7 +95,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
             [strongSelf.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
         }else {
-            [strongSelf.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
+            [strongSelf.headImageView setImage:[UIImage imageNamed:@"photoShowDefault"]];
         }
         
         
@@ -111,7 +110,7 @@
             [phoneBtn setTitle:phone forState:UIControlStateNormal];
             [phoneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [phoneBtn setImage:[UIImage imageNamed:@"phone_x"] forState:UIControlStateNormal];
-            [phoneBtn setBackgroundColor:[UIColor redColor]];
+//            [phoneBtn setBackgroundColor:[UIColor redColor]];
             [phoneBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 0, 0, 0)];
             [phoneBtn addTarget:self action:@selector(clickPhone:) forControlEvents:UIControlEventTouchUpInside];
             [self.photoStackView addArrangedSubview:phoneBtn];

@@ -19,9 +19,16 @@
 
 @implementation WAReplaceUIViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+-(void)initViews {
+    
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
+    self.title = @"老年界面";
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleDone target:self action:@selector(backAction)];
+    [backItem setTintColor:HEX_COLOR(0x666666)];
+    [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+    self.navigationItem.leftBarButtonItem = backItem;
     
     self.replaceBtn.hidden = YES;
     self.originInterface = [CoreArchive boolForKey:INTERFACE_NEW];
@@ -33,6 +40,22 @@
         self.replaceBtn.hidden = YES;
         self.gouX.constant = 69;
     }
+    
+}
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    
+    [self initViews];
+    
+   
     
 }
 - (IBAction)clickLeftGes:(UITapGestureRecognizer *)sender {

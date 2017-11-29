@@ -39,10 +39,10 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"图层18"] style:UIBarButtonItemStyleDone target:self action:@selector(clickPhoneNumber)];
-    [rightItem setTintColor:HEX_COLOR(0x666666)];
-    [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"图层18"] style:UIBarButtonItemStyleDone target:self action:@selector(clickPhoneNumber)];
+//    [rightItem setTintColor:HEX_COLOR(0x666666)];
+//    [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
+//    self.navigationItem.rightBarButtonItem = rightItem;
     
 
     //此处必须要有创见一个UICollectionViewFlowLayout的对象
@@ -204,6 +204,7 @@
     } else {
         
         ContactItem *item = self.dataArr[indexPath.row];
+        [item.phoneArr removeObject:@""];
         WAContactDetailViewController *waContactDetailViewController = [[WAContactDetailViewController alloc] initWithNibName:@"WAContactDetailViewController" bundle:nil];
         waContactDetailViewController.contactItem = item;
         [self.navigationController pushViewController:waContactDetailViewController animated:YES];
@@ -368,7 +369,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
             [cell.bgImg setImage:[UIImage imageWithContentsOfFile:contactPath]];
         }else {
-            [cell.bgImg setImage:[UIImage imageNamed:@"头像设置"]];
+            [cell.bgImg setImage:[UIImage imageNamed:@"photoShowDefault"]];
         }
         
         

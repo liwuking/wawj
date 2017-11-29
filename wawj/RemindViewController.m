@@ -611,18 +611,9 @@ typedef NS_OPTIONS(NSInteger, Status) {
     
     __weak __typeof__(self) weakSelf = self;
     [[DBManager defaultManager] createTableWithName:self.databaseTableName AndKeys:keys Result:^(BOOL isOK) {
-//         __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//        if (!isOK) {
-//            //建表失败！
-//            [strongSelf showAlertViewWithTitle:@"提示" message:@"建表失败" buttonTitle:@"确定" clickBtn:^{
-//
-//            }];
-//            return ;
-//        }
     } FMDatabase:^(FMDatabase *database) {
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         strongSelf.db = database;
-//        [strongSelf getRemoteRemindData];
         [strongSelf getDataFromDatabase];
     }];
     
@@ -1031,8 +1022,16 @@ typedef NS_OPTIONS(NSInteger, Status) {
         
         NSLog(@"nowSp_f = %ld",nowSp_f);
         if (nowSp_f > timeSp_f) {
+            [self.speakingView endSpeak];
             [MBProgressHUD hideHUD];
             [self showAlertViewWithTitle:@"提示" message:@"设置提醒时间应大于当前时间!" buttonTitle:@"知道了" clickBtn:^{
+                
+            }];
+            return;
+        }
+        
+        if (![self adjustRemindRepeatWithCreatetimestamp:remindTime]) {
+            [self showAlertViewWithTitle:@"提示" message:@"存在重复提醒" buttonTitle:@"知道了" clickBtn:^{
                 
             }];
             return;
@@ -1046,13 +1045,92 @@ typedef NS_OPTIONS(NSInteger, Status) {
             [self getDataFromDatabase];
             
              NSString *clockIdentifier = [NSString stringWithFormat:@"%@%@",REMINDTYPE_ONLYONCE,remindTime];
-//            [AlarmClockItem addAlarmClockWithAlarmClockContent:content AlarmClockDateTime:remindTime AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
             [AlarmClockItem addAlarmClockWithAlarmClockContent:content fireDate:remindDate AlarmClockType:REMINDTYPE_ONLYONCE AlarmClockIdentifier:clockIdentifier isOhters:NO];
             
         }else{
             [MBProgressHUD showSuccess:@"创建失败"];
         }
     }
+}
+
+-(BOOL)adjustRemindRepeatWithCreatetimestamp:(NSString *)remindTime {
+    
+    NSInteger remindTimeHash = [remindTime hash];
+    
+    if ([self.db open]) {
+        NSInteger nowSp = [[NSDate date] timeIntervalSince1970];
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype != 'onlyonce' or createtimestamp > %ld",self.databaseTableName,nowSp];
+        NSLog(@"sql = %@",sql);
+        
+        FMResultSet * res = [self.db executeQuery:sql];
+        
+        NSMutableArray *dataArrOnlyOnce = [@[] mutableCopy];
+        NSMutableArray *dataArrEveryDay = [@[] mutableCopy];
+        NSMutableArray *dataArrWeekend = [@[] mutableCopy];
+        NSMutableArray *dataArrWorkDay = [@[] mutableCopy];
+        
+        while ([res next]) {
+            RemindItem *item = [[RemindItem alloc] init];
+            item.remindtype = [res stringForColumn:@"remindtype"];
+            item.remindtime = [res stringForColumn:@"remindtime"];
+            item.content = [res stringForColumn:@"content"];
+            item.createtimestamp = [res stringForColumn:@"createtimestamp"];
+            
+            if ([item.remindtype isEqualToString:REMINDTYPE_ONLYONCE]) {
+                [dataArrOnlyOnce addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_EVERYDAY]) {
+                [dataArrEveryDay addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_WEEKEND]) {
+                [dataArrWeekend addObject:item.remindtime];
+            } else if ([item.remindtype isEqualToString:REMINDTYPE_WORKDAY]) {
+                [dataArrWorkDay addObject:item.remindtime];
+            }
+        }
+        
+        NSString *weekDay = [Utility getDayWeek];
+        BOOL isWeekend =
+        [weekDay isEqualToString:SATURDAY] ||
+        [weekDay isEqualToString:SUNDAY];
+        
+        
+        for (NSString *remindtimeStr in dataArrOnlyOnce) {
+            if ([remindtimeStr hash] == remindTimeHash) {
+                return NO;
+            }
+        }
+        
+        for (NSString *remindtimeStr in dataArrEveryDay) {
+            if ([remindtimeStr hash] == remindTimeHash) {
+                return NO;
+            }
+        }
+        
+        if (isWeekend) {
+            
+            for (NSString *remindtimeStr in dataArrWeekend) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+        } else {
+            
+            for (NSString *remindtimeStr in dataArrWorkDay) {
+                if ([remindtimeStr hash] == remindTimeHash) {
+                    return NO;
+                }
+            }
+            
+        }
+
+//        for (NSString *timestamp in dataArrOnlyOnce) {
+//            if ([createtimestamp isEqualToString:timestamp]) {
+//                return NO;
+//            }
+//        }
+        
+    }
+    return YES;
 }
 
 //#pragma -mark 从数据库获取提醒数据
@@ -1194,17 +1272,27 @@ typedef NS_OPTIONS(NSInteger, Status) {
         }
         
     } else if (sender.state == UIGestureRecognizerStateEnded) {
-         self.microphoneBGView.alpha = 1;
-        self.longGesLab.alpha = 1;
-        if (![self isReachable]) {
-            return;
-        }
+        __weak __typeof__(self) weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            
+            strongSelf.microphoneBGView.alpha = 1;
+            strongSelf.longGesLab.alpha = 1;
+            if (![strongSelf isReachable]) {
+                [strongSelf showAlertViewWithTitle:@"提示" message:@"网络中断，请重试" buttonTitle:@"确定" clickBtn:^{
+                    
+                }];
+                return;
+            }
+            
+            //        [self.speakingView endSpeak];
+            [strongSelf.iFlySpeechUnderstander stopListening];
+            if (strongSelf.iFlySpeechUnderstander.isUnderstanding) {
+                //            [MBProgressHUD showMessage:@"正在创建..."];
+            }
+        });
         
-        [self.speakingView endSpeak];
-        [self.iFlySpeechUnderstander stopListening];
-        if (self.iFlySpeechUnderstander.isUnderstanding) {
-            [MBProgressHUD showMessage:@"正在创建..."];
-        }
+       
         
         
     }
@@ -1495,6 +1583,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 - (void) onEndOfSpeech
 {
     [MBProgressHUD hideHUD];
+    [self.speakingView endSpeak];
     NSLog(@"%s",__func__);
 }
 
@@ -1522,10 +1611,12 @@ typedef NS_OPTIONS(NSInteger, Status) {
         if (_result.length == 0) {
             text = @"无识别结果";
             [MBProgressHUD hideHUD];
+            [self.speakingView endSpeak];
             [MBProgressHUD showSuccess:@"说话时间过短或不太清晰"];
         }
     }else {
         [MBProgressHUD hideHUD];
+        [self.speakingView endSpeak];
         if (_result.length == 0) {
             [MBProgressHUD showSuccess:[NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc]];
         }
@@ -1547,6 +1638,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 {
     NSLog(@"%s",__func__);
     [MBProgressHUD hideHUD];
+    
     NSMutableString *result = [[NSMutableString alloc] init];
     NSDictionary *dic = results [0];
     
@@ -1565,12 +1657,22 @@ typedef NS_OPTIONS(NSInteger, Status) {
     NSDictionary *responseJsonDic = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"responseJSON = %@",responseJsonDic);
     
+    [self.speakingView endSpeak];
     if (responseJsonDic[@"semantic"]) {
 
         [self insertRemindWithData:responseJsonDic];
         
     }else{
-        [MBProgressHUD showSuccess:@"提醒应按照时间+事件的形式添加！"];
+        [MBProgressHUD hideHUD];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        
+        // Set the text mode to show only text.
+        hud.mode = MBProgressHUDModeText;
+        hud.label.text = @"提醒应按照时间+事件的形式添加";
+        // Move to bottm center.
+        hud.offset = CGPointMake(0.f, 30);
+        
+        [hud hideAnimated:YES afterDelay:1.f];
     }
     
 }
@@ -1617,7 +1719,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [self.myApp.window addSubview:self.listeningView];
     
     [MBProgressHUD hideHUD];
-    
+    [self.speakingView endSpeak];
 }
 
 
@@ -1701,6 +1803,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     }
     
     [MBProgressHUD hideHUD];
+    
     [self.iFlySpeechSynthesizer stopSpeaking];
     if (self.listeningView) {
         [self.listeningView removeFromSuperview];

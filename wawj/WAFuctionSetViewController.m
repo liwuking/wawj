@@ -67,7 +67,6 @@
     // Do any additional setup after loading the view from its nib.
     
     NSString *interFace = @"老年界面";//[CoreArchive boolForKey:INTERFACE_NEW]? @"拟物界面" : @"老年界面";
-    
     self.arrTitles = @[@[@"我的头像"],@[interFace,@"整点报时"],@[@"帮助中心"],@[@"分享下载",@"关于我们"]];
     
     [self initView];
@@ -110,11 +109,6 @@
         NSString *myContactPath = [NSString stringWithFormat:@"%@/MyContact", documentPath];
         [[NSFileManager defaultManager] removeItemAtPath:myContactPath error:nil];
         
-        
-//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        WAOldInterfaceViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAOldInterfaceViewController"];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//        appDelegate.window.rootViewController = nav;
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         WAGuideViewController *vc = [sb instantiateViewControllerWithIdentifier:@"WAGuideViewController"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];

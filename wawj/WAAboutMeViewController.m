@@ -31,12 +31,12 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    if ([CoreArchive strForKey:APP_VERSION_DESC]) {
-         self.titleLab.text = [NSString stringWithFormat:@"我爱我家%@", [CoreArchive strForKey:APP_VERSION_DESC]];
-    } else {
+//    if ([CoreArchive strForKey:APP_VERSION_DESC]) {
+//         self.titleLab.text = [NSString stringWithFormat:@"我爱我家V%@", [CoreArchive strForKey:APP_VERSION_DESC]];
+//    } else {
         NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        self.titleLab.text =  [NSString stringWithFormat:@"我爱我家%@", appVersion];
-    }
+        self.titleLab.text =  [NSString stringWithFormat:@"我爱我家V%@", appVersion];
+//    }
    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -75,7 +75,7 @@
                 NSString *versionDesc = bodyDict[@"versionDesc"];
                 NSString *updateContent = bodyDict[@"updateContent"];
                 NSString *downloadUrl = bodyDict[@"downloadUrl"];
-                
+                NSLog(@"%@", data);
                 [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
                 [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
                 
@@ -182,11 +182,7 @@
         return cell;
     }
     
-    
-   
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

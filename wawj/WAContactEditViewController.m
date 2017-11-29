@@ -43,40 +43,43 @@
 
 -(void)updateContactsName:(NSString *)originName andNewName: (NSString *)newName imageName:(NSString *)imageName phoneNumber:(NSArray <NSString *>*)phoneNumbers {
     
-    CNMutableContact * contact = [[[self queryContactWithName:originName] objectAtIndex:0] mutableCopy];
-    
-    //名字
-    contact.givenName = newName;
-    
-    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
-    NSString *imageContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:imageContactPath]) {
-        //头像
-        contact.imageData = [NSData dataWithContentsOfFile:imageContactPath];
+    if (![self queryContactWithName:originName].count) {
+        
+        [self addContactsName:newName imageName:imageName phoneNumber:phoneNumbers];
+        
+    } else {
+        CNMutableContact * contact = [[[self queryContactWithName:originName] objectAtIndex:0] mutableCopy];
+        //名字
+        contact.givenName = newName;
+        
+        NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
+        NSString *imageContactPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"MyContact/%@",imageName]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:imageContactPath]) {
+            //头像
+            contact.imageData = [NSData dataWithContentsOfFile:imageContactPath];
+        }
+        
+        NSMutableArray <CNLabeledValue<CNPhoneNumber*>*>  *nums = [@[] mutableCopy];
+        for (NSString *phone in phoneNumbers) {
+            CNLabeledValue *value = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberiPhone value:[CNPhoneNumber phoneNumberWithStringValue:phone]];
+            [nums addObject:value];
+            
+        }
+        //电话号码
+        contact.phoneNumbers = [NSArray arrayWithArray:nums];
+        //保存请求
+        CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
+        [saveRequest updateContact:contact];
+        //上下文
+        CNContactStore * store = [[CNContactStore alloc] init];
+        NSError *error;
+        [store executeSaveRequest:saveRequest error:&error];
+        
+        if (error) {
+            NSLog(@"error.localizedDescription: %@",error.localizedDescription);
+        }
     }
-
-//    contact.imageData = UIImagePNGRepresentation(self.headImageView.image);
     
-    NSMutableArray <CNLabeledValue<CNPhoneNumber*>*>  *nums = [@[] mutableCopy];
-    for (NSString *phone in phoneNumbers) {
-        CNLabeledValue *value = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberiPhone value:[CNPhoneNumber phoneNumberWithStringValue:phone]];
-        [nums addObject:value];
-
-    }
-    //电话号码
-    contact.phoneNumbers = [NSArray arrayWithArray:nums];
-    
-    //保存请求
-    CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
-    [saveRequest updateContact:contact];
-    //上下文
-    CNContactStore * store = [[CNContactStore alloc] init];
-    NSError *error;
-    [store executeSaveRequest:saveRequest error:&error];
-    
-    if (error) {
-        NSLog(@"error.localizedDescription: %@",error.localizedDescription);
-    }
     
 }
 
@@ -186,18 +189,23 @@
 }
 
 -(void)delContactWithName:(NSString *)name {
-    CNMutableContact * contact = [[[self queryContactWithName:name] objectAtIndex:0] mutableCopy];
-    //保存请求
-    CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
-    [saveRequest deleteContact:contact];
-    //上下文
-    CNContactStore * store = [[CNContactStore alloc] init];
-    NSError *error;
-    [store executeSaveRequest:saveRequest error:&error];
     
-    if (error) {
-        NSLog(@"error.localizedDescription: %@",error.localizedDescription);
+    if ([[self queryContactWithName:name] count]) {
+        CNMutableContact * contact = [[[self queryContactWithName:name] objectAtIndex:0] mutableCopy];
+        //保存请求
+        CNSaveRequest * saveRequest = [[CNSaveRequest alloc] init];
+        [saveRequest deleteContact:contact];
+        //上下文
+        CNContactStore * store = [[CNContactStore alloc] init];
+        NSError *error;
+        [store executeSaveRequest:saveRequest error:&error];
+        
+        if (error) {
+            NSLog(@"error.localizedDescription: %@",error.localizedDescription);
+        }
     }
+    
+   
 }
 
 - (IBAction)clickSave:(UIButton *)sender {
@@ -221,21 +229,21 @@
     }
     
     NSMutableArray *contactArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_CONTACT_ARR]];
-    NSInteger repeatCout = 0;
-    for (NSDictionary *dict in contactArr) {
-        
-        if ([dict[@"contactName"] isEqualToString:cellName.textField.text]) {
-            repeatCout = repeatCout + 1;
-        }
-        
-        if (2 == repeatCout) {
+    NSString *currentName = cellName.textField.text;
+    if (![self.contactItem.name isEqualToString:currentName]) {
+        for (NSDictionary *dict in contactArr) {
             
-            [self showAlertViewWithTitle:@"已存在相同姓名" message:nil buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            return;
+            if ([dict[@"contactName"] isEqualToString:currentName]) {
+                [self showAlertViewWithTitle:@"已存在相同姓名" message:nil buttonTitle:@"确定" clickBtn:^{
+                    
+                }];
+                return;
+            }
+            
         }
     }
+    
+    
     
     BOOL ischange = [cellName.textField.text isEqualToString:self.contactItem.name];
     EditPhoneTableViewCell *cellPhone1 = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
@@ -289,9 +297,7 @@
         self.contactItem.phoneArr[1] = cellPhone2.textField.text;
         
     }
-    
-    
-    
+
     if (self.isChangeHeadImage) {
         
         NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)[0];
@@ -310,13 +316,6 @@
     NSString *originContactName =  self.contactItem.name;
     self.contactItem.name = cellName.textField.text;
     if (!ischange && WAContactEditEdit == self.waContactEditType) {
-        
-//        if ([self queryContactWithName:cellName.textField.text].count > 0) {
-//            [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
-//                
-//            }];
-//            return;
-//        }
         
         self.waContactEditChange(self.contactItem);
         
@@ -346,7 +345,7 @@
     }
     else if (WAContactEditAdd == self.waContactEditType) {
         
-        if ([self queryContactWithName:cellName.textField.text].count > 0) {
+        if ([self queryContactWithName:cellName.textField.text].count) {
             [self showAlertViewWithTitle:@"手机通讯录中已存在相同姓名,请直接添加" message:nil buttonTitle:@"确定" clickBtn:^{
                 
             }];
@@ -430,7 +429,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:contactPath]) {
         [self.headImageView setImage:[UIImage imageWithContentsOfFile:contactPath]];
     }else {
-        [self.headImageView setImage:[UIImage imageNamed:@"头像设置"]];
+        [self.headImageView setImage:[UIImage imageNamed:@"photoShowDefault"]];
     }
     
     
@@ -453,10 +452,6 @@
     [self initView];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self resignFirstResponder];
-    return YES;
-}
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
@@ -503,9 +498,6 @@
 
     UIImage *images = [info objectForKey:UIImagePickerControllerOriginalImage];
     self.headImageView.image = images;
-    //    CGFloat fixelW = CGImageGetWidth(images.CGImage);
-    //    CGFloat fixelH = CGImageGetHeight(images.CGImage);
-    //    NSLog(@"fixelW: %f %f", fixelH,fixelW);
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
     self.isChangeHeadImage = YES;
@@ -576,6 +568,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return  3;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.view endEditing:YES];
+
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {
