@@ -531,7 +531,7 @@
                             NSMutableArray *newCacheArr = [[NSMutableArray alloc] initWithArray:oldPhotoArr];
                             NSMutableArray *newTags = [@[] mutableCopy];
                             
-                            
+                            NSMutableArray *removeArr = [@[] mutableCopy];
                             for (NSInteger i = 0; i < oldPhotoArr.count;  i++) {
                                 NSDictionary *oldDict = oldPhotoArr[i];
                                
@@ -553,12 +553,15 @@
                                         }else if(newAlbumNums != oldAlbumIdNums) {
                                             [newTags addObject:newDict];
                                         }
-                                        [newCacheArr removeObjectAtIndex:i];
+                                        [removeArr addObject:newCacheArr[i]];
+                                        
+//                                        [newCacheArr removeObjectAtIndex:i];
                                     }
                                     
                                 }
                             }
                             
+                            [newCacheArr removeObjectsInArray:removeArr]; //去重
                             if (newTags.count) {
                                 [strongSelf removePhotosShowTag:newTags];
                             }
