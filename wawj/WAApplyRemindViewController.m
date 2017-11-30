@@ -150,8 +150,9 @@
             if (data[@"body"]) {
                 
                 NSMutableArray *qimiArr = [[NSMutableArray alloc] initWithArray:[CoreArchive arrForKey:USER_QIMI_ARR]];
-                [qimiArr addObject:data[@"body"]];
-                
+                 NSDictionary *dict = [data[@"body"] transforeNullValueToEmptyStringInSimpleDictionary];
+                [qimiArr addObject:dict];
+               
                 [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
                 
                 [MBProgressHUD showSuccess:@"添加成功"];

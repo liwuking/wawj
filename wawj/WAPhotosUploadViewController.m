@@ -166,7 +166,11 @@
         for (NSDictionary *dict in qimiArr) {
             
             NSLog(@"dict: %@", dict);
-            if ([dict[@"qinmiUser"] isEqualToString:self.photosItem.author]) {
+            NSString *qimiUser = dict[@"qinmiUser"];
+            if ([dict[@"qinmiUser"] isKindOfClass:[NSNumber class]]) {
+                qimiUser = [dict[@"qinmiUser"] stringValue];
+            }
+            if ([qimiUser isEqualToString:self.photosItem.author]) {
                 self.headTitle.text = dict[@"qinmiName"];
                 
                 if (![dict[@"headUrl"] isKindOfClass:[NSNull class]]) {

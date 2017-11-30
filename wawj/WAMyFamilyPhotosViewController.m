@@ -644,7 +644,7 @@
             cell.titleLab.text= item.title;
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
-            NSLog(@"imageUrl: %@", imageUrl);
+//            NSLog(@"imageUrl: %@", imageUrl);
             [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
@@ -656,7 +656,7 @@
             cell.titleLab.text= item.title;
             cell.timeLab.text = [NSString stringWithFormat:@"%@张  %@",item.nums, item.updateTime];
             NSString *imageUrl = [NSString stringWithFormat:@"%@!%@", item.coverUrl,WEBP_HEADER_FAMILY];
-            NSLog(@"imageUrl: %@", imageUrl);
+//            NSLog(@"imageUrl: %@", imageUrl);
             [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"photoShowDefault"]];
             
             return cell;
