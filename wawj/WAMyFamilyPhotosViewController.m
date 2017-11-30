@@ -468,12 +468,15 @@
         return;
     }
     
- NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    
+    NSString *userID = userInfo[USERID] ? userInfo[USERID]: @"";
     
     NSString *lastestTime = @"";
     if ([CoreArchive strForKey:LASTTIME]) {
         lastestTime = [CoreArchive strForKey:LASTTIME];
     }
+    NSLog(@"lastestTime: %@", lastestTime);
     NSDictionary *model = @{@"lastestTime": lastestTime,
                             @"pageSize":@"50"
                             };
@@ -506,8 +509,7 @@
                                                  };
                     [photosCacheArr addObject:PhotosDict];
                     
-                    if (photosCacheArr.count == 1) {
-                       // NSNumber *updateTime = (NSNumber *)transDict[@"updateTime"];
+                    if (photosCacheArr.count == 1 && ![transDict[@"author"] isEqualToString:userID]) {
                         [CoreArchive setStr:transDict[@"updateTime"] key:LASTTIME];
                     }
                 }

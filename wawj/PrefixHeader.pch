@@ -30,7 +30,7 @@
  *
  *  0:开发环境  1:发布环境 
  */
-#define MY_PROJECT_GLOBAL_CONTROL 1
+#define MY_PROJECT_GLOBAL_CONTROL 0
 
 #if (MY_PROJECT_GLOBAL_CONTROL == 0)
 
