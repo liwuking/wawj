@@ -12,7 +12,7 @@
 #import "UIAlertView+Extension.h"
 #import "CoreArchive.h"
 #import <UMSocialCore/UMSocialCore.h>
-
+#import "NSString+Extension.h"
 #import "WAOldInterfaceViewController.h"
 #import "WANewInterfaceViewController.h"
 #import "WABindIphoneViewController.h"
@@ -52,9 +52,19 @@
     
     //设置科大讯飞
     [self iFlySet];
+    
     //设置本地推送
+//    __weak __typeof__(self) weakSelf = self;
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [strongSelf setLocalNotificationWithOptions:launchOptions];
+//        [strongSelf setJPush:launchOptions];//设置极光推送
+//    });
+    
     [self setLocalNotificationWithOptions:launchOptions];
     [self setJPush:launchOptions];//设置极光推送
+    
+    
     //网络监控
     [self netMonitor];
     //设置友盟
@@ -190,6 +200,17 @@
                       selector:@selector(serviceError:)
                           name:kJPFServiceErrorNotification
                         object:nil];
+//    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+
+}
+
+- (void)networkDidReceiveMessage:(NSNotification *)notification {
+    NSDictionary * userInfo = [notification userInfo];
+    NSLog(@"userInfo---  %@", userInfo);
+//    NSString *content = [userInfo valueForKey:@"content"];
+//    NSDictionary *extras = [userInfo valueForKey:@"extras"];
+//    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //服务端传递的Extras附加字段，key是自己定义的
+    
 }
 
 #pragma -mark UIApplicationDelegate
@@ -444,7 +465,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         
-        [JPUSHService handleRemoteNotification:userInfo];
+//        [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
         
         if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
@@ -489,16 +510,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
     } else {
         // 判断为本地通知
-//        NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
-        if (![notification.request.content.title isEqualToString:@"整点报时"]) {
-            [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.request.content.body buttonTitle:@"确定" clickBtn:^{
-
-            }];
-
-        }
+        NSLog(@"iOS10及以上 前台收到本地通知:%@\n}",userInfo);
         
-        NSString *requestIdentifier = notification.request.identifier;//notification.userInfo[@"requestIdentifier"];
-        if ([requestIdentifier hasPrefix:@"remote"]) {
+        
+        NSString *requestIdentifier = userInfo[@"requestIdentifier"];
+        
+        if ([requestIdentifier hasPrefix:@"remote_"]) {
             
             NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
             if (!self.database) {
@@ -518,8 +535,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //            //播放声音
 //            [self playRemindAudioWithSoundName:notification.soundName];
 //            NSLog(@"notification.soundName: %@", notification.soundName);
-            
-            
+//
+//
 //            NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
 //            if (!(str.length == 2)) {
 //                __weak __typeof__(self) weakSelf = self;
@@ -533,8 +550,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //
 //            }
         }
-        
-    }
+        }
     
     completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
 }
@@ -581,8 +597,46 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     } else {
         // 判断为本地通知
         NSLog(@"iOS10 收到本地通知:userInfo：%@\n}",userInfo);
-
+        
+        NSString *requestIdentifier = userInfo[@"requestIdentifier"];
+        
+        if ([requestIdentifier hasPrefix:@"remote_"]) {
+            
+            NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
+            if (!self.database) {
+                NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
+                __weak __typeof__(self) weakSelf = self;
+                [self createDatabaseTableWithUserid:userID andCompletion:^{
+                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                    RemindItem *remindItem = [strongSelf getRemindItemWithRequestIdentifier:remindid];
+                    [strongSelf enterpreVC:remindItem];
+                }];
+            } else {
+                RemindItem *remindItem = [self getRemindItemWithRequestIdentifier:remindid];
+                [self enterpreVC:remindItem];
+            }
+            
+        } else {
+            //            //播放声音
+            //            [self playRemindAudioWithSoundName:notification.soundName];
+            //            NSLog(@"notification.soundName: %@", notification.soundName);
+            //
+            //
+            //            NSString *str = [[notification.soundName componentsSeparatedByString:@"."] firstObject];
+            //            if (!(str.length == 2)) {
+            //                __weak __typeof__(self) weakSelf = self;
+            //                [[self topViewController] showAlertViewWithTitle:@"我的提醒" message:notification.alertBody buttonTitle:@"确定" clickBtn:^{
+            //                    __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            //                    //关闭震动
+            //                    AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+            //                    //关闭声音
+            //                    [strongSelf.audioFilePlayer stop];
+            //                }];
+            //
+            //            }
+        }
     }
+
     completionHandler();  // 系统要求执行这个方法
 }
 #endif
@@ -667,7 +721,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                         NSLog(@"request authorization succeeded!");
                     }
                 }];
-                [[UIApplication sharedApplication] registerForRemoteNotifications];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                     [[UIApplication sharedApplication] registerForRemoteNotifications];
+                });
+               
                 
             } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
                 __strong __typeof__(weakSelf) strongSelf = weakSelf;
@@ -769,10 +827,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
-    NSLog(@"%s  %@", __FUNCTION__,  [[UIApplication sharedApplication] scheduledLocalNotifications]);
+    NSLog(@"%s  %@", __FUNCTION__,  notification.userInfo[@"requestIdentifier"]);//[[UIApplication sharedApplication] scheduledLocalNotifications]
     
     NSString *requestIdentifier = notification.userInfo[@"requestIdentifier"];
-    if ([requestIdentifier hasPrefix:@"remote"]) {
+    if ([requestIdentifier hasPrefix:@"remote_"]) {
         
         NSString *remindid = [requestIdentifier componentsSeparatedByString:@"_"][1];
         if (!self.database) {
@@ -1012,25 +1070,25 @@ void systemAudioCallback()
 
 
 
-- (void)networkDidReceiveMessage:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSString *title = [userInfo valueForKey:@"title"];
-    NSString *content = [userInfo valueForKey:@"content"];
-    NSDictionary *extra = [userInfo valueForKey:@"extras"];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    
-    NSString *currentContent = [NSString
-                                stringWithFormat:
-                                @"收到自定义消息:%@\ntitle:%@\ncontent:%@\nextra:%@\n",
-                                [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                               dateStyle:NSDateFormatterNoStyle
-                                                               timeStyle:NSDateFormatterMediumStyle],
-                                title, content, [self logDic:extra]];
-    NSLog(@"%s %@", __FUNCTION__,currentContent);
-    
-}
+//- (void)networkDidReceiveMessage:(NSNotification *)notification {
+//    NSDictionary *userInfo = [notification userInfo];
+//    NSString *title = [userInfo valueForKey:@"title"];
+//    NSString *content = [userInfo valueForKey:@"content"];
+//    NSDictionary *extra = [userInfo valueForKey:@"extras"];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+//
+//    NSString *currentContent = [NSString
+//                                stringWithFormat:
+//                                @"收到自定义消息:%@\ntitle:%@\ncontent:%@\nextra:%@\n",
+//                                [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                               dateStyle:NSDateFormatterNoStyle
+//                                                               timeStyle:NSDateFormatterMediumStyle],
+//                                title, content, [self logDic:extra]];
+//    NSLog(@"%s %@", __FUNCTION__,currentContent);
+//
+//}
 
 - (void)serviceError:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
@@ -1253,17 +1311,82 @@ void systemAudioCallback()
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     [self checkAppVesion];
-        //移除通知栏所有推送
+    
+    //移除通知栏所有推送
     JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];
     identifier.identifiers = nil;
     identifier.delivered = YES;  //iOS10以上有效，等于YES则查找所有在通知中心显示的，等于NO则为查找所有待推送的；iOS10以下无效
+    __weak __typeof__(self) weakSelf = self;
+    // 用于查询回调，调用[findNotification:]方法前必须设置，results为返回相应对象数组，iOS10以下返回UILocalNotification对象数组；iOS10以上根据delivered传入值返回UNNotification或UNNotificationRequest对象数组（delivered传入YES，则返回UNNotification对象数组，否则返回UNNotificationRequest对象数组）
     identifier.findCompletionHandler = ^(NSArray *results) {
-        NSLog(@"返回结果为：%@", results); // iOS10以下返回UILocalNotification对象数组，iOS10以上根据delivered传入值返回UNNotification或UNNotificationRequest对象数组
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        
+        if (results.count) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [strongSelf handleCacheRemoteAPNS:results];
+            });
+        }
+        
+        
     };
     [JPUSHService findNotification:identifier];
     
 }
 
+-(void)handleCacheRemoteAPNS:(NSArray *)results {
+    NSLog(@"%s", __func__);
+//    NSLog(@"返回结果为：%@", results);
+    // iOS10以下返回UILocalNotification对象数组，iOS10以上根据delivered传入值返回UNNotification或UNNotificationRequest对象数组
+    for (NSInteger i = 0; i < results.count; i++) {
+        if ([results[i] isKindOfClass:[UNNotification class]]) {
+            
+            UNNotification *notification = results[i];
+            NSDictionary *userInfo = notification.request.content.userInfo;
+            
+            if (userInfo[@"nativeData"] && [userInfo[@"aps"][@"alert"] ew_hasSubString:@"有人给您定了个闹钟"]) {
+//                NSLog(@"userInfo: %@", userInfo);
+                if (!self.database) {
+                    __weak __typeof__(self) weakSelf = self;
+                    NSString *userID = [CoreArchive dicForKey:USERINFO][USERID];
+                    [self createDatabaseTableWithUserid:userID andCompletion:^{
+                        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+                        if (![strongSelf adjustRemindRepeatWithCreatetimestamp:userInfo[@"nativeData"][@"remindTime"]]) {
+                            [strongSelf handleRemoteRemindToDB:userInfo[@"nativeData"]];
+                        }
+                        
+                    }];
+                } else {
+                    if (![self adjustRemindRepeatWithCreatetimestamp:userInfo[@"nativeData"][@"remindTime"]]) {
+                        [self handleRemoteRemindToDB:userInfo[@"nativeData"]];
+                    }
+                }
+                
+            }
+            
+        }
+    }
+
+}
+
+-(BOOL)adjustRemindRepeatWithCreatetimestamp:(NSString *)remindTime {
+    
+    long createtimestamp = [remindTime integerValue]/1000;
+    if ([self.database open]) {
+        NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindtype = '%@' or createtimestamp = %ld",self.databaseTableName,REMINDORIGINTYPE_REMOTE,createtimestamp];
+        NSLog(@"sql = %@",sql);
+        
+        FMResultSet * res = [self.database executeQuery:sql];
+        
+        while ([res next]) {
+            
+            return YES;
+        }
+        
+        return NO;
+        
+    }
+    return NO;
+}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

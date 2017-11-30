@@ -147,7 +147,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"图层30"] style:UIBarButtonItemStyleDone target:self action:@selector(rightAction)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"3个点"] style:UIBarButtonItemStyleDone target:self action:@selector(rightAction)];
     [rightItem setTintColor:HEX_COLOR(0x666666)];
     [rightItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.rightBarButtonItem = rightItem;

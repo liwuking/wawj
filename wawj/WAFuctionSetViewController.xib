@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -30,7 +30,7 @@
                     </connections>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="101-LH-1W5">
-                    <rect key="frame" x="15" y="577" width="345" height="50"/>
+                    <rect key="frame" x="15" y="617" width="345" height="50"/>
                     <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="Doj-pV-VMQ"/>
@@ -54,7 +54,7 @@
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2EW-w1-AQz"/>
                 <constraint firstAttribute="trailing" secondItem="101-LH-1W5" secondAttribute="trailing" constant="15" id="Ght-zY-nvX"/>
                 <constraint firstAttribute="bottom" secondItem="kdk-Ye-UyF" secondAttribute="bottom" id="MfK-tC-UJt"/>
-                <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" constant="40" id="Sxq-ux-knP"/>
+                <constraint firstAttribute="bottom" secondItem="101-LH-1W5" secondAttribute="bottom" id="Sxq-ux-knP"/>
                 <constraint firstAttribute="trailing" secondItem="kdk-Ye-UyF" secondAttribute="trailing" id="XLr-qG-YOX"/>
                 <constraint firstItem="101-LH-1W5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="orY-eA-EBg"/>
                 <constraint firstItem="kdk-Ye-UyF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="se3-fh-fAw"/>

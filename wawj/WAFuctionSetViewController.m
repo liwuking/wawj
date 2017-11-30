@@ -59,6 +59,7 @@
         self.logoutBtn.hidden = YES;
     }
     
+//    self.logoutBtn.hidden = YES;
 }
 
 -(void)backAction {
