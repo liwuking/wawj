@@ -412,16 +412,12 @@
         } else {
             albumId = dict[@"albumId"];
         }
-//        [tagDicts addEntriesFromDictionary:@{dict[@"albumId"]:@"1"}];
-        
         if (![tagDicts.allKeys containsObject:albumId]) {
             [tagDicts addEntriesFromDictionary:@{albumId:@"1"}];
         }
         
     }
     
-    //NSMutableArray *dataArr = [[NSMutableArray alloc] initWithArray:tagDicts];
-
     NSLog(@"新标签tagDicts--%ld: %@",tagDicts.count, tagDicts);
     [CoreArchive setDic:tagDicts key:UNSHOWPHOTOS];
 
@@ -435,17 +431,11 @@
         
         NSLog(@"\n原本: %@\n此次删除tagDicts--%ld条: %@",tagDicts,oldPhotos.count, oldPhotos);
         for (NSDictionary *dict in oldPhotos) {
-//            NSString *albumId = [dict[@"albumId"] stringValue];
             NSString *albumId = dict[@"albumId"];
             [tagDicts removeObjectForKey:albumId];
-//            if ([tagDicts containsObject:dict[@"albumId"]]) {
-//                [tagDicts removeObject:dict[@"albumId"]];
-//            }
-
         }
         
         NSLog(@"删除后tagDicts--%ld条: %@",tagDicts.count, tagDicts);
-//        NSMutableArray *dataArr = [[NSMutableArray alloc] initWithArray:tagDicts];
         [CoreArchive setDic:tagDicts key:UNSHOWPHOTOS];
         
     }
@@ -514,12 +504,11 @@
                     }
                 }
                 
-                //保存新增标签
+                //保存新增标签(lastestTime为空时，photosCacheArr数据都为未看过的数据)
                 if ([lastestTime isEqualToString:@""]) {
                     [strongSelf savePhotosShowTag:photosCacheArr];
                 }
                 
-               
                 //存储相册列表数据
                 if(photosCacheArr.count > 0) {
                     
@@ -548,9 +537,10 @@
                                     NSLog(@"newAlbumId: %ld oldAlbumId: %ld ,newAlbumNums: %ld oldAlbumIdNums:%ld",newAlbumId,oldAlbumId,newAlbumNums,oldAlbumIdNums);
                                     if (newAlbumId == oldAlbumId) {
                                         //相册数据有更新，缓存里面做替换
-                                        if (![newDict[@"author"] isEqualToString:userInfo[@"userId"]]) {
-                                            [newTags addObject:newDict];
-                                        }else if(newAlbumNums != oldAlbumIdNums) {
+//                                        if (![newDict[@"author"] isEqualToString:userInfo[@"userId"]]) {
+//                                            [newTags addObject:newDict];
+//                                        }else
+                                        if(newAlbumNums != oldAlbumIdNums) {
                                             [newTags addObject:newDict];
                                         }
                                         [removeArr addObject:newCacheArr[i]];
@@ -730,13 +720,6 @@
         
         [self savePhotosShowTag:@[@{@"albumId":item.albumId}]];
         
-//        NSMutableArray *tagDicts = [@[] mutableCopy];
-//        if ([CoreArchive arrForKey:UNSHOWPHOTOS]) {
-//            [tagDicts addObjectsFromArray:[CoreArchive arrForKey:UNSHOWPHOTOS]];
-//        }
-//        [tagDicts addObject:item.albumId];
-//
-//        [CoreArchive setArr:tagDicts key:UNSHOWPHOTOS];
     }
     
 }

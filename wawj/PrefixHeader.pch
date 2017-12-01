@@ -30,7 +30,7 @@
  *
  *  0:开发环境  1:发布环境 
  */
-#define MY_PROJECT_GLOBAL_CONTROL 0
+#define MY_PROJECT_GLOBAL_CONTROL 1
 
 #if (MY_PROJECT_GLOBAL_CONTROL == 0)
 
@@ -53,7 +53,7 @@
 #elif (MY_PROJECT_GLOBAL_CONTROL == 1)
 #define DLog(...)
 #define DeBugLog(...)
-#define NSLog(...)
+//#define NSLog(...)
 #define MyNSLog(FORMAT, ...)
 
 //正式服务器URL
