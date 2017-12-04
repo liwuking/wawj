@@ -363,7 +363,7 @@
         
         [self.recordbtn setTitle:@"重新录音" forState:UIControlStateNormal];
         
-        self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  self.recordedTime];
+        self.recordTimeLab.text =  [NSString stringWithFormat:@"%lds",  (long)self.recordedTime];
         
         self.previewBtn.hidden = NO;
         self.startStopBtn.hidden = NO;

@@ -38,7 +38,6 @@
 #define DeBugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define NSLog(...) NSLog(__VA_ARGS__);
 #define MyNSLog(FORMAT, ...) fprintf(stderr,"[%s]:[line %d行] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
-
 //测试服务器
 #define KMain_URL    @"http://123.207.170.53:8888/service"
 #define ALBUM_URL    @"http://123.207.170.53:8888/service"
@@ -51,11 +50,11 @@
 #define YUN_AUDIO   @"http://wawj-test.b0.upaiyun.com"
 
 #elif (MY_PROJECT_GLOBAL_CONTROL == 1)
+
 #define DLog(...)
 #define DeBugLog(...)
-//#define NSLog(...)
+#define NSLog(...)
 #define MyNSLog(FORMAT, ...)
-
 //正式服务器URL
 #define KMain_URL    @"http://api.wawjapp.com/service"
 #define ALBUM_URL    @"http://album.wawjapp.com/service"
@@ -68,9 +67,6 @@
 #define YUN_AUDIO   @"http://yunaudio.wawjapp.com"
 
 #endif
-
-
-
 
 #endif /* PrefixHeader_pch */
 

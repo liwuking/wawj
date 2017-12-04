@@ -377,6 +377,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%s", __FUNCTION__);
     for (RemindItem *remindItem in remindArr) {
         
+        if (!remindItem.audiourl || remindItem.audiourl.length == 0) {
+            return;
+        }
         NSString *sql = [NSString stringWithFormat:@"select * from %@  where remindorigintype = '%@' and remindid = %@",self.databaseTableName,REMINDORIGINTYPE_REMOTE,remindItem.remindid];
         NSLog(@"sql = %@",sql);
         

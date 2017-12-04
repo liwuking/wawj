@@ -409,8 +409,7 @@
     //初始化图片选择控制器
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
-    
-    imagePicker.allowsEditing = YES; //设置拍照时的下方的工具栏是否显示，如果需要自定义拍摄界面，则可把该工具栏隐藏
+    imagePicker.allowsEditing = NO; //设置拍照时的下方的工具栏是否显示，如果需要自定义拍摄界面，则可把该工具栏隐藏
     imagePicker.delegate = self;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
@@ -420,7 +419,7 @@
     //在这个方法里我们可以进行图片的修改, 保存, 或者视频的保存
     // UIImagePickerControllerOriginalImage 原始图片
     // UIImagePickerControllerEditedImage 编辑后图片
-//    UIImage *images = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
 ////    _imageView.image = image;
 //    CGFloat fixelW = CGImageGetWidth(images.CGImage);
 //    CGFloat fixelH = CGImageGetHeight(images.CGImage);
@@ -431,6 +430,11 @@
 //    NSLog(@"imageDocPath == %@", imageDocPath);
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
+}
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
 }
 
 //当用户取消相册时, 调用该方法
