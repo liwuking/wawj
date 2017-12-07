@@ -10,6 +10,9 @@
 #import <UMSocialCore/UMSocialCore.h>
 
 @interface WAShareViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *twoLab;
+@property (weak, nonatomic) IBOutlet UILabel *oneLab;
+@property (weak, nonatomic) IBOutlet UILabel *threeLab;
 
 @end
 
@@ -24,6 +27,11 @@
     
     self.title = @"分享邀请";
 
+    if (SCREEN_HEIGHT == 480) {
+        self.oneLab.hidden = YES;
+        self.twoLab.hidden = YES;
+        self.threeLab.hidden = YES;
+    }
     
 }
 

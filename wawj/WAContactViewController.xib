@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="个人设置-我的头像" translatesAutoresizingMaskIntoConstraints="NO" id="ruI-de-oO9">
-                    <rect key="frame" x="85" y="110" width="150" height="150"/>
+                    <rect key="frame" x="85" y="80" width="150" height="150"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="Hsb-3l-wHT"/>
@@ -34,7 +34,7 @@
                     </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPx-vy-fnU">
-                    <rect key="frame" x="0.0" y="310" width="320" height="100"/>
+                    <rect key="frame" x="0.0" y="280" width="320" height="100"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手机:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xYC-yv-70y">
                             <rect key="frame" x="10" y="0.0" width="50" height="50"/>
@@ -130,7 +130,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OcO-ff-WCq">
-                    <rect key="frame" x="15" y="454" width="290" height="50"/>
+                    <rect key="frame" x="15" y="424" width="290" height="50"/>
                     <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="wX7-qT-Kst"/>
@@ -159,7 +159,7 @@
                 <constraint firstItem="OcO-ff-WCq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="G3D-UC-l7g"/>
                 <constraint firstItem="nPx-vy-fnU" firstAttribute="top" secondItem="ruI-de-oO9" secondAttribute="bottom" constant="50" id="IrV-JE-j65"/>
                 <constraint firstAttribute="trailing" secondItem="nPx-vy-fnU" secondAttribute="trailing" id="XWK-wl-Pwi"/>
-                <constraint firstItem="ruI-de-oO9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="110" id="bXs-gK-sKu"/>
+                <constraint firstItem="ruI-de-oO9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="bXs-gK-sKu"/>
                 <constraint firstItem="nPx-vy-fnU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gxy-Uj-Wwu"/>
             </constraints>
         </view>

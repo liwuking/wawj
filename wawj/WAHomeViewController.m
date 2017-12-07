@@ -221,8 +221,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (0 == self.dataArr.count) {
+        if (SCREEN_HEIGHT == 480) {
+            return (SCREEN_WIDTH - 90)/2;//section尾部高度
+        }
+        
         return (SCREEN_WIDTH - 135)/2;//section头部高度
     } else {
+        
+        if (SCREEN_HEIGHT == 480) {
+            return (SCREEN_WIDTH - 180)/3;//section尾部高度
+        }
         return (SCREEN_WIDTH - 270)/3;//section头部高度
     }
     
@@ -235,8 +243,18 @@
         if (self.dataArr.count == section) {
             NSLog(@"section: %ld", section);
             if (0 == self.dataArr.count) {
+               
+                if (SCREEN_HEIGHT == 480) {
+                    return (SCREEN_WIDTH - 90)/2;//section尾部高度
+                }
+                
                 return (SCREEN_WIDTH - 135)/2;//section头部高度
             } else {
+                
+                if (SCREEN_HEIGHT == 480) {
+                    return (SCREEN_WIDTH - 180)/3;//section尾部高度
+                }
+                
                 return (SCREEN_WIDTH - 270)/3;//section头部高度
             }
         } else {
@@ -246,6 +264,11 @@
     } else {
         if (self.dataArr.count == section+1) {
             NSLog(@"section: %ld", section);
+            
+            if (SCREEN_HEIGHT == 480) {
+                return (SCREEN_WIDTH - 180)/3;//section尾部高度
+            }
+            
             return (SCREEN_WIDTH - 270)/3;//section尾部高度
         } else {
             
@@ -280,11 +303,6 @@
         }
         cell.transform = CGAffineTransformMakeRotation(M_PI / 2);
         cell.closeFamilyItem = item;
-        
-        
-//        CGFloat fixelW = CGImageGetWidth(cell.headImageView.image.CGImage);
-//        CGFloat fixelH = CGImageGetHeight(cell.headImageView.image.CGImage);
-//        NSLog(@"fixelW: %f %f", fixelW,fixelH);
         
         return cell;
         

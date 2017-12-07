@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,6 +17,7 @@
                 <outlet property="btnThree" destination="g7t-an-4PM" id="Oxa-AA-jn2"/>
                 <outlet property="btnTwo" destination="t07-mI-qq6" id="63v-ch-THK"/>
                 <outlet property="btnsView" destination="4th-x0-hkF" id="bq8-vt-f1I"/>
+                <outlet property="editTVWidth" destination="SwD-QA-s0M" id="J9O-Fe-imd"/>
                 <outlet property="textView" destination="Pe2-dh-rHc" id="w1g-Ja-6Yn"/>
                 <outlet property="timeView" destination="h83-Pz-33a" id="TNP-wb-bjI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -119,7 +120,7 @@
                     </connections>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7uR-K4-oPz">
-                    <rect key="frame" x="15" y="419" width="345" height="44"/>
+                    <rect key="frame" x="15" y="409" width="345" height="44"/>
                     <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="uLM-UI-QdZ"/>
@@ -160,7 +161,7 @@
             </subviews>
             <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="7uR-K4-oPz" firstAttribute="top" secondItem="Pe2-dh-rHc" secondAttribute="bottom" constant="30" id="FPU-3b-6It"/>
+                <constraint firstItem="7uR-K4-oPz" firstAttribute="top" secondItem="Pe2-dh-rHc" secondAttribute="bottom" constant="20" id="FPU-3b-6It"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="7uR-K4-oPz" secondAttribute="trailing" constant="15" id="HuI-S3-TYx"/>
                 <constraint firstItem="zX4-dB-zSQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JIl-bv-AOc"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="zX4-dB-zSQ" secondAttribute="trailing" id="KV1-iJ-Kb4"/>

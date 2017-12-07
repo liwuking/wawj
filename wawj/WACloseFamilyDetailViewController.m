@@ -231,12 +231,13 @@
 //    }
 //
     
-    [MBProgressHUD showMessage:@"正在定位"];
+    [MBProgressHUD showMessage:nil];
     if (self.locationString) {
         [self sendMessageBut:self.locationString];
     }else {
         
         if (![self checkLocationPermission]) {
+            [MBProgressHUD hideHUD];
             return;
         } else {
             self.isSendMessage = YES;

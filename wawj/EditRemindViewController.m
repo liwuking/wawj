@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnThree;
 @property (weak, nonatomic) IBOutlet UIButton *btnFour;
 @property(nonatomic, strong)NSString     *databaseTableName;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *editTVWidth;
 
 @property (nonatomic, strong)NSString *alarmType;
 
@@ -181,6 +182,9 @@
             break;
     }
     
+    if (SCREEN_HEIGHT == 480) {
+        self.editTVWidth.constant = 120;
+    }
     
     [self loadInputAccessoryView];
 
