@@ -42,7 +42,6 @@
     [backItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    self.title = self.closeFamilyItem.qinmiName;
     [self.phoneBtn setTitle:self.closeFamilyItem.qinmiPhone forState:UIControlStateNormal];
     if (![self.closeFamilyItem.headUrl isEqualToString:@""]) {
         NSString *imageUrl = [NSString stringWithFormat:@"%@!%@",self.closeFamilyItem.headUrl,RATIO_IMAGE_100];

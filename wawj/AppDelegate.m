@@ -20,7 +20,7 @@
 
 #import "EditRemindViewController.h"
 #import "WAPreviewRecordViewController.h"
-
+#import "WACloseFamilyDetailViewController.h"
 // 引入JPush功能所需头文件
 #import "JPUSHService.h"
 // iOS10注册APNs所需头文件
@@ -466,7 +466,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     NSDictionary * userInfo = notification.request.content.userInfo;
     NSString *title = userInfo[@"aps"][@"alert"];
-    
+     NSString *accetphone = userInfo[@"nativeData"][@"acceptPhone"];
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         
 //        [JPUSHService handleRemoteNotification:userInfo];
@@ -474,7 +474,22 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
             
-        } else if ([title containsString:@"申请添加你"]) {
+        } else if ([title containsString:@")已经同意申请，快去看看吧~"]) {
+            WACloseFamilyDetailViewController *vc = [[WACloseFamilyDetailViewController alloc] initWithNibName:@"WACloseFamilyDetailViewController" bundle:nil];
+            CloseFamilyItem *familyItem = [[CloseFamilyItem alloc] init];
+            NSArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
+            for (NSDictionary *closeFamilyItem in qimiArr) {
+                if ([closeFamilyItem[@"qinmiPhone"] isEqualToString:accetphone]) {
+                    familyItem.qinmiPhone = closeFamilyItem[@"qinmiPhone"];
+                    familyItem.qinmiName = closeFamilyItem[@"qinmiName"];
+                    break;
+                }
+            }
+            
+            vc.closeFamilyItem = familyItem;
+            [[[self topViewController] navigationController] pushViewController:vc animated:YES];
+        }
+        else if ([title containsString:@"申请添加你"]) {
             __weak __typeof__(self) weakSelf = self;
             [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
             } otherButtonTitles:@"确定" clickOtherBtn:^{
@@ -565,7 +580,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSLog(@"%s -- identifier: %@", __FUNCTION__, response.notification.request.identifier);
     NSDictionary * userInfo = response.notification.request.content.userInfo;
     NSString *title = userInfo[@"aps"][@"alert"];
-    
+    NSString *accetphone = userInfo[@"nativeData"][@"acceptPhone"];
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
 
         [JPUSHService handleRemoteNotification:userInfo];
@@ -574,6 +589,20 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
         if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
             
+        } else if ([title containsString:@")已经同意申请，快去看看吧~"]) {
+            WACloseFamilyDetailViewController *vc = [[WACloseFamilyDetailViewController alloc] initWithNibName:@"WACloseFamilyDetailViewController" bundle:nil];
+            CloseFamilyItem *familyItem = [[CloseFamilyItem alloc] init];
+            NSArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
+            for (NSDictionary *closeFamilyItem in qimiArr) {
+                if ([closeFamilyItem[@"qinmiPhone"] isEqualToString:accetphone]) {
+                    familyItem.qinmiPhone = closeFamilyItem[@"qinmiPhone"];
+                    familyItem.qinmiName = closeFamilyItem[@"qinmiName"];
+                    break;
+                }
+            }
+            
+            vc.closeFamilyItem = familyItem;
+            [[[self topViewController] navigationController] pushViewController:vc animated:YES];
         } else if ([title containsString:@"申请添加你"]) {
 
             WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
@@ -650,10 +679,25 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [JPUSHService handleRemoteNotification:userInfo];
     NSLog(@"iOS7及iOS9，前台收到通知:%@", [self logDic:userInfo]);
     NSString *title = userInfo[@"aps"][@"alert"];
-    
+     NSString *accetphone = userInfo[@"nativeData"][@"acceptPhone"];
     if ([title isEqualToString:@"亲， 您的提醒对方已知晓"]) {
         
-    } else if ([title containsString:@"申请添加你"]) {
+    } else if ([title containsString:@")已经同意申请，快去看看吧~"]) {
+        WACloseFamilyDetailViewController *vc = [[WACloseFamilyDetailViewController alloc] initWithNibName:@"WACloseFamilyDetailViewController" bundle:nil];
+        CloseFamilyItem *familyItem = [[CloseFamilyItem alloc] init];
+        NSArray *qimiArr = [CoreArchive arrForKey:USER_QIMI_ARR];
+        for (NSDictionary *closeFamilyItem in qimiArr) {
+            if ([closeFamilyItem[@"qinmiPhone"] isEqualToString:accetphone]) {
+                familyItem.qinmiPhone = closeFamilyItem[@"qinmiPhone"];
+                familyItem.qinmiName = closeFamilyItem[@"qinmiName"];
+                break;
+            }
+        }
+        
+        vc.closeFamilyItem = familyItem;
+        [[[self topViewController] navigationController] pushViewController:vc animated:YES];
+    }
+    else if ([title containsString:@"申请添加你"]) {
 
         __weak __typeof__(self) weakSelf = self;
         [self.window.rootViewController showAlertViewWithTitle:title message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{

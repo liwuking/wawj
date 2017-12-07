@@ -10,7 +10,7 @@
 #import "ApplyItem.h"
 #import "WAAddContactTableViewCell.h"
 #import <UIImageView+WebCache.h>
-
+#import "UserCenterViewController.h"
 @interface WAApplyRemindViewController ()<UITableViewDelegate,UITableViewDataSource,WAAddContactTableViewCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic, strong)NSMutableArray *applyArrs;
@@ -127,13 +127,34 @@
 -(void)clickAddContactWithCell:(WAAddContactTableViewCell *)cell {
     
     
-    [self addApplyWithApplyItem:cell.applyItem];
+    __weak __typeof__(self) weakSelf = self;
+    NSString *userName = [CoreArchive dicForKey:USERINFO][@"userName"];
+    
+    if (!userName || [userName isEqualToString:@""]) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf showAlertViewWithTitle:@"添加亲密家人" message:@"请先设置头像、姓名和生日" cancelButtonTitle:@"取消" clickCancelBtn:^{
+            
+        } otherButtonTitles:@"确定" clickOtherBtn:^{
+            
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            UserCenterViewController *vc = [[UserCenterViewController alloc] initWithNibName:@"UserCenterViewController" bundle:nil];
+            [strongSelf.navigationController pushViewController:vc animated:YES];
+            
+        }];
+        
+    } else {
+        [self addApplyWithApplyItem:cell.applyItem];
+    }
+    
+   
 }
 
 
 -(void)addApplyWithApplyItem:(ApplyItem *)item {
     
-    NSDictionary *model = @{@"apply_id":item.applyId,@"applyPhone":item.applyPhone};
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+    
+    NSDictionary *model = @{@"apply_id":item.applyId,@"applyPhone":item.applyPhone,@"acceptPhone":userInfo[USERIPHONE]};
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1106" andModel:model];
     __weak __typeof__(self) weakSelf = self;
     [MBProgressHUD showMessage:nil];

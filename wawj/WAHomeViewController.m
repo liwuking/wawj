@@ -178,6 +178,7 @@
 }
 
 - (IBAction)cllickContactRemindBtn:(UIButton *)sender {
+    
     WAApplyRemindViewController *vc = [[WAApplyRemindViewController alloc] initWithNibName:@"WAApplyRemindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }

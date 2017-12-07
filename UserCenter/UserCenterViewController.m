@@ -179,6 +179,9 @@
     }
     
 //    _bgScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT+30);
+    
+    [self checkCaptureDevicePermission];
+    [self checkPhotoLibraryPermission];
 }
 
 - (IBAction)selectSex:(UITapGestureRecognizer *)sender {
@@ -228,8 +231,7 @@
     }
     
     
-    [self checkCaptureDevicePermission];
-    [self checkPhotoLibraryPermission];
+   
     
 }
 
