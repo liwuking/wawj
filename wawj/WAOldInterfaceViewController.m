@@ -127,21 +127,39 @@
         self.logoutRedView.hidden = YES;
     }
     
-    if ([self isIphone5]) {
+    if (SCREEN_HEIGHT == 568) {
         
         self.topLabConstant.constant = 90;
         self.constantHeadTop.constant = -50;
         self.middleViewHeght.constant = 150;
+        
+    } else if (SCREEN_HEIGHT == 480) {
+        self.topLabConstant.constant = 105;
+        self.constantHeadTop.constant = -90;
+        self.middleViewHeght.constant = 140;
     }
+    
+//    [self initViews];
 }
 
+-(void)viewDidLayoutSubviews {
+    
+    [self initViews];
+    
+}
 -(void)initViews {
     
     self.arrText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"后退"];
-    NSInteger height = (SCREEN_HEIGHT- 240 -184 - 1.5)/4;//(self.btnView.frame.size.height-3)/4;//
-    if ([self isIphone5]) {
-        height =  (SCREEN_HEIGHT- 190 -150 - 1.5)/4;//(self.btnView.frame.size.height-12)/4;
-    }
+//    NSInteger height = (SCREEN_HEIGHT- 240 -184 - 1.5)/4;//(self.btnView.frame.size.height-3)/4;//
+//    if ([self isIphone5]) {
+//        height =  (SCREEN_HEIGHT- 190 -150 - 1.5)/4;//(self.btnView.frame.size.height-12)/4;
+//    }
+    NSInteger height = (self.btnView.frame.size.height)/4;
+//    if (SCREEN_HEIGHT == 568) {
+//        height =  (self.btnView.frame.size.height-1.5)/4;
+//    } else if (SCREEN_HEIGHT == 480) {
+//         height =  (self.btnView.frame.size.height-12)/4;
+//    }
     CGFloat width = (SCREEN_WIDTH-1)/3;
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 1, 1);
     UIImage *bgImage = [UIImage imageNamed:@"grayBg"];
@@ -174,22 +192,60 @@
     }
     
     
+    
+   
+    
+//    self.phoneView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
+    
+    
+    
+}
+
+-(void)timeUp {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    self.timeOne.text = [dateFormatter stringFromDate:[NSDate date]];
+    
+}
+
+-(void)clickBtn:(UIButton *)btn {
+    
+    NSString *origin = self.phoneText.text;
+    if (![self.arrText[btn.tag] isEqualToString:@"后退"]) {
+        self.phoneText.text = [origin stringByAppendingString:self.arrText[btn.tag]];
+    } else {
+        self.phoneText.text = origin.length ? [origin substringToIndex:origin.length-1] : @"";
+    }
+    
+    //self.phoneView.hidden = self.phoneText.text.length ? NO:YES;
+    
+    if (self.phoneText.text.length) {
+        self.phoneText.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    } else {
+        self.phoneText.backgroundColor = [UIColor clearColor];
+    }
+    
+    
+}
+
+-(void)initsDate {
     device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     NSString *weekDay;
     NSDate *dateNow;
     dateNow = [NSDate date];//[NSDate dateWithTimeIntervalSinceNow:dayDelay*24*60*60];//dayDelay代表向后推几天，如果是0则代表是今天，如果是1就代表向后推24小时，如果想向后推12小时，就可以改成dayDelay*12*60*60,让dayDelay＝1
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];//设置成中国阳历
-     NSCalendar *chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];//设置成中国阳历
+    NSCalendar *chineseCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];//设置成中国阳历
     NSDateComponents *comps = [[NSDateComponents alloc] init];
-
+    
     NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday;//这句我也不明白具体时用来做什么。。。
     comps = [calendar components:unitFlags fromDate:dateNow];
-   
+    
     long weekNumber = [comps weekday]; //获取星期对应的长整形字符串
     long day=[comps day];//获取日期对应的长整形字符串
     long month=[comps month];//获取月对应的长整形字符串
-
+    
     switch (weekNumber) {
         case 1:
             weekDay=@"周日";
@@ -232,52 +288,18 @@
     NSString *riQi =[NSString stringWithFormat:@"%@月%@日   %@   %@%@",monthStr,dayStr,weekDay, ChineseMonths[comps.month-1],ChineseDays[comps.day-1]];//把日期长整形转成对应的汉字字符串
     
     self.timeTwo.text = riQi;
-
-    
     
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeUp) userInfo:nil repeats:YES];
-    
-    
-    self.phoneView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
-    
-    
-    
-    
-}
 
--(void)timeUp {
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm:ss"];
-    self.timeOne.text = [dateFormatter stringFromDate:[NSDate date]];
-    
-}
-
--(void)clickBtn:(UIButton *)btn {
-    
-    NSString *origin = self.phoneText.text;
-    if (![self.arrText[btn.tag] isEqualToString:@"后退"]) {
-        self.phoneText.text = [origin stringByAppendingString:self.arrText[btn.tag]];
-    } else {
-        self.phoneText.text = origin.length ? [origin substringToIndex:origin.length-1] : @"";
-    }
-    
-    //self.phoneView.hidden = self.phoneText.text.length ? NO:YES;
-    
-    if (self.phoneText.text.length) {
-        self.phoneText.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-    } else {
-        self.phoneText.backgroundColor = [UIColor clearColor];
-    }
-    
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self initViews];
+    [self initsDate];
+    
+//    [self initViews];
     
     [CoreArchive setBool:NO key:INTERFACE_NEW];
     

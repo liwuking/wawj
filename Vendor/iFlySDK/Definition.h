@@ -16,7 +16,7 @@
 
 
 #define APP_VERSION           @"1"
-#define APP_VERSION_DESC      @"appversiondesc"
+//#define APP_VERSION_DESC      @"appversiondesc"
 
 
 #define APPID_VALUE           @"5834ff2b"

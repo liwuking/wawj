@@ -87,7 +87,8 @@
     
     [self getAdvertisingData];
     
-  
+    [self checkAppVesion];
+    
     return YES;
     
 }
@@ -1275,7 +1276,7 @@ void systemAudioCallback()
                 NSString *updateContent = bodyDict[@"updateContent"];
                 NSString *downloadUrl = bodyDict[@"downloadUrl"];
                 NSLog(@"%@", data);
-                [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
+//                [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
                 
                 if ([bodyDict[@"versionForce"] isEqualToString:@"0"]) {
                     
@@ -1313,7 +1314,7 @@ void systemAudioCallback()
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    [self checkAppVesion];
+    
     
     //移除通知栏所有推送
     JPushNotificationIdentifier *identifier = [[JPushNotificationIdentifier alloc] init];

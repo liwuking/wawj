@@ -132,6 +132,9 @@
     NSArray *titleArr = @[@"我家",@"电话本",@"上网",@"相机",@"手电筒",@"应用"];
     
     CGFloat height = (SCREEN_HEIGHT-190 - 1.5)/3;
+    if (SCREEN_HEIGHT == 480) {
+        height = 290/3;
+    }
     NSInteger width = (SCREEN_WIDTH-0.5)/2;
     for (NSInteger i = 0; i < 3; i++) {
         for (NSInteger j = 0; j < 2;  j++) {

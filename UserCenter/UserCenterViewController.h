@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, WAGender) {
+    WAGenderMan,
+    WAGenderWoMan,
+    WAGenderNull
+};
+
 @protocol UserCenterViewControllerDelegate <NSObject>
 
 -(void)userCenterViewControllerWithHeadImgRefresh:(UIImage *)image;

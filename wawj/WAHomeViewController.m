@@ -25,10 +25,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *remindBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTop;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeightConstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableWidthConstrain;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(strong,nonatomic) NSMutableArray *dataArr;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *phoneBtnBottomBttom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewBttomC;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *iphoneTopBttom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *qimiViewWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableConstantHeight;
 @end
 
 @implementation WAHomeViewController
@@ -109,11 +114,12 @@
     self.dataArr = [@[] mutableCopy];
     
    
-    if ([self isIphone5]) {
-        self.remindBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -35, 0, 0);
-    }
+//    if (SCREEN_HEIGHT == 568 || SCREEN_HEIGHT == 480) {
+////        self.remindBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -35, 0, 0);
+//        
+//    }
     
-    self.tableHeightConstrain.constant = SCREEN_WIDTH;
+    self.tableWidthConstrain.constant = SCREEN_WIDTH;
     self.tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
     
    
@@ -121,31 +127,18 @@
         self.bottomTop.constant = 60;
     } else if (SCREEN_HEIGHT >= 736) {
         self.bottomTop.constant = 90;
+    } else if (SCREEN_HEIGHT == 480) {
+        self.bottomTop.constant = 10;
+        self.phoneBtnBottomBttom.constant = 0;
+        self.viewBttomC.constant = 5;
+        self.iphoneTopBttom.constant = 5;
+        self.qimiViewWidth.constant = 90;
+        self.tableConstantHeight.constant = 90;
     }
     
 }
 
 
--(BOOL)isIphone5 {
-    //需要导入头文件：
-    
-    struct utsname systemInfo;
-    
-    uname(&systemInfo);
-    
-    NSString*platform = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
-    
-    if([platform isEqualToString:@"iPhone5,1"]
-       || [platform isEqualToString:@"iPhone5,2"]
-       || [platform isEqualToString:@"iPhone5,3"]
-       || [platform isEqualToString:@"iPhone5,4"]
-       || [platform isEqualToString:@"iPhone6,1"]
-       || [platform isEqualToString:@"iPhone6,2"]) {
-        return YES;
-    }
-    return NO;
-    
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -213,6 +206,9 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (SCREEN_HEIGHT == 480) {
+        return 90;
+    }
     if (self.dataArr.count == indexPath.section) {
         return 145;//section尾部高度
     } else {

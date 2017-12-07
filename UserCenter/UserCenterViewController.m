@@ -24,7 +24,7 @@
     IBOutlet UIView             *_sexWomanBGView;
     IBOutlet UIView             *_calendarBGView;
     IBOutlet UIButton           *_saveButton;
-    BOOL                        isSexWithMan;
+    WAGender                    _waGender;
     BOOL                        isYingLi;
     IBOutlet UIImageView        *_picImgView;
     IBOutlet NSLayoutConstraint *_contentViewHeight;
@@ -73,7 +73,7 @@
     [leftItem setImageInsets:UIEdgeInsetsMake(0, -6, 0, 0)];
     self.navigationItem.leftBarButtonItem = leftItem;
 
-    isSexWithMan = YES;
+//    isSexWithMan = YES;
     
     _calendarBGView.layer.masksToBounds = YES;
     _calendarBGView.layer.cornerRadius = 13.5;
@@ -99,7 +99,6 @@
     
     if (userInfo[BIRTHDAY] && ![userInfo[BIRTHDAY] isEqualToString:@""]) {
         NSString *birthday = userInfo[BIRTHDAY];
-//        [_selectTimeButton setTitle:birthday forState:UIControlStateNormal];
         birthdayTextField.text = birthday;
     }
     
@@ -126,9 +125,25 @@
     }
     
 
-    if ([userInfo[GENDER] isEqualToString:@"1"]) {
+    if (!userInfo[GENDER] || [userInfo[GENDER] isEqualToString:@""]) {
+        _waGender = WAGenderNull;
         
-        isSexWithMan = NO;
+        UIView *womanBGView = _sexWomanBGView;//sender.view;
+        UIImageView *womanImgView = [womanBGView viewWithTag:100];
+        UILabel *womanLabel = [womanBGView viewWithTag:101];
+        womanImgView.image = [UIImage imageNamed:@"UC_woman_click"];
+        womanLabel.textColor = HEX_COLOR(0x999999);
+        
+        UIView *manBGView = _sexManBGView;
+        UIImageView *manImgView = [manBGView viewWithTag:100];
+        UILabel *manLabel = [manBGView viewWithTag:101];
+        manImgView.image = [UIImage imageNamed:@"UC_man_click"];
+        manLabel.textColor = HEX_COLOR(0x999999);
+        
+    } else if ([userInfo[GENDER] isEqualToString:@"1"]) {
+        
+//        isSexWithMan = NO;
+        _waGender = WAGenderWoMan;
         UIView *womanBGView = _sexWomanBGView;//sender.view;
         UIImageView *womanImgView = [womanBGView viewWithTag:100];
         UILabel *womanLabel = [womanBGView viewWithTag:101];
@@ -142,9 +157,10 @@
         manLabel.textColor = HEX_COLOR(0x999999);
         
 
-    } else {
+    }  else if([userInfo[GENDER] isEqualToString:@"0"]) {
     
-        isSexWithMan = YES;
+//        isSexWithMan = YES;
+        _waGender = WAGenderMan;
         UIView *manBGView = _sexManBGView;
         manBGView.backgroundColor = whiteColor;
         UIImageView *manImgView = [manBGView viewWithTag:100];
@@ -170,7 +186,8 @@
     switch (sender.view.tag) {
         case 500:
         {
-            isSexWithMan = YES;
+//            isSexWithMan = YES;
+            _waGender = WAGenderMan;
             UIView *manBGView = _sexManBGView;
             UIImageView *manImgView = [manBGView viewWithTag:100];
             UILabel *manLabel = [manBGView viewWithTag:101];
@@ -190,8 +207,8 @@
             break;
         case 501:
         {
-            isSexWithMan = NO;
-            
+//            isSexWithMan = NO;
+            _waGender = WAGenderWoMan;
             UIView *womanBGView = _sexWomanBGView;//sender.view;
             UIImageView *womanImgView = [womanBGView viewWithTag:100];
             UILabel *womanLabel = [womanBGView viewWithTag:101];
@@ -211,7 +228,7 @@
     }
     
     
-    
+    [self checkCaptureDevicePermission];
     [self checkPhotoLibraryPermission];
     
 }
@@ -311,7 +328,6 @@
 }
 
 
-
 - (void)backAction {
     
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
@@ -319,7 +335,7 @@
     BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
     BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:birthdayTextField.text] || [birthdayTextField.text isEqualToString:@""];
     BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi) || [userInfo[BIRTHDAYTYPE] isEqualToString:@""];
-    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && !isSexWithMan) || ([userInfo[GENDER] isEqualToString:@"0"] && isSexWithMan) || ([userInfo[GENDER] isEqualToString:@""] && isSexWithMan);
+    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && _waGender == WAGenderWoMan) || ([userInfo[GENDER] isEqualToString:@"0"] && _waGender == WAGenderMan) || ([userInfo[GENDER] isEqualToString:@""] && _waGender == WAGenderNull);
     
     if (headUrlBool && userNameBool && birthdayBool && birthdayTypeBool && genderBool) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -546,9 +562,9 @@
             
             NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
             NSMutableDictionary *dict = [@{} mutableCopy];
+            [dict addEntriesFromDictionary:userInfo];
             [dict setObject:strongSelf.imageUrl forKey:@"headUrl"];
             [dict setObject:strongSelf.imageUrl forKey:@"portraitUrl"];
-            [dict addEntriesFromDictionary:userInfo];
             [CoreArchive setDic:dict key:USERINFO];
             
 //            [strongSelf.delegate userCenterViewControllerWithHeadImgRefresh:_picImgView.image];
@@ -579,7 +595,7 @@
 -(void)refreshPersonData {
 
     NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
-    NSString *gender = isSexWithMan ? @"0":@"1";
+    NSString *gender = _waGender == WAGenderMan ? @"0":@"1";
     NSString *birthday_type = isYingLi ? @"0": @"1";
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -653,7 +669,7 @@
         return;
     }
 
-    if ([_onDatePickerLabel.text isEqualToString:@""]) {
+    if ([birthdayTextField.text isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"提示" message:@"生日不能为空" buttonTitle:@"确定" clickBtn:^{
             
         }];
@@ -667,7 +683,26 @@
         return;
     }
     
-    [self refreshPersonData];
+    if (_waGender == WAGenderNull) {
+        [self showAlertViewWithTitle:@"提示" message:@"必须选择性别:男或者女" buttonTitle:@"确定" clickBtn:^{
+            
+        }];
+        return;
+    }
+    
+    NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
+//    BOOL headUrlBool = self.imageUrl ? [userInfo[HEADURL] isEqualToString:self.imageUrl] : YES;
+    BOOL userNameBool = [userInfo[USERNAME] isEqualToString:nameTextField.text];
+    BOOL birthdayBool = [userInfo[BIRTHDAY] isEqualToString:birthdayTextField.text] || [birthdayTextField.text isEqualToString:@""];
+    BOOL birthdayTypeBool = ([userInfo[BIRTHDAYTYPE] isEqualToString:@"1"] && !isYingLi) || ([userInfo[BIRTHDAYTYPE] isEqualToString:@"0"] && isYingLi) || [userInfo[BIRTHDAYTYPE] isEqualToString:@""];
+    BOOL genderBool = ([userInfo[GENDER] isEqualToString:@"1"] && _waGender == WAGenderWoMan) || ([userInfo[GENDER] isEqualToString:@"0"] && _waGender == WAGenderMan) || ([userInfo[GENDER] isEqualToString:@""] && _waGender == WAGenderNull);
+    
+    if (userNameBool && birthdayBool && birthdayTypeBool && genderBool) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self refreshPersonData];
+    }
+    
     
 }
 

@@ -12,10 +12,15 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WAHomeViewController">
             <connections>
                 <outlet property="bottomTop" destination="ohQ-jk-VYQ" id="i1H-qu-kgD"/>
+                <outlet property="iphoneTopBttom" destination="IEE-JS-ZHJ" id="nC6-j6-iTr"/>
+                <outlet property="phoneBtnBottomBttom" destination="Re8-1R-Kvu" id="AuY-mx-gE1"/>
+                <outlet property="qimiViewWidth" destination="XP5-lO-0Ik" id="i1y-j3-Cju"/>
                 <outlet property="remindBtn" destination="rrr-wU-CY6" id="WEO-DZ-AjR"/>
-                <outlet property="tableHeightConstrain" destination="GnS-0n-0Bh" id="jmX-zz-isx"/>
+                <outlet property="tableConstantHeight" destination="L30-Y9-wnK" id="MxR-X0-Kr3"/>
                 <outlet property="tableView" destination="Dtn-qT-kcP" id="RYd-HJ-R8K"/>
+                <outlet property="tableWidthConstrain" destination="GnS-0n-0Bh" id="T3l-ra-pLq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="VCb-7v-Wc1"/>
+                <outlet property="viewBttomC" destination="qkN-CU-wKA" id="nmB-FA-BiB"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -38,7 +43,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xob-mg-H5z">
-                    <rect key="frame" x="57" y="398" width="261" height="47"/>
+                    <rect key="frame" x="57" y="400" width="261" height="47"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="261" id="8I7-oY-YMs"/>
                         <constraint firstAttribute="height" constant="47" id="ZtC-b8-xlT"/>
@@ -48,8 +53,8 @@
                         <action selector="clickMyTiXingBtn:" destination="-1" eventType="touchUpInside" id="2UQ-lv-ccc"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NLx-9p-PnA">
-                    <rect key="frame" x="153" y="585" width="70" height="70"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NLx-9p-PnA" userLabel="iphoneBtn">
+                    <rect key="frame" x="153" y="587" width="70" height="70"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="70" id="WTp-vZ-ui0"/>
                         <constraint firstAttribute="height" constant="70" id="mGy-Mm-ITm"/>
@@ -60,14 +65,14 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wana" translatesAutoresizingMaskIntoConstraints="NO" id="Tvp-Q5-4OS">
-                    <rect key="frame" x="87" y="160" width="202" height="60"/>
+                    <rect key="frame" x="87" y="162" width="202" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="Yq8-uf-rqk"/>
                         <constraint firstAttribute="width" constant="202" id="b8L-NZ-KR1"/>
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wug-cl-eDN">
-                    <rect key="frame" x="57" y="458" width="261" height="47"/>
+                    <rect key="frame" x="57" y="460" width="261" height="47"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="47" id="6vA-CJ-h87"/>
                         <constraint firstAttribute="width" constant="261" id="WBf-k1-sPg"/>
@@ -78,7 +83,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nj5-ci-Fpe">
-                    <rect key="frame" x="0.0" y="240" width="375" height="128"/>
+                    <rect key="frame" x="0.0" y="242" width="375" height="128"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="135" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Dtn-qT-kcP">
                             <rect key="frame" x="123" y="-124" width="128" height="375"/>
@@ -105,7 +110,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-Sg-f4o">
-                    <rect key="frame" x="57" y="518" width="261" height="47"/>
+                    <rect key="frame" x="57" y="520" width="261" height="47"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="261" id="27J-8o-Qfb"/>
                         <constraint firstAttribute="height" constant="47" id="yFO-mz-3lM"/>
@@ -136,7 +141,7 @@
                 <constraint firstItem="NLx-9p-PnA" firstAttribute="top" secondItem="vsz-Sg-f4o" secondAttribute="bottom" constant="20" id="IEE-JS-ZHJ"/>
                 <constraint firstItem="Tvp-Q5-4OS" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OyH-aC-CCX"/>
                 <constraint firstItem="rrr-wU-CY6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QSc-Fg-gEe"/>
-                <constraint firstAttribute="bottom" secondItem="NLx-9p-PnA" secondAttribute="bottom" constant="12" id="Re8-1R-Kvu"/>
+                <constraint firstAttribute="bottom" secondItem="NLx-9p-PnA" secondAttribute="bottom" constant="10" id="Re8-1R-Kvu"/>
                 <constraint firstItem="wug-cl-eDN" firstAttribute="top" secondItem="xob-mg-H5z" secondAttribute="bottom" constant="13" id="X7E-G8-UWL"/>
                 <constraint firstItem="vsz-Sg-f4o" firstAttribute="top" secondItem="wug-cl-eDN" secondAttribute="bottom" constant="13" id="Z08-xA-oWa"/>
                 <constraint firstItem="rrr-wU-CY6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="g2r-Sl-z9B"/>

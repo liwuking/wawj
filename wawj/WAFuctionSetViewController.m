@@ -96,7 +96,7 @@
         [CoreArchive removeStrForKey:USER_CONTACT_ARR];
         [CoreArchive removeStrForKey:FIRST_ENTER];
         [CoreArchive removeStrForKey:REMOTE_REMIND_ARR];
-        [CoreArchive removeStrForKey:APP_VERSION_DESC];
+//        [CoreArchive removeStrForKey:APP_VERSION_DESC];
         
         //取消所有提醒
         [AlarmClockItem cancelAllAlarmClock];

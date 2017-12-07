@@ -15,6 +15,7 @@
                 <outlet property="btnThree" destination="Yon-fP-hKH" id="amB-7V-ASq"/>
                 <outlet property="btnTwo" destination="JNT-zr-E6t" id="a28-hK-4h1"/>
                 <outlet property="textView" destination="jfu-YS-nuz" id="83y-ZO-3js"/>
+                <outlet property="textViewHeigth" destination="soS-Tk-GRT" id="KKM-OO-yAt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -120,7 +121,7 @@
                     </connections>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86X-VE-jhX">
-                    <rect key="frame" x="15" y="376" width="290" height="50"/>
+                    <rect key="frame" x="15" y="367" width="290" height="50"/>
                     <color key="backgroundColor" red="0.12941176469999999" green="0.61176470589999998" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="ox4-QM-zUl"/>
@@ -205,7 +206,7 @@
                 <constraint firstAttribute="bottom" secondItem="ucq-Yl-SBd" secondAttribute="bottom" id="GBj-2M-2LB"/>
                 <constraint firstItem="bcj-qB-BrQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="N1J-Ca-5EY"/>
                 <constraint firstItem="gN1-Uh-wWy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WDs-sb-K7J"/>
-                <constraint firstItem="86X-VE-jhX" firstAttribute="top" secondItem="jfu-YS-nuz" secondAttribute="bottom" constant="44" id="aUs-2X-hsq"/>
+                <constraint firstItem="86X-VE-jhX" firstAttribute="top" secondItem="jfu-YS-nuz" secondAttribute="bottom" constant="35" id="aUs-2X-hsq"/>
                 <constraint firstItem="86X-VE-jhX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="d9f-cL-D04"/>
                 <constraint firstAttribute="trailing" secondItem="bcj-qB-BrQ" secondAttribute="trailing" id="eU8-ZL-YXs"/>
                 <constraint firstAttribute="trailing" secondItem="gN1-Uh-wWy" secondAttribute="trailing" id="fGD-Yw-UCA"/>

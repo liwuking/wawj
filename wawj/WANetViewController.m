@@ -14,6 +14,7 @@
 @interface WANetViewController ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constantX;
 @property (weak, nonatomic) IBOutlet UIButton *netBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *netBtnTopY;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mobileFlowImg;
 @property (weak, nonatomic) IBOutlet UIImageView *WIFIFlowImg;
@@ -33,6 +34,12 @@
     [super viewWillAppear:animated];
 }
 
+-(void)viewDidLayoutSubviews {
+    
+    if (SCREEN_HEIGHT == 480) {
+        self.netBtnTopY.constant = 10;
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillDisappear:animated];

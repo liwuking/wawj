@@ -55,6 +55,7 @@ typedef NS_OPTIONS(NSInteger, Status) {
 @property (weak, nonatomic) IBOutlet UIButton *btnTwo;
 @property (weak, nonatomic) IBOutlet UIButton *btnThree;
 @property (nonatomic, strong)NSString *adviceType;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeigth;
 
 @end
 
@@ -189,6 +190,10 @@ typedef NS_OPTIONS(NSInteger, Status) {
     self.title = @"有事您说话";
     self.adviceType = @"1";
     
+    
+    if (SCREEN_HEIGHT == 480) {
+        self.textViewHeigth.constant = 130;
+    }
 }
 
 - (IBAction)clickBtnOne:(UIButton *)sender {

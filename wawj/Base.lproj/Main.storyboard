@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pad-lY-fFj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pad-lY-fFj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -775,6 +775,7 @@
                         <outlet property="costantX" destination="hEf-1D-AcO" id="LHS-57-Nsf"/>
                         <outlet property="mobileFlowImg" destination="cmA-tj-XCc" id="kqf-ln-QaQ"/>
                         <outlet property="netBtn" destination="Kbi-6f-PJC" id="KZh-gf-rGQ"/>
+                        <outlet property="netBtnTopY" destination="Fhw-xC-6Oc" id="JKX-fj-MRm"/>
                         <outlet property="phoneDescView" destination="KKH-Uc-Lj3" id="TZj-xO-Za3"/>
                         <outlet property="phoneLab" destination="6KI-Ol-KkU" id="4eS-gJ-cX3"/>
                         <outlet property="wifiNameLab" destination="3Db-FC-s7f" id="vza-AY-Y1G"/>

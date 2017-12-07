@@ -52,73 +52,73 @@
     // Do any additional setup after loading the view from its nib.
     [self initViews];
     
-    self.titleArr = @[@"意见反馈",@"新版检测",@"官方网站"];
+    self.titleArr = @[@"意见反馈",@"官方网站"];
 }
 
--(void)checkAppVesion {
-    
-    NSDictionary *model = @{};
-    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0001" andModel:model];
-    __weak __typeof__(self) weakSelf = self;
-    [MBProgressHUD showMessage:@"正在请求"];
-    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
-        
-        NSString *code = data[@"code"];
-        NSString *desc = data[@"desc"];
-        if ([code isEqualToString:@"0000"]) {
-
-            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
-                NSDictionary *bodyDict = [data[@"body"] transforeNullValueToEmptyStringInSimpleDictionary];
-                NSString *versionDesc = bodyDict[@"versionDesc"];
-                NSString *updateContent = bodyDict[@"updateContent"];
-                NSString *downloadUrl = bodyDict[@"downloadUrl"];
-                NSLog(@"%@", data);
-                [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
-                [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                
-                if ([bodyDict[@"versionForce"] isEqualToString:@"0"]) {
-                    
-                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent buttonTitle:@"立即更新" clickBtn:^{
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
-                    }];
-                    
-                } else {
-                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent cancelButtonTitle:@"取消" clickCancelBtn:^{
-                    } otherButtonTitles:@"立即更新" clickOtherBtn:^{
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
-                    }];
-                }
-            } else {
-                
-               
-                [strongSelf showAlertViewWithTitle:@"已经是最新版" message:nil buttonTitle:@"确定" clickBtn:^{
-                }];
-                
-                [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-            }
-            
-        } else {
-            
-            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
-                
-            }];
-            
-        }
-        
-    } fail:^(NSError *error) {
-        
-        __strong __typeof__(weakSelf) strongSelf = weakSelf;
-        [MBProgressHUD hideHUD];
-        
-        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
-            
-        }];
-        
-    }];
-}
+//-(void)checkAppVesion {
+//    
+//    NSDictionary *model = @{};
+//    NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P0001" andModel:model];
+//    __weak __typeof__(self) weakSelf = self;
+//    [MBProgressHUD showMessage:@"正在请求"];
+//    [CLNetworkingManager postNetworkRequestWithUrlString:KMain_URL parameters:params isCache:NO succeed:^(id data) {
+//        
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [MBProgressHUD hideHUD];
+//        
+//        NSString *code = data[@"code"];
+//        NSString *desc = data[@"desc"];
+//        if ([code isEqualToString:@"0000"]) {
+//
+//            if (![data[@"body"] isKindOfClass:[NSNull class]]) {
+//                NSDictionary *bodyDict = [data[@"body"] transforeNullValueToEmptyStringInSimpleDictionary];
+//                NSString *versionDesc = bodyDict[@"versionDesc"];
+//                NSString *updateContent = bodyDict[@"updateContent"];
+//                NSString *downloadUrl = bodyDict[@"downloadUrl"];
+//                NSLog(@"%@", data);
+//                [CoreArchive setStr:versionDesc key:APP_VERSION_DESC];
+//                [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//                
+//                if ([bodyDict[@"versionForce"] isEqualToString:@"0"]) {
+//                    
+//                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent buttonTitle:@"立即更新" clickBtn:^{
+//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
+//                    }];
+//                    
+//                } else {
+//                    [strongSelf showAlertViewWithTitle:versionDesc message:updateContent cancelButtonTitle:@"取消" clickCancelBtn:^{
+//                    } otherButtonTitles:@"立即更新" clickOtherBtn:^{
+//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadUrl]];
+//                    }];
+//                }
+//            } else {
+//                
+//               
+//                [strongSelf showAlertViewWithTitle:@"已经是最新版" message:nil buttonTitle:@"确定" clickBtn:^{
+//                }];
+//                
+//                [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//            }
+//            
+//        } else {
+//            
+//            [strongSelf showAlertViewWithTitle:@"提示" message:desc buttonTitle:@"确定" clickBtn:^{
+//                
+//            }];
+//            
+//        }
+//        
+//    } fail:^(NSError *error) {
+//        
+//        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//        [MBProgressHUD hideHUD];
+//        
+//        [strongSelf showAlertViewWithTitle:@"提示" message:@"网络请求失败" buttonTitle:@"确定" clickBtn:^{
+//            
+//        }];
+//        
+//    }];
+//}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -127,9 +127,11 @@
     if (0 == indexPath.row) {
         WAFeedbackViewController *vc = [[WAFeedbackViewController alloc] initWithNibName:@"WAFeedbackViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
-    } else if(1 == indexPath.row) {
-        [self checkAppVesion];
-    } else {
+    }
+//    else if(1 == indexPath.row) {
+//        [self checkAppVesion];
+//    }
+    else {
         NSString*url =@"http://www.wawjapp.com";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
     }
@@ -157,21 +159,23 @@
         
         return cell;
         
-    } else if(1 == indexPath.row) {
-        
-        static NSString *identifier = @"WAAboutTwoCell";
-        WAAboutTwoCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"WAAboutTwoCell" owner:self options:nil] lastObject];
-        }
-        cell.titleLab.text = self.titleArr[indexPath.row];
-        if ([CoreArchive strForKey:APP_VERSION_DESC]) {
-            cell.detailLab.text = [CoreArchive strForKey:APP_VERSION_DESC];
-        }
-        
-        return cell;
-        
-    } else {
+    }
+//    else if(1 == indexPath.row) {
+//
+//        static NSString *identifier = @"WAAboutTwoCell";
+//        WAAboutTwoCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+//        if (!cell) {
+//            cell = [[[NSBundle mainBundle] loadNibNamed:@"WAAboutTwoCell" owner:self options:nil] lastObject];
+//        }
+//        cell.titleLab.text = self.titleArr[indexPath.row];
+//        if ([CoreArchive strForKey:APP_VERSION_DESC]) {
+//            cell.detailLab.text = [CoreArchive strForKey:APP_VERSION_DESC];
+//        }
+//
+//        return cell;
+//
+//    }
+    else {
         static NSString *identifier = @"WAAboutThreeCell";
         WAAboutThreeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
