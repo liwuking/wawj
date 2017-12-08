@@ -337,14 +337,6 @@
             [strongSelf.navigationController popViewControllerAnimated:YES];
         });
         
-//        dispatch_async(queue, ^{
-//
-//            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [MBProgressHUD hideHUD];
-//                [strongSelf.navigationController popViewControllerAnimated:YES];
-//            });
-//        });
         
     }else if (ischange && WAContactEditEdit == self.waContactEditType) {
         [self.navigationController popViewControllerAnimated:YES];
