@@ -32,15 +32,11 @@
 #import "WAApplyRemindViewController.h"
 #define USHARE_APPKEY  @"59ae0a1782b635489c000dab"
 
-
-
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,JPUSHRegisterDelegate,AVAudioPlayerDelegate>
 
 @end
 
 @implementation AppDelegate
-
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"%s", __FUNCTION__);

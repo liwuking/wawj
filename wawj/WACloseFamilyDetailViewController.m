@@ -207,6 +207,7 @@
 
 
 - (IBAction)clickRemind:(UIButton *)sender {
+    
     if (self.closeFamilyItem.qinmiUser && [self.closeFamilyItem.qinmiUser isEqualToString:@""]) {
         [self showAlertViewWithTitle:@"TA还没同意，不能远程提醒" message:nil buttonTitle:@"确定" clickBtn:^{
             
@@ -325,6 +326,7 @@
                         [qimiArr insertObject:body atIndex:i];
                         [CoreArchive setArr:qimiArr key:USER_QIMI_ARR];
                         
+                        strongSelf.closeFamilyItem.qinmiUser = body[@"qinmiUser"];
                         [strongSelf.delegate waCloseFamilyDetailViewControllerRefreshIndex:i];
                         break;
                     }

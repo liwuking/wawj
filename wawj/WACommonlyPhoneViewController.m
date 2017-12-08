@@ -408,7 +408,7 @@
 {
     CGFloat width = (SCREEN_WIDTH-20)/2;
 //    CGFloat height = (width/140) * 170;
-    NSLog(@"width: %lf",width);
+//    NSLog(@"width: %lf",width);
     return CGSizeMake(width, width);
 }
 

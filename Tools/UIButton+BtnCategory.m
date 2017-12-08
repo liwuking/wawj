@@ -60,8 +60,8 @@
     
 
     
-    NSLog(@"self.titleEdgeInsets: %@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
-    NSLog(@"self.imageEdgeInsets: %@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
+//    NSLog(@"self.titleEdgeInsets: %@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
+//    NSLog(@"self.imageEdgeInsets: %@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
 
     
 }

@@ -56,16 +56,15 @@
                       @"奶奶",@"姥姥",@"姥爷",
                       @"儿子",@"老婆",@"其他"];
         
+//        _subTitleArr = @[@[@"女婿", @"女儿", @"孙子", @"孙女"],
+//                         @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
+//                         @[@"岳父", @"岳母", @"外孙", @"外孙女"],
+//                         @[@"干妈", @"干爸", @"儿媳"]];
         _subTitleArr = @[@[@"女婿", @"女儿", @"孙子", @"孙女"],
                          @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
                          @[@"岳父", @"岳母", @"外孙", @"外孙女"],
-                         @[@"干妈", @"干爸", @"儿媳"]];
+                         @[ @"儿媳"]];
     }
-    
-//    _titleArr = @[@"爸爸",@"妈妈",@"爷爷",
-//                          @"奶奶",@"姥姥",@"姥爷",
-//                          @"老公",@"老婆",@"其他"];
-    
     
     for (UIView *view in self.view.subviews) {
         if ([view isKindOfClass:[UIStackView class]]) {
@@ -83,13 +82,6 @@
             }
         }
     }
-    
-    
-//    _subTitleArr = @[@[@"儿子", @"女儿", @"孙子", @"孙女"],
-//                     @[@"哥哥", @"姐姐", @"弟弟", @"妹妹"],
-//                     @[@"岳父", @"岳母", @"公公", @"婆婆"],
-//                     @[@"干妈", @"干爸", @"儿媳", @"女婿"],
-//                     @[@"外孙", @"外孙女"]];
     
     _contactPersonView = [[[NSBundle mainBundle] loadNibNamed:@"ContactPersonView" owner:self options:nil] lastObject];
     _contactPersonView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.7f];

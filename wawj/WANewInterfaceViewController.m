@@ -303,15 +303,20 @@
     //在这个方法里我们可以进行图片的修改, 保存, 或者视频的保存
     // UIImagePickerControllerOriginalImage 原始图片
     // UIImagePickerControllerEditedImage 编辑后图片
-    //    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     //    _imageView.image = image;
     
     
-    NSString *imageDocPath = [self getImageSavePath];//保存
-    //    _photoUrl = imageDocPath;
-    NSLog(@"imageDocPath == %@", imageDocPath);
+//    NSString *imageDocPath = [self getImageSavePath];//保存
+//    //    _photoUrl = imageDocPath;
+//    NSLog(@"imageDocPath == %@", imageDocPath);
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
+}
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
 }
 
 //当用户取消相册时, 调用该方法

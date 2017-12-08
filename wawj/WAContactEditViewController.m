@@ -331,14 +331,20 @@
             
         });
         
-        dispatch_async(queue, ^{
-            
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                [strongSelf.navigationController popViewControllerAnimated:YES];
-            });
+            [MBProgressHUD hideHUD];
+            [strongSelf.navigationController popViewControllerAnimated:YES];
         });
+        
+//        dispatch_async(queue, ^{
+//
+//            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [MBProgressHUD hideHUD];
+//                [strongSelf.navigationController popViewControllerAnimated:YES];
+//            });
+//        });
         
     }else if (ischange && WAContactEditEdit == self.waContactEditType) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -364,17 +370,23 @@
             [strongSelf addContactsName:strongSelf.contactItem.name imageName:strongSelf.contactItem.imageName phoneNumber:strongSelf.contactItem.phoneArr];
         });
         
-        dispatch_async(queue, ^{
-            
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                [strongSelf.navigationController popViewControllerAnimated:YES];
-                
-            });
-            
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [MBProgressHUD hideHUD];
+            [strongSelf.navigationController popViewControllerAnimated:YES];
         });
+        
+//        dispatch_async(queue, ^{
+//
+//            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [MBProgressHUD hideHUD];
+//                [strongSelf.navigationController popViewControllerAnimated:YES];
+//
+//            });
+//
+//        });
         
     }
     
