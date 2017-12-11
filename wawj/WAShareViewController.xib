@@ -165,7 +165,7 @@
                         <constraint firstAttribute="width" constant="200" id="qJx-o2-Q6Y"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请家人、好友直接扫描二维码，下载二维码安装APP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MBV-kA-QNJ">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请家人、好友直接扫描二维码，下载安装APP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MBV-kA-QNJ">
                     <rect key="frame" x="10" y="246" width="300" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="251-4Y-F7r"/>

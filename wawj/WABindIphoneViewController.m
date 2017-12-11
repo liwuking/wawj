@@ -563,7 +563,6 @@
                              @"invite_code":@"",
                              @"message_type":@"SMS_104815008",
                              @"message_code":self.msgTextField.text
-                             
                              };
     NSDictionary *params = [ParameterModel formatteNetParameterWithapiCode:@"P1002" andModel:model];
     

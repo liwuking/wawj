@@ -351,18 +351,6 @@
         }];
     }
     
-//
-//    if (self.isChange) {
-//        __weak typeof(self) weakSelf = self;
-//        [self showAlertViewWithTitle:@"您还没有保存信息，确定离开？" message:nil cancelButtonTitle:@"取消" clickCancelBtn:^{
-//
-//        } otherButtonTitles:@"确定" clickOtherBtn:^{
-//            __strong typeof(weakSelf) strongSelf = weakSelf;
-//            [strongSelf.navigationController popViewControllerAnimated:YES];
-//        }];
-//    }
-    
-    
 }
 
 - (IBAction)selectPic:(UITapGestureRecognizer *)sender {
@@ -483,22 +471,17 @@
     NSData *fileData = UIImageJPEGRepresentation(_picImgView.image, 0.5);
     if([AFNetworkReachabilityManager sharedManager].isReachable){ //----有网络
         
-//        //从 app 服务器获取的上传策略 policy
-//        NSString *policy = @"eyJleHBpcmF0aW9uIjoxNDg5Mzc4NjExLCJyZXR1cm4tdXJsIjoiaHR0cGJpbi5vcmdcL3Bvc3QiLCJidWNrZXQiOiJmb3JtdGVzdCIsInNhdmUta2V5IjoiXC91cGxvYWRzXC97eWVhcn17bW9ufXtkYXl9XC97cmFuZG9tMzJ9ey5zdWZmaXh9In0=";
-//        
-//        //从 app 服务器获取的上传策略签名 signature
-//        NSString *signature = @"l6BqFmNArztYqj6NtLkTj+PIsxk=";
-//        
-//    
         //图片命名
         NSDate *currentDate = [NSDate date];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+         [dateFormatter setDateFormat:@"yyyyMMdd"];
+        NSString *currentDateStringDD = [dateFormatter stringFromDate:currentDate];
         [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-        NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
-        
+        NSString *currentDateStringSS = [dateFormatter stringFromDate:currentDate];
+
         NSDictionary *userInfo = [CoreArchive dicForKey:USERINFO];
         NSString *userID = userInfo? userInfo[@"userId"] : @"";
-        NSString *imgName=[NSString stringWithFormat:@"share/%@/%@.jpeg",currentDateString,userID];
+        NSString *imgName=[NSString stringWithFormat:@"hd/%@/%@HD%@.jpeg",currentDateStringDD,userID,currentDateStringSS];
         
         __weak typeof(self) weakSelf = self;
         UpYunFormUploader *up = [[UpYunFormUploader alloc] init];
