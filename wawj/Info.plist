@@ -50,7 +50,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>10</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -160,17 +160,17 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>是否允许此App使用您的相机</string>
+	<string>拍照，修改头像，上传照片到相册时需要用到相机功能</string>
 	<key>NSContactsUsageDescription</key>
-	<string>是否允许此App使用系统通讯录</string>
+	<string>用于直接从通讯录添加常用电话</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>给亲密家人发位置时需要定位权限</string>
+	<string>在亲密家人详情页给亲密家人发位置时需要定位权限</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>是否允许此App使用您的麦克风</string>
+	<string>语音创建提醒，反馈意见时可以用到</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>是否允许此App访问您的相册,以便存储照片</string>
+	<string>用于存储拍摄的照片</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>是否允许此App访问您的相册,以便上传照片</string>
+	<string>修改头像，上传照片到相册时需要用到</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
